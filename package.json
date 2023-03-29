@@ -8,9 +8,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "postinstall": "npm run generate:entry",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "create:component":  "node ./scripts/createComponent.js"
+    "create:component":  "node ./scripts/createComponent.js",
+    "generate:entry":  "node ./scripts/generateEntry.js"
   },
   "dependencies": {
     "next": "^13.2.4",
