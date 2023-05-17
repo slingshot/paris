@@ -1,5 +1,5 @@
 {
-    "name": "@ssh/paris",
+    "name": "paris",
     "description": "Paris is Slingshot's React design system. It's a collection of reusable components, design tokens, and guidelines that help us build consistent, accessible, and performant user interfaces.",
     "version": "0.1.0",
     "scripts": {
@@ -13,25 +13,26 @@
         "create:component": "node ./scripts/createComponent.js",
         "generate:entry": "node ./scripts/generateEntry.js"
     },
+    "engines": {
+        "pnpm": "^8.x",
+        "yarn": "PLEASE USE PNPM",
+        "npm": "PLEASE USE PNPM"
+    },
+    "engineStrict": true,
     "exports": {
         "./*": "./src/stories/*"
     },
-    "dependencies": {
-        "next": "^13.2.4",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "sass": "^1.62.1",
-        "typescript": "^5.0.2"
-    },
     "peerDependencies": {
-        "sass": "^1.62.1"
+        "react": "^18.x || ^17.x",
+        "react-dom": "^18.x || ^17.x",
+        "sass": "^1.x",
+        "typescript": "^5.0 || ^4.9"
     },
     "devDependencies": {
         "@ssh/eslint-config": "^1.0.0",
         "@storybook/addon-essentials": "^7.0.12",
         "@storybook/addon-interactions": "^7.0.12",
         "@storybook/addon-links": "^7.0.12",
-        "@storybook/addons": "^7.0.12",
         "@storybook/blocks": "^7.0.12",
         "@storybook/manager-api": "^7.0.12",
         "@storybook/nextjs": "^7.0.12",
@@ -45,6 +46,11 @@
         "@typescript-eslint/parser": "^5.0.0",
         "eslint": "^8.2.0",
         "eslint-config-next": "13.2.4",
+        "eslint-plugin-storybook": "^0.6.12",
+        "next": "^13.2.4",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "sass": "^1.62.1",
         "storybook": "^7.0.12",
         "storybook-dark-mode": "^3.0.0",
         "tsconfig-paths-webpack-plugin": "^4.0.1",

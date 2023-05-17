@@ -1,7 +1,8 @@
 {
   "root": true,
   "extends": [
-    "@ssh"
+    "@ssh",
+    "plugin:storybook/recommended"
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
