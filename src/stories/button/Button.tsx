@@ -1,12 +1,30 @@
-import type { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren, ReactNode } from 'react';
 import styles from './Button.module.scss';
 
+export enum ButtonKind {
+    PRIMARY = 'primary',
+    SECONDARY = 'secondary',
+    TERTIARY = 'tertiary',
+}
+
 export type ButtonProps = PropsWithChildren<{
-    /** Add props here */
-    content?: string;
+    /**
+     * The visual style of the button.
+     */
+    kind: ButtonKind;
+    /**
+     * The contents of the button, usually just text.
+     */
+    children: ReactNode;
 }>;
 
-export const Button: FC<ButtonProps> = ({ children }) => (
+/**
+ * Button component!
+ */
+export const Button: FC<ButtonProps> = ({
+    kind = 'primary',
+    children = 'Submit',
+}) => (
     <button type="button" className={styles.content}>
         {children}
     </button>

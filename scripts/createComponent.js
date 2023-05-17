@@ -29,13 +29,13 @@ const componentCode = `import type { FC } from 'react';
 import styles from './${componentName}.module.scss';
 
 export type ${componentName}Props = {
-    /** Add props here */
-    content?: string;
+    /** The contents of the ${componentName}. */
+    children?: string;
 };
 
-export const ${componentName}: FC<${componentName}Props> = ({ content }) => (
-    <div>
-        <p className={styles.content}>{content || 'Replace this area with your component.'}</p>
+export const ${componentName}: FC<${componentName}Props> = ({ children }) => (
+    <div className={styles.content}>
+        <p>{children || 'Replace this area with your component.'}</p>
     </div>
 );
 `;
@@ -44,7 +44,9 @@ const indexCode = `export * from './${componentName}';
 `;
 
 const cssModuleCode = `.content {
-    color: red;
+    background-color: pink;
+    color: white;
+    height: 2rem;
 }
 `;
 
@@ -52,7 +54,7 @@ const storyCode = `import type { Meta, StoryObj } from '@storybook/react';
 import { ${componentName} } from './${componentName}';
 
 const meta: Meta<typeof ${componentName}> = {
-    title: '${componentName}',
+    title: 'Uncategorized/${componentName}',
     component: ${componentName},
     tags: ['autodocs'],
 };
@@ -62,13 +64,13 @@ type Story = StoryObj<typeof ${componentName}>;
 
 export const Default: Story = {
     args: {
-        content: 'Hello world! This is a new ${componentName} component.',
+        children: 'Hello world! This is a new ${componentName} component.',
     },
 };
 
 export const Secondary: Story = {
     args: {
-        content: 'Hello world! This is a secondary component.',
+        children: 'Hello world! This is a secondary component.',
     },
 };
 `;

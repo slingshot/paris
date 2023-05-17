@@ -12,12 +12,10 @@ type Story = StoryObj<typeof Button>;
 
 export const Default: Story = {
     args: {
-        children: 'Hello world! This is a new Button component.',
+        children: 'Button',
     },
 };
 
 export const Secondary: Story = {
-    args: {
-        content: 'Hello world! This is a secondary component.',
-    },
+    args: {},
 };
