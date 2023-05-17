@@ -1,0 +1,174 @@
+/*
+        This font software is the property of Commercial Type.
+
+        You may not modify the font software, use it on another website, or install it on a computer.
+
+        License information is available at http://commercialtype.com/eula
+        For more information please visit Commercial Type at http://commercialtype.com or email us at info[at]commercialtype.com
+
+        Copyright (C) 2022 Schwartzco Inc.
+        License: 2203-CJKSFW
+*/
+
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-BlackItalic.woff2') format('woff2'),
+    url('GraphikSS-BlackItalic.woff') format('woff');
+    font-weight: 900;
+    font-style: italic;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-Black.woff2') format('woff2'),
+    url('GraphikSS-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-BoldItalic.woff2') format('woff2'),
+    url('GraphikSS-BoldItalic.woff') format('woff');
+    font-weight: 800;
+    font-style: italic;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-Bold.woff2') format('woff2'),
+    url('GraphikSS-Bold.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-SemiboldItalic.woff2') format('woff2'),
+    url('GraphikSS-SemiboldItalic.woff') format('woff');
+    font-weight: 700;
+    font-style: italic;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-Semibold.woff2') format('woff2'),
+    url('GraphikSS-Semibold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-SemiboldItalic.woff2') format('woff2'),
+    url('GraphikSS-SemiboldItalic.woff') format('woff');
+    font-weight: 600;
+    font-style: italic;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-Semibold.woff2') format('woff2'),
+    url('GraphikSS-Semibold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-MediumItalic.woff2') format('woff2'),
+    url('GraphikSS-MediumItalic.woff') format('woff');
+    font-weight: 500;
+    font-style: italic;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-Medium.woff2') format('woff2'),
+    url('GraphikSS-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-RegularItalic.woff2') format('woff2'),
+    url('GraphikSS-RegularItalic.woff') format('woff');
+    font-weight: 400;
+    font-style: italic;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-Regular.woff2') format('woff2'),
+    url('GraphikSS-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-LightItalic.woff2') format('woff2'),
+    url('GraphikSS-LightItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-Light.woff2') format('woff2'),
+    url('GraphikSS-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-ExtralightItalic.woff2') format('woff2'),
+    url('GraphikSS-ExtralightItalic.woff') format('woff');
+    font-weight: 200;
+    font-style: italic;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-Extralight.woff2') format('woff2'),
+    url('GraphikSS-Extralight.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-ThinItalic.woff2') format('woff2'),
+    url('GraphikSS-ThinItalic.woff') format('woff');
+    font-weight: 100;
+    font-style: italic;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikSS-Thin.woff2') format('woff2'),
+    url('GraphikSS-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-stretch: normal;
+}

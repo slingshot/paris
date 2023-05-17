@@ -3,14 +3,14 @@ const fs = require('fs');
 const path = require('path');
 
 if (!process.argv[2]) {
-    console.error('❌  Please provide a component name, e.g. yarn run create:component Button');
+    console.error('❌  Please provide a component name, e.g. pnpm create:component Button');
     process.exit(1);
 }
 
 const componentNameInput = process.argv[2];
 
 if (!/[A-Za-z]+/.test(componentNameInput)) {
-    console.error('❌  Please provide a alphabet only component name in CamelCase, e.g. yarn run create:component Button');
+    console.error('❌  Please provide a alphabet only component name in CamelCase, e.g. pnpm create:component Button');
     process.exit(1);
 }
 
@@ -21,12 +21,12 @@ const baseDir = path.resolve(process.cwd());
 const componentDirectory = `${baseDir}/src/stories/${componentName.toLocaleLowerCase()}`;
 
 const componentFile = `${componentDirectory}/${componentName}.tsx`;
-const cssModuleFile = `${componentDirectory}/${componentName}.module.css`;
+const cssModuleFile = `${componentDirectory}/${componentName}.module.scss`;
 const storyFile = `${componentDirectory}/${componentName}.stories.ts`;
 const indexFile = `${componentDirectory}/index.ts`;
 
 const componentCode = `import type { FC } from 'react';
-import styles from './${componentName}.module.css';
+import styles from './${componentName}.module.scss';
 
 export type ${componentName}Props = {
     /** Add props here */

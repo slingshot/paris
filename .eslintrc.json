@@ -1,76 +1,9 @@
 {
   "root": true,
-  "parser": "@typescript-eslint/parser",
   "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:import/typescript",
-    "plugin:jsx-a11y/recommended",
-    "plugin:react-hooks/recommended",
-    "next/core-web-vitals",
-    "plugin:storybook/recommended",
-    "airbnb",
-    "airbnb-typescript"
+    "@ssh"
   ],
-  "env": {
-    "browser": true,
-    "commonjs": true,
-    "es6": true,
-    "node": true
-  },
   "parserOptions": {
-    "ecmaVersion": 2020,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    },
     "project": "./tsconfig.json"
-  },
-  "settings": {
-    "react": {
-      "version": "detect"
-    },
-    "import/extensions": [".js",".jsx",".ts",".tsx"],
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts",".tsx"]
-    },
-    "import/resolver": {
-      "node": {
-        "extensions": [".js",".jsx",".ts",".tsx"]
-      }
-    }
-  },
-  "plugins": [
-    "react",
-    "react-hooks",
-    "@typescript-eslint"
-  ],
-  "rules": {
-    "linebreak-style": "off",
-    "react/react-in-jsx-scope": "off",
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }],
-    "react/display-name": "off",
-    "react/require-default-props": "off",
-    "react/no-unescaped-entities": "off",
-    "indent": "off",
-    "@typescript-eslint/indent": ["error", 4],
-    "react/jsx-indent": ["error", 4],
-    "react/jsx-indent-props": ["error", 4],
-    "react/prop-types": 0,
-    "import/prefer-default-export": 0,
-    "max-len": "off",
-    "no-console": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-unused-vars": "off",
-    "jsx-a11y/anchor-is-valid": "off",
-    "@typescript-eslint/lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
-    "react/jsx-no-bind": "warn",
-    "react/function-component-definition": "off",
-    "function-paren-newline": "warn",
-    "react/jsx-no-useless-fragment": "off",
-    "react/jsx-props-no-spreading": "warn"
   }
 }

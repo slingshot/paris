@@ -1,8 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Entry point (will be generated postinstall instead)
-index.ts
-
 # dependencies
 /node_modules
 /.pnp
@@ -17,6 +14,7 @@ index.ts
 
 # production
 /build
+/storybook-static
 
 # misc
 .DS_Store
