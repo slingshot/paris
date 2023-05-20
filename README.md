@@ -6,6 +6,8 @@ Currently, Paris is provided as a set of *unbundled* `.tsx` components styled wi
 
 Paris 1.x styling is heavily inspired by Uber's [Base Web](https://baseweb.design), which we previously used in our production apps. We built Paris because to move away from Styletron and CSS-in-JS, since we're now largely working with React 18, RSC, and the Next.js `app` directory.
 
+<br />
+
 ## Getting started
 
 First, install Paris and SASS in your project:
@@ -19,6 +21,7 @@ npm i paris sass
 ```
 
 Map our types in your `.tsconfig.json` file (this is a temporary workaround that we'll fix soon):
+
 ```json
 {
     "paths": {
@@ -36,3 +39,5 @@ const App = () => (
     <Button>Click me</Button>
 );
 ```
+
+This should work out of the box with Next.js, since it has built-in support for TypeScript and SCSS modules. If you're using another framework or bundler, you may need to configure it for generic SCSS support.

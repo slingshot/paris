@@ -1,0 +1,53 @@
+import { Meta } from '@storybook/blocks';
+import { LightTheme, pget, pvar } from './theme';
+
+<Meta title="Tokens" />
+
+# Tokens
+
+Tokens are the smallest pieces of design language that can be used to build components. They are the building blocks of our design system—you can think of them as the basic variables of our design language.
+
+<br />
+
+## Colors
+
+<div
+    style={{
+        width: '100%',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+        gridTemplateRows: 'auto',
+        alignItems: 'center',
+        gap: '1rem',
+    }}
+>
+    {Object.entries(LightTheme.colors).map(([key, value]) => (
+        <div key={key} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <div
+                style={{
+                    width: '2rem',
+                    height: '2rem',
+                    backgroundColor: pvar(`colors.${key}`),
+                    borderColor: pvar(`colors.borderSelected`),
+                    borderWidth: '1px',
+                    borderStyle: 'solid',
+                    marginRight: '1rem',
+                }}
+            />
+            <div style={{ color: pvar('colors.contentPrimary') }}>
+                <span style={{ fontWeight: pvar('typography.boldFontWeight') }}>{key}</span>
+                <br />
+                <pre style={{ fontSize: '14px' }}>{pget(`colors.${key}`)}</pre>
+            </div>
+        </div>
+    ))}
+</div>
+
+<br />
+
+## Typography
+
+<div>
+    <pre style={{ color: pvar('colors.contentPrimary') }}>{JSON.stringify(LightTheme.typography, null, 4).replaceAll('"', '').replaceAll(',', '\n').replaceAll('{', '\n').replaceAll('}', '\n').replaceAll('\\', '')}</pre>
+</div>
+
