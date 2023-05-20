@@ -1,10 +1,14 @@
 {
-  "root": true,
-  "extends": [
-    "@ssh",
-    "plugin:storybook/recommended"
-  ],
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  }
+    "root": true,
+    "extends": [
+        "@ssh",
+        "plugin:storybook/recommended"
+    ],
+    "parserOptions": {
+        "project": "./tsconfig.json"
+    },
+    "ignorePatterns": [
+        "dist/",
+        "node_modules/"
+    ]
 }
