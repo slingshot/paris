@@ -11,6 +11,7 @@
         "build:storybook": "storybook build",
         "create:component": "node ./scripts/createComponent.js",
         "generate:entry": "node ./scripts/generateEntry.js",
+        "release": "pnpm changeset release",
         "prepare": "husky install"
     },
     "engines": {
