@@ -7,6 +7,7 @@ import { createElement } from 'react';
 import '../public/graphik/graphik.css';
 import '../public/fira/fira_code.css';
 import '../src/styles/globals.css';
+import { injectTheme, LightTheme, DarkTheme } from '../src/stories/theme';
 
 const preview: Preview = {
     parameters: {
@@ -26,8 +27,15 @@ const preview: Preview = {
                     theme: isDark ? Dark : Light,
                 };
 
+                injectTheme(!isDark ? LightTheme : DarkTheme);
+
                 return createElement(DocsContainer, props);
             },
+        },
+        options: {
+            storySort: {
+                order: ['Welcome', 'Tokens', 'Forms', 'Components', 'Typography'],
+            }
         },
         darkMode: {
             stylePreview: true,
