@@ -7,18 +7,15 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "preinstall": "npx --yes only-allow pnpm",
         "storybook": "storybook dev -p 6006",
         "build:storybook": "storybook build",
         "create:component": "node ./scripts/createComponent.js",
-        "generate:entry": "node ./scripts/generateEntry.js"
+        "generate:entry": "node ./scripts/generateEntry.js",
+        "prepare": "husky install"
     },
     "engines": {
-        "pnpm": "^8.x",
-        "yarn": "PLEASE USE PNPM",
-        "npm": "PLEASE USE PNPM"
+        "pnpm": "^8.x"
     },
-    "engineStrict": true,
     "exports": {
         "./*": "./src/stories/*"
     },
@@ -29,6 +26,8 @@
         "typescript": "^5.0 || ^4.9"
     },
     "devDependencies": {
+        "@changesets/cli": "^2.26.1",
+        "@ssh/csstypes": "^1.0.1",
         "@ssh/eslint-config": "^1.0.0",
         "@storybook/addon-essentials": "^7.0.12",
         "@storybook/addon-interactions": "^7.0.12",
@@ -44,16 +43,24 @@
         "@types/react-dom": "18.0.11",
         "@typescript-eslint/eslint-plugin": "^5.13.0",
         "@typescript-eslint/parser": "^5.0.0",
+        "csstype": "^3.1.2",
+        "esbuild-scss-modules-plugin": "^1.1.1",
         "eslint": "^8.2.0",
-        "eslint-config-next": "13.2.4",
+        "eslint-config-next": "13.4.2",
         "eslint-plugin-storybook": "^0.6.12",
-        "next": "^13.2.4",
+        "next": "^13.4.2",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "sass": "^1.62.1",
         "storybook": "^7.0.12",
         "storybook-dark-mode": "^3.0.0",
         "tsconfig-paths-webpack-plugin": "^4.0.1",
-        "typescript": "^5.0.2"
+        "tsup": "^6.7.0",
+        "type-fest": "^3.10.0",
+        "typescript": "^5.0.2",
+        "husky": "^8.0.0"
+    },
+    "dependencies": {
+        "pte": "^0.3.0"
     }
 }
