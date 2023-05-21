@@ -1,3 +1,5 @@
 html {
-    font-family: 'Graphik Web', sans-serif;
+    font-family: var(--pte-typography-fontFamily);
 }
+
+

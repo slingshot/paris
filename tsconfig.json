@@ -16,6 +16,12 @@
     "baseUrl": ".",
     "paths": {}
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+  "ts-node": {
+    "compilerOptions": {
+      "target": "esnext",
+      "module": "CommonJS",
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.d.ts", "**/*.js", "**/*.jsx"],
   "exclude": ["node_modules"]
 }

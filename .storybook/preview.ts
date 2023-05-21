@@ -7,6 +7,7 @@ import { createElement } from 'react';
 import '../public/graphik/graphik.css';
 import '../public/fira/fira_code.css';
 import '../src/styles/globals.css';
+import '../src/styles/tw-preflight.css';
 import { injectTheme, LightTheme, DarkTheme } from '../src/stories/theme';
 
 const preview: Preview = {
@@ -34,7 +35,7 @@ const preview: Preview = {
         },
         options: {
             storySort: {
-                order: ['Welcome', 'Tokens', 'Forms', 'Components', 'Typography'],
+                order: ['Welcome', 'Tokens', 'Content', 'Forms', 'Uncategorized'],
             }
         },
         darkMode: {

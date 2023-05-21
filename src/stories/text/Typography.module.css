@@ -1,0 +1,164 @@
+/* Auto-generated with `pnpm generate:text` on Sat May 20 2023 19:55:10 GMT-0700 (Pacific Daylight Time) */
+/* Do not edit manually; instead, edit the `generateTextClasses` function in `scripts/text.ts` and run `pnpm generate:text -c`. */
+
+.displayLarge {
+  font-size: var(--pte-typography-styles-displayLarge-fontSize);
+  font-style: var(--pte-typography-styles-displayLarge-fontStyle);
+  font-weight: var(--pte-typography-styles-displayLarge-fontWeight);
+  line-height: var(--pte-typography-styles-displayLarge-lineHeight);
+  letter-spacing: var(--pte-typography-styles-displayLarge-letterSpacing);
+  text-transform: var(--pte-typography-styles-displayLarge-textTransform);
+}
+
+.displayMedium {
+  font-size: var(--pte-typography-styles-displayMedium-fontSize);
+  font-style: var(--pte-typography-styles-displayMedium-fontStyle);
+  font-weight: var(--pte-typography-styles-displayMedium-fontWeight);
+  line-height: var(--pte-typography-styles-displayMedium-lineHeight);
+  letter-spacing: var(--pte-typography-styles-displayMedium-letterSpacing);
+  text-transform: var(--pte-typography-styles-displayMedium-textTransform);
+}
+
+.displaySmall {
+  font-size: var(--pte-typography-styles-displaySmall-fontSize);
+  font-style: var(--pte-typography-styles-displaySmall-fontStyle);
+  font-weight: var(--pte-typography-styles-displaySmall-fontWeight);
+  line-height: var(--pte-typography-styles-displaySmall-lineHeight);
+  letter-spacing: var(--pte-typography-styles-displaySmall-letterSpacing);
+  text-transform: var(--pte-typography-styles-displaySmall-textTransform);
+}
+
+.headingLarge {
+  font-size: var(--pte-typography-styles-headingLarge-fontSize);
+  font-style: var(--pte-typography-styles-headingLarge-fontStyle);
+  font-weight: var(--pte-typography-styles-headingLarge-fontWeight);
+  line-height: var(--pte-typography-styles-headingLarge-lineHeight);
+  letter-spacing: var(--pte-typography-styles-headingLarge-letterSpacing);
+  text-transform: var(--pte-typography-styles-headingLarge-textTransform);
+}
+
+.headingMedium {
+  font-size: var(--pte-typography-styles-headingMedium-fontSize);
+  font-style: var(--pte-typography-styles-headingMedium-fontStyle);
+  font-weight: var(--pte-typography-styles-headingMedium-fontWeight);
+  line-height: var(--pte-typography-styles-headingMedium-lineHeight);
+  letter-spacing: var(--pte-typography-styles-headingMedium-letterSpacing);
+  text-transform: var(--pte-typography-styles-headingMedium-textTransform);
+}
+
+.headingSmall {
+  font-size: var(--pte-typography-styles-headingSmall-fontSize);
+  font-style: var(--pte-typography-styles-headingSmall-fontStyle);
+  font-weight: var(--pte-typography-styles-headingSmall-fontWeight);
+  line-height: var(--pte-typography-styles-headingSmall-lineHeight);
+  letter-spacing: var(--pte-typography-styles-headingSmall-letterSpacing);
+  text-transform: var(--pte-typography-styles-headingSmall-textTransform);
+}
+
+.headingXSmall {
+  font-size: var(--pte-typography-styles-headingXSmall-fontSize);
+  font-style: var(--pte-typography-styles-headingXSmall-fontStyle);
+  font-weight: var(--pte-typography-styles-headingXSmall-fontWeight);
+  line-height: var(--pte-typography-styles-headingXSmall-lineHeight);
+  letter-spacing: var(--pte-typography-styles-headingXSmall-letterSpacing);
+  text-transform: var(--pte-typography-styles-headingXSmall-textTransform);
+}
+
+.headingXXSmall {
+  font-size: var(--pte-typography-styles-headingXXSmall-fontSize);
+  font-style: var(--pte-typography-styles-headingXXSmall-fontStyle);
+  font-weight: var(--pte-typography-styles-headingXXSmall-fontWeight);
+  line-height: var(--pte-typography-styles-headingXXSmall-lineHeight);
+  letter-spacing: var(--pte-typography-styles-headingXXSmall-letterSpacing);
+  text-transform: var(--pte-typography-styles-headingXXSmall-textTransform);
+}
+
+.labelXLarge {
+  font-size: var(--pte-typography-styles-labelXLarge-fontSize);
+  font-style: var(--pte-typography-styles-labelXLarge-fontStyle);
+  font-weight: var(--pte-typography-styles-labelXLarge-fontWeight);
+  line-height: var(--pte-typography-styles-labelXLarge-lineHeight);
+  letter-spacing: var(--pte-typography-styles-labelXLarge-letterSpacing);
+  text-transform: var(--pte-typography-styles-labelXLarge-textTransform);
+}
+
+.labelLarge {
+  font-size: var(--pte-typography-styles-labelLarge-fontSize);
+  font-style: var(--pte-typography-styles-labelLarge-fontStyle);
+  font-weight: var(--pte-typography-styles-labelLarge-fontWeight);
+  line-height: var(--pte-typography-styles-labelLarge-lineHeight);
+  letter-spacing: var(--pte-typography-styles-labelLarge-letterSpacing);
+  text-transform: var(--pte-typography-styles-labelLarge-textTransform);
+}
+
+.labelMedium {
+  font-size: var(--pte-typography-styles-labelMedium-fontSize);
+  font-style: var(--pte-typography-styles-labelMedium-fontStyle);
+  font-weight: var(--pte-typography-styles-labelMedium-fontWeight);
+  line-height: var(--pte-typography-styles-labelMedium-lineHeight);
+  letter-spacing: var(--pte-typography-styles-labelMedium-letterSpacing);
+  text-transform: var(--pte-typography-styles-labelMedium-textTransform);
+}
+
+.labelSmall {
+  font-size: var(--pte-typography-styles-labelSmall-fontSize);
+  font-style: var(--pte-typography-styles-labelSmall-fontStyle);
+  font-weight: var(--pte-typography-styles-labelSmall-fontWeight);
+  line-height: var(--pte-typography-styles-labelSmall-lineHeight);
+  letter-spacing: var(--pte-typography-styles-labelSmall-letterSpacing);
+  text-transform: var(--pte-typography-styles-labelSmall-textTransform);
+}
+
+.labelXSmall {
+  font-size: var(--pte-typography-styles-labelXSmall-fontSize);
+  font-style: var(--pte-typography-styles-labelXSmall-fontStyle);
+  font-weight: var(--pte-typography-styles-labelXSmall-fontWeight);
+  line-height: var(--pte-typography-styles-labelXSmall-lineHeight);
+  letter-spacing: var(--pte-typography-styles-labelXSmall-letterSpacing);
+  text-transform: var(--pte-typography-styles-labelXSmall-textTransform);
+}
+
+.paragraphLarge {
+  font-size: var(--pte-typography-styles-paragraphLarge-fontSize);
+  font-style: var(--pte-typography-styles-paragraphLarge-fontStyle);
+  font-weight: var(--pte-typography-styles-paragraphLarge-fontWeight);
+  line-height: var(--pte-typography-styles-paragraphLarge-lineHeight);
+  letter-spacing: var(--pte-typography-styles-paragraphLarge-letterSpacing);
+  text-transform: var(--pte-typography-styles-paragraphLarge-textTransform);
+}
+
+.paragraphMedium {
+  font-size: var(--pte-typography-styles-paragraphMedium-fontSize);
+  font-style: var(--pte-typography-styles-paragraphMedium-fontStyle);
+  font-weight: var(--pte-typography-styles-paragraphMedium-fontWeight);
+  line-height: var(--pte-typography-styles-paragraphMedium-lineHeight);
+  letter-spacing: var(--pte-typography-styles-paragraphMedium-letterSpacing);
+  text-transform: var(--pte-typography-styles-paragraphMedium-textTransform);
+}
+
+.paragraphSmall {
+  font-size: var(--pte-typography-styles-paragraphSmall-fontSize);
+  font-style: var(--pte-typography-styles-paragraphSmall-fontStyle);
+  font-weight: var(--pte-typography-styles-paragraphSmall-fontWeight);
+  line-height: var(--pte-typography-styles-paragraphSmall-lineHeight);
+  letter-spacing: var(--pte-typography-styles-paragraphSmall-letterSpacing);
+  text-transform: var(--pte-typography-styles-paragraphSmall-textTransform);
+}
+
+.paragraphXSmall {
+  font-size: var(--pte-typography-styles-paragraphXSmall-fontSize);
+  font-style: var(--pte-typography-styles-paragraphXSmall-fontStyle);
+  font-weight: var(--pte-typography-styles-paragraphXSmall-fontWeight);
+  line-height: var(--pte-typography-styles-paragraphXSmall-lineHeight);
+  letter-spacing: var(--pte-typography-styles-paragraphXSmall-letterSpacing);
+  text-transform: var(--pte-typography-styles-paragraphXSmall-textTransform);
+}
+
+.paragraphXXSmall {
+  font-size: var(--pte-typography-styles-paragraphXXSmall-fontSize);
+  font-style: var(--pte-typography-styles-paragraphXXSmall-fontStyle);
+  font-weight: var(--pte-typography-styles-paragraphXXSmall-fontWeight);
+  line-height: var(--pte-typography-styles-paragraphXXSmall-lineHeight);
+  letter-spacing: var(--pte-typography-styles-paragraphXXSmall-letterSpacing);
+  text-transform: var(--pte-typography-styles-paragraphXXSmall-textTransform);
+}

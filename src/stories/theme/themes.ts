@@ -1,6 +1,132 @@
 import { createTheme } from 'pte';
+import type { CSSColor, CSSLength } from '@ssh/csstypes';
+import type { Property } from 'csstype';
+import type { PartialDeep } from 'type-fest';
 import { Tokens as T } from './tokens';
-import type { Theme, FontClassDefinition } from './themes.d';
+import type { TokensT } from './tokens';
+
+export type FontDefinition = {
+    fontSize: CSSLength,
+    fontWeight: number | 'normal',
+    lineHeight: CSSLength,
+    fontStyle: 'normal' | 'italic',
+    letterSpacing: CSSLength | 'normal',
+    textTransform: Property.TextTransform,
+};
+
+export type FontClassDefinition = Omit<FontDefinition, 'fontSize' | 'lineHeight'>;
+
+export type Theme = {
+    tokens: TokensT,
+    colors: {
+        // Primary
+
+        black: CSSColor,
+        white: CSSColor,
+        accent: CSSColor,
+        negative: CSSColor,
+        warning: CSSColor,
+        positive: CSSColor,
+
+        // Content
+
+        contentPrimary: CSSColor,
+        contentSecondary: CSSColor,
+        contentTertiary: CSSColor,
+        contentDisabled: CSSColor,
+        contentAccent: CSSColor,
+        contentNegative: CSSColor,
+        contentWarning: CSSColor,
+        contentPositive: CSSColor,
+
+        // Content Inverse
+
+        contentInversePrimary: CSSColor,
+        contentInverseSecondary: CSSColor,
+        contentInverseTertiary: CSSColor,
+        contentInverseDisabled: CSSColor,
+
+        // Background
+
+        backgroundSidebar: CSSColor,
+        backgroundPrimary: CSSColor,
+        backgroundSecondary: CSSColor,
+        backgroundTertiary: CSSColor,
+        backgroundAccent: CSSColor,
+        backgroundNegative: CSSColor,
+        backgroundWarning: CSSColor,
+        backgroundPositive: CSSColor,
+
+        // Background Inverse
+
+        backgroundInverseSidebar: CSSColor,
+        backgroundInversePrimary: CSSColor,
+        backgroundInverseSecondary: CSSColor,
+        backgroundInverseTertiary: CSSColor,
+        backgroundInverseNegative: CSSColor,
+        backgroundInversePositive: CSSColor,
+
+        // Background Overlays
+
+        backgroundOverlayLight: CSSColor,
+        backgroundOverlayXLight: CSSColor,
+        backgroundOverlayGrey: CSSColor,
+        backgroundOverlayTeal: CSSColor,
+
+        // Border
+
+        borderOpaque: CSSColor,
+        borderSelected: CSSColor,
+        borderAccent: CSSColor,
+        borderNegative: CSSColor,
+        borderWarning: CSSColor,
+        borderPositive: CSSColor,
+
+        // Border Inverse
+
+        borderInverseOpaque: CSSColor,
+        borderInverseSelected: CSSColor,
+    },
+    typography: {
+        fontFamily: string,
+        boldFontWeight: number,
+        italicLetterSpacing: CSSLength,
+
+        styles: {
+            // Display
+
+            displayLarge: FontDefinition,
+            displayMedium: FontDefinition,
+            displaySmall: FontDefinition,
+
+            // Heading
+
+            headingLarge: FontDefinition,
+            headingMedium: FontDefinition,
+            headingSmall: FontDefinition,
+            headingXSmall: FontDefinition,
+            headingXXSmall: FontDefinition,
+
+            // Label
+
+            labelXLarge: FontDefinition,
+            labelLarge: FontDefinition,
+            labelMedium: FontDefinition,
+            labelSmall: FontDefinition,
+            labelXSmall: FontDefinition,
+
+            // Paragraph
+
+            paragraphLarge: FontDefinition,
+            paragraphMedium: FontDefinition,
+            paragraphSmall: FontDefinition,
+            paragraphXSmall: FontDefinition,
+            paragraphXXSmall: FontDefinition,
+        }
+    },
+};
+
+export type ThemeOverrides = PartialDeep<Theme>;
 
 export const DisplayFontClass: FontClassDefinition = {
     fontStyle: 'normal',
@@ -18,7 +144,7 @@ export const HeadingFontClass: FontClassDefinition = {
 
 export const LabelFontClass: FontClassDefinition = {
     fontStyle: 'normal',
-    letterSpacing: 'normal',
+    letterSpacing: '0.1em',
     fontWeight: 600,
     textTransform: 'uppercase',
 };
@@ -106,106 +232,108 @@ export const LightTheme: Theme = {
         boldFontWeight: 500,
         italicLetterSpacing: '-0.01em',
 
-        // Display
+        styles: {
+            // Display
 
-        displayLarge: {
-            ...DisplayFontClass,
-            fontSize: '72px',
-            lineHeight: '86px',
-        },
-        displayMedium: {
-            ...DisplayFontClass,
-            fontSize: '52px',
-            lineHeight: '62px',
-        },
-        displaySmall: {
-            ...DisplayFontClass,
-            fontSize: '34px',
-            lineHeight: '41px',
-        },
+            displayLarge: {
+                ...DisplayFontClass,
+                fontSize: '72px',
+                lineHeight: '86px',
+            },
+            displayMedium: {
+                ...DisplayFontClass,
+                fontSize: '52px',
+                lineHeight: '62px',
+            },
+            displaySmall: {
+                ...DisplayFontClass,
+                fontSize: '34px',
+                lineHeight: '41px',
+            },
 
-        // Heading
+            // Heading
 
-        headingLarge: {
-            ...HeadingFontClass,
-            fontSize: '32px',
-            lineHeight: '38px',
-        },
-        headingMedium: {
-            ...HeadingFontClass,
-            fontSize: '28px',
-            lineHeight: '34px',
-        },
-        headingSmall: {
-            ...HeadingFontClass,
-            fontSize: '24px',
-            lineHeight: '29px',
-        },
-        headingXSmall: {
-            ...HeadingFontClass,
-            fontSize: '20px',
-            lineHeight: '24px',
-        },
-        headingXXSmall: {
-            ...HeadingFontClass,
-            fontSize: '18px',
-            lineHeight: '22px',
-        },
+            headingLarge: {
+                ...HeadingFontClass,
+                fontSize: '32px',
+                lineHeight: '38px',
+            },
+            headingMedium: {
+                ...HeadingFontClass,
+                fontSize: '28px',
+                lineHeight: '34px',
+            },
+            headingSmall: {
+                ...HeadingFontClass,
+                fontSize: '24px',
+                lineHeight: '29px',
+            },
+            headingXSmall: {
+                ...HeadingFontClass,
+                fontSize: '20px',
+                lineHeight: '24px',
+            },
+            headingXXSmall: {
+                ...HeadingFontClass,
+                fontSize: '18px',
+                lineHeight: '22px',
+            },
 
-        // Label
+            // Label
 
-        labelXLarge: {
-            ...LabelFontClass,
-            fontSize: '18px',
-            lineHeight: '22px',
-        },
-        labelLarge: {
-            ...LabelFontClass,
-            fontSize: '16px',
-            lineHeight: '19px',
-        },
-        labelMedium: {
-            ...LabelFontClass,
-            fontSize: '14px',
-            lineHeight: '17px',
-        },
-        labelSmall: {
-            ...LabelFontClass,
-            fontSize: '12px',
-            lineHeight: '14px',
-        },
-        labelXSmall: {
-            ...LabelFontClass,
-            fontSize: '10px',
-            lineHeight: '12px',
-        },
+            labelXLarge: {
+                ...LabelFontClass,
+                fontSize: '18px',
+                lineHeight: '22px',
+            },
+            labelLarge: {
+                ...LabelFontClass,
+                fontSize: '16px',
+                lineHeight: '19px',
+            },
+            labelMedium: {
+                ...LabelFontClass,
+                fontSize: '14px',
+                lineHeight: '17px',
+            },
+            labelSmall: {
+                ...LabelFontClass,
+                fontSize: '12px',
+                lineHeight: '14px',
+            },
+            labelXSmall: {
+                ...LabelFontClass,
+                fontSize: '10px',
+                lineHeight: '12px',
+            },
 
-        // Paragraph
+            // Paragraph
 
-        paragraphLarge: {
-            ...ParagraphFontClass,
-            fontSize: '18px',
-            lineHeight: '150%',
-        },
-        paragraphMedium: {
-            ...ParagraphFontClass,
-            fontSize: '16px',
-            lineHeight: '150%',
-        },
-        paragraphSmall: {
-            ...ParagraphFontClass,
-            fontSize: '14px',
-            lineHeight: '150%',
-        },
-        paragraphXSmall: {
-            ...ParagraphFontClass,
-            fontSize: '12px',
-            lineHeight: '150%',
-        },
-        paragraphXXSmall: {
-            ...ParagraphFontClass,
-            fontSize: '10px',
-            lineHeight: '150%',
+            paragraphLarge: {
+                ...ParagraphFontClass,
+                fontSize: '18px',
+                lineHeight: '150%',
+            },
+            paragraphMedium: {
+                ...ParagraphFontClass,
+                fontSize: '16px',
+                lineHeight: '150%',
+            },
+            paragraphSmall: {
+                ...ParagraphFontClass,
+                fontSize: '14px',
+                lineHeight: '150%',
+            },
+            paragraphXSmall: {
+                ...ParagraphFontClass,
+                fontSize: '12px',
+                lineHeight: '150%',
+            },
+            paragraphXXSmall: {
+                ...ParagraphFontClass,
+                fontSize: '10px',
+                lineHeight: '150%',
+            },
         },
     },
 };
