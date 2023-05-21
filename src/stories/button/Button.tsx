@@ -1,7 +1,7 @@
 'use client';
 
 import type {
-    ButtonHTMLAttributes, FC, ReactNode,
+    ButtonHTMLAttributes, FC, MouseEventHandler, ReactNode,
 } from 'react';
 import styles from './Button.module.scss';
 import { Text } from '../text';
@@ -38,12 +38,16 @@ export type ButtonProps = {
      */
     disabled?: boolean;
     /**
+     * The interaction handler for the Button.
+     */
+    onClick?: MouseEventHandler<HTMLButtonElement>;
+    /**
      * The contents of the Button.
      *
      * This should be text. When Button shape is `circle` or `square`, the action description should still be passed here for screen readers.
      */
     children: string;
-} & Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'disabled'>;
+} & Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'disabled' | 'onClick'>;
 
 /**
  * A `Button` is used to trigger an action or event, such as submitting a form, opening a dialog, canceling an action, or performing a delete operation.
@@ -57,6 +61,7 @@ export const Button: FC<ButtonProps> = ({
     type,
     startEnhancer,
     endEnhancer,
+    onClick,
     children,
     ...props
 }) => (
@@ -64,6 +69,7 @@ export const Button: FC<ButtonProps> = ({
         className={`${props.className} ${styles[kind || 'primary']} ${styles[shape || 'pill']} ${styles[size || 'large']} ${styles.button}`}
         type={type || 'button'}
         aria-details={children}
+        onClick={onClick}
         {...props}
     >
         {!!startEnhancer && startEnhancer(size === 'large' ? 16 : 12)}

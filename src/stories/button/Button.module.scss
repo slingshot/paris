@@ -13,6 +13,7 @@
     transition: var(--pte-animations-interaction);
 
     &:hover {
+        cursor: default;
         background-color: var(--pte-colors-backgroundInverseTertiary);
     }
 
