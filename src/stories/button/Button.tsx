@@ -61,7 +61,7 @@ export const Button: FC<ButtonProps> = ({
     ...props
 }) => (
     <button
-        className={`${styles[kind || 'primary']} ${styles[shape || 'pill']} ${styles[size || 'large']} ${styles.button}`}
+        className={`${props.className} ${styles[kind || 'primary']} ${styles[shape || 'pill']} ${styles[size || 'large']} ${styles.button}`}
         type={type || 'button'}
         aria-details={children}
         {...props}
