@@ -11,6 +11,7 @@ const sharedConfig: Partial<ThemeVars> = {
     colorSecondary: '#FB46BE',
     fontBase: '"Graphik Web", sans-serif',
     fontCode: '"Fira Code VF", monospace',
+    inputBorderRadius: 0,
 };
 
 export const Light = create({

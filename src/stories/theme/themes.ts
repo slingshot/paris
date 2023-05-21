@@ -124,6 +124,20 @@ export type Theme = {
             paragraphXXSmall: FontDefinition,
         }
     },
+    borders: {
+        // Border Radius
+        radius: {
+            pill: CSSLength,
+            circle: CSSLength,
+            rectangle: CSSLength,
+            rounded: CSSLength,
+            roundedSmall: CSSLength,
+            roundedLarge: CSSLength,
+        },
+    },
+    animations: {
+        interaction: string,
+    }
 };
 
 export type ThemeOverrides = PartialDeep<Theme>;
@@ -335,6 +349,19 @@ export const LightTheme: Theme = {
                 lineHeight: '150%',
             },
         },
+    },
+    borders: {
+        radius: {
+            pill: '1000px',
+            circle: '100%',
+            rectangle: '0px',
+            rounded: '8px',
+            roundedSmall: '4px',
+            roundedLarge: '12px',
+        },
+    },
+    animations: {
+        interaction: '0.2s cubic-bezier(0.25, 1, 0.5, 1)',
     },
 };
 

@@ -27,6 +27,7 @@ export const decorators = [
 const preview: Preview = {
     parameters: {
         actions: { argTypesRegex: "^on[A-Z].*" },
+        backgrounds: { disable: true },
         controls: {
             matchers: {
                 color: /(background|color)$/i,
@@ -51,7 +52,13 @@ const preview: Preview = {
         },
         options: {
             storySort: {
-                order: ['Welcome', 'Tokens', 'Content', 'Forms', 'Uncategorized'],
+                order: [
+                    'Welcome',
+                    'Tokens',
+                    'Inputs',
+                    'Content',
+                    'Uncategorized'
+                ],
             }
         },
         darkMode: {

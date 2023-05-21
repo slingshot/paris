@@ -14,5 +14,9 @@
     "ignorePatterns": [
         "dist/",
         "node_modules/"
-    ]
+    ],
+    "rules": {
+        "react/button-has-type": "off",
+        "react/jsx-props-no-spreading": "off"
+    }
 }

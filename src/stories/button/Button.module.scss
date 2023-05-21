@@ -1,0 +1,127 @@
+// Main styles
+.button {
+    user-select: none;
+
+    border: 1px solid;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    transition: var(--pte-animations-interaction);
+
+    &:hover {
+        background-color: var(--pte-colors-backgroundInverseTertiary);
+    }
+
+    &:active {
+        opacity: 0.9;
+        transform: scale(0.98);
+    }
+
+    &[disabled] {
+        pointer-events: none;
+    }
+}
+
+
+/*
+ * KIND
+ */
+
+.primary {
+    color: var(--pte-colors-contentInversePrimary);
+    background-color: var(--pte-colors-backgroundInversePrimary);
+    border-color: var(--pte-colors-backgroundInversePrimary);
+
+    &:hover {
+        border-color: var(--pte-colors-backgroundInverseTertiary);
+    }
+
+    &[disabled] {
+        color: var(--pte-colors-contentDisabled);
+        background-color: var(--pte-colors-backgroundTertiary);
+        border-color: var(--pte-colors-backgroundTertiary);
+    }
+}
+
+.secondary {
+    color: var(--pte-colors-contentPrimary);
+    background-color: transparent;
+    border-color: var(--pte-colors-contentPrimary);
+
+    &[disabled] {
+        color: var(--pte-colors-contentDisabled);
+        border-color: var(--pte-colors-contentDisabled);
+    }
+}
+
+.tertiary {
+    color: var(--pte-colors-contentPrimary);
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.secondary, .tertiary {
+    &:hover {
+        background-color: var(--pte-colors-backgroundTertiary);
+    }
+
+    &[disabled] {
+        color: var(--pte-colors-contentDisabled);
+    }
+}
+
+
+/*
+ * SIZE
+ */
+
+.large {
+    height: 32px;
+    padding: 8px 15px;
+}
+
+.small {
+    height: 20px;
+    padding: 4px 15px;
+}
+
+
+/*
+ * SHAPE
+ */
+
+.pill {
+    border-radius: var(--pte-borders-radius-pill);
+}
+
+.circle {
+    border-radius: var(--pte-borders-radius-circle);
+}
+
+.rounded {
+    border-radius: var(--pte-borders-radius-rounded);
+
+    &.small {
+        border-radius: var(--pte-borders-radius-roundedSmall);
+    }
+}
+
+.square, .rectangle {
+    border-radius: var(--pte-borders-radius-rectangle);
+}
+
+.circle, .square {
+    &.large {
+        width: 32px;
+        padding: 8px;
+    }
+
+    &.small {
+        width: 20px;
+        padding: 4px;
+    }
+}

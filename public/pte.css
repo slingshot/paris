@@ -209,4 +209,11 @@
     --pte-typography-styles-paragraphXXSmall-textTransform: none;
     --pte-typography-styles-paragraphXXSmall-fontSize: 10px;
     --pte-typography-styles-paragraphXXSmall-lineHeight: 150%;
+    --pte-borders-radius-pill: 1000px;
+    --pte-borders-radius-circle: 100%;
+    --pte-borders-radius-rectangle: 0px;
+    --pte-borders-radius-rounded: 8px;
+    --pte-borders-radius-roundedSmall: 4px;
+    --pte-borders-radius-roundedLarge: 12px;
+    --pte-animations-interaction: 0.2s cubic-bezier(0.25, 1, 0.5, 1);
 }

@@ -52,7 +52,7 @@ export const generateTextStories = async () => {
             {
                 args: {
                     children: 'In an alleyway, drinking champagne',
-                    format: style,
+                    kind: style,
                 },
             } as StoryObj<typeof Text>,
         ]));

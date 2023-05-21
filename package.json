@@ -11,6 +11,7 @@
         "build:storybook": "storybook build",
         "create:component": "node ./scripts/createComponent.js",
         "generate:entry": "node ./scripts/generateEntry.js",
+        "generate:theme": "pte export ./src/stories/theme/themes.ts LightTheme -o ./public/pte.css",
         "generate:text": "ts-node --esm ./scripts/text.ts",
         "release": "pnpm changeset release",
         "prepare": "husky install"

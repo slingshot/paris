@@ -18,8 +18,6 @@ type Story = StoryObj<typeof Text>;
 export const Default: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'paragraphMedium',
-        as: 'span',
     },
 };
 
@@ -31,126 +29,126 @@ export const Default: Story = {
 export const DisplayLarge: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'displayLarge',
+        kind: 'displayLarge',
     },
 };
 
 export const DisplayMedium: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'displayMedium',
+        kind: 'displayMedium',
     },
 };
 
 export const DisplaySmall: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'displaySmall',
+        kind: 'displaySmall',
     },
 };
 
 export const HeadingLarge: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'headingLarge',
+        kind: 'headingLarge',
     },
 };
 
 export const HeadingMedium: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'headingMedium',
+        kind: 'headingMedium',
     },
 };
 
 export const HeadingSmall: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'headingSmall',
+        kind: 'headingSmall',
     },
 };
 
 export const HeadingXSmall: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'headingXSmall',
+        kind: 'headingXSmall',
     },
 };
 
 export const HeadingXXSmall: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'headingXXSmall',
+        kind: 'headingXXSmall',
     },
 };
 
 export const LabelXLarge: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'labelXLarge',
+        kind: 'labelXLarge',
     },
 };
 
 export const LabelLarge: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'labelLarge',
+        kind: 'labelLarge',
     },
 };
 
 export const LabelMedium: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'labelMedium',
+        kind: 'labelMedium',
     },
 };
 
 export const LabelSmall: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'labelSmall',
+        kind: 'labelSmall',
     },
 };
 
 export const LabelXSmall: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'labelXSmall',
+        kind: 'labelXSmall',
     },
 };
 
 export const ParagraphLarge: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'paragraphLarge',
+        kind: 'paragraphLarge',
     },
 };
 
 export const ParagraphMedium: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'paragraphMedium',
+        kind: 'paragraphMedium',
     },
 };
 
 export const ParagraphSmall: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'paragraphSmall',
+        kind: 'paragraphSmall',
     },
 };
 
 export const ParagraphXSmall: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'paragraphXSmall',
+        kind: 'paragraphXSmall',
     },
 };
 
 export const ParagraphXXSmall: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
-        format: 'paragraphXXSmall',
+        kind: 'paragraphXXSmall',
     },
 };
 
