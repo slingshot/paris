@@ -1,4 +1,5 @@
 import { create, ThemeVars } from '@storybook/theming';
+import { LightTheme, DarkTheme, pvar } from '../src/stories/theme';
 
 /**
  * Shared theme variables across light and dark themes.
@@ -16,12 +17,13 @@ export const Light = create({
     ...sharedConfig,
     base: 'light',
     brandImage: 'https://fast.slingshot.fm/sling/logo/paris-sb.png',
+    appBg: LightTheme.colors.backgroundPrimary,
 });
 
 export const Dark = create({
     ...sharedConfig,
     base: 'dark',
-    appBg: '#000',
-    appContentBg: '#141414',
     brandImage: 'https://fast.slingshot.fm/sling/logo/paris-sb-white.png',
+    appBg: DarkTheme.colors.backgroundPrimary,
+    appContentBg: DarkTheme.colors.backgroundPrimary,
 });

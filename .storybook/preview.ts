@@ -1,14 +1,28 @@
-import type { Preview } from "@storybook/react";
+import type {  Preview } from '@storybook/react';
 import { Dark, Light } from './themes';
 import { DocsContainer } from '@storybook/blocks';
 import { useDarkMode } from 'storybook-dark-mode';
-import { createElement } from 'react';
+import { createElement, useEffect } from 'react';
+import { injectTheme, LightTheme, DarkTheme } from '../src/stories/theme';
 
 import '../public/graphik/graphik.css';
 import '../public/fira/fira_code.css';
 import '../src/styles/globals.css';
 import '../src/styles/tw-preflight.css';
-import { injectTheme, LightTheme, DarkTheme } from '../src/stories/theme';
+
+const Wrapper = (props: any) => {
+    const isDark = useDarkMode();
+
+    useEffect(() => {
+        injectTheme(!isDark ? LightTheme : DarkTheme);
+    }, [isDark]);
+
+    return props.children;
+}
+
+export const decorators = [
+    (renderStory) => createElement(Wrapper, {}, renderStory()),
+];
 
 const preview: Preview = {
     parameters: {
@@ -28,7 +42,9 @@ const preview: Preview = {
                     theme: isDark ? Dark : Light,
                 };
 
-                injectTheme(!isDark ? LightTheme : DarkTheme);
+                useEffect(() => {
+                    injectTheme(!isDark ? LightTheme : DarkTheme);
+                }, [isDark]);
 
                 return createElement(DocsContainer, props);
             },

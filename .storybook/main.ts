@@ -19,6 +19,20 @@ const config: StorybookConfig = {
     staticDirs: [
         '../public'
     ],
+    previewHead: (head) => (
+        `${head}
+<style>
+    body {
+        color: var(--pte-colors-contentPrimary);
+        background-color: var(--pte-colors-backgroundPrimary);
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    }
+    
+    h2#stories {
+        letter-spacing: var(--pte-typography-styles-labelMedium-letterSpacing);
+    }
+</style>`
+    ),
     webpackFinal: async (config) => {
         config.resolve.plugins = [
             new TsconfigPathsPlugin()
