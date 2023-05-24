@@ -9,6 +9,11 @@
         "type": "git",
         "url": "https://github.com/slingshot/paris"
     },
+    "files": [
+        "src",
+        "README.md",
+        "CHANGELOG.md"
+    ],
     "keywords": [
         "react",
         "design system",
