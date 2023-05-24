@@ -1,5 +1,11 @@
 # paris
 
+## 0.2.2
+
+### Patch Changes
+
+- 0387f1d: Exclude unnecessary files from NPM package
+
 ## 0.2.1
 
 ### Patch Changes
