@@ -1,5 +1,11 @@
 # paris
 
+## 0.2.1
+
+### Patch Changes
+
+- 9d791a6: Add more metadata to `package.json`
+
 ## 0.2.0
 
 ### Minor Changes

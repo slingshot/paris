@@ -2,14 +2,24 @@
     "name": "paris",
     "author": "Sanil Chawla <sanil@slingshot.fm> (https://sanil.co)",
     "description": "Paris is Slingshot's React design system. It's a collection of reusable components, design tokens, and guidelines that help us build consistent, accessible, and performant user interfaces.",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "homepage": "https://paris.slingshot.fm",
     "license": "MIT",
     "repository": {
         "type": "git",
         "url": "https://github.com/slingshot/paris"
     },
-    "keywords": ["react", "design system", "rsc", "server components", "ui", "components", "typescript", "nextjs", "storybook"],
+    "keywords": [
+        "react",
+        "design system",
+        "rsc",
+        "server components",
+        "ui",
+        "components",
+        "typescript",
+        "nextjs",
+        "storybook"
+    ],
     "scripts": {
         "dev": "next dev",
         "build": "next build",
