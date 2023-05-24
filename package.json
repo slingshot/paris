@@ -13,7 +13,7 @@
         "generate:entry": "node ./scripts/generateEntry.js",
         "generate:theme": "pte export ./src/stories/theme/themes.ts LightTheme -o ./public/pte.css",
         "generate:text": "ts-node --esm ./scripts/text.ts",
-        "release": "pnpm changeset release",
+        "release": "pnpm changeset publish",
         "prepare": "husky install"
     },
     "engines": {
