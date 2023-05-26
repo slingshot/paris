@@ -10,17 +10,68 @@ Paris 1.x styling is heavily inspired by Uber's [Base Web](https://baseweb.desig
 
 ## Getting started
 
-First, install Paris and SASS in your project:
+First, install Paris in your project:
 
 ```bash
-pnpm i paris sass
+pnpm i paris
 # or
-yarn add paris sass
+yarn add paris
 # or
-npm i paris sass
+npm i paris
 ```
 
-Map our types in your `.tsconfig.json` file (this is a temporary workaround that we'll fix soon):
+You'll need to tell your bundler to transpile files from Paris. This is easy in Next.js 13.1+ with the `transpilePackages` option in `next.config.js`:
+
+```js
+// next.config.js
+module.exports = {
+    // ...
+    transpilePackages: ['paris'],
+};
+```
+
+For older versions of Next.js, you can use a plugin like [next-transpile-modules](https://www.npmjs.com/package/next-transpile-modules). Instructions for other bundlers are coming soon.
+
+You'll need to configure your bundler to support SCSS modules. In Next.js, support for SCSS modules is built-in and can be enabled by simply installing `sass` as a dependency.
+
+Paris uses `pte` (our theming engine) for powering theming and initial styles through CSS variables. You can use `generateCSS` or `generateThemeInjection` from `paris/theme` to generate the CSS variables and inject them into your app through either a `style` or `script` tag in your document head respectively. Either method supports SSR and server components, since the initial theme is static.
+
+For example, with the Next.js 13 app directory, you can do this in your root `layout.tsx` file:
+
+```tsx
+// app/layout.tsx
+import { generateCSS, generateThemeInjection, theme } from 'paris/theme';
+
+export default function RootLayout({
+    children,
+}: {
+    children: React.ReactNode
+}) {
+    return (
+        <html lang="en">
+        <head>
+            {/* Using a `style` tag (MUST have the id `pte-vars` and be in the document head) */}
+            <style
+                id="pte-vars"
+                dangerouslySetInnerHTML={{
+                    __html: generateCSS(theme),
+                }}
+            />
+
+            {/* Or, use a `script` tag (can be located anywhere, should be loaded as early as possible to avoid an unstyled flash) */}
+            <script
+                dangerouslySetInnerHTML={{
+                    __html: generateThemeInjection(theme),
+                }}
+            />
+        </head>
+        <body className={inter.className}>{children}</body>
+        </html>
+    );
+}
+```
+
+Finally, map our types in your `.tsconfig.json` file (this is a temporary workaround that we'll fix soon):
 
 ```json
 {
