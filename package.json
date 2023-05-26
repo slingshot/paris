@@ -71,7 +71,6 @@
         "@typescript-eslint/parser": "^5.0.0",
         "change-case": "^4.1.2",
         "csstype": "^3.1.2",
-        "esbuild-scss-modules-plugin": "^1.1.1",
         "eslint": "^8.2.0",
         "eslint-config-next": "13.4.2",
         "eslint-plugin-css": "^0.8.0",
@@ -88,11 +87,11 @@
         "title-case": "^3.0.3",
         "ts-node": "^10.9.1",
         "tsconfig-paths-webpack-plugin": "^4.0.1",
-        "tsup": "^6.7.0",
         "type-fest": "^3.10.0",
         "typescript": "^5.0.2"
     },
     "dependencies": {
+        "clsx": "^1.2.1",
         "pte": "^0.4.7"
     }
 }

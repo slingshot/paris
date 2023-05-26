@@ -8,7 +8,7 @@ import { injectTheme, LightTheme, DarkTheme } from '../src/stories/theme';
 import '../public/graphik/graphik.css';
 import '../public/fira/fira_code.css';
 import '../src/styles/globals.css';
-import '../src/styles/tw-preflight.css';
+import '../src/stories/theme/tw-preflight.css';
 
 const Wrapper = (props: any) => {
     const isDark = useDarkMode();

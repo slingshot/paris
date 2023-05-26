@@ -3,6 +3,7 @@
 import type {
     ButtonHTMLAttributes, FC, MouseEventHandler, ReactNode,
 } from 'react';
+import clsx from 'clsx';
 import styles from './Button.module.scss';
 import { Text } from '../text';
 
@@ -66,11 +67,17 @@ export const Button: FC<ButtonProps> = ({
     ...props
 }) => (
     <button
-        className={`${props.className} ${styles[kind || 'primary']} ${styles[shape || 'pill']} ${styles[size || 'large']} ${styles.button}`}
+        {...props}
+        className={clsx(
+            props?.className,
+            styles[kind || 'primary'],
+            styles[shape || 'pill'],
+            styles[size || 'large'],
+            styles.button,
+        )}
         type={type || 'button'}
         aria-details={children}
         onClick={onClick}
-        {...props}
     >
         {!!startEnhancer && startEnhancer(size === 'large' ? 16 : 12)}
         <Text kind="labelXSmall">

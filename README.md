@@ -32,15 +32,20 @@ module.exports = {
 
 For older versions of Next.js, you can use a plugin like [next-transpile-modules](https://www.npmjs.com/package/next-transpile-modules). Instructions for other bundlers are coming soon.
 
-You'll need to configure your bundler to support SCSS modules. In Next.js, support for SCSS modules is built-in and can be enabled by simply installing `sass` as a dependency.
+You'll need to configure your bundler to support Sass/SCSS and SCSS modules. In Next.js, support for SCSS modules is built-in and can be enabled by simply installing `sass` as a dependency.
 
 Paris uses `pte` (our theming engine) for powering theming and initial styles through CSS variables. You can use `generateCSS` or `generateThemeInjection` from `paris/theme` to generate the CSS variables and inject them into your app through either a `style` or `script` tag in your document head respectively. Either method supports SSR and server components, since the initial theme is static.
 
-For example, with the Next.js 13 app directory, you can do this in your root `layout.tsx` file:
+Additionally, you need to import the static global styles from `paris/theme/global.scss`.
+
+For example, with the Next.js 13 app directory, you can do all of this in your root `layout.tsx` file:
 
 ```tsx
 // app/layout.tsx
 import { generateCSS, generateThemeInjection, theme } from 'paris/theme';
+
+// Import Paris's static global styling
+import 'paris/theme/global.scss';
 
 export default function RootLayout({
     children,
