@@ -26,10 +26,12 @@ const render: Story['render'] = (args) => {
 
 export const Default: Story = {
     args: {
+        label: 'Release type',
+        description: 'Select the type of release you want to create.',
         options: [
-            { id: '1', node: 'Option 1' },
-            { id: '2', node: 'Option 2' },
-            { id: '3', node: 'Option 3' },
+            { id: '1', node: 'Single' },
+            { id: '2', node: 'EP' },
+            { id: '3', node: 'Album (LP)' },
         ],
     },
     render,

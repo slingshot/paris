@@ -47,10 +47,10 @@
     gap: 8px;
 
     padding: 8px 16px;
-    margin: 0 -1px;
+    margin: -1px;
 
-    border-left: 1px solid var(--pte-borders-dropdown-color);
-    border-right: 1px solid var(--pte-borders-dropdown-color);
+    border: 1px solid var(--pte-borders-dropdown-color);
+    //border-right: 1px solid var(--pte-borders-dropdown-color);
 
     transition: var(--pte-animations-interaction);
 

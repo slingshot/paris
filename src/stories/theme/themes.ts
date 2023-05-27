@@ -452,4 +452,4 @@ export const {
     updateTheme,
     injectTheme,
     generateThemeInjection,
-} = createTheme(LightTheme);
+} = createTheme<Theme>(LightTheme);

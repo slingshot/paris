@@ -34,6 +34,7 @@ export const Success: Story = {
     args: {
         placeholder: 'billie@eilish.com',
         value: 'valid@email.com',
+        onChange: () => {},
         type: 'email',
         label: 'Email',
         description: 'Enter your email address.',
@@ -45,6 +46,7 @@ export const Error: Story = {
     args: {
         placeholder: 'billie@eilish.com',
         value: 'notavalid@email',
+        onChange: () => {},
         type: 'email',
         label: 'Email',
         description: 'Enter your email address.',

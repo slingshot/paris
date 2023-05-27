@@ -11,8 +11,8 @@ dependencies:
     specifier: ^1.2.1
     version: 1.2.1
   pte:
-    specifier: ^0.4.7
-    version: 0.4.7
+    specifier: ^0.4.9
+    version: 0.4.9
   ts-deepmerge:
     specifier: ^6.0.3
     version: 6.0.3
@@ -9873,8 +9873,8 @@ packages:
     resolution: {integrity: sha512-b/YwNhb8lk1Zz2+bXXpS/LK9OisiZZ1SNsSLxN1x2OXVEhW2Ckr/7mWE5vrC1ZTiJlD9g19jWszTmJsB+oEpFQ==}
     dev: true
 
-  /pte@0.4.7:
-    resolution: {integrity: sha512-00Ddmj2pS1F/LlP0oyEfra+HYY387Wsm1B5bQbOuSKlJw8+C6E89+3+F0tNV+HN8EvY6Jinz+Hco+T99FUKUdg==}
+  /pte@0.4.9:
+    resolution: {integrity: sha512-dpxIU8SX8XC1//NAYoUH5UHNb6th39uocbUfnNczXSkYIfJR0U/75kjODPofSTceTjBPPQNmDasWJskld9+g7w==}
     engines: {node: '>=16'}
     hasBin: true
     dev: false
