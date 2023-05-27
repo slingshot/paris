@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { createElement } from 'react';
 import { Field } from './Field';
 
 const meta: Meta<typeof Field> = {
-    title: 'Uncategorized/Field',
+    title: 'Inputs/Field',
     component: Field,
     tags: ['autodocs'],
 };
@@ -12,12 +13,20 @@ type Story = StoryObj<typeof Field>;
 
 export const Default: Story = {
     args: {
-        children: 'Hello world! This is a new Field component.',
-    },
-};
-
-export const Secondary: Story = {
-    args: {
-        children: 'Hello world! This is a secondary component.',
+        label: 'Label',
+        description: 'Description.',
+        children: createElement('div', {
+            style: {
+                backgroundColor: 'var(--pte-colors-backgroundSecondary)',
+                height: '36px',
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                paddingLeft: '12px',
+                border: '1px solid pink',
+            },
+        }, 'Children are inserted here.'),
     },
 };
