@@ -1,5 +1,22 @@
 # paris
 
+## 0.3.0
+
+### Minor Changes
+
+- eef2375: `TextArea` component
+- 2f6cd01: `Input` component
+- eef2375: `Select` component
+
+### Patch Changes
+
+- b61e950: Use `clsx` for cleaner class names
+- b61e950: Add `global.scss` file and update docs to reflect global styles import
+- 16c9c3e: Update docs to specify transpile requirement
+- 2f6cd01: Memoized enhancers
+- 646fccf: Add `status` for `Input` for success/error styling
+- b61e950: Have `Text` use the theme fontFamily instead of inheriting
+
 ## 0.2.2
 
 ### Patch Changes
