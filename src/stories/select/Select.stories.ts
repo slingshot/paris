@@ -12,7 +12,7 @@ const meta: Meta<typeof Select> = {
 export default meta;
 type Story = StoryObj<typeof Select>;
 
-const render = (args) => {
+const render: Story['render'] = (args) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [selected, setSelected] = useState<string | null>(null);
     return createElement('div', {

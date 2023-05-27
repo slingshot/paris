@@ -2709,7 +2709,7 @@ packages:
       '@storybook/node-logger': 7.0.12
       '@storybook/preview-api': 7.0.12
       '@storybook/theming': 7.0.18(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/types': 7.0.12
+      '@storybook/types': 7.0.18
       css-loader: 6.7.3(webpack@5.83.0)
       less-loader: 11.1.0(less@4.1.3)(webpack@5.83.0)
       postcss-loader: 7.3.0(postcss@8.4.23)(webpack@5.83.0)
