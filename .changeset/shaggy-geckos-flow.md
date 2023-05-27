@@ -1,5 +1,0 @@
----
-"paris": patch
----
-
-Memoized enhancers
