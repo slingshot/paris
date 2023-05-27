@@ -30,6 +30,28 @@ export const Password: Story = {
     },
 };
 
+export const Success: Story = {
+    args: {
+        placeholder: 'billie@eilish.com',
+        value: 'valid@email.com',
+        type: 'email',
+        label: 'Email',
+        description: 'Enter your email address.',
+        status: 'success',
+    },
+};
+
+export const Error: Story = {
+    args: {
+        placeholder: 'billie@eilish.com',
+        value: 'notavalid@email',
+        type: 'email',
+        label: 'Email',
+        description: 'Enter your email address.',
+        status: 'error',
+    },
+};
+
 export const WithEnhancer: Story = {
     args: {
         placeholder: 'Billie Eilish',

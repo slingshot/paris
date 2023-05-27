@@ -21,6 +21,26 @@
 
     transition: var(--pte-animations-interaction);
 
+    &[data-status="error"] {
+        border-color: var(--pte-colors-borderNegative);
+        background-color: var(--pte-colors-backgroundNegative);
+        color: var(--pte-colors-contentNegative);
+
+        &:focus-within {
+            color: var(--pte-colors-contentPrimary);
+        }
+    }
+
+    &[data-status="success"] {
+        border-color: var(--pte-colors-borderPositive);
+        background-color: var(--pte-colors-backgroundPositive);
+        color: var(--pte-colors-contentPositive);
+
+        &:focus-within {
+            color: var(--pte-colors-contentPrimary);
+        }
+    }
+
     & > input {
         background-color: transparent;
         padding: 0;
@@ -28,30 +48,30 @@
         border: none;
         width: 100%;
         outline: none;
+
+        &::placeholder {
+            color: var(--pte-colors-contentTertiary);
+        }
+
+        &[type="color"]::-webkit-color-swatch {
+            border: 1px solid var(--pte-colors-borderSelected);
+            border-radius: var(--pte-borders-radius-circle);
+        }
+
+        &[type="color"]::-webkit-color-swatch-wrapper {
+            width: 16px;
+            height: 100%;
+        }
+
+        &[type="file"]::-webkit-file-upload-button {
+            display: none;
+        }
     }
 
     &:focus-within {
         outline: none;
         border: 1px solid var(--pte-colors-borderSelected);
         background-color: var(--pte-colors-backgroundTertiary);
-    }
-
-    & > input::placeholder {
-        color: var(--pte-colors-contentTertiary);
-    }
-
-    & > input[type="color"]::-webkit-color-swatch {
-        border: 1px solid var(--pte-colors-borderSelected);
-        border-radius: var(--pte-borders-radius-circle);
-    }
-
-    & > input[type="color"]::-webkit-color-swatch-wrapper {
-        width: 16px;
-        height: 100%;
-    }
-
-    & > input[type="file"]::-webkit-file-upload-button {
-        display: none;
     }
 }
 

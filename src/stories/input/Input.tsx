@@ -16,6 +16,11 @@ export type InputProps = {
      */
     label: string;
     /**
+     * The status of the input field.
+     * @default default
+     */
+    status?: 'default' | 'error' | 'success';
+    /**
      * The input type. All HTML5 input types are supported, but some may require additional props to be set for full accessibility or aesthetic.
      * @default text
      */
@@ -64,7 +69,7 @@ export type InputProps = {
  * > `overrides` available: `container`, `label`, `description`, `startEnhancerContainer`, `endEnhancerContainer`
  * @constructor
  */
-export const Input: FC<InputProps> = ({ ...props }) => {
+export const Input: FC<InputProps> = ({ status, ...props }) => {
     const inputID = useId();
     return (
         // Disable a11y rules because the container doesn't need to be focusable for screen readers; the input itself should receive focus instead.
@@ -97,7 +102,7 @@ export const Input: FC<InputProps> = ({ ...props }) => {
             >
                 {props.label}
             </Text>
-            <div className={styles.inputContainer}>
+            <div className={styles.inputContainer} data-status={status}>
                 {!!props.startEnhancer && (
                     <div {...props.overrides?.startEnhancerContainer} className={clsx(styles.enhancer, props.overrides?.startEnhancerContainer?.className)}>
                         {!!props.startEnhancer && (
