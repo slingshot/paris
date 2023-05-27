@@ -52,6 +52,16 @@ export const Error: Story = {
     },
 };
 
+export const Disabled: Story = {
+    args: {
+        placeholder: 'billie@eilish.com',
+        type: 'email',
+        label: 'Email',
+        description: 'Enter your email address.',
+        disabled: true,
+    },
+};
+
 export const WithEnhancer: Story = {
     args: {
         placeholder: 'Billie Eilish',

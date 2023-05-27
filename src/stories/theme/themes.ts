@@ -2,6 +2,7 @@ import { createTheme } from 'pte';
 import type { CSSColor, CSSLength } from '@ssh/csstypes';
 import type { Property } from 'csstype';
 import type { PartialDeep } from 'type-fest';
+import merge from 'ts-deepmerge';
 import { Tokens as T } from './tokens';
 import type { TokensT } from './tokens';
 
@@ -15,6 +16,20 @@ export type FontDefinition = {
 };
 
 export type FontClassDefinition = Omit<FontDefinition, 'fontSize' | 'lineHeight'>;
+
+export type ShadowDefinition = `${CSSLength} ${CSSLength} ${CSSLength} ${CSSColor}` | 'none';
+
+const Shadows = {
+    shallowBelow: '0px 4px 20px rgba(0, 0, 0, 0.2)',
+    deepBelow: '0px 8px 20px rgba(0, 0, 0, 0.2)',
+    shallowAbove: '0px -4px 20px rgba(0, 0, 0, 0.2)',
+    deepAbove: '0px -8px 20px rgba(0, 0, 0, 0.2)',
+    shallowPopup: '0px 0px 30px rgba(0, 0, 0, 0.2)',
+    deepPopup: '0px 0px 40px rgba(0, 0, 0, 0.2)',
+    subtlePopup: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+    shallowLeft: '-20px 0px 40px rgba(0, 0, 0, 0.1)',
+    shallowRight: '20px 0px 40px rgba(0, 0, 0, 0.1)',
+} as const;
 
 export type Theme = {
     tokens: TokensT,
@@ -125,6 +140,17 @@ export type Theme = {
             paragraphXXSmall: FontDefinition,
         }
     },
+    lighting: {
+        shallowBelow: ShadowDefinition,
+        deepBelow: ShadowDefinition,
+        shallowAbove: ShadowDefinition,
+        deepAbove: ShadowDefinition,
+        shallowPopup: ShadowDefinition,
+        deepPopup: ShadowDefinition,
+        subtlePopup: ShadowDefinition,
+        shallowLeft: ShadowDefinition,
+        shallowRight: ShadowDefinition,
+    },
     borders: {
         // Border Radius
         radius: {
@@ -135,6 +161,13 @@ export type Theme = {
             roundedSmall: CSSLength,
             roundedLarge: CSSLength,
         },
+
+        // Dropdowns (Select, Menu, Popovers, etc.)
+
+        dropdown: {
+            color: CSSColor,
+            shadow: ShadowDefinition,
+        }
     },
     animations: {
         interaction: string,
@@ -352,6 +385,9 @@ export const LightTheme: Theme = {
             },
         },
     },
+    lighting: {
+        ...Shadows,
+    },
     borders: {
         radius: {
             pill: '1000px',
@@ -361,17 +397,19 @@ export const LightTheme: Theme = {
             roundedSmall: '4px',
             roundedLarge: '12px',
         },
+
+        dropdown: {
+            shadow: Shadows.deepBelow,
+            color: 'transparent',
+        },
     },
     animations: {
         interaction: '200ms cubic-bezier(0.5, 1, 0.89, 1)',
     },
 };
 
-export const DarkTheme: Theme = {
-    ...LightTheme,
+export const DarkTheme: Theme = merge(LightTheme, {
     colors: {
-        ...LightTheme.colors,
-
         // Reverse all inverse colors
 
         contentPrimary: LightTheme.colors.contentInversePrimary,
@@ -399,7 +437,13 @@ export const DarkTheme: Theme = {
         borderInverseOpaque: LightTheme.colors.borderOpaque,
         borderInverseSelected: LightTheme.colors.borderSelected,
     },
-};
+    borders: {
+        dropdown: {
+            shadow: 'none',
+            color: T.colors.grey600,
+        },
+    },
+} as PartialDeep<Theme>) as Theme;
 
 export const {
     theme,

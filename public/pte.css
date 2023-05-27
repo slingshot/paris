@@ -210,11 +210,22 @@
     --pte-typography-styles-paragraphXXSmall-textTransform: none;
     --pte-typography-styles-paragraphXXSmall-fontSize: 10px;
     --pte-typography-styles-paragraphXXSmall-lineHeight: 150%;
+    --pte-lighting-shallowBelow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+    --pte-lighting-deepBelow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    --pte-lighting-shallowAbove: 0px -4px 20px rgba(0, 0, 0, 0.2);
+    --pte-lighting-deepAbove: 0px -8px 20px rgba(0, 0, 0, 0.2);
+    --pte-lighting-shallowPopup: 0px 0px 30px rgba(0, 0, 0, 0.2);
+    --pte-lighting-deepPopup: 0px 0px 40px rgba(0, 0, 0, 0.2);
+    --pte-lighting-subtlePopup: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    --pte-lighting-shallowLeft: -20px 0px 40px rgba(0, 0, 0, 0.1);
+    --pte-lighting-shallowRight: 20px 0px 40px rgba(0, 0, 0, 0.1);
     --pte-borders-radius-pill: 1000px;
     --pte-borders-radius-circle: 100%;
     --pte-borders-radius-rectangle: 0px;
     --pte-borders-radius-rounded: 8px;
     --pte-borders-radius-roundedSmall: 4px;
     --pte-borders-radius-roundedLarge: 12px;
+    --pte-borders-dropdown-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    --pte-borders-dropdown-color: #545454;
     --pte-animations-interaction: 200ms cubic-bezier(0.5, 1, 0.89, 1);
 }

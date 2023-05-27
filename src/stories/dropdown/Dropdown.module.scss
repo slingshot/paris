@@ -1,0 +1,23 @@
+.transition {
+    transition: var(--pte-animations-interaction);
+}
+
+.enterFrom {
+    opacity: 0;
+    transform: translateY(-8px);
+}
+
+.enterTo {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.leaveFrom {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.leaveTo {
+    opacity: 0;
+    transform: translateY(-8px);
+}

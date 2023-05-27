@@ -100,7 +100,9 @@
     },
     "dependencies": {
         "@ariakit/react": "^0.2.3",
+        "@headlessui/react": "^1.7.14",
         "clsx": "^1.2.1",
-        "pte": "^0.4.7"
+        "pte": "^0.4.7",
+        "ts-deepmerge": "^6.0.3"
     }
 }

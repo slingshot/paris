@@ -23,6 +23,19 @@ export type TextProps<T extends TextElement = 'span'> = {
 
 /**
  * A `Text` component is used to render text with one of our theme formats.
+ *
+ * <hr />
+ *
+ * To use the `Text` component, import it as follows:
+ *
+ * ```tsx
+ * import { Text } from 'paris/text';
+ *
+ * export const ExampleHeading: FC = () => (
+ *     <Text as="h1" format="headingLarge">Hello World!</Text>
+ * );
+ * ```
+ *
  * @example ```tsx
  * <Text as="h1" format="headingLarge">Hello World!</Text>
  * ```

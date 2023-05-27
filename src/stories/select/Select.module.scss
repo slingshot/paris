@@ -1,0 +1,65 @@
+.container {
+    position: relative;
+
+    & > * {
+        cursor: default;
+    }
+}
+
+.field {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--pte-colors-backgroundPrimary);
+
+    border-width: 1px;
+    border-style: solid;
+    border-radius: var(--pte-borders-radius-rectangle);
+    border-color: var(--pte-borders-dropdown-color);
+    box-shadow: var(--pte-borders-dropdown-shadow);
+
+    transition: var(--pte-animations-interaction);
+
+    &:focus-within {
+        outline: none;
+    }
+}
+
+.option {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+
+    padding: 8px 16px;
+
+    transition: var(--pte-animations-interaction);
+
+    &:hover, &[data-headlessui-state="active"] {
+        background-color: var(--pte-colors-backgroundSecondary);
+    }
+
+    &[data-selected=true] {
+        background-color: var(--pte-colors-backgroundTertiary);
+    }
+
+    &[data-disabled=true] {
+        color: var(--pte-colors-contentDisabled);
+        pointer-events: none;
+        cursor: default;
+    }
+}

@@ -2,10 +2,11 @@
     display: flex;
     flex-direction: row;
     gap: 12px;
+    min-height: 36px;
 
     background-color: var(--pte-colors-backgroundSecondary);
 
-    height: 36px;
+    //height: 36px;
     width: 100%;
     padding: calc(7.5px - var(--pte-typography-verticalMetricsAdjust)) 15px 7.5px;
 
@@ -16,10 +17,30 @@
     line-height: var(--pte-typography-styles-paragraphSmall-lineHeight);
     text-transform: var(--pte-typography-styles-paragraphSmall-textTransform);
 
-    border: 1px solid var(--pte-colors-backgroundSecondary);
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--pte-colors-backgroundSecondary);
     border-radius: var(--pte-borders-radius-rectangle);
 
     transition: var(--pte-animations-interaction);
+
+    &:focus-within {
+        outline: none;
+        border-color: var(--pte-colors-borderSelected);
+        background-color: var(--pte-colors-backgroundTertiary);
+    }
+
+    &[data-status="disabled"] {
+        border-color: var(--pte-colors-backgroundTertiary);
+        background-color: var(--pte-colors-backgroundTertiary);
+        color: var(--pte-colors-contentDisabled);
+        pointer-events: none;
+        cursor: default;
+
+        &:focus-within {
+            border-color: var(--pte-colors-backgroundTertiary) !important;
+        }
+    }
 
     &[data-status="error"] {
         border-color: var(--pte-colors-borderNegative);
@@ -41,16 +62,25 @@
         }
     }
 
-    & > input {
+    & > input, & > textarea {
+        width: 100%;
         background-color: transparent;
         padding: 0;
         margin: 0;
         border: none;
-        width: 100%;
         outline: none;
 
         &::placeholder {
             color: var(--pte-colors-contentTertiary);
+        }
+
+        &[aria-disabled=true] {
+            color: var(--pte-colors-contentDisabled);
+            cursor: default;
+
+            &::placeholder {
+                color: var(--pte-colors-contentDisabled);
+            }
         }
 
         &[type="color"]::-webkit-color-swatch {
@@ -66,12 +96,6 @@
         &[type="file"]::-webkit-file-upload-button {
             display: none;
         }
-    }
-
-    &:focus-within {
-        outline: none;
-        border: 1px solid var(--pte-colors-borderSelected);
-        background-color: var(--pte-colors-backgroundTertiary);
     }
 }
 

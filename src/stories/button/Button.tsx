@@ -62,6 +62,14 @@ export type ButtonProps = {
 /**
  * A `Button` is used to trigger an action or event, such as submitting a form, opening a dialog, canceling an action, or performing a delete operation.
  *
+ * <hr />
+ *
+ * To use the `Button` component, import it as follows:
+ *
+ * ```js
+ * import { Button } from 'paris/button';
+ * ```
+ *
  * @constructor
  */
 export const Button: FC<ButtonProps> = ({
