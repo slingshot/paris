@@ -9,6 +9,7 @@ import { Text } from '../text';
 import type { Enhancer } from '../../types/Enhancer';
 import { pget, theme } from '../theme';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
+import type { FieldProps } from '../field';
 import { Field } from '../field';
 
 export type InputProps = {
@@ -27,20 +28,6 @@ export type InputProps = {
      */
     type?: 'button' | 'checkbox' | 'color' | 'date' | 'datetime-local' | 'email' | 'file' | 'hidden' | 'image' | 'month' | 'number' | 'password' | 'radio' | 'range' | 'reset' | 'search' | 'submit' | 'tel' | 'text' | 'time' | 'url' | 'week';
     /**
-     * Visually hide the label (while keeping it accessible to screen readers).
-     * @default false
-     */
-    hideLabel?: boolean;
-    /**
-     * A description of the input field. Can be visually hidden using the `hideDescription` prop.
-     */
-    description?: string;
-    /**
-     * Visually hide the description while keeping it accessible to screen readers.
-     * @default false
-     */
-    hideDescription?: boolean;
-    /**
      * The placeholder for the input.
      */
     placeholder?: string;
@@ -53,10 +40,6 @@ export type InputProps = {
      */
     endEnhancer?: Enhancer;
     /**
-     * Disables the input, disallowing user interaction.
-     */
-    disabled?: boolean;
-    /**
      * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
      */
     overrides?: {
@@ -66,7 +49,7 @@ export type InputProps = {
         startEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
         endEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
     }
-};
+} & FieldProps;
 
 /**
  * An `Input` is used to collect user input, such as text, numbers, or dates.

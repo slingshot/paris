@@ -10,7 +10,7 @@ export type FieldProps = {
      */
     htmlFor?: string;
     /**
-     * A label for the field.
+     * A label for the field. Can be visually hidden using the `hideLabel` prop.
      */
     label?: string;
     /**
@@ -19,7 +19,7 @@ export type FieldProps = {
      */
     hideLabel?: boolean;
     /**
-     * A description of the input field. Can be visually hidden using the `hideDescription` prop.
+     * A description of the field. Can be visually hidden using the `hideDescription` prop.
      */
     description?: string;
     /**
@@ -28,7 +28,7 @@ export type FieldProps = {
      */
     hideDescription?: boolean;
     /**
-     * Disables the input, disallowing user interaction.
+     * Disables the field, disallowing user interaction.
      */
     disabled?: boolean;
     overrides?: {
