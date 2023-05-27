@@ -5,10 +5,14 @@ import { useDarkMode } from 'storybook-dark-mode';
 import { createElement, useEffect } from 'react';
 import { injectTheme, LightTheme, DarkTheme } from '../src/stories/theme';
 
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import '../public/graphik/graphik.css';
 import '../public/fira/fira_code.css';
 import '../src/styles/globals.css';
-import '../src/stories/theme/tw-preflight.css';
+import '../src/stories/theme/global.scss';
+import { config } from '@fortawesome/fontawesome-svg-core';
+
+config.autoAddCss = false;
 
 const Wrapper = (props: any) => {
     const isDark = useDarkMode();

@@ -13,8 +13,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-BlackItalic.woff2') format('woff2'),
-    url('GraphikSS-BlackItalic.woff') format('woff');
+    src: url('Graphik-BlackItalic.woff2') format('woff2'),
+    url('Graphik-BlackItalic.woff') format('woff');
     font-weight: 900;
     font-style: italic;
     font-stretch: normal;
@@ -22,8 +22,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-Black.woff2') format('woff2'),
-    url('GraphikSS-Black.woff') format('woff');
+    src: url('Graphik-Black.woff2') format('woff2'),
+    url('Graphik-Black.woff') format('woff');
     font-weight: 900;
     font-style: normal;
     font-stretch: normal;
@@ -31,8 +31,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-BoldItalic.woff2') format('woff2'),
-    url('GraphikSS-BoldItalic.woff') format('woff');
+    src: url('Graphik-BoldItalic.woff2') format('woff2'),
+    url('Graphik-BoldItalic.woff') format('woff');
     font-weight: 800;
     font-style: italic;
     font-stretch: normal;
@@ -40,8 +40,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-Bold.woff2') format('woff2'),
-    url('GraphikSS-Bold.woff') format('woff');
+    src: url('Graphik-Bold.woff2') format('woff2'),
+    url('Graphik-Bold.woff') format('woff');
     font-weight: 800;
     font-style: normal;
     font-stretch: normal;
@@ -49,8 +49,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-SemiboldItalic.woff2') format('woff2'),
-    url('GraphikSS-SemiboldItalic.woff') format('woff');
+    src: url('Graphik-SemiboldItalic.woff2') format('woff2'),
+    url('Graphik-SemiboldItalic.woff') format('woff');
     font-weight: 700;
     font-style: italic;
     font-stretch: normal;
@@ -58,8 +58,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-Semibold.woff2') format('woff2'),
-    url('GraphikSS-Semibold.woff') format('woff');
+    src: url('Graphik-Semibold.woff2') format('woff2'),
+    url('Graphik-Semibold.woff') format('woff');
     font-weight: 700;
     font-style: normal;
     font-stretch: normal;
@@ -67,8 +67,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-SemiboldItalic.woff2') format('woff2'),
-    url('GraphikSS-SemiboldItalic.woff') format('woff');
+    src: url('Graphik-SemiboldItalic.woff2') format('woff2'),
+    url('Graphik-SemiboldItalic.woff') format('woff');
     font-weight: 600;
     font-style: italic;
     font-stretch: normal;
@@ -76,8 +76,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-Semibold.woff2') format('woff2'),
-    url('GraphikSS-Semibold.woff') format('woff');
+    src: url('Graphik-Semibold.woff2') format('woff2'),
+    url('Graphik-Semibold.woff') format('woff');
     font-weight: 600;
     font-style: normal;
     font-stretch: normal;
@@ -85,8 +85,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-MediumItalic.woff2') format('woff2'),
-    url('GraphikSS-MediumItalic.woff') format('woff');
+    src: url('Graphik-MediumItalic.woff2') format('woff2'),
+    url('Graphik-MediumItalic.woff') format('woff');
     font-weight: 500;
     font-style: italic;
     font-stretch: normal;
@@ -94,8 +94,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-Medium.woff2') format('woff2'),
-    url('GraphikSS-Medium.woff') format('woff');
+    src: url('Graphik-Medium.woff2') format('woff2'),
+    url('Graphik-Medium.woff') format('woff');
     font-weight: 500;
     font-style: normal;
     font-stretch: normal;
@@ -103,8 +103,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-RegularItalic.woff2') format('woff2'),
-    url('GraphikSS-RegularItalic.woff') format('woff');
+    src: url('Graphik-RegularItalic.woff2') format('woff2'),
+    url('Graphik-RegularItalic.woff') format('woff');
     font-weight: 400;
     font-style: italic;
     font-stretch: normal;
@@ -112,8 +112,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-Regular.woff2') format('woff2'),
-    url('GraphikSS-Regular.woff') format('woff');
+    src: url('Graphik-Regular.woff2') format('woff2'),
+    url('Graphik-Regular.woff') format('woff');
     font-weight: 400;
     font-style: normal;
     font-stretch: normal;
@@ -121,8 +121,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-LightItalic.woff2') format('woff2'),
-    url('GraphikSS-LightItalic.woff') format('woff');
+    src: url('Graphik-LightItalic.woff2') format('woff2'),
+    url('Graphik-LightItalic.woff') format('woff');
     font-weight: 300;
     font-style: italic;
     font-stretch: normal;
@@ -130,8 +130,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-Light.woff2') format('woff2'),
-    url('GraphikSS-Light.woff') format('woff');
+    src: url('Graphik-Light.woff2') format('woff2'),
+    url('Graphik-Light.woff') format('woff');
     font-weight: 300;
     font-style: normal;
     font-stretch: normal;
@@ -139,8 +139,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-ExtralightItalic.woff2') format('woff2'),
-    url('GraphikSS-ExtralightItalic.woff') format('woff');
+    src: url('Graphik-ExtralightItalic.woff2') format('woff2'),
+    url('Graphik-ExtralightItalic.woff') format('woff');
     font-weight: 200;
     font-style: italic;
     font-stretch: normal;
@@ -148,8 +148,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-Extralight.woff2') format('woff2'),
-    url('GraphikSS-Extralight.woff') format('woff');
+    src: url('Graphik-Extralight.woff2') format('woff2'),
+    url('Graphik-Extralight.woff') format('woff');
     font-weight: 200;
     font-style: normal;
     font-stretch: normal;
@@ -157,8 +157,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-ThinItalic.woff2') format('woff2'),
-    url('GraphikSS-ThinItalic.woff') format('woff');
+    src: url('Graphik-ThinItalic.woff2') format('woff2'),
+    url('Graphik-ThinItalic.woff') format('woff');
     font-weight: 100;
     font-style: italic;
     font-stretch: normal;
@@ -166,8 +166,8 @@
 
 @font-face {
     font-family: 'Graphik Web';
-    src: url('GraphikSS-Thin.woff2') format('woff2'),
-    url('GraphikSS-Thin.woff') format('woff');
+    src: url('Graphik-Thin.woff2') format('woff2'),
+    url('Graphik-Thin.woff') format('woff');
     font-weight: 100;
     font-style: normal;
     font-stretch: normal;

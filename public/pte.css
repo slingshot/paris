@@ -101,6 +101,7 @@
     --pte-typography-fontFamily: "Graphik Web", -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
     --pte-typography-boldFontWeight: 500;
     --pte-typography-italicLetterSpacing: -0.01em;
+    --pte-typography-verticalMetricsAdjust: 1px;
     --pte-typography-styles-displayLarge-fontStyle: normal;
     --pte-typography-styles-displayLarge-letterSpacing: -0.01em;
     --pte-typography-styles-displayLarge-fontWeight: 600;
@@ -215,5 +216,5 @@
     --pte-borders-radius-rounded: 8px;
     --pte-borders-radius-roundedSmall: 4px;
     --pte-borders-radius-roundedLarge: 12px;
-    --pte-animations-interaction: 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+    --pte-animations-interaction: 200ms cubic-bezier(0.5, 1, 0.89, 1);
 }

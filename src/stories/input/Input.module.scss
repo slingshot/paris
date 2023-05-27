@@ -1,0 +1,90 @@
+.inputContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+
+    background-color: var(--pte-colors-backgroundSecondary);
+
+    height: 36px;
+    width: 100%;
+    padding: calc(7.5px - var(--pte-typography-verticalMetricsAdjust)) 15px 7.5px;
+
+    font-size: var(--pte-typography-styles-paragraphSmall-fontSize);
+    font-style: var(--pte-typography-styles-paragraphSmall-fontStyle);
+    font-weight: var(--pte-typography-styles-paragraphSmall-fontWeight);
+    letter-spacing: var(--pte-typography-styles-paragraphSmall-letterSpacing);
+    line-height: var(--pte-typography-styles-paragraphSmall-lineHeight);
+    text-transform: var(--pte-typography-styles-paragraphSmall-textTransform);
+
+    border: 1px solid var(--pte-colors-backgroundSecondary);
+    border-radius: var(--pte-borders-radius-rectangle);
+
+    transition: var(--pte-animations-interaction);
+
+    & > input {
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+        border: none;
+        width: 100%;
+        outline: none;
+    }
+
+    &:focus-within {
+        outline: none;
+        border: 1px solid var(--pte-colors-borderSelected);
+        background-color: var(--pte-colors-backgroundTertiary);
+    }
+
+    & > input::placeholder {
+        color: var(--pte-colors-contentTertiary);
+    }
+
+    & > input[type="color"]::-webkit-color-swatch {
+        border: 1px solid var(--pte-colors-borderSelected);
+        border-radius: var(--pte-borders-radius-circle);
+    }
+
+    & > input[type="color"]::-webkit-color-swatch-wrapper {
+        width: 16px;
+        height: 100%;
+    }
+
+    & > input[type="file"]::-webkit-file-upload-button {
+        display: none;
+    }
+}
+
+.enhancer {
+    color: var(--pte-colors-contentSecondary);
+    margin-block-start: -0.5px;
+    font-size: var(--pte-typography-styles-paragraphSmall-fontSize);
+    font-style: var(--pte-typography-styles-paragraphSmall-fontStyle);
+    font-weight: var(--pte-typography-styles-paragraphSmall-fontWeight);
+    letter-spacing: var(--pte-typography-styles-paragraphSmall-letterSpacing);
+    line-height: var(--pte-typography-styles-paragraphSmall-lineHeight);
+    text-transform: var(--pte-typography-styles-paragraphSmall-textTransform);
+}
+
+.container {
+    user-select: none;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+// Use double selector to ensure specificity is higher than the default styles
+.label.label {
+    color: var(--pte-colors-contentPrimary);
+    font-weight: var(--pte-typography-boldFontWeight);
+}
+
+// Use double selector to ensure specificity is higher than the default styles
+.description.description {
+    color: var(--pte-colors-contentTertiary);
+}
+
+.hidden {
+    display: none;
+}

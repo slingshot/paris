@@ -14,17 +14,21 @@
 
     transition: var(--pte-animations-interaction);
 
+    & > span {
+        margin-block-end: var(--pte-typography-verticalMetricsAdjust);
+    }
+
     &:hover {
         cursor: default;
         background-color: var(--pte-colors-backgroundInverseTertiary);
     }
 
-    &:active {
+    &[aria-disabled=false]:active {
         opacity: 0.9;
         transform: scale(0.98);
     }
 
-    &[disabled] {
+    &[aria-disabled=true] {
         pointer-events: none;
     }
 }
@@ -43,7 +47,7 @@
         border-color: var(--pte-colors-backgroundInverseTertiary);
     }
 
-    &[disabled] {
+    &[aria-disabled=true] {
         color: var(--pte-colors-contentDisabled);
         background-color: var(--pte-colors-backgroundTertiary);
         border-color: var(--pte-colors-backgroundTertiary);
@@ -55,7 +59,7 @@
     background-color: transparent;
     border-color: var(--pte-colors-contentPrimary);
 
-    &[disabled] {
+    &[aria-disabled=true] {
         color: var(--pte-colors-contentDisabled);
         border-color: var(--pte-colors-contentDisabled);
     }
@@ -72,7 +76,7 @@
         background-color: var(--pte-colors-backgroundTertiary);
     }
 
-    &[disabled] {
+    &[aria-disabled=true] {
         color: var(--pte-colors-contentDisabled);
     }
 }

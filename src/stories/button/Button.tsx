@@ -1,11 +1,20 @@
 'use client';
 
 import type {
-    ButtonHTMLAttributes, FC, MouseEventHandler, ReactNode,
+    FC, MouseEventHandler, ReactNode,
 } from 'react';
+import type { ButtonProps as AriaButtonProps } from '@ariakit/react';
+import { Button as AriaButton } from '@ariakit/react';
 import clsx from 'clsx';
 import styles from './Button.module.scss';
 import { Text } from '../text';
+import type { Enhancer } from '../../types/Enhancer';
+import { MemoizedEnhancer, renderEnhancer } from '../../helpers/renderEnhancer';
+
+const EnhancerSizes = {
+    large: 13,
+    small: 9,
+};
 
 export type ButtonProps = {
     /**
@@ -28,11 +37,11 @@ export type ButtonProps = {
      *
      * When Button shape is `circle` or `square`, this element will be the only visible content.
      */
-    startEnhancer?: (size: number) => ReactNode;
+    startEnhancer?: Enhancer;
     /**
      * An icon or other element to render after the Button's text. A `size` argument is passed that should be used to determine the width & height of the content displayed.
      */
-    endEnhancer?: (size: number) => ReactNode;
+    endEnhancer?: Enhancer;
     /**
      * Disables the Button, disallowing user interaction.
      * @default false
@@ -48,7 +57,7 @@ export type ButtonProps = {
      * This should be text. When Button shape is `circle` or `square`, the action description should still be passed here for screen readers.
      */
     children: string;
-} & Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'disabled' | 'onClick'>;
+} & Omit<AriaButtonProps, 'children' | 'disabled' | 'onClick'>;
 
 /**
  * A `Button` is used to trigger an action or event, such as submitting a form, opening a dialog, canceling an action, or performing a delete operation.
@@ -64,25 +73,38 @@ export const Button: FC<ButtonProps> = ({
     endEnhancer,
     onClick,
     children,
+    disabled,
     ...props
 }) => (
-    <button
+    <AriaButton
         {...props}
         className={clsx(
-            props?.className,
+            styles.button,
             styles[kind || 'primary'],
             styles[shape || 'pill'],
             styles[size || 'large'],
-            styles.button,
+            props?.className,
         )}
+        aria-disabled={disabled ?? false}
         type={type || 'button'}
         aria-details={children}
-        onClick={onClick}
+        onClick={!disabled ? onClick : () => {}}
+        disabled={false}
     >
-        {!!startEnhancer && startEnhancer(size === 'large' ? 16 : 12)}
+        {!!startEnhancer && (
+            <MemoizedEnhancer
+                enhancer={startEnhancer}
+                size={EnhancerSizes[size || 'large']}
+            />
+        )}
         <Text kind="labelXSmall">
             {children || 'Button'}
         </Text>
-        {!!endEnhancer && endEnhancer(size === 'large' ? 16 : 12)}
-    </button>
+        {!!endEnhancer && (
+            <MemoizedEnhancer
+                enhancer={endEnhancer}
+                size={EnhancerSizes[size || 'large']}
+            />
+        )}
+    </AriaButton>
 );

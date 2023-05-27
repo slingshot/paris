@@ -1,4 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { createElement } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Button } from './Button';
 
 const meta: Meta<typeof Button> = {
@@ -38,5 +41,19 @@ export const Tertiary: Story = {
     args: {
         children: 'Button',
         kind: 'tertiary',
+    },
+};
+
+/**
+ * Enhancers can be used to add icons at the start (left) or end (right) of a button.
+ */
+export const WithEnhancer: Story = {
+    args: {
+        children: 'Button',
+        kind: 'primary',
+        startEnhancer: ({ size }) => createElement(FontAwesomeIcon, {
+            icon: faPlus,
+            width: `${size}px`,
+        }),
     },
 };

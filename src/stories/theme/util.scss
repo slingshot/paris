@@ -1,4 +1,8 @@
-.flex-row {
+@mixin flex-row {
     display: flex;
     flex-direction: row;
+}
+
+.bold {
+    font-weight: var(--pte-typography-boldFontWeight);
 }

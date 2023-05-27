@@ -91,6 +91,7 @@ export type Theme = {
         fontFamily: string,
         boldFontWeight: number,
         italicLetterSpacing: CSSLength,
+        verticalMetricsAdjust: CSSLength;
 
         styles: {
             // Display
@@ -245,6 +246,7 @@ export const LightTheme: Theme = {
         fontFamily: '"Graphik Web", -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif',
         boldFontWeight: 500,
         italicLetterSpacing: '-0.01em',
+        verticalMetricsAdjust: '1px',
 
         styles: {
             // Display
@@ -361,7 +363,7 @@ export const LightTheme: Theme = {
         },
     },
     animations: {
-        interaction: '0.2s cubic-bezier(0.25, 1, 0.5, 1)',
+        interaction: '200ms cubic-bezier(0.5, 1, 0.89, 1)',
     },
 };
 
