@@ -111,7 +111,7 @@
 }
 
 .container {
-    user-select: none;
+    user-select: var(--pte-utils-defaultUserSelect);
     cursor: default;
     display: flex;
     flex-direction: column;

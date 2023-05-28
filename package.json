@@ -101,6 +101,7 @@
     "dependencies": {
         "@ariakit/react": "^0.2.3",
         "@headlessui/react": "^1.7.14",
+        "@radix-ui/react-checkbox": "^1.0.4",
         "clsx": "^1.2.1",
         "pte": "^0.4.9",
         "ts-deepmerge": "^6.0.3"

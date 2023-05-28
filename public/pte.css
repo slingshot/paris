@@ -54,6 +54,7 @@
     --pte-tokens-colors-gradientTeal: linear-gradient(95.14deg, #26EDED 0%, #14EFAC 100%);
     --pte-tokens-colors-gradientOrange: linear-gradient(95.14deg, #FF814A 0%, #FFA800 100%);
     --pte-tokens-colors-gradientPink: linear-gradient(90deg, #FF4BED 0%, #F7418D 100%);
+    --pte-utils-defaultUserSelect: none;
     --pte-colors-black: #060606;
     --pte-colors-white: #ffffff;
     --pte-colors-accent: #1deecd;
@@ -226,6 +227,6 @@
     --pte-borders-radius-roundedSmall: 4px;
     --pte-borders-radius-roundedLarge: 12px;
     --pte-borders-dropdown-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-    --pte-borders-dropdown-color: #545454;
+    --pte-borders-dropdown-color: transparent;
     --pte-animations-interaction: 200ms cubic-bezier(0.5, 1, 0.89, 1);
 }

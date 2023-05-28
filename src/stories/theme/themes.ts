@@ -33,6 +33,9 @@ const Shadows = {
 
 export type Theme = {
     tokens: TokensT,
+    utils: {
+        defaultUserSelect: Property.UserSelect,
+    }
     colors: {
         // Primary
 
@@ -206,6 +209,9 @@ export const ParagraphFontClass: FontClassDefinition = {
 
 export const LightTheme: Theme = {
     tokens: T,
+    utils: {
+        defaultUserSelect: 'none',
+    },
     colors: {
         // Primary
 

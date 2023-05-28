@@ -1,6 +1,6 @@
 .container {
     position: relative;
-    user-select: none;
+    user-select: var(--pte-utils-defaultUserSelect);
 
     & > * {
         cursor: default;

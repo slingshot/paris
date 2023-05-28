@@ -35,11 +35,11 @@ export type ${componentName}Props = {
 
 /**
 * A ${componentName} component.
-* 
+*
 * <hr />
-* 
+*
 * To use this component, import it as follows:
-* 
+*
 * \`\`\`js
 * import { ${componentName} } from 'paris/${componentName.toLocaleLowerCase()}';
 * \`\`\`

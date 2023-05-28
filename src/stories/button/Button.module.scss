@@ -2,7 +2,7 @@
  * Main styles
  */
 .button {
-    user-select: none;
+    user-select: var(--pte-utils-defaultUserSelect);
 
     border: 1px solid;
 
