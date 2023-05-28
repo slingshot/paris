@@ -31,6 +31,9 @@ const Shadows = {
     shallowRight: '20px 0px 40px rgba(0, 0, 0, 0.1)',
 } as const;
 
+export type CubicBezierTimingFunction = `cubic-bezier(${number}, ${number}, ${number}, ${number})`;
+export type Duration = `${number}ms` | `${number}s`;
+
 export type Theme = {
     tokens: TokensT,
     utils: {
@@ -174,6 +177,17 @@ export type Theme = {
     },
     animations: {
         interaction: string,
+        timing: {
+            easeOutQuad: CubicBezierTimingFunction,
+            easeInQuad: CubicBezierTimingFunction,
+        },
+        duration: {
+            rapid: Duration,
+            fast: Duration,
+            normal: Duration,
+            slow: Duration,
+            gradual: Duration,
+        },
     }
 };
 
@@ -411,6 +425,17 @@ export const LightTheme: Theme = {
     },
     animations: {
         interaction: '200ms cubic-bezier(0.5, 1, 0.89, 1)',
+        timing: {
+            easeOutQuad: 'cubic-bezier(0.5, 1, 0.89, 1)',
+            easeInQuad: 'cubic-bezier(0.11, 0, 0.5, 0)',
+        },
+        duration: {
+            rapid: '50ms',
+            fast: '100ms',
+            normal: '200ms',
+            slow: '400ms',
+            gradual: '600ms',
+        },
     },
 };
 
