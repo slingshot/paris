@@ -83,14 +83,14 @@ export type ComboboxProps<T extends Record<string, any>> = {
 } & Omit<InputProps, 'type' | 'overrides'>;
 
 /**
- * A Combobox component is used to render a `select` box.
+ * A Combobox component is used to render a searchable select.
  *
  * <hr />
  *
  * To use this component, import it as follows:
  *
  * ```js
- * import { Combobox } from 'paris/select';
+ * import { Combobox } from 'paris/combobox';
  * ```
  * @constructor
  */
