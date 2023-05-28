@@ -13,7 +13,8 @@ import { MemoizedEnhancer, renderEnhancer } from '../../helpers/renderEnhancer';
 
 const EnhancerSizes = {
     large: 13,
-    small: 9,
+    small: 11,
+    xs: 9,
 };
 
 export type ButtonProps = {
@@ -26,7 +27,7 @@ export type ButtonProps = {
      * The size of the Button.
      * @default large
      */
-    size?: 'large' | 'small';
+    size?: 'large' | 'small' | 'xs';
     /**
      * The shape of the Button.
      * @default pill
@@ -73,10 +74,10 @@ export type ButtonProps = {
  * @constructor
  */
 export const Button: FC<ButtonProps> = ({
-    kind,
-    size,
-    shape,
-    type,
+    kind = 'primary',
+    size = 'large',
+    shape = 'pill',
+    type = 'button',
     startEnhancer,
     endEnhancer,
     onClick,
@@ -88,13 +89,13 @@ export const Button: FC<ButtonProps> = ({
         {...props}
         className={clsx(
             styles.button,
-            styles[kind || 'primary'],
-            styles[shape || 'pill'],
-            styles[size || 'large'],
+            styles[kind],
+            styles[shape],
+            styles[size],
             props?.className,
         )}
         aria-disabled={disabled ?? false}
-        type={type || 'button'}
+        type={type}
         aria-details={children}
         onClick={!disabled ? onClick : () => {}}
         disabled={false}
@@ -102,16 +103,18 @@ export const Button: FC<ButtonProps> = ({
         {!!startEnhancer && (
             <MemoizedEnhancer
                 enhancer={startEnhancer}
-                size={EnhancerSizes[size || 'large']}
+                size={EnhancerSizes[size]}
             />
         )}
-        <Text kind="labelXSmall">
-            {children || 'Button'}
-        </Text>
+        {!['circle', 'square'].includes(shape) && (
+            <Text kind="labelXSmall">
+                {children || 'Button'}
+            </Text>
+        )}
         {!!endEnhancer && (
             <MemoizedEnhancer
                 enhancer={endEnhancer}
-                size={EnhancerSizes[size || 'large']}
+                size={EnhancerSizes[size]}
             />
         )}
     </AriaButton>

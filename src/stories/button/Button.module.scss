@@ -96,6 +96,11 @@
     padding: 4px 15px;
 }
 
+.xs {
+    height: 16px;
+    padding: 2px 8px;
+}
+
 
 /*
  * SHAPE
@@ -130,5 +135,10 @@
     &.small {
         width: 20px;
         padding: 4px;
+    }
+
+    &.xs {
+        width: 16px;
+        padding: 2px;
     }
 }

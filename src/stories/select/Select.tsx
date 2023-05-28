@@ -1,6 +1,6 @@
 'use client';
 
-import type { FC, ReactNode, ComponentPropsWithoutRef } from 'react';
+import type { ReactNode, ComponentPropsWithoutRef } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

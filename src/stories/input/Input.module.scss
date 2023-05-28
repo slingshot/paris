@@ -1,6 +1,7 @@
 .inputContainer {
     display: flex;
     flex-direction: row;
+    align-items: center;
     gap: 12px;
     min-height: 36px;
 
@@ -62,7 +63,7 @@
         }
     }
 
-    & > input, & > textarea {
+    & input, & textarea {
         width: 100%;
         background-color: transparent;
         padding: 0;
