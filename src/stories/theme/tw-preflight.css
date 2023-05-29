@@ -15,6 +15,8 @@
     border-width: 0; /* 2 */
     border-style: solid; /* 2 */
     border-color: var(--pte-colors-borderSelected); /* 2 */
+    
+    -webkit-tap-highlight-color: transparent;
 }
 
 /*

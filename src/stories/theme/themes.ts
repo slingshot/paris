@@ -31,8 +31,16 @@ const Shadows = {
     shallowRight: '20px 0px 40px rgba(0, 0, 0, 0.1)',
 } as const;
 
-export type CubicBezierTimingFunction = `cubic-bezier(${number}, ${number}, ${number}, ${number})`;
+export type TimingFunction = `cubic-bezier(${number}, ${number}, ${number}, ${number})` | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear';
 export type Duration = `${number}ms` | `${number}s`;
+
+const TimingFunctions: Omit<Theme['animations']['timing'], 'default'> = {
+    easeInOut: 'cubic-bezier(0.42, 0.0, 0.58, 1.0)',
+    easeOut: 'cubic-bezier(0.0, 0.0, 0.58, 1.0)',
+    easeIn: 'cubic-bezier(0.42, 0.0, 1.0, 1.0)',
+    easeOutQuad: 'cubic-bezier(0.5, 1, 0.89, 1)',
+    easeInQuad: 'cubic-bezier(0.11, 0, 0.5, 0)',
+};
 
 export type Theme = {
     tokens: TokensT,
@@ -92,6 +100,7 @@ export type Theme = {
         backgroundOverlayLight: CSSColor,
         backgroundOverlayXLight: CSSColor,
         backgroundOverlayGrey: CSSColor,
+        backgroundOverlayDark: CSSColor,
         backgroundOverlayTeal: CSSColor,
 
         // Border
@@ -166,6 +175,7 @@ export type Theme = {
             rounded: CSSLength,
             roundedSmall: CSSLength,
             roundedLarge: CSSLength,
+            roundedXL: CSSLength,
         },
 
         // Dropdowns (Select, Menu, Popovers, etc.)
@@ -173,18 +183,31 @@ export type Theme = {
         dropdown: {
             color: CSSColor,
             shadow: ShadowDefinition,
-        }
+        },
     },
+    surfaces: {
+        dialog: {
+            border: `${number}px ${string} ${CSSColor}`,
+            outline: `${number}px ${string} ${CSSColor}`,
+            background: CSSColor,
+            backdropFilter: string,
+        },
+    }
     animations: {
         interaction: string,
         timing: {
-            easeOutQuad: CubicBezierTimingFunction,
-            easeInQuad: CubicBezierTimingFunction,
+            easeInOut: TimingFunction,
+            easeOut: TimingFunction,
+            easeIn: TimingFunction,
+            easeOutQuad: TimingFunction,
+            easeInQuad: TimingFunction,
+            default: TimingFunction,
         },
         duration: {
             rapid: Duration,
             fast: Duration,
             normal: Duration,
+            relaxed: Duration,
             slow: Duration,
             gradual: Duration,
         },
@@ -279,6 +302,7 @@ export const LightTheme: Theme = {
         backgroundOverlayLight: 'rgba(255, 255, 255, 0.07)',
         backgroundOverlayXLight: 'rgba(255, 255, 255, 0.1)',
         backgroundOverlayGrey: 'rgba(175, 175, 175, 0.8)',
+        backgroundOverlayDark: 'rgba(0, 0, 0, 0.1)',
         backgroundOverlayTeal: 'rgba(29, 238, 205, 0.1)',
 
         // Border
@@ -416,6 +440,7 @@ export const LightTheme: Theme = {
             rounded: '8px',
             roundedSmall: '4px',
             roundedLarge: '12px',
+            roundedXL: '16px',
         },
 
         dropdown: {
@@ -423,16 +448,25 @@ export const LightTheme: Theme = {
             color: 'transparent',
         },
     },
+    surfaces: {
+        dialog: {
+            border: '8px solid rgba(0, 0, 0, 0.2)',
+            outline: '1px solid rgba(0, 0, 0, 0.25)',
+            background: 'rgba(255, 255, 255, 0.9)',
+            backdropFilter: 'blur(6px)',
+        },
+    },
     animations: {
         interaction: '200ms cubic-bezier(0.5, 1, 0.89, 1)',
         timing: {
-            easeOutQuad: 'cubic-bezier(0.5, 1, 0.89, 1)',
-            easeInQuad: 'cubic-bezier(0.11, 0, 0.5, 0)',
+            ...TimingFunctions,
+            default: TimingFunctions.easeOut,
         },
         duration: {
             rapid: '50ms',
             fast: '100ms',
             normal: '200ms',
+            relaxed: '300ms',
             slow: '400ms',
             gradual: '600ms',
         },
@@ -472,6 +506,14 @@ export const DarkTheme: Theme = merge(LightTheme, {
         dropdown: {
             shadow: 'none',
             color: T.colors.grey600,
+        },
+    },
+    surfaces: {
+        dialog: {
+            border: '8px solid rgba(255, 255, 255, 0.2)',
+            outline: '1px solid rgba(255, 255, 255, 0.25)',
+            background: 'rgba(0, 0, 0, 0.6)',
+            backdropFilter: 'blur(6px)',
         },
     },
 } as PartialDeep<Theme>) as Theme;

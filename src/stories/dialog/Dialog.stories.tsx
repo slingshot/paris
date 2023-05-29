@@ -16,6 +16,12 @@ type Story = StoryObj<typeof Dialog>;
 
 export const Default: Story = {
     args: {
+        title: 'Confirmation',
+        appearance: 'simple',
+        width: 'default',
+        height: 'content',
+        draggable: false,
+        isOpen: false,
         children: (
             <Text>
                 Are you sure? That's a lot of money.
@@ -24,12 +30,24 @@ export const Default: Story = {
     },
     render: (args) => {
         const [isOpen, setIsOpen] = useState(false);
+        // const [primary, bg] = [
+        //     pvar('colors.contentSecondary'),
+        //     pvar('colors.backgroundPrimary'),
+        // ];
         return (
             <>
                 <div
-                    style={{
-                        minHeight: '400px',
-                    }}
+                    style={{}}
+                    // Background texture that can be enabled to emphasize glassmorphism
+                    // Make sure to also uncomment the pvar array above
+                    // style={{
+                    //     width: '80vw',
+                    //     height: '80vh',
+                    //     backgroundColor: bg,
+                    //     opacity: '0.8',
+                    //     // eslint-disable-next-line css/no-shorthand-property-overrides
+                    //     background: `repeating-linear-gradient( -45deg, ${primary}, ${primary} 4px, transparent 4px, transparent 25px )`,
+                    // }}
                 >
                     <Button
                         onClick={() => setIsOpen(true)}
@@ -37,7 +55,13 @@ export const Default: Story = {
                         Pay now
                     </Button>
                 </div>
-                <Dialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
+                <Dialog
+                    {...args}
+                    isOpen={isOpen}
+                    onClose={() => {
+                        setIsOpen(false);
+                    }}
+                >
                     {args.children}
                 </Dialog>
             </>

@@ -1,0 +1,284 @@
+$translateInX: 30%;
+$translateInY: 100%;
+$translateOutX: 20%;
+$translateOutY: 60%;
+
+$panelMinMargin: 16px;
+$defaultSize: 360px;
+
+$panelPaddingX: 20px;
+$panelPaddingY: 24px;
+
+$duration: var(--pte-animations-duration-relaxed);
+$paginationDuration: var(--pte-animations-duration-normal);
+$panelAnimationDelay: var(--pte-animations-duration-fast);
+//$panelAnimationDelay: var(--pte-animations-duration-rapid);
+//$duration: var(--pte-animations-duration-normal);
+
+.root {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: 10;
+    user-select: var(--pte-utils-defaultUserSelect);
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background-color: var(--pte-colors-backgroundOverlayDark);
+    will-change: backdrop-filter, opacity;
+    backdrop-filter: blur(0);
+}
+
+.overlayContainer {
+    .enterFrom {
+        backdrop-filter: blur(0);
+    }
+    .enterTo {
+        backdrop-filter: blur(2px);
+    }
+    .leave {
+        transition-delay: $panelAnimationDelay;
+    }
+    .leaveFrom {
+        backdrop-filter: blur(2px);
+    }
+    .leaveTo {
+        backdrop-filter: blur(0);
+    }
+}
+
+.panelContainer {
+    position: fixed;
+
+    justify-self: flex-end;
+
+    z-index: 10;
+
+    .enter {
+        transition: $duration var(--pte-animations-timing-easeOut);
+        transition-delay: $panelAnimationDelay;
+        //transition-delay: 50ms;
+    }
+
+    .leave {
+        transition: $duration var(--pte-animations-timing-easeIn);
+    }
+
+    &.from-right {
+        right: 0;
+        padding-left: $panelMinMargin;
+
+        .enterFrom {
+            transform: translateX($translateInX);
+        }
+
+        .enterTo, .leaveFrom {
+            transform: translateX(0);
+        }
+
+        .leaveTo {
+            transform: translateX($translateOutX);
+        }
+    }
+
+    &.from-left {
+        left: 0;
+        padding-right: $panelMinMargin;
+
+        .enterFrom {
+            transform: translateX(-$translateInX);
+        }
+
+        .enterTo, .leaveFrom {
+            transform: translateX(0);
+        }
+
+        .leaveTo {
+            transform: translateX(-$translateOutX);
+
+        }
+    }
+
+
+    &.from-left, &.from-right {
+        height: 100vh;
+        top: 0;
+        bottom: 0;
+
+        &.size-default {
+            width: min(100vw, $defaultSize);
+        }
+
+        &.size-content {
+            width: auto;
+        }
+
+        &.size-full {
+            width: 100vw;
+        }
+    }
+
+    &.from-top {
+        top: 0;
+        padding-bottom: $panelMinMargin;
+
+        .enterFrom {
+            transform: translateY(-$translateInY);
+        }
+
+        .enterTo, .leaveFrom {
+            transform: translateY(0);
+        }
+
+        .leaveTo {
+            transform: translateY(-$translateOutY);
+        }
+    }
+
+    &.from-bottom {
+        bottom: 0;
+        padding: $panelMinMargin 0 0;
+
+        .enterFrom {
+            transform: translateY($translateInY);
+        }
+
+        .enterTo, .leaveFrom {
+            transform: translateY(0);
+        }
+
+        .leaveTo {
+            transform: translateY($translateOutY);
+        }
+    }
+
+    &.from-top, &.from-bottom {
+        width: 100vw;
+        left: 0;
+        right: 0;
+
+        &.size-default {
+            height: min(100vh, $defaultSize);
+        }
+
+        &.size-content {
+            height: auto;
+        }
+
+        &.size-full {
+            height: 100vh;
+        }
+    }
+}
+
+.panel {
+    position: relative;
+    height: 100%;
+    padding: $panelPaddingY $panelPaddingX;
+    background-color: var(--pte-colors-backgroundPrimary);
+    overflow: auto;
+    border: 1px solid transparent;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: $panelPaddingY;
+
+    &.enterFrom {
+        box-shadow: none;
+    }
+
+    &.enterTo, &.leaveFrom {
+        &.from-right {
+            border-left-color: var(--pte-borders-dropdown-color);
+            box-shadow: var(--pte-lighting-shallowLeft);
+        }
+
+        &.from-left {
+            border-right-color: var(--pte-borders-dropdown-color);
+            box-shadow: var(--pte-lighting-shallowRight);
+        }
+
+        &.from-top {
+            border-bottom-color: var(--pte-borders-dropdown-color);
+            box-shadow: var(--pte-lighting-shallowBottom);
+        }
+
+        &.from-bottom {
+            border-top-color: var(--pte-borders-dropdown-color);
+            box-shadow: var(--pte-lighting-shallowTop);
+        }
+    }
+
+    &.leaveTo {
+        box-shadow: none;
+    }
+}
+
+.closeButton {
+    position: absolute;
+    right: $panelPaddingX;
+    top: $panelPaddingY - 5px;
+}
+
+.paginationNav {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 16px;
+
+    .closeButton {
+        position: relative;
+        right: 0;
+        top: 0;
+    }
+
+    .navButton {
+        padding: 2px;
+    }
+}
+
+.paginationButtons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.enter {
+    transition: $duration var(--pte-animations-timing-easeOut);
+}
+
+.enterFrom, .enterFromOpacity {
+    opacity: 0;
+}
+
+.enterTo, .enterToOpacity {
+    opacity: 1;
+}
+
+.leave {
+    transition: $duration var(--pte-animations-timing-easeIn);
+}
+
+.leaveFrom, .leaveFromOpacity {
+    opacity: 1;
+}
+
+.leaveTo, .leaveToOpacity {
+    opacity: 0;
+}
+
+.paginationEnter {
+    transition: $paginationDuration var(--pte-animations-timing-easeInQuad);
+}
+
+.paginationLeave {
+    transition: $paginationDuration var(--pte-animations-timing-easeOutQuad);
+}
