@@ -17,15 +17,14 @@ import { TextWhenString } from '../utility/TextWhenString';
 import { Button } from '../button';
 import { pvar } from '../theme';
 import { RemoveFromDOM } from '../utility/RemoveFromDOM';
-import type { PaginationState } from '../../pagination';
+import type { PaginationState } from '../pagination';
 import {
     ChevronLeft, ChevronRight, Close, Icon,
 } from '../icon';
-import load = Simulate.load;
 
 export const DrawerSizePresets = ['content', 'default', 'full'] as const;
 
-export type DrawerProps<T extends string[] = string[]> = {
+export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
     /**
      * The dialog's open state.
      */
@@ -108,7 +107,7 @@ export type DrawerProps<T extends string[] = string[]> = {
 * ```
 * @constructor
 */
-export const Drawer = <T extends string[] = string[]>({
+export const Drawer = <T extends string[] | readonly string[] = string[]>({
     isOpen = false,
     onClose = () => {},
     title,

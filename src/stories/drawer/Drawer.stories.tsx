@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { memo, useState } from 'react';
 import { Drawer } from './Drawer';
 import { Button } from '../button';
-import { usePagination } from '../../pagination';
+import { usePagination } from '../pagination';
 
 const meta: Meta<typeof Drawer> = {
     title: 'Surfaces/Drawer',
@@ -47,7 +47,8 @@ export const Paginated: Story = {
     },
     render: (args) => {
         const [isOpen, setIsOpen] = useState(false);
-        const pagination = usePagination<['step1', 'step2', 'step3']>('step1');
+        const pages = ['step1', 'step2', 'step3'] as const;
+        const pagination = usePagination<typeof pages>('step1');
 
         return (
             <>

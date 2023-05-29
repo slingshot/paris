@@ -1,0 +1,73 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Surfaces/Pagination" />
+
+# Paginating Drawers
+
+Paris contains a mechanism for creating pagination within a single surface. This is useful for complex or multi-step processes that would otherwise require a lot of scrolling or complicate the UI.
+
+> This API currently supports `Drawer`, and will soon be expanded to support pagination of any surface.
+
+## Usage
+
+Paris provides a hook for pagination called `usePagination`. This hook functions as a router that allows you to control pagination state and navigate between pages.
+
+To enable pagination:
+
+1. Instantiate a pagination router using `usePagination`.
+2. Pass the pagination object to the Drawer using the `pagination` prop.
+3. Pass your pages as children to the Drawer. Each must have a key that is unique across all pages, which can then be passed to `pagination.open` to navigate to that page.
+
+The pagination object returned by `usePagination` has the following properties:
+
+- `open`: A function that takes a page key and navigates to that page.
+- `currentPage`: The key of the current page.
+- `history`: An array of page keys that are currently in the navigable history stack.
+- `back`: A function that navigates to the previous page.
+- `forward`: A function that navigates to the next page.
+- `canGoBack`: A boolean indicating whether the user can go back.
+- `canGoForward`: A boolean indicating whether the user can go forward.
+
+The hook creates a shared state object between your parent component and the drawer. This means that you can use the `pagination` object's methods to control the drawer from your parent component, or from pages passed to the drawer.
+
+## Example
+
+```tsx
+import { Drawer } from 'paris/drawer';
+import { Button } from 'paris/button';
+import { usePagination } from 'paris/pagination';
+
+const MyComponent = () => {
+    const pages = ['page1', 'page2', 'page3'] as const;
+
+    const pagination = usePagination<typeof pages>('step1');
+
+    return (
+        <Drawer
+            title="User creation flow"
+            open={true}
+            onClose={() => {}}
+            // Pass the entire pagination object to the Drawer to enable pagination
+            pagination={pagination}
+        >
+            <div key={pages[0]}>
+                Page 1
+                <Button
+                    onClick={() => {
+                        // Navigate to the next page using `open`
+                        pagination.open('page2');
+                    }}
+                >
+                    Next Page
+                </Button>
+            </div>
+            <div key={pages[1]}>
+                Page 2
+            </div>
+            <div key={pages[2]}>
+                Page 3
+            </div>
+        </Drawer>
+    );
+};
+```

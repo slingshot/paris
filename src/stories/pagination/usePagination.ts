@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export type PaginationState<T extends string[] = string[]> = {
+export type PaginationState<T extends string[] | readonly string[] = string[]> = {
     /**
      * The current page key.
      */
@@ -49,7 +49,7 @@ export type PaginationState<T extends string[] = string[]> = {
  *
  * @param initialPage - The initial page key.
  */
-export const usePagination = <T extends string[] = string[]>(
+export const usePagination = <T extends string[] | readonly string[] = string[]>(
     initialPage: T[number],
 ): PaginationState<T> => {
     // The current page.
