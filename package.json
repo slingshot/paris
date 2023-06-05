@@ -51,17 +51,18 @@
         "@radix-ui/react-checkbox": "^1.0.4",
         "clsx": "^1.2.1",
         "pte": "^0.4.9",
+        "react-parallax-tilt": "^1.7.144",
         "ts-deepmerge": "^6.0.3"
     },
     "peerDependencies": {
-        "react": "^18.x || ^17.x",
-        "react-dom": "^18.x || ^17.x",
-        "sass": "^1.x",
-        "typescript": "^5.0 || ^4.9",
         "@fortawesome/fontawesome-svg-core": "^6.4.0",
         "@fortawesome/free-regular-svg-icons": "^6.4.0",
         "@fortawesome/free-solid-svg-icons": "^6.4.0",
-        "@fortawesome/react-fontawesome": "^0.2.0"
+        "@fortawesome/react-fontawesome": "^0.2.0",
+        "react": "^18.x || ^17.x",
+        "react-dom": "^18.x || ^17.x",
+        "sass": "^1.x",
+        "typescript": "^5.0 || ^4.9"
     },
     "devDependencies": {
         "@changesets/cli": "^2.26.1",

@@ -1,0 +1,14 @@
+.container {
+    border: 1px solid var(--pte-borders-dropdown-color);
+    border-radius: var(--pte-borders-radius-rounded);
+    box-shadow: var(--pte-lighting-subtlePopup);
+
+    user-select: var(--pte-utils-defaultUserSelect);
+    width: max-content;
+    padding: 16px;
+
+    &.flat {
+        box-shadow: none;
+        border-color: var(--pte-colors-borderOpaque);
+    }
+}

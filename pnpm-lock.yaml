@@ -1,4 +1,8 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 dependencies:
   '@ariakit/react':
@@ -28,6 +32,9 @@ dependencies:
   pte:
     specifier: ^0.4.9
     version: 0.4.9
+  react-parallax-tilt:
+    specifier: ^1.7.144
+    version: 1.7.144(react-dom@18.2.0)(react@18.2.0)
   ts-deepmerge:
     specifier: ^6.0.3
     version: 6.0.3
@@ -10277,6 +10284,16 @@ packages:
   /react-is@18.1.0:
     resolution: {integrity: sha512-Fl7FuabXsJnV5Q1qIOQwx/sagGF18kogb4gpfcG4gjLBWO0WDiiz1ko/ExayuxE7InyQkBLkxRFG5oxY6Uu3Kg==}
     dev: true
+
+  /react-parallax-tilt@1.7.144(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-Yl/HNu886AoTl8zupD+Z+CPCiODnHy89tbhwDC3u5dM+fy+VSU4jGLl+oa58Fwzt9Z6CC7xc6izEBWTQIsCWxA==}
+    peerDependencies:
+      react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /react-refresh@0.11.0:
     resolution: {integrity: sha512-F27qZr8uUqwhWZboondsPx8tnC3Ct3SxZA3V5WyEvujRyyNv0VYPhoBg1gZ8/MV5tubQp76Trw8lTv9hzRBa+A==}

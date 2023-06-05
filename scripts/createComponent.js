@@ -34,17 +34,17 @@ export type ${componentName}Props = {
 };
 
 /**
-* A ${componentName} component.
-*
-* <hr />
-*
-* To use this component, import it as follows:
-*
-* \`\`\`js
-* import { ${componentName} } from 'paris/${componentName.toLocaleLowerCase()}';
-* \`\`\`
-* @constructor
-*/
+ * A ${componentName} component.
+ *
+ * <hr />
+ *
+ * To use this component, import it as follows:
+ *
+ * \`\`\`js
+ * import { ${componentName} } from 'paris/${componentName.toLocaleLowerCase()}';
+ * \`\`\`
+ * @constructor
+ */
 export const ${componentName}: FC<${componentName}Props> = ({ children }) => (
     <div className={styles.content}>
         <p>{children || 'Replace this area with your component.'}</p>
