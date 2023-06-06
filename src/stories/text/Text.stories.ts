@@ -184,4 +184,12 @@ export const ParagraphXSmallBold: Story = {
     },
 };
 
+export const ParagraphLargeItalic: Story = {
+    args: {
+        children: 'In an alleyway, drinking champagne',
+        kind: 'paragraphLarge',
+        style: 'italic',
+    },
+};
+
 // @auto-generated-end

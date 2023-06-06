@@ -46,3 +46,16 @@
 .weight-unset {
     font-weight: unset;
 }
+
+$font-styles: (
+    "normal": normal,
+    "italic": italic,
+    "oblique": oblique,
+);
+
+@each $style-name,
+$style-value in $font-styles {
+    .style-#{$style-name} {
+        font-style: $style-value;
+    }
+}

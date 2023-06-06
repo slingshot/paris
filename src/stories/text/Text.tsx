@@ -7,6 +7,8 @@ import type { LightTheme } from '../theme';
 
 export type TextElement = 'p' | 'span' | 'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label' | 'legend' | 'caption' | 'small';
 export type FontWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 'normal' | 'bold' | 'lighter' | 'bolder' | 'inherit' | 'initial' | 'revert' | 'revert-layer' | 'unset';
+export type FontStyle = 'normal' | 'italic' | 'oblique';
+
 export type TextProps<T extends TextElement = 'span'> = {
     /**
      * The font class to use.
@@ -25,6 +27,11 @@ export type TextProps<T extends TextElement = 'span'> = {
      */
     weight?: FontWeight;
 
+    /**
+     * The font style to apply.
+     */
+    style?: FontStyle;
+
     /** The contents of the Text element. */
     children: ReactNode;
 } & ComponentProps<T>;
@@ -40,7 +47,7 @@ export type TextProps<T extends TextElement = 'span'> = {
  * import { Text } from 'paris/text';
  *
  * export const ExampleHeading: FC = () => (
- *     <Text as="h1" kind="headingLarge" weight="bold">Hello World!</Text>
+ *     <Text as="h1" kind="headingLarge" weight="bold" style="italic">Hello World!</Text>
  * );
  * ```
  *
@@ -53,6 +60,7 @@ export function Text<T extends TextElement>({
     kind,
     as,
     weight,
+    style,
     children,
     ...props
 }: TextProps<T>): JSX.Element {
@@ -64,6 +72,7 @@ export function Text<T extends TextElement>({
                 styles.text,
                 typography[kind || 'paragraphMedium'],
                 weight && `weight-${weight}`,
+                style && `style-${style}`,
                 props?.className,
             ),
         },
