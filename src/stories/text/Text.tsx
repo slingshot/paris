@@ -32,12 +32,12 @@ export type TextProps<T extends TextElement = 'span'> = {
  * import { Text } from 'paris/text';
  *
  * export const ExampleHeading: FC = () => (
- *     <Text as="h1" format="headingLarge">Hello World!</Text>
+ *     <Text as="h1" kind="headingLarge">Hello World!</Text>
  * );
  * ```
  *
  * @example ```tsx
- * <Text as="h1" format="headingLarge">Hello World!</Text>
+ * <Text as="h1" kind="headingLarge">Hello World!</Text>
  * ```
  * @constructor
  */
