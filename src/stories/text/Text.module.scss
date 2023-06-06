@@ -17,11 +17,6 @@ $text-weights: (
     "bold": bold,
     "lighter": lighter,
     "bolder": bolder,
-    "inherit": inherit,
-    "initial": initial,
-    "revert": revert,
-    "revert-layer": revert-layer,
-    "unset": unset
 );
 
 @each $weight-name,
@@ -42,5 +37,26 @@ $font-styles: (
 $style-value in $font-styles {
     .fontStyle-#{$style-name} {
         font-style: $style-value;
+    }
+}
+
+/* Global values */
+$global-values: (
+    "inherit": inherit,
+    "initial": initial,
+    "revert": revert,
+    "revert-layer": revert-layer,
+    "unset": unset
+);
+
+/* Generate global value classes */
+@each $global-name,
+$global-value in $global-values {
+    .weight-#{$global-name} {
+        font-weight: $global-value;
+    }
+
+    .fontStyle-#{$global-name} {
+        font-style: $global-value;
     }
 }
