@@ -2,6 +2,7 @@
     font-family: var(--pte-typography-fontFamily);
 }
 
+/* Font weight numberic values */
 @for $i from 1 through 9 {
     $weight: $i * 100;
 
@@ -10,43 +11,27 @@
     }
 }
 
-/* Additional classes for keyword values */
-.weight-normal {
-    font-weight: normal;
+/* Font weight keyword values */
+$text-weights: (
+    "normal": normal,
+    "bold": bold,
+    "lighter": lighter,
+    "bolder": bolder,
+    "inherit": inherit,
+    "initial": initial,
+    "revert": revert,
+    "revert-layer": revert-layer,
+    "unset": unset
+);
+
+@each $weight-name,
+$weight-value in $text-weights {
+    .weight-#{$weight-name} {
+        font-weight: $weight-value;
+    }
 }
 
-.weight-bold {
-    font-weight: bold;
-}
-
-.weight-lighter {
-    font-weight: lighter;
-}
-
-.weight-bolder {
-    font-weight: bolder;
-}
-
-.weight-inherit {
-    font-weight: inherit;
-}
-
-.weight-initial {
-    font-weight: initial;
-}
-
-.weight-revert {
-    font-weight: revert;
-}
-
-.weight-revert-layer {
-    font-weight: revert-layer;
-}
-
-.weight-unset {
-    font-weight: unset;
-}
-
+/* Font style keyword values */
 $font-styles: (
     "normal": normal,
     "italic": italic,
