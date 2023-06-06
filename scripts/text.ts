@@ -62,6 +62,7 @@ export const generateTextStories = async () => {
         ['paragraphMediumBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphMedium', weight: 'bold' } }],
         ['paragraphSmallBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphSmall', weight: 'bold' } }],
         ['paragraphXSmallBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphXSmall', weight: 'bold' } }],
+        ['paragraphLargeItalic', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphLarge', style: 'italic' } }],
     ];
 
     const stories = [...typographyStories, ...styledStories];
