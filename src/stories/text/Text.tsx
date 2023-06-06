@@ -70,9 +70,9 @@ export function Text<T extends TextElement>({
             ...props,
             className: clsx(
                 styles.text,
+                weight && styles[`weight-${weight}`],
+                fontStyle && styles[`fontStyle-${fontStyle}`],
                 typography[kind || 'paragraphMedium'],
-                weight && `weight-${weight}`,
-                fontStyle && `fontStyle-${fontStyle}`,
                 props?.className,
             ),
         },
