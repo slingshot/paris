@@ -1,3 +1,48 @@
 .text {
     font-family: var(--pte-typography-fontFamily);
 }
+
+@for $i from 1 through 9 {
+    $weight: $i * 100;
+
+    .weight-#{$weight} {
+        font-weight: $weight;
+    }
+}
+
+/* Additional classes for keyword values */
+.weight-normal {
+    font-weight: normal;
+}
+
+.weight-bold {
+    font-weight: bold;
+}
+
+.weight-lighter {
+    font-weight: lighter;
+}
+
+.weight-bolder {
+    font-weight: bolder;
+}
+
+.weight-inherit {
+    font-weight: inherit;
+}
+
+.weight-initial {
+    font-weight: initial;
+}
+
+.weight-revert {
+    font-weight: revert;
+}
+
+.weight-revert-layer {
+    font-weight: revert-layer;
+}
+
+.weight-unset {
+    font-weight: unset;
+}

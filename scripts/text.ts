@@ -46,7 +46,7 @@ export const text = async () => {
  * Generates Storybook stories for each typography class.
  */
 export const generateTextStories = async () => {
-    const stories: Array<[string, StoryObj<typeof Text>]> = Object.keys(LightTheme.typography.styles)
+    const typographyStories: Array<[string, StoryObj<typeof Text>]> = Object.keys(LightTheme.typography.styles)
         .map((style) => ([
             style,
             {
@@ -56,6 +56,15 @@ export const generateTextStories = async () => {
                 },
             } as StoryObj<typeof Text>,
         ]));
+
+    const styledStories: Array<[string, StoryObj<typeof Text>]> = [
+        ['paragraphLargeBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphLarge', weight: 'bold' } }],
+        ['paragraphMediumBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphMedium', weight: 'bold' } }],
+        ['paragraphSmallBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphSmall', weight: 'bold' } }],
+        ['paragraphXSmallBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphXSmall', weight: 'bold' } }],
+    ];
+
+    const stories = [...typographyStories, ...styledStories];
 
     // Retrieve current stories
     const currentStories = await fs.readFile('src/stories/text/Text.stories.ts', 'utf-8');
