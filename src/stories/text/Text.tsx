@@ -1,8 +1,8 @@
 import type { ComponentProps, FC, ReactNode } from 'react';
 import { createElement } from 'react';
 import clsx from 'clsx';
-import styles from './Text.module.scss';
 import typography from './Typography.module.css';
+import styles from './Text.module.scss';
 import type { LightTheme } from '../theme';
 
 export type TextElement = 'p' | 'span' | 'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label' | 'legend' | 'caption' | 'small';
@@ -47,7 +47,7 @@ export type TextProps<T extends TextElement = 'span'> = {
  * import { Text } from 'paris/text';
  *
  * export const ExampleHeading: FC = () => (
- *     <Text as="h1" kind="headingLarge" weight="bold" style="italic">Hello World!</Text>
+ *     <Text as="h1" kind="headingLarge" weight="bold" fontStyle="italic">Hello World!</Text>
  * );
  * ```
  *
@@ -70,9 +70,9 @@ export function Text<T extends TextElement>({
             ...props,
             className: clsx(
                 styles.text,
+                typography[kind || 'paragraphMedium'],
                 weight && styles[`weight-${weight}`],
                 fontStyle && styles[`fontStyle-${fontStyle}`],
-                typography[kind || 'paragraphMedium'],
                 props?.className,
             ),
         },
