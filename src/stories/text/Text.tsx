@@ -30,7 +30,7 @@ export type TextProps<T extends TextElement = 'span'> = {
     /**
      * The font style to apply.
      */
-    style?: FontStyle;
+    fontStyle?: FontStyle;
 
     /** The contents of the Text element. */
     children: ReactNode;
@@ -60,7 +60,7 @@ export function Text<T extends TextElement>({
     kind,
     as,
     weight,
-    style,
+    fontStyle,
     children,
     ...props
 }: TextProps<T>): JSX.Element {
@@ -72,7 +72,7 @@ export function Text<T extends TextElement>({
                 styles.text,
                 typography[kind || 'paragraphMedium'],
                 weight && `weight-${weight}`,
-                style && `style-${style}`,
+                fontStyle && `fontStyle-${fontStyle}`,
                 props?.className,
             ),
         },

@@ -188,7 +188,7 @@ export const ParagraphLargeItalic: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
         kind: 'paragraphLarge',
-        style: 'italic',
+        fontStyle: 'italic',
     },
 };
 
