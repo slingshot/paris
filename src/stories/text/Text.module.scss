@@ -40,7 +40,7 @@ $font-styles: (
 
 @each $style-name,
 $style-value in $font-styles {
-    .style-#{$style-name} {
+    .fontStyle-#{$style-name} {
         font-style: $style-value;
     }
 }
