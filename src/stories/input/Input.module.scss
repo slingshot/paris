@@ -63,7 +63,8 @@
         }
     }
 
-    & input, & textarea {
+    & input,
+    & textarea {
         width: 100%;
         background-color: transparent;
         padding: 0;
@@ -122,7 +123,7 @@
 // Use double selector to ensure specificity is higher than the default styles
 .label.label {
     color: var(--pte-colors-contentPrimary);
-    font-weight: var(--pte-typography-boldFontWeight);
+    font-weight: var(--pte-typography-fontWeights-medium);
 }
 
 // Use double selector to ensure specificity is higher than the default styles

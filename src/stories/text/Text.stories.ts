@@ -152,4 +152,44 @@ export const ParagraphXXSmall: Story = {
     },
 };
 
+export const ParagraphLargeBold: Story = {
+    args: {
+        children: 'In an alleyway, drinking champagne',
+        kind: 'paragraphLarge',
+        weight: 'medium',
+    },
+};
+
+export const ParagraphMediumBold: Story = {
+    args: {
+        children: 'In an alleyway, drinking champagne',
+        kind: 'paragraphMedium',
+        weight: 'medium',
+    },
+};
+
+export const ParagraphSmallBold: Story = {
+    args: {
+        children: 'In an alleyway, drinking champagne',
+        kind: 'paragraphSmall',
+        weight: 'medium',
+    },
+};
+
+export const ParagraphXSmallBold: Story = {
+    args: {
+        children: 'In an alleyway, drinking champagne',
+        kind: 'paragraphXSmall',
+        weight: 'medium',
+    },
+};
+
+export const ParagraphLargeItalic: Story = {
+    args: {
+        children: 'In an alleyway, drinking champagne',
+        kind: 'paragraphLarge',
+        fontStyle: 'italic',
+    },
+};
+
 // @auto-generated-end

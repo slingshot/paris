@@ -1,22 +1,36 @@
 import type { ComponentProps, FC, ReactNode } from 'react';
 import { createElement } from 'react';
 import clsx from 'clsx';
-import styles from './Text.module.scss';
 import typography from './Typography.module.css';
-import type { LightTheme } from '../theme';
+import styles from './Text.module.scss';
+import type { LightTheme, Theme } from '../theme';
 
 export type TextElement = 'p' | 'span' | 'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label' | 'legend' | 'caption' | 'small';
+export type GlobalCSSValues = 'inherit' | 'initial' | 'revert' | 'revert-layer' | 'unset';
+
 export type TextProps<T extends TextElement = 'span'> = {
     /**
      * The font class to use.
      * @default paragraphMedium
      */
     kind?: keyof typeof LightTheme.typography.styles;
+
     /**
      * The HTML text tag to use.
      * @default span
      */
     as?: T;
+
+    /**
+     * The font weight to apply.
+     */
+    weight?: keyof typeof LightTheme.typography.fontWeights;
+
+    /**
+     * The font style to apply.
+     */
+    fontStyle?: keyof typeof LightTheme.typography.fontStyles;
+
     /** The contents of the Text element. */
     children: ReactNode;
 } & ComponentProps<T>;
@@ -32,18 +46,20 @@ export type TextProps<T extends TextElement = 'span'> = {
  * import { Text } from 'paris/text';
  *
  * export const ExampleHeading: FC = () => (
- *     <Text as="h1" format="headingLarge">Hello World!</Text>
+ *     <Text as="h1" kind="headingLarge" weight="bold" fontStyle="italic">Hello World!</Text>
  * );
  * ```
  *
  * @example ```tsx
- * <Text as="h1" format="headingLarge">Hello World!</Text>
+ * <Text as="h1" kind="headingLarge">Hello World!</Text>
  * ```
  * @constructor
  */
 export function Text<T extends TextElement>({
     kind,
     as,
+    weight,
+    fontStyle,
     children,
     ...props
 }: TextProps<T>): JSX.Element {
@@ -54,6 +70,8 @@ export function Text<T extends TextElement>({
             className: clsx(
                 styles.text,
                 typography[kind || 'paragraphMedium'],
+                weight && styles[`weight-${weight}`],
+                fontStyle && styles[`fontStyle-${fontStyle}`],
                 props?.className,
             ),
         },
