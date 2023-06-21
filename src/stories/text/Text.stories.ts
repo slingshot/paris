@@ -156,7 +156,7 @@ export const ParagraphLargeBold: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
         kind: 'paragraphLarge',
-        weight: 'bold',
+        weight: 'medium',
     },
 };
 
@@ -164,7 +164,7 @@ export const ParagraphMediumBold: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
         kind: 'paragraphMedium',
-        weight: 'bold',
+        weight: 'medium',
     },
 };
 
@@ -172,7 +172,7 @@ export const ParagraphSmallBold: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
         kind: 'paragraphSmall',
-        weight: 'bold',
+        weight: 'medium',
     },
 };
 
@@ -180,7 +180,7 @@ export const ParagraphXSmallBold: Story = {
     args: {
         children: 'In an alleyway, drinking champagne',
         kind: 'paragraphXSmall',
-        weight: 'bold',
+        weight: 'medium',
     },
 };
 
