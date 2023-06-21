@@ -104,6 +104,18 @@
     --pte-typography-boldFontWeight: 500;
     --pte-typography-italicLetterSpacing: -0.01em;
     --pte-typography-verticalMetricsAdjust: 1px;
+    --pte-typography-fontWeights-thin: 100;
+    --pte-typography-fontWeights-extraLight: 200;
+    --pte-typography-fontWeights-light: 300;
+    --pte-typography-fontWeights-normal: 400;
+    --pte-typography-fontWeights-medium: 500;
+    --pte-typography-fontWeights-semiBold: 600;
+    --pte-typography-fontWeights-bold: 700;
+    --pte-typography-fontWeights-extraBold: 800;
+    --pte-typography-fontWeights-black: 900;
+    --pte-typography-fontWeights-extraBlack: 950;
+    --pte-typography-fontStyles-italic: italic;
+    --pte-typography-fontStyles-normal: normal;
     --pte-typography-styles-displayLarge-fontStyle: normal;
     --pte-typography-styles-displayLarge-letterSpacing: -0.01em;
     --pte-typography-styles-displayLarge-fontWeight: 600;

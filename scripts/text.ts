@@ -58,10 +58,10 @@ export const generateTextStories = async () => {
         ]));
 
     const styledStories: Array<[string, StoryObj<typeof Text>]> = [
-        ['paragraphLargeBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphLarge', weight: 'bold' } }],
-        ['paragraphMediumBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphMedium', weight: 'bold' } }],
-        ['paragraphSmallBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphSmall', weight: 'bold' } }],
-        ['paragraphXSmallBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphXSmall', weight: 'bold' } }],
+        ['paragraphLargeBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphLarge', weight: 'medium' } }],
+        ['paragraphMediumBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphMedium', weight: 'medium' } }],
+        ['paragraphSmallBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphSmall', weight: 'medium' } }],
+        ['paragraphXSmallBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphXSmall', weight: 'medium' } }],
         ['paragraphLargeItalic', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphLarge', fontStyle: 'italic' } }],
     ];
 

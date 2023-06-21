@@ -3,12 +3,10 @@ import { createElement } from 'react';
 import clsx from 'clsx';
 import typography from './Typography.module.css';
 import styles from './Text.module.scss';
-import type { LightTheme } from '../theme';
+import type { LightTheme, Theme } from '../theme';
 
 export type TextElement = 'p' | 'span' | 'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label' | 'legend' | 'caption' | 'small';
 export type GlobalCSSValues = 'inherit' | 'initial' | 'revert' | 'revert-layer' | 'unset';
-export type FontWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 'normal' | 'bold' | 'lighter' | 'bolder' | GlobalCSSValues;
-export type FontStyle = 'normal' | 'italic' | 'oblique' | GlobalCSSValues;
 
 export type TextProps<T extends TextElement = 'span'> = {
     /**
@@ -26,12 +24,12 @@ export type TextProps<T extends TextElement = 'span'> = {
     /**
      * The font weight to apply.
      */
-    weight?: FontWeight;
+    weight?: keyof typeof LightTheme.typography.fontWeights;
 
     /**
      * The font style to apply.
      */
-    fontStyle?: FontStyle;
+    fontStyle?: keyof typeof LightTheme.typography.fontStyles;
 
     /** The contents of the Text element. */
     children: ReactNode;

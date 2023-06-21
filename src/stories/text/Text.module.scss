@@ -2,22 +2,20 @@
     font-family: var(--pte-typography-fontFamily);
 }
 
-/* Font weight numberic values */
-@for $i from 1 through 9 {
-    $weight: $i * 100;
-
-    .weight-#{$weight} {
-        font-weight: $weight;
-    }
-}
-
-/* Font weight keyword values */
+/* Font weight theme values */
 $text-weights: (
-    "normal": normal,
-    "bold": bold,
-    "lighter": lighter,
-    "bolder": bolder,
+    "thin": var(--pte-typography-fontWeights-thin),
+    "extraLight": var(--pte-typography-fontWeights-extraLight),
+    "light": var(--pte-typography-fontWeights-light),
+    "normal": var(--pte-typography-fontWeights-normal),
+    "medium": var(--pte-typography-fontWeights-medium),
+    "semiBold": var(--pte-typography-fontWeights-semiBold),
+    "bold": var(--pte-typography-fontWeights-bold),
+    "extraBold": var(--pte-typography-fontWeights-extraBold),
+    "black": var(--pte-typography-fontWeights-black),
+    "extraBlack": var(--pte-typography-fontWeights-extraBlack),
 );
+
 
 @each $weight-name,
 $weight-value in $text-weights {
@@ -26,37 +24,15 @@ $weight-value in $text-weights {
     }
 }
 
-/* Font style keyword values */
+/* Font style theme values */
 $font-styles: (
-    "normal": normal,
-    "italic": italic,
-    "oblique": oblique,
+    "normal": var(--pte-typography-fontStyles-normal),
+    "italic": var(--pte-typography-fontStyles-italic),
 );
 
 @each $style-name,
 $style-value in $font-styles {
     .fontStyle-#{$style-name} {
         font-style: $style-value;
-    }
-}
-
-/* Global values */
-$global-values: (
-    "inherit": inherit,
-    "initial": initial,
-    "revert": revert,
-    "revert-layer": revert-layer,
-    "unset": unset
-);
-
-/* Generate global value classes */
-@each $global-name,
-$global-value in $global-values {
-    .weight-#{$global-name} {
-        font-weight: $global-value;
-    }
-
-    .fontStyle-#{$global-name} {
-        font-style: $global-value;
     }
 }
