@@ -1,5 +1,11 @@
 # paris
 
+## 0.4.3
+
+### Patch Changes
+
+- 49f9ee4: Prop typing fixes
+
 ## 0.4.2
 
 ### Patch Changes
