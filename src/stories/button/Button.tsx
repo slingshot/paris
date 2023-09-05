@@ -65,7 +65,7 @@ export type ButtonProps = {
      *
      * This should be text. When Button shape is `circle` or `square`, the action description should still be passed here for screen readers.
      */
-    children: string;
+    children: ReactNode | ReactNode[];
 } & Omit<AriaButtonProps, 'children' | 'disabled' | 'onClick'>;
 
 /**
@@ -105,7 +105,7 @@ export const Button: FC<ButtonProps> = ({
         )}
         aria-disabled={disabled ?? false}
         type={type}
-        aria-details={children}
+        aria-details={typeof children === 'string' ? children : undefined}
         onClick={!disabled && !href ? onClick : () => {}}
         disabled={false}
         {...href ? {

@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import { useId } from 'react';
 import * as RadixCheckbox from '@radix-ui/react-checkbox';
 import styles from './Checkbox.module.scss';
@@ -9,7 +9,7 @@ export type CheckboxProps = {
     onChange?: (checked: boolean | 'indeterminate') => void;
     disabled?: boolean;
     /** The contents of the Checkbox. */
-    children?: string;
+    children?: ReactNode | ReactNode[];
 };
 
 /**
