@@ -1,5 +1,11 @@
 # paris
 
+## 0.4.1
+
+### Patch Changes
+
+- 6d53d07: Separate `Tilt` from `Card`
+
 ## 0.4.0
 
 ### Minor Changes
