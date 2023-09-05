@@ -48,6 +48,7 @@ export const Card: FC<CardProps> = ({
         className={clsx(
             styles.container,
             styles[kind],
+            props?.className,
         )}
     >
         {children}
