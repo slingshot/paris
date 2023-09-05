@@ -1,5 +1,11 @@
 # paris
 
+## 0.4.2
+
+### Patch Changes
+
+- 32e9050: Fix `Card` className prop
+
 ## 0.4.1
 
 ### Patch Changes
