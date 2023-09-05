@@ -1,7 +1,7 @@
 'use client';
 
 import type {
-    FC, MouseEventHandler, ReactNode,
+    FC, HTMLAttributeAnchorTarget, MouseEventHandler, ReactNode,
 } from 'react';
 import type { ButtonProps as AriaButtonProps } from '@ariakit/react';
 import { Button as AriaButton } from '@ariakit/react';
@@ -53,6 +53,14 @@ export type ButtonProps = {
      */
     onClick?: MouseEventHandler<HTMLButtonElement>;
     /**
+     * Optionally, the Button can be rendered as an anchor element by passing an `href` prop. To use a Next.js Link component, use the `render` prop directly.
+     */
+    href?: string;
+    /**
+     * Optionally, the target of the anchor element can be specified (defaults to `_self`).
+     */
+    hrefTarget?: HTMLAttributeAnchorTarget;
+    /**
      * The contents of the Button.
      *
      * This should be text. When Button shape is `circle` or `square`, the action description should still be passed here for screen readers.
@@ -83,6 +91,7 @@ export const Button: FC<ButtonProps> = ({
     onClick,
     children,
     disabled,
+    href,
     ...props
 }) => (
     <AriaButton
@@ -97,8 +106,19 @@ export const Button: FC<ButtonProps> = ({
         aria-disabled={disabled ?? false}
         type={type}
         aria-details={children}
-        onClick={!disabled ? onClick : () => {}}
+        onClick={!disabled && !href ? onClick : () => {}}
         disabled={false}
+        {...href ? {
+            render: (properties) => (
+                // eslint-disable-next-line jsx-a11y/anchor-has-content
+                <a
+                    {...properties}
+                    href={href}
+                    target={props.hrefTarget ?? '_self'}
+                    rel={props.hrefTarget === '_self' ? undefined : 'noreferrer'}
+                />
+            ),
+        } : {}}
     >
         {!!startEnhancer && (
             <MemoizedEnhancer
