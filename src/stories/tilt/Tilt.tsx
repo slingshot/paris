@@ -1,3 +1,5 @@
+'use client';
+
 import type { FC, ReactNode } from 'react';
 import RPTilt from 'react-parallax-tilt';
 import styles from './Tilt.module.scss';
