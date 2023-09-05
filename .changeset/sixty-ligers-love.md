@@ -1,5 +1,0 @@
----
-"paris": minor
----
-
-`Card` component

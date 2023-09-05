@@ -1,5 +1,25 @@
 # paris
 
+## 0.4.0
+
+### Minor Changes
+
+- 0a23074: Allow rendering `Button`s as anchors by passing `href` prop
+- 6e5ea2c: `Tilt` component
+- 50ab5e3: `Icon` component for included icons
+- 50ab5e3: `Drawer` component
+- 6e5ea2c: `Card` component
+- dcd9bb6: `Combobox` component
+- 05903f0: `Checkbox` component
+- b758949: `Dialog` component
+
+### Patch Changes
+
+- bbe60be: `Field` component for generic form fields with a label and description
+- 50ab5e3: Drawer pagination
+- bbe60be: Add label/description for Select
+- 50ab5e3: Glassmorphic Dialog variant
+
 ## 0.3.0
 
 ### Minor Changes
