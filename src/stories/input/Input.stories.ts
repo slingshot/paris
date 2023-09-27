@@ -87,3 +87,29 @@ export const WithEndEnhancer: Story = {
         }),
     },
 };
+
+export const WithCustomLabel: Story = {
+    args: {
+        placeholder: 'Billie Eilish',
+        label: createElement(
+            'span',
+            null,
+            [
+                createElement('b', null, 'Name'),
+                createElement('i', null, ' (optional)'),
+            ],
+        ),
+        'aria-label': 'Name (optional)',
+        description: createElement(
+            'span',
+            null,
+            [
+                createElement('b', {
+                    style: {
+                        color: 'red',
+                    },
+                }, 'My custom description'),
+            ],
+        ),
+    },
+};

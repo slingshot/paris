@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { createElement } from 'react';
 import { TextArea } from './TextArea';
 
 const meta: Meta<typeof TextArea> = {
@@ -15,5 +16,31 @@ export const Default: Story = {
         placeholder: 'Billie Eilish',
         label: 'Name',
         description: 'Type your full name here.',
+    },
+};
+
+export const WithCustomLabel: Story = {
+    args: {
+        placeholder: 'Billie Eilish',
+        label: createElement(
+            'span',
+            {},
+            [
+                createElement('b', null, 'Name'),
+                createElement('i', null, ' (optional)'),
+            ],
+        ),
+        'aria-label': 'Name (optional)',
+        description: createElement(
+            'span',
+            null,
+            [
+                createElement('b', {
+                    style: {
+                        color: 'red',
+                    },
+                }, 'My custom description'),
+            ],
+        ),
     },
 };

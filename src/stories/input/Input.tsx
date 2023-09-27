@@ -14,9 +14,9 @@ import { Field } from '../field';
 
 export type InputProps = {
     /**
-     * A label for the input field. This is required for accessibility, but can be visually hidden using the `hideLabel` prop.
+     * This is required for accessibility. If the label is not a string, you should provide an `aria-label` prop directly to specify the text used for accessibility
      */
-    label: string;
+    label: React.ReactNode;
     /**
      * The status of the input field.
      * @default default
@@ -112,7 +112,7 @@ export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = ({
                     {...props}
                     id={inputID}
                     type={type || 'text'}
-                    aria-label={label}
+                    aria-label={typeof label === 'string' ? label : props['aria-label']}
                     aria-describedby={`${inputID}-description`}
                     aria-disabled={disabled}
                     readOnly={disabled}
