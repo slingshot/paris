@@ -26,12 +26,20 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 .overlay {
     position: absolute;
     inset: 0;
-    background-color: var(--pte-colors-backgroundOverlayDark);
-    will-change: backdrop-filter, opacity;
-    backdrop-filter: blur(0);
+
+    &.overlayBlured {
+        backdrop-filter: blur(0);
+        background-color: var(--pte-colors-backgroundOverlayDark);
+        will-change: backdrop-filter, opacity;
+    }
+
+    &.overlayGreyed {
+        background-color: rgba(175, 175, 175, 0); // Non-transparent backgroundOverlayGrey
+        will-change: background-color, opacity;
+    }
 }
 
-.overlayContainer {
+.overlayBluredContainer {
     .enterFrom {
         backdrop-filter: blur(0);
     }
@@ -47,6 +55,25 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     .leaveTo {
         backdrop-filter: blur(0);
     }
+}
+
+.overlayGreyedContainer {
+    .enterFrom {
+        background-color: rgba(175, 175, 175, 0);
+    }
+    .enterTo {
+        background-color: var(--pte-colors-backgroundOverlayGrey);
+    }
+    .leave {
+        transition-delay: $panelAnimationDelay;
+    }
+    .leaveFrom {
+        background-color: var(--pte-colors-backgroundOverlayGrey);
+    }
+    .leaveTo {
+        background-color: rgba(175, 175, 175, 0);
+    }
+    
 }
 
 .panelContainer {

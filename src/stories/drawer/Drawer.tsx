@@ -91,6 +91,12 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
      * @default false
      */
     pagination?: PaginationState<T>;
+    /**
+     * The overlay style of the Drawer, either 'greyed' or 'blur'.
+     *
+     * @default 'blur'
+     */
+    overlayStyle?: 'greyed' | 'blur';
     /** The contents of the Drawer. */
     children?: ReactNode | ReactNode[];
 };
@@ -116,6 +122,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
     from = 'right',
     size = 'default',
     pagination,
+    overlayStyle = 'blur',
     children,
 }: DrawerProps<T>) => {
     // Check if the drawer is on the x-axis.
@@ -164,7 +171,10 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                 onClose={onClose}
             >
                 <div
-                    className={styles.overlayContainer}
+                    className={clsx(
+                        overlayStyle === 'blur' && styles.overlayBluredContainer,
+                        overlayStyle === 'greyed' && styles.overlayGreyedContainer,
+                    )}
                 >
                     <Transition.Child
                         as={Fragment}
@@ -178,6 +188,8 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                         <Dialog.Overlay
                             className={clsx(
                                 styles.overlay,
+                                overlayStyle === 'blur' && styles.overlayBlured,
+                                overlayStyle === 'greyed' && styles.overlayGreyed,
                             )}
                         />
                     </Transition.Child>
