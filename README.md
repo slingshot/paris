@@ -20,6 +20,16 @@ yarn add paris
 npm i paris
 ```
 
+Make sure your `tsconfig` module resolution is set to `nodenext`, `node16`, or `bundler` to support `paris` imports:
+
+```json
+{
+    "compilerOptions": {
+        "moduleResolution": "bundler"
+    }
+}
+```
+
 You'll need to tell your bundler to transpile files from Paris. This is easy in Next.js 13.1+ with the `transpilePackages` option in `next.config.js`:
 
 ```js
