@@ -76,16 +76,6 @@ export default function RootLayout({
 }
 ```
 
-Finally, map our types in your `.tsconfig.json` file (this is a temporary workaround that we'll fix soon):
-
-```json
-{
-    "paths": {
-        "paris/*": ["./node_modules/paris/src/stories/*"]
-    }
-}
-```
-
 That's it! You can now import any component from Paris:
 
 ```tsx
