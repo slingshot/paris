@@ -1,5 +1,11 @@
 # paris
 
+## 0.4.5
+
+### Patch Changes
+
+- ecfd77e: Text: change fontWeights capitalizations
+
 ## 0.4.4
 
 ### Patch Changes
