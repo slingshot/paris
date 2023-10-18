@@ -6,6 +6,7 @@ import styles from '../input/Input.module.scss';
 import { Text } from '../text';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 import { pget, theme } from '../theme';
+import { Field } from '../field';
 
 /**
  * A `textarea` input field.
@@ -19,50 +20,44 @@ import { pget, theme } from '../theme';
  * ```
  * @constructor
  */
-export const TextArea: FC<InputProps & ComponentPropsWithoutRef<'textarea'>> = ({ status, disabled, ...props }) => {
-    const inputID = useId();
+export const TextArea: FC<InputProps & ComponentPropsWithoutRef<'textarea'>> = ({
+    label,
+    status,
+    type,
+    hideLabel,
+    description,
+    hideDescription,
+    startEnhancer,
+    endEnhancer,
+    disabled,
+    overrides,
+    ...props
+}) => {
+    const textareaID = useId();
     return (
-        // Disable a11y rules because the container doesn't need to be focusable for screen readers; the input itself should receive focus instead.
-        // The container is only made clickable for usability purposes.
-        // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
-        <div
-            {...props.overrides?.container}
-            className={clsx(
-                props.overrides?.container?.className,
-                styles.container,
-            )}
-            onClick={(e) => {
-                if (disabled) e.preventDefault();
-                if (typeof window !== 'undefined') {
-                    const input = document.getElementById(inputID);
-                    if (input && !disabled) {
-                        input.focus();
-                    }
-                }
+        <Field
+            htmlFor={textareaID}
+            label={label}
+            hideLabel={hideLabel}
+            description={description}
+            hideDescription={hideDescription}
+            disabled={disabled}
+            overrides={{
+                container: overrides?.container,
+                label: overrides?.label,
+                description: overrides?.description,
             }}
         >
-            <Text
-                {...props.overrides?.label}
-                as="label"
-                kind="paragraphSmall"
-                htmlFor={inputID}
-                className={clsx(
-                    styles.label,
-                    { [styles.hidden]: props.hideLabel },
-                )}
-            >
-                {props.label}
-            </Text>
             <div
                 className={styles.inputContainer}
                 data-status={status}
                 data-disabled={disabled}
             >
-                {!!props.startEnhancer && (
-                    <div {...props.overrides?.startEnhancerContainer} className={clsx(styles.enhancer, props.overrides?.startEnhancerContainer?.className)}>
-                        {!!props.startEnhancer && (
+                {!!startEnhancer && (
+                    <div {...overrides?.startEnhancerContainer} className={clsx(styles.enhancer, overrides?.startEnhancerContainer?.className)}>
+                        {!!startEnhancer && (
                             <MemoizedEnhancer
-                                enhancer={props.startEnhancer}
+                                enhancer={startEnhancer}
                                 size={parseInt(pget('typography.styles.paragraphSmall.fontSize') || theme.typography.styles.paragraphSmall.fontSize, 10)}
                             />
                         )}
@@ -70,9 +65,9 @@ export const TextArea: FC<InputProps & ComponentPropsWithoutRef<'textarea'>> = (
                 )}
                 <textarea
                     {...props}
-                    id={inputID}
-                    aria-label={props.label}
-                    aria-describedby={`${inputID}-description`}
+                    id={textareaID}
+                    aria-label={typeof label === 'string' ? label : props['aria-label']}
+                    aria-describedby={`${textareaID}-description`}
                     aria-disabled={disabled}
                     readOnly={disabled}
                     className={clsx(
@@ -80,41 +75,17 @@ export const TextArea: FC<InputProps & ComponentPropsWithoutRef<'textarea'>> = (
                         styles.input,
                     )}
                 />
-                {!!props.endEnhancer && (
-                    <div {...props.overrides?.endEnhancerContainer} className={clsx(styles.enhancer, props.overrides?.endEnhancerContainer?.className)}>
-                        {!!props.endEnhancer && (
+                {!!endEnhancer && (
+                    <div {...overrides?.endEnhancerContainer} className={clsx(styles.enhancer, overrides?.endEnhancerContainer?.className)}>
+                        {!!endEnhancer && (
                             <MemoizedEnhancer
-                                enhancer={props.endEnhancer}
+                                enhancer={endEnhancer}
                                 size={parseInt(pget('typography.styles.paragraphSmall.fontSize') || theme.typography.styles.paragraphSmall.fontSize, 10)}
                             />
                         )}
                     </div>
                 )}
             </div>
-            <Text
-                id={`${inputID}-description`}
-                {...props.overrides?.description}
-                as="p"
-                kind="paragraphXSmall"
-                className={clsx(
-                    styles.description,
-                    { [styles.hidden]: !props.description || props.hideDescription },
-                    props.overrides?.description?.className,
-                )}
-            >
-                {props.description}
-            </Text>
-        </div>
+        </Field>
     );
-    // return (
-    //     <div
-    //         className={clsx(
-    //             styles.inputContainer,
-    //         )}
-    //     >
-    //         <textarea
-    //             {...props}
-    //         />
-    //     </div>
-    // );
 };

@@ -1,5 +1,8 @@
-import type { FC, PropsWithChildren, ComponentPropsWithoutRef } from 'react';
+import {
+    type FC, type PropsWithChildren, type ComponentPropsWithoutRef, cloneElement,
+} from 'react';
 import clsx from 'clsx';
+import React from 'react';
 import styles from '../input/Input.module.scss';
 import type { TextProps } from '../text';
 import { Text } from '../text';
@@ -12,7 +15,7 @@ export type FieldProps = {
     /**
      * A label for the field. Can be visually hidden using the `hideLabel` prop.
      */
-    label?: string;
+    label?: React.ReactNode;
     /**
      * Visually hide the label (while keeping it accessible to screen readers).
      * @default false
@@ -21,7 +24,7 @@ export type FieldProps = {
     /**
      * A description of the field. Can be visually hidden using the `hideDescription` prop.
      */
-    description?: string;
+    description?: React.ReactNode;
     /**
      * Visually hide the description while keeping it accessible to screen readers.
      * @default false
@@ -76,31 +79,47 @@ export const Field: FC<PropsWithChildren<FieldProps>> = ({
             }
         }}
     >
-        <Text
-            {...props.overrides?.label}
-            as="label"
-            kind="paragraphSmall"
-            htmlFor={htmlFor}
-            className={clsx(
-                styles.label,
-                { [styles.hidden]: props.hideLabel },
+        {typeof props.label === 'string'
+            ? (
+                <Text
+                    {...props.overrides?.label}
+                    as="label"
+                    kind="paragraphSmall"
+                    htmlFor={htmlFor}
+                    className={clsx(
+                        styles.label,
+                        { [styles.hidden]: props.hideLabel },
+                    )}
+                >
+                    {props.label}
+                </Text>
+            )
+            : (
+                <label htmlFor={htmlFor}>
+                    {props.label}
+                </label>
             )}
-        >
-            {props.label}
-        </Text>
         {children}
-        <Text
-            id={`${htmlFor}-description`}
-            {...props.overrides?.description}
-            as="p"
-            kind="paragraphXSmall"
-            className={clsx(
-                styles.description,
-                { [styles.hidden]: !props.description || props.hideDescription },
-                props.overrides?.description?.className,
+        {typeof props.description === 'string'
+            ? (
+                <Text
+                    id={`${htmlFor}-description`}
+                    {...props.overrides?.description}
+                    as="p"
+                    kind="paragraphXSmall"
+                    className={clsx(
+                        styles.description,
+                        { [styles.hidden]: !props.description || props.hideDescription },
+                        props.overrides?.description?.className,
+                    )}
+                >
+                    {props.description}
+                </Text>
+            )
+            : (
+                <div id={`${htmlFor}-description`}>
+                    {props.description}
+                </div>
             )}
-        >
-            {props.description}
-        </Text>
     </div>
 );
