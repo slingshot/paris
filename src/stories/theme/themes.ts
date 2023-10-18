@@ -124,15 +124,15 @@ export type Theme = {
 
         fontWeights: {
             thin: number,
-            extraLight: number,
+            extralight: number,
             light: number,
             normal: number,
             medium: number,
-            semiBold: number,
+            semibold: number,
             bold: number,
-            extraBold: number,
+            extrabold: number,
             black: number,
-            extraBlack: number,
+            extrablack: number,
         },
 
         fontStyles: {
@@ -343,15 +343,15 @@ export const LightTheme: Theme = {
 
         fontWeights: {
             thin: 100,
-            extraLight: 200,
+            extralight: 200,
             light: 300,
             normal: 400,
             medium: 500,
-            semiBold: 600,
+            semibold: 600,
             bold: 700,
-            extraBold: 800,
+            extrabold: 800,
             black: 900,
-            extraBlack: 950,
+            extrablack: 950,
         },
 
         fontStyles: {
