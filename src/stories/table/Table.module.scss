@@ -1,0 +1,41 @@
+.table {
+    width: 100%;
+
+    &, & * {
+        cursor: default;
+    }
+
+    thead {
+        text-align: left;
+        user-select: none;
+    }
+
+    th {
+        color: var(--pte-colors-contentSecondary);
+        padding: 10px 12px;
+    }
+
+    td {
+        padding: 8px 12px;
+    }
+
+    tr {
+        border-top: 1px solid var(--pte-colors-borderOpaque);
+    }
+
+    tr:last-child {
+        border-bottom: 1px solid var(--pte-colors-borderOpaque);
+    }
+
+    tbody tr.clickable {
+        transition: background-color var(--pte-animations-interaction);
+
+        &:hover {
+            background-color: var(--pte-colors-backgroundSecondary);
+        }
+
+        &, & * {
+            cursor: pointer;
+        }
+    }
+}
