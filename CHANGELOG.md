@@ -1,5 +1,16 @@
 # paris
 
+## 0.5.0
+
+### Minor Changes
+
+- 8de0fe5: Table component
+- 73fb594: Tabs component
+
+### Patch Changes
+
+- 1f40b98: Text: add `!important` to ensure `weight` prop overrides other styles
+
 ## 0.4.5
 
 ### Patch Changes
