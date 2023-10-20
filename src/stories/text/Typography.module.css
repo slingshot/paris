@@ -19,6 +19,15 @@
   text-transform: var(--pte-typography-styles-displayMedium-textTransform);
 }
 
+.display {
+  font-size: var(--pte-typography-styles-display-fontSize);
+  font-style: var(--pte-typography-styles-display-fontStyle);
+  font-weight: var(--pte-typography-styles-display-fontWeight);
+  line-height: var(--pte-typography-styles-display-lineHeight);
+  letter-spacing: var(--pte-typography-styles-display-letterSpacing);
+  text-transform: var(--pte-typography-styles-display-textTransform);
+}
+
 .displaySmall {
   font-size: var(--pte-typography-styles-displaySmall-fontSize);
   font-style: var(--pte-typography-styles-displaySmall-fontStyle);

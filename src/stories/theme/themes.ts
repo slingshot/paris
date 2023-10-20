@@ -40,6 +40,7 @@ const TimingFunctions: Omit<Theme['animations']['timing'], 'default'> = {
     easeIn: 'cubic-bezier(0.42, 0.0, 1.0, 1.0)',
     easeOutQuad: 'cubic-bezier(0.5, 1, 0.89, 1)',
     easeInQuad: 'cubic-bezier(0.11, 0, 0.5, 0)',
+    easeInOutExpo: 'cubic-bezier(0.87, 0, 0.13, 1)',
 };
 
 export type Theme = {
@@ -145,6 +146,7 @@ export type Theme = {
 
             displayLarge: FontDefinition,
             displayMedium: FontDefinition,
+            display: FontDefinition,
             displaySmall: FontDefinition,
 
             // Heading
@@ -218,6 +220,7 @@ export type Theme = {
             easeIn: TimingFunction,
             easeOutQuad: TimingFunction,
             easeInQuad: TimingFunction,
+            easeInOutExpo: TimingFunction,
             default: TimingFunction,
         },
         duration: {
@@ -371,6 +374,11 @@ export const LightTheme: Theme = {
                 ...DisplayFontClass,
                 fontSize: '52px',
                 lineHeight: '62px',
+            },
+            display: {
+                ...DisplayFontClass,
+                fontSize: '42px',
+                lineHeight: '50.4px',
             },
             displaySmall: {
                 ...DisplayFontClass,

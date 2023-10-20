@@ -20,7 +20,7 @@ $text-weights: (
 @each $weight-name,
 $weight-value in $text-weights {
     .weight-#{$weight-name} {
-        font-weight: $weight-value;
+        font-weight: $weight-value !important;
     }
 }
 

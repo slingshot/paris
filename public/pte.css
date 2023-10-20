@@ -127,6 +127,12 @@
     --pte-typography-styles-displayMedium-textTransform: none;
     --pte-typography-styles-displayMedium-fontSize: 52px;
     --pte-typography-styles-displayMedium-lineHeight: 62px;
+    --pte-typography-styles-display-fontStyle: normal;
+    --pte-typography-styles-display-letterSpacing: -0.01em;
+    --pte-typography-styles-display-fontWeight: 600;
+    --pte-typography-styles-display-textTransform: none;
+    --pte-typography-styles-display-fontSize: 42px;
+    --pte-typography-styles-display-lineHeight: 50.4px;
     --pte-typography-styles-displaySmall-fontStyle: normal;
     --pte-typography-styles-displaySmall-letterSpacing: -0.01em;
     --pte-typography-styles-displaySmall-fontWeight: 600;
@@ -251,6 +257,7 @@
     --pte-animations-timing-easeIn: cubic-bezier(0.42, 0.0, 1.0, 1.0);
     --pte-animations-timing-easeOutQuad: cubic-bezier(0.5, 1, 0.89, 1);
     --pte-animations-timing-easeInQuad: cubic-bezier(0.11, 0, 0.5, 0);
+    --pte-animations-timing-easeInOutExpo: cubic-bezier(0.87, 0, 0.13, 1);
     --pte-animations-timing-default: cubic-bezier(0.0, 0.0, 0.58, 1.0);
     --pte-animations-duration-rapid: 50ms;
     --pte-animations-duration-fast: 100ms;
