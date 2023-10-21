@@ -199,6 +199,12 @@
     --pte-typography-styles-labelXSmall-textTransform: uppercase;
     --pte-typography-styles-labelXSmall-fontSize: 10px;
     --pte-typography-styles-labelXSmall-lineHeight: 12px;
+    --pte-typography-styles-labelXXSmall-fontStyle: normal;
+    --pte-typography-styles-labelXXSmall-letterSpacing: 0.1em;
+    --pte-typography-styles-labelXXSmall-fontWeight: 600;
+    --pte-typography-styles-labelXXSmall-textTransform: uppercase;
+    --pte-typography-styles-labelXXSmall-fontSize: 9px;
+    --pte-typography-styles-labelXXSmall-lineHeight: 10.8px;
     --pte-typography-styles-paragraphLarge-fontStyle: normal;
     --pte-typography-styles-paragraphLarge-letterSpacing: normal;
     --pte-typography-styles-paragraphLarge-fontWeight: 400;

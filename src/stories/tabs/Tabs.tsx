@@ -30,6 +30,15 @@ export type TabsProps = {
      * @default auto
      */
     kind?: 'fixed' | 'compact' | 'auto';
+    /**
+     * The default index of the tab to render. Defaults to `0`.
+     */
+    defaultIndex?: number;
+    /**
+     * An optional handler for tab changes.
+     * @param index - The index of the tab that was selected.
+     */
+    onTabChange?: (index: number) => void | Promise<void>;
 };
 
 /**
@@ -48,14 +57,22 @@ export const Tabs: FC<TabsProps> = ({
     tabs,
     tabWidth = '150px',
     kind = 'auto',
+    defaultIndex = 0,
+    onTabChange,
 }) => {
     const id = useId();
-    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [selectedIndex, setSelectedIndex] = useState(defaultIndex);
 
     return (
         <Tab.Group
+            as="div"
             selectedIndex={selectedIndex}
-            onChange={setSelectedIndex}
+            onChange={(i) => {
+                setSelectedIndex(i);
+                if (onTabChange) {
+                    onTabChange?.(i);
+                }
+            }}
         >
             <Tab.List
                 style={{

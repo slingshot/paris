@@ -1,4 +1,4 @@
-/* Auto-generated with `pnpm generate:text` on Wed Jun 21 2023 15:22:53 GMT-0700 (Pacific Daylight Time) */
+/* Auto-generated with `pnpm generate:text` on Sat Oct 21 2023 02:16:31 GMT-0700 (Pacific Daylight Time) */
 /* Do not edit manually; instead, edit the `generateTextClasses` function in `scripts/text.ts` and run `pnpm generate:text -c`. */
 
 .displayLarge {
@@ -125,6 +125,15 @@
   line-height: var(--pte-typography-styles-labelXSmall-lineHeight);
   letter-spacing: var(--pte-typography-styles-labelXSmall-letterSpacing);
   text-transform: var(--pte-typography-styles-labelXSmall-textTransform);
+}
+
+.labelXXSmall {
+  font-size: var(--pte-typography-styles-labelXXSmall-fontSize);
+  font-style: var(--pte-typography-styles-labelXXSmall-fontStyle);
+  font-weight: var(--pte-typography-styles-labelXXSmall-fontWeight);
+  line-height: var(--pte-typography-styles-labelXXSmall-lineHeight);
+  letter-spacing: var(--pte-typography-styles-labelXXSmall-letterSpacing);
+  text-transform: var(--pte-typography-styles-labelXXSmall-textTransform);
 }
 
 .paragraphLarge {

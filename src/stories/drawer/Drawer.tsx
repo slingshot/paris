@@ -21,6 +21,7 @@ import type { PaginationState } from '../pagination';
 import {
     ChevronLeft, ChevronRight, Close, Icon,
 } from '../icon';
+import { Ellipsis } from '../icon/Ellipsis';
 
 export const DrawerSizePresets = ['content', 'default', 'full'] as const;
 
@@ -220,85 +221,27 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                 styles[`from-${from}`],
                             )}
                         >
-                            {/* Dialog title */}
-                            <VisuallyHidden
+                            {/* Dialog title bar */}
+                            <div className={styles.titleBar}>
+                                <VisuallyHidden
                                 // Hide when requested, or when pagination is enabled (the title isn't relevant to any specific page).
-                                when={hideTitle || isPaginated}
-                            >
-                                <Dialog.Title as="h2">
-                                    <TextWhenString kind="headingXXSmall">
-                                        {title}
-                                    </TextWhenString>
-                                </Dialog.Title>
-                            </VisuallyHidden>
+                                    when={hideTitle || isPaginated}
+                                >
+                                    <Dialog.Title as="h2">
+                                        <TextWhenString kind="paragraphSmall" weight="medium">
+                                            {title}
+                                        </TextWhenString>
+                                    </Dialog.Title>
+                                </VisuallyHidden>
 
-                            {/* Close button */}
-                            <RemoveFromDOM
+                                {/* Close button */}
+                                <RemoveFromDOM
                                 // Hide when requested, or when pagination is enabled (the page navigation bar will render its own close button).
-                                when={hideCloseButton || isPaginated}
-                            >
-                                <Button
-                                    kind="tertiary"
-                                    shape="circle"
-                                    onClick={() => onClose(false)}
-                                    startEnhancer={(
-                                        <FontAwesomeIcon icon={faClose} color={pvar('colors.contentPrimary')} />
-                                    )}
-                                    data-title-hidden={hideTitle}
-                                    className={clsx(
-                                        styles.closeButton,
-                                    )}
+                                    when={hideCloseButton || isPaginated}
                                 >
-                                    Close dialog
-                                </Button>
-                            </RemoveFromDOM>
-
-                            {/* Pagination Navbar */}
-                            <RemoveFromDOM
-                                // Hide when pagination is not enabled.
-                                when={!isPaginated}
-                            >
-                                <div
-                                    className={clsx(
-                                        styles.paginationNav,
-                                    )}
-                                >
-                                    <div
-                                        className={clsx(
-                                            styles.paginationButtons,
-                                        )}
-                                    >
-                                        <Button
-                                            className={clsx(
-                                                styles.navButton,
-                                            )}
-                                            kind="tertiary"
-                                            shape="circle"
-                                            onClick={() => pagination?.back()}
-                                            disabled={!pagination?.canGoBack()}
-                                            startEnhancer={(
-                                                <Icon icon={ChevronLeft} size={20} />
-                                            )}
-                                        >
-                                            Go to previous page in this modal
-                                        </Button>
-                                        <Button
-                                            className={clsx(
-                                                styles.navButton,
-                                            )}
-                                            kind="tertiary"
-                                            shape="circle"
-                                            onClick={() => pagination?.forward()}
-                                            disabled={!pagination?.canGoForward()}
-                                            startEnhancer={(
-                                                <Icon icon={ChevronRight} size={20} />
-                                            )}
-                                        >
-                                            Go to next page in this modal
-                                        </Button>
-                                    </div>
                                     <Button
                                         kind="tertiary"
+                                        size="small"
                                         shape="circle"
                                         onClick={() => onClose(false)}
                                         startEnhancer={(
@@ -311,37 +254,93 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                     >
                                         Close dialog
                                     </Button>
-                                </div>
-                            </RemoveFromDOM>
-                            {/* <Transition.Child */}
-                            {/*    as={Fragment} */}
-                            {/*    enter={styles.enter} */}
-                            {/*    enterFrom={styles.enterFrom} */}
-                            {/*    enterTo={styles.enterTo} */}
-                            {/*    leave={styles.leave} */}
-                            {/*    leaveFrom={styles.leaveFrom} */}
-                            {/*    leaveTo={styles.leaveTo} */}
-                            {/* > */}
-                            {/*    {currentChild} */}
-                            {/* </Transition.Child> */}
-                            {(isPaginated && Array.isArray(children)) ? children.map((child) => (child && typeof child === 'object' && 'key' in child) && (
-                                <Transition
-                                    show={child.key === pagination?.currentPage && loadedPage === child.key}
-                                    key={`transition_${child.key}`}
-                                    as="div"
-                                    enter={styles.paginationEnter}
-                                    enterFrom={styles.enterFromOpacity}
-                                    enterTo={styles.enterToOpacity}
-                                    leave={styles.paginationLeave}
-                                    leaveFrom={styles.leaveFromOpacity}
-                                    leaveTo={styles.leaveToOpacity}
-                                    afterLeave={() => {
-                                        setLoadedPage(pagination?.currentPage || null);
-                                    }}
+                                </RemoveFromDOM>
+
+                                {/* Pagination Navbar */}
+                                <RemoveFromDOM
+                                    // Hide when pagination is not enabled.
+                                    when={!isPaginated}
                                 >
-                                    {child}
-                                </Transition>
-                            )) : children}
+                                    <div
+                                        className={clsx(
+                                            styles.paginationNav,
+                                        )}
+                                    >
+                                        <div
+                                            className={clsx(
+                                                styles.paginationButtons,
+                                            )}
+                                        >
+                                            <Button
+                                                className={clsx(
+                                                    styles.navButton,
+                                                )}
+                                                size="small"
+                                                kind="tertiary"
+                                                shape="circle"
+                                                onClick={() => pagination?.back()}
+                                                disabled={!pagination?.canGoBack()}
+                                                startEnhancer={(
+                                                    <Icon icon={ChevronLeft} size={20} />
+                                                )}
+                                            >
+                                                Go to previous page in this modal
+                                            </Button>
+                                            <Button
+                                                className={clsx(
+                                                    styles.navButton,
+                                                )}
+                                                size="small"
+                                                kind="tertiary"
+                                                shape="circle"
+                                                onClick={() => pagination?.forward()}
+                                                disabled={!pagination?.canGoForward()}
+                                                startEnhancer={(
+                                                    <Icon icon={ChevronRight} size={20} />
+                                                )}
+                                            >
+                                                Go to next page in this modal
+                                            </Button>
+                                        </div>
+                                        <Button
+                                            kind="tertiary"
+                                            shape="circle"
+                                            size="small"
+                                            onClick={() => onClose(false)}
+                                            startEnhancer={(
+                                                <Icon icon={Close} size={20} />
+                                            )}
+                                            data-title-hidden={hideTitle}
+                                            className={clsx(
+                                                styles.closeButton,
+                                            )}
+                                        >
+                                            Close dialog
+                                        </Button>
+                                    </div>
+                                </RemoveFromDOM>
+                            </div>
+
+                            <div className={styles.content}>
+                                {(isPaginated && Array.isArray(children)) ? children.map((child) => (child && typeof child === 'object' && 'key' in child) && (
+                                    <Transition
+                                        show={child.key === pagination?.currentPage && loadedPage === child.key}
+                                        key={`transition_${child.key}`}
+                                        as="div"
+                                        enter={styles.paginationEnter}
+                                        enterFrom={styles.enterFromOpacity}
+                                        enterTo={styles.enterToOpacity}
+                                        leave={styles.paginationLeave}
+                                        leaveFrom={styles.leaveFromOpacity}
+                                        leaveTo={styles.leaveToOpacity}
+                                        afterLeave={() => {
+                                            setLoadedPage(pagination?.currentPage || null);
+                                        }}
+                                    >
+                                        {child}
+                                    </Transition>
+                                )) : children}
+                            </div>
                         </Dialog.Panel>
                     </Transition.Child>
                 </div>

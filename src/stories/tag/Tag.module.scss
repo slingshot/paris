@@ -1,0 +1,46 @@
+.tag {
+    width: fit-content;
+}
+
+.normal {
+    padding: 6px 12px;
+    border: 1px solid;
+}
+
+.compact {
+    padding: 6px 10px;
+    border-radius: var(--pte-borders-radius-roundedSmall);
+
+    &.secondary {
+        border: 1px solid var(--pte-colors-borderOpaque);
+    }
+}
+
+.default {
+    background-color: var(--pte-colors-backgroundTertiary);
+    color: var(--pte-colors-contentTertiary);
+    border-color: var(--pte-colors-contentTertiary);
+}
+
+.secondary {
+    background-color: transparent;
+    color: var(--pte-colors-contentTertiary);
+}
+
+.positive {
+    background-color: var(--pte-colors-backgroundPositive);
+    color: var(--pte-colors-contentPositive);
+    border-color: var(--pte-colors-contentPositive);
+}
+
+.warning {
+    background-color: var(--pte-colors-backgroundWarning);
+    color: var(--pte-colors-contentWarning);
+    border-color: var(--pte-colors-contentWarning);
+}
+
+.negative {
+    background-color: var(--pte-colors-backgroundNegative);
+    color: var(--pte-colors-contentNegative);
+    border-color: var(--pte-colors-contentNegative);
+}

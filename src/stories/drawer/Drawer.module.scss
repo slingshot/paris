@@ -7,7 +7,7 @@ $panelMinMargin: 16px;
 $defaultSize: 360px;
 
 $panelPaddingX: 20px;
-$panelPaddingY: 24px;
+$panelPaddingY: 20px;
 
 $duration: var(--pte-animations-duration-relaxed);
 $paginationDuration: var(--pte-animations-duration-normal);
@@ -73,7 +73,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     .leaveTo {
         background-color: rgba(175, 175, 175, 0);
     }
-    
+
 }
 
 .panelContainer {
@@ -203,7 +203,8 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 .panel {
     position: relative;
     height: 100%;
-    padding: $panelPaddingY $panelPaddingX;
+    padding: 0;
+    //padding: $panelPaddingY $panelPaddingX;
     background-color: var(--pte-colors-backgroundPrimary);
     overflow: auto;
     border: 1px solid transparent;
@@ -212,7 +213,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    gap: $panelPaddingY;
+    //gap: $panelPaddingY;
 
     &.enterFrom {
         box-shadow: none;
@@ -245,10 +246,25 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     }
 }
 
+.titleBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    border-bottom: 1px solid var(--pte-colors-borderOpaque);
+    padding: 20px;
+}
+
 .closeButton {
-    position: absolute;
-    right: $panelPaddingX;
-    top: $panelPaddingY - 5px;
+    //position: absolute;
+    //right: $panelPaddingX;
+    //top: $panelPaddingY - 5px;
+}
+
+.content {
+    padding: 20px 20px 0;
+    overflow-y: scroll;
 }
 
 .paginationNav {
@@ -279,7 +295,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 }
 
 .enter {
-    transition: $duration var(--pte-animations-timing-easeOut);
+    transition: $duration var(--pte-animations-timing-easeInOutExpo);
 }
 
 .enterFrom, .enterFromOpacity {
@@ -291,7 +307,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 }
 
 .leave {
-    transition: $duration var(--pte-animations-timing-easeIn);
+    transition: $duration var(--pte-animations-timing-easeInOutExpo);
 }
 
 .leaveFrom, .leaveFromOpacity {

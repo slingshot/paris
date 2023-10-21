@@ -94,6 +94,7 @@ export type Theme = {
         backgroundInverseSecondary: CSSColor,
         backgroundInverseTertiary: CSSColor,
         backgroundInverseNegative: CSSColor,
+        backgroundInverseWarning: CSSColor,
         backgroundInversePositive: CSSColor,
 
         // Background Overlays
@@ -164,6 +165,7 @@ export type Theme = {
             labelMedium: FontDefinition,
             labelSmall: FontDefinition,
             labelXSmall: FontDefinition,
+            labelXXSmall: FontDefinition,
 
             // Paragraph
 
@@ -321,6 +323,7 @@ export const LightTheme: Theme = {
         backgroundInverseSecondary: T.colors.grey900,
         backgroundInverseTertiary: T.colors.grey800,
         backgroundInverseNegative: T.colors.red700,
+        backgroundInverseWarning: T.colors.yellow600,
         backgroundInversePositive: T.colors.green700,
 
         // Background Overlays
@@ -447,6 +450,11 @@ export const LightTheme: Theme = {
                 fontSize: '10px',
                 lineHeight: '12px',
             },
+            labelXXSmall: {
+                ...LabelFontClass,
+                fontSize: '9px',
+                lineHeight: '10.8px',
+            },
 
             // Paragraph
 
@@ -540,6 +548,7 @@ export const DarkTheme: Theme = merge(LightTheme, {
         backgroundSecondary: LightTheme.colors.backgroundInverseSecondary,
         backgroundTertiary: LightTheme.colors.backgroundInverseTertiary,
         backgroundNegative: LightTheme.colors.backgroundInverseNegative,
+        backgroundWarning: LightTheme.colors.backgroundInverseWarning,
         backgroundPositive: LightTheme.colors.backgroundInversePositive,
         borderOpaque: LightTheme.colors.borderInverseOpaque,
         borderSelected: LightTheme.colors.borderInverseSelected,
@@ -552,6 +561,7 @@ export const DarkTheme: Theme = merge(LightTheme, {
         backgroundInverseSecondary: LightTheme.colors.backgroundSecondary,
         backgroundInverseTertiary: LightTheme.colors.backgroundTertiary,
         backgroundInverseNegative: LightTheme.colors.backgroundNegative,
+        backgroundInverseWarning: LightTheme.colors.backgroundWarning,
         backgroundInversePositive: LightTheme.colors.backgroundPositive,
         borderInverseOpaque: LightTheme.colors.borderOpaque,
         borderInverseSelected: LightTheme.colors.borderSelected,
