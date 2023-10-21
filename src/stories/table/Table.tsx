@@ -1,3 +1,5 @@
+'use client';
+
 import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { useId, useMemo } from 'react';
 import clsx from 'clsx';
@@ -9,19 +11,32 @@ export type RowRenderData = {
     key: string,
     cells: TableLineData,
 };
+/**
+ * The data for a column in a table.
+ */
+export type ColumnData = {
+    /**
+     * The column's header.
+     */
+    title: NonNullable<ReactNode>;
+    /**
+     * The breakpoint at which the column should be hidden. If omitted, the column will always be visible.
+     */
+    hideBelow?: 'sm' | 'md' | 'lg' | 'xl';
+};
 
 export type TableProps<
-    RowData extends Record<string, any> = Record<string, any>,
-    HeaderNodeArray extends TableLineData = TableLineData,
+    RowData extends Record<string, any>[],
+    // HeaderNodeArray extends TableLineData = TableLineData,
 > = {
     /**
      * The table headers. Must include at least one header.
      */
-    headers: HeaderNodeArray;
+    columns: ColumnData[];
     /**
      * The table rows, as an array of objects.
      */
-    rows: RowData[];
+    rows: RowData;
     /**
      * A function that will be called for each row to compute the row's content. If omitted, the row will render the `Object.values` of the row data.
      *
@@ -30,12 +45,12 @@ export type TableProps<
      * @returns An object containing a property named `key` for the row's React key (should be a unique id), and a property named `nodes` containing an array of React nodes to be rendered as cells in the row.
      * @see RowRenderData
      */
-    rowRenderFn?: (row: RowData) => RowRenderData;
+    rowRenderFn?: (row: RowData[number]) => RowRenderData;
     /**
      * A function that will be called when a row is clicked.
      * @param row - The data for the row being clicked.
      */
-    onRowClick?: (row: RowData) => void | Promise<void>;
+    onRowClick?: (row: RowData[number]) => void | Promise<void>;
     /**
      * Whether the rows should be clickable.
      */
@@ -66,14 +81,14 @@ export type TableProps<
  * ```
  * @constructor
  */
-export const Table: FC<TableProps> = ({
-    headers,
+export function Table<RowData extends Record<string, any>[]>({
+    columns,
     rows,
     rowRenderFn,
     onRowClick,
     clickableRows = true,
     overrides,
-}) => {
+}: TableProps<RowData>) {
     const id = useId();
     const rowsRenderData = useMemo(() => (
         rows.map(
@@ -98,12 +113,14 @@ export const Table: FC<TableProps> = ({
                     overrides?.trBody?.className,
                 )}
             >
-                {cells.map((cell) => (
+                {cells.map((cell, i) => (
                     <td
-                        key={`${id}-cell-${cell.toString()}`}
+                        key={`${id}-cell-${key}-${columns[i].title}`}
                         {...overrides?.td}
                         className={clsx(
                             typography.paragraphXSmall,
+                            styles[columns[i].hideBelow ?? ''],
+                            overrides?.td?.className,
                         )}
                     >
                         {cell}
@@ -111,7 +128,7 @@ export const Table: FC<TableProps> = ({
                 ))}
             </tr>
         ))
-    ), [clickableRows, id, onRowClick, overrides?.td, overrides?.trBody, rows, rowsRenderData]);
+    ), [clickableRows, columns, id, onRowClick, overrides?.td, overrides?.trBody, rows, rowsRenderData]);
 
     return (
         <table
@@ -125,17 +142,19 @@ export const Table: FC<TableProps> = ({
         >
             <thead {...overrides?.thead}>
                 <tr {...overrides?.trHead}>
-                    {headers.map((header) => (
+                    {columns.map((column) => (
                         <th
                             {...{
                                 ...overrides?.th,
                                 className: clsx(
                                     typography.labelXSmall,
+                                    styles[column.hideBelow ?? ''],
+                                    overrides?.th?.className,
                                 ),
                             }}
-                            key={`${id}-header-${header}`}
+                            key={`${id}-header-${column.title.toString()}`}
                         >
-                            {header}
+                            {column.title}
                         </th>
                     ))}
                 </tr>
@@ -145,4 +164,4 @@ export const Table: FC<TableProps> = ({
             </tbody>
         </table>
     );
-};
+}

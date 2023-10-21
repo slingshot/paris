@@ -48,6 +48,13 @@ Paris uses `pte` (our theming engine) for powering theming and initial styles th
 
 Additionally, you need to import the static global styles from `paris/theme/global.scss`.
 
+Paris also relies on CSS Container Queries for responsive changes on certain elements, like the Tabs component when `kind = auto`. Adding the Google polyfill for Container Queries is recommended to ensure legacy browser support:
+
+```tsx
+// Use the `Script` component instead in Next.js
+<script src="https://cdn.jsdelivr.net/npm/container-query-polyfill@1/dist/container-query-polyfill.modern.js" />
+```
+
 For example, with the Next.js 13 app directory, you can do all of this in your root `layout.tsx` file:
 
 ```tsx
@@ -80,7 +87,11 @@ export default function RootLayout({
                 }}
             />
         </head>
-        <body className={inter.className}>{children}</body>
+        {/* Set the class "paris-container" to your root layout container */}
+        <body className="paris-container">
+            {children}
+            <Script src="https://cdn.jsdelivr.net/npm/container-query-polyfill@1/dist/container-query-polyfill.modern.js" />
+        </body>
         </html>
     );
 }

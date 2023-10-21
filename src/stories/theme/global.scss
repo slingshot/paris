@@ -1,2 +1,6 @@
 @use 'tw-preflight.css';
 @use 'util.scss';
+
+.paris-container {
+    container-type: inline-size;
+}

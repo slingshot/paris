@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useId } from 'react';
 import inputStyles from '../input/Input.module.scss';
-import dropdownStyles from '../dropdown/Dropdown.module.scss';
+import dropdownStyles from '../utility/Dropdown.module.scss';
 import styles from './Select.module.scss';
 import type { TextProps } from '../text';
 import { Text } from '../text';

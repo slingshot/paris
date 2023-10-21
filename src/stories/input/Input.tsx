@@ -88,7 +88,13 @@ export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = ({
             hideDescription={hideDescription}
             disabled={disabled}
             overrides={{
-                container: overrides?.container,
+                container: {
+                    ...overrides?.container,
+                    className: clsx(
+                        // styles.fieldContainer,
+                        overrides?.container?.className,
+                    ),
+                },
                 label: overrides?.label,
                 description: overrides?.description,
             }}
@@ -103,7 +109,7 @@ export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = ({
                         {!!startEnhancer && (
                             <MemoizedEnhancer
                                 enhancer={startEnhancer}
-                                size={parseInt(pget('typography.styles.paragraphSmall.fontSize') || theme.typography.styles.paragraphSmall.fontSize, 10)}
+                                size={parseInt(theme.typography.styles.paragraphSmall.fontSize, 10)}
                             />
                         )}
                     </div>
@@ -126,7 +132,7 @@ export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = ({
                         {!!endEnhancer && (
                             <MemoizedEnhancer
                                 enhancer={endEnhancer}
-                                size={parseInt(pget('typography.styles.paragraphSmall.fontSize') || theme.typography.styles.paragraphSmall.fontSize, 10)}
+                                size={parseInt(theme.typography.styles.paragraphSmall.fontSize, 10)}
                             />
                         )}
                     </div>

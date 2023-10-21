@@ -12,11 +12,19 @@ export default meta;
 type Story = StoryObj<typeof Table>;
 
 export const Default: Story = {
+    // @ts-expect-error
     args: {
-        headers: [
-            'Name',
-            'Type',
-            'Email',
+        columns: [
+            {
+                title: 'Name',
+            },
+            {
+                title: 'Type',
+                hideBelow: 'sm',
+            },
+            {
+                title: 'Email',
+            },
         ],
         rows: [
             {
@@ -43,5 +51,10 @@ export const Default: Story = {
             cells: [row.name, row.type, row.email],
         }),
         onRowClick: (row) => console.log('Row clicked', row),
-    } satisfies TableProps,
+    } satisfies TableProps<{
+        id: number;
+        name: string;
+        type: string;
+        email: string;
+    }[]>,
 };

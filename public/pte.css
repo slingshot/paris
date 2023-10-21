@@ -265,4 +265,8 @@
     --pte-animations-duration-relaxed: 300ms;
     --pte-animations-duration-slow: 400ms;
     --pte-animations-duration-gradual: 600ms;
+    --pte-breakpoints-sm: 480px;
+    --pte-breakpoints-md: 640px;
+    --pte-breakpoints-lg: 768px;
+    --pte-breakpoints-xl: 1024px;
 }

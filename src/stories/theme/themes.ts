@@ -211,7 +211,7 @@ export type Theme = {
             background: CSSColor,
             backdropFilter: string,
         },
-    }
+    },
     animations: {
         interaction: string,
         timing: {
@@ -231,6 +231,12 @@ export type Theme = {
             slow: Duration,
             gradual: Duration,
         },
+    },
+    breakpoints: {
+        sm: `${number}px`,
+        md: `${number}px`,
+        lg: `${number}px`,
+        xl: `${number}px`,
     }
 };
 
@@ -512,6 +518,12 @@ export const LightTheme: Theme = {
             slow: '400ms',
             gradual: '600ms',
         },
+    },
+    breakpoints: {
+        sm: '480px',
+        md: '640px',
+        lg: '768px',
+        xl: '1024px',
     },
 };
 

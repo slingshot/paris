@@ -33,26 +33,69 @@
     transform: translateX(calc(var(--tab-width) * var(--tab-index)));
 }
 
+.activeTabUnderline {
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: var(--pte-colors-contentPrimary);
+}
+
+@mixin tabCompactStyles {
+    width: auto;
+    padding: 4px 0 6px 0;
+    margin: 0 20px 0 0;
+
+    &:not([aria-selected="true"]) {
+        color: var(--pte-colors-contentTertiary) !important;
+    }
+};
+
 .tab {
-    font-weight: 500;
+    position: relative;
+    font-weight: 500 !important;
     padding: 9px 30px;
     width: var(--tab-width);
     flex-shrink: 0;
     overflow: visible;
     cursor: default;
 
-    transition: background-color var(--pte-animations-duration-normal) var(--pte-animations-timing-easeInOut);
+    transition: all var(--pte-animations-duration-normal) var(--pte-animations-timing-easeInOut);
 
-    &[aria-selected="true"] {
-        background-color: var(--pte-colors-backgroundSecondary);
+    &.compact {
+        @include tabCompactStyles;
     }
 
-    &:hover {
-        background-color: var(--pte-colors-backgroundSecondary);
+    @container (min-width: 640px) {
+        &[aria-selected="true"]:not(.compact) {
+            background-color: var(--pte-colors-backgroundSecondary);
+        }
+
+        &:hover:not(.compact) {
+            background-color: var(--pte-colors-backgroundSecondary);
+        }
+
+        &:active:not(.compact) {
+            background-color: var(--pte-colors-backgroundTertiary);
+        }
     }
 
-    &:active {
-        background-color: var(--pte-colors-backgroundTertiary);
+    @container (max-width: 640px) {
+        &.auto {
+            @include tabCompactStyles;
+            &[aria-selected="true"]:not(.auto):not(.compact) {
+                background-color: var(--pte-colors-backgroundSecondary);
+            }
+
+            &:hover:not(.auto):not(.compact) {
+                background-color: var(--pte-colors-backgroundSecondary);
+            }
+
+            &:active:not(.auto):not(.compact) {
+                background-color: var(--pte-colors-backgroundTertiary);
+            }
+        }
     }
 }
 

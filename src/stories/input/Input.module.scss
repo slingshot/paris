@@ -113,6 +113,7 @@
 }
 
 .container {
+    width: 100%;
     user-select: var(--pte-utils-defaultUserSelect);
     cursor: default;
     display: flex;

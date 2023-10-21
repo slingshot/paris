@@ -1,6 +1,7 @@
 import type { ComponentProps, FC, ReactNode } from 'react';
 import { createElement } from 'react';
 import clsx from 'clsx';
+import type { CSSColor } from '@ssh/csstypes';
 import typography from './Typography.module.css';
 import styles from './Text.module.scss';
 import type { LightTheme, Theme } from '../theme';
@@ -31,6 +32,11 @@ export type TextProps<T extends TextElement = 'span'> = {
      */
     fontStyle?: keyof typeof LightTheme.typography.fontStyles;
 
+    /**
+     * A color to apply.
+     */
+    color?: CSSColor;
+
     /** The contents of the Text element. */
     children: ReactNode;
 } & ComponentProps<T>;
@@ -60,6 +66,7 @@ export function Text<T extends TextElement>({
     as,
     weight,
     fontStyle,
+    color,
     children,
     ...props
 }: TextProps<T>): JSX.Element {
@@ -74,6 +81,11 @@ export function Text<T extends TextElement>({
                 fontStyle && styles[`fontStyle-${fontStyle}`],
                 props?.className,
             ),
+            ...(color ? {
+                style: {
+                    '--text-color': color,
+                },
+            } : {}),
         },
         children,
     );
