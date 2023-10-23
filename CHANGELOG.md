@@ -1,5 +1,25 @@
 # paris
 
+## 0.6.0
+
+### Minor Changes
+
+- 0234060: StyledLink component
+- 0234060: Accordion component
+- 0234060: Avatar component
+- 0234060: Toast component
+- 516e8ec: Tag component
+
+### Patch Changes
+
+- 0234060: Callout component
+- 516e8ec: Icon: Ellipsis icon
+- 0234060: Various stylistic and positional fixes
+- 516e8ec: Theme: `labelXXSmall` typography + `backgroundInverseWarning` color
+- 516e8ec: Drawer: stylistic updates
+- 8e959b8: Table: support `hideBelow` for `max-width` breakpoint hiding of columns
+- 8e959b8: Tabs: add `compact` styling option
+
 ## 0.5.0
 
 ### Minor Changes
