@@ -12,12 +12,28 @@ import styles from './Button.module.scss';
 import { Text } from '../text';
 import type { Enhancer } from '../../types/Enhancer';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
+import { pvar } from '../theme';
 
 const EnhancerSizes = {
     large: 13,
     small: 11,
     xs: 9,
 };
+
+export const ButtonThemes = {
+    negative: {
+        primary: pvar('colors.contentNegative'),
+        secondary: pvar('colors.backgroundNegative'),
+    },
+    positive: {
+        primary: pvar('colors.contentPositive'),
+        secondary: pvar('colors.backgroundPositive'),
+    },
+    warning: {
+        primary: pvar('colors.contentWarning'),
+        secondary: pvar('colors.backgroundWarning'),
+    },
+} as const;
 
 export type ButtonProps = {
     /**
@@ -46,6 +62,10 @@ export type ButtonProps = {
          */
         secondary: string;
     };
+    /**
+     * Preset themes for coloring the button. Overrides the `colors` prop.
+     */
+    theme?: keyof typeof ButtonThemes;
     /**
      * An icon or other element to render before the Button's text. A `size` argument is passed that should be used to determine the width & height of the content displayed.
      *
@@ -99,6 +119,7 @@ export const Button: FC<ButtonProps> = ({
     size = 'large',
     shape = 'pill',
     colors,
+    theme,
     type = 'button',
     startEnhancer,
     endEnhancer,
@@ -110,12 +131,12 @@ export const Button: FC<ButtonProps> = ({
 }) => (
     <AriaButton
         {...props}
-        style={colors ? {
-            '--pte-colors-contentInversePrimary': fontColorContrast(colors.primary),
-            '--pte-colors-backgroundInversePrimary': colors.primary,
-            '--pte-colors-backgroundInverseTertiary': colors.secondary,
-            '--pte-colors-contentPrimary': colors.primary,
-            '--pte-colors-backgroundTertiary': colors.secondary,
+        style={(theme || colors) ? {
+            '--pte-colors-contentInversePrimary': fontColorContrast(theme ? ButtonThemes[theme].primary : colors?.primary || pvar('colors.contentPrimary')),
+            '--pte-colors-backgroundInversePrimary': theme ? ButtonThemes[theme].primary : colors?.primary,
+            '--pte-colors-backgroundInverseTertiary': theme ? ButtonThemes[theme].secondary : colors?.secondary,
+            '--pte-colors-contentPrimary': theme ? ButtonThemes[theme].primary : colors?.primary,
+            '--pte-colors-backgroundTertiary': theme ? ButtonThemes[theme].secondary : colors?.secondary,
         } as CSSProperties : {}}
         className={clsx(
             styles.button,
