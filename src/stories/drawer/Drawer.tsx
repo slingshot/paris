@@ -61,6 +61,10 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
      */
     hideCloseButton?: boolean;
     /**
+     * An optional panel that will be rendered at the bottom of the Drawer. This is useful for adding a footer to the Drawer with actions.
+     */
+    bottomPanel?: ReactNode;
+    /**
      * The direction from which the Drawer will appear.
      */
     from?: 'left' | 'right' | 'top' | 'bottom';
@@ -120,6 +124,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
     title,
     hideTitle = false,
     hideCloseButton = false,
+    bottomPanel,
     from = 'right',
     size = 'default',
     pagination,
@@ -341,6 +346,12 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                     </Transition>
                                 )) : children}
                             </div>
+
+                            <RemoveFromDOM when={!bottomPanel}>
+                                <div className={styles.bottomPanel}>
+                                    {bottomPanel}
+                                </div>
+                            </RemoveFromDOM>
                         </Dialog.Panel>
                     </Transition.Child>
                 </div>

@@ -330,3 +330,8 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 .paginationLeave {
     transition: $paginationDuration var(--pte-animations-timing-easeOutQuad);
 }
+
+.bottomPanel {
+    padding: 20px;
+    border-top: 1px solid var(--pte-colors-borderOpaque);
+}
