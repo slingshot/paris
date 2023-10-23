@@ -1,5 +1,13 @@
 # paris
 
+## 0.6.1
+
+### Patch Changes
+
+- 5193149: Tabs: make controllable
+- 2fd3be7: Drawer: bottom panel
+- 8950299: Button: preset themes
+
 ## 0.6.0
 
 ### Minor Changes
