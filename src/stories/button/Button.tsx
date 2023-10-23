@@ -1,15 +1,17 @@
 'use client';
 
 import type {
+    CSSProperties,
     FC, HTMLAttributeAnchorTarget, MouseEventHandler, ReactNode,
 } from 'react';
 import type { ButtonProps as AriaButtonProps } from '@ariakit/react';
 import { Button as AriaButton } from '@ariakit/react';
 import clsx from 'clsx';
+import fontColorContrast from 'font-color-contrast';
 import styles from './Button.module.scss';
 import { Text } from '../text';
 import type { Enhancer } from '../../types/Enhancer';
-import { MemoizedEnhancer, renderEnhancer } from '../../helpers/renderEnhancer';
+import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 
 const EnhancerSizes = {
     large: 13,
@@ -33,6 +35,17 @@ export type ButtonProps = {
      * @default pill
      */
     shape?: 'pill' | 'circle' | 'rectangle' | 'square' | 'rounded';
+    /**
+     * A color to apply for the Button. Provide an object with `primary` and `secondary` properties to set the primary and hover colors.
+     */
+    colors?: {
+        /** The primary color of the Button. Primary buttons will use this as the background color, and secondary/tertiary buttons will use it for the text and border. */
+        primary: string;
+        /**
+         * The secondary color of the Button, used for hover/active states.
+         */
+        secondary: string;
+    };
     /**
      * An icon or other element to render before the Button's text. A `size` argument is passed that should be used to determine the width & height of the content displayed.
      *
@@ -85,6 +98,7 @@ export const Button: FC<ButtonProps> = ({
     kind = 'primary',
     size = 'large',
     shape = 'pill',
+    colors,
     type = 'button',
     startEnhancer,
     endEnhancer,
@@ -96,6 +110,13 @@ export const Button: FC<ButtonProps> = ({
 }) => (
     <AriaButton
         {...props}
+        style={colors ? {
+            '--pte-colors-contentInversePrimary': fontColorContrast(colors.primary),
+            '--pte-colors-backgroundInversePrimary': colors.primary,
+            '--pte-colors-backgroundInverseTertiary': colors.secondary,
+            '--pte-colors-contentPrimary': colors.primary,
+            '--pte-colors-backgroundTertiary': colors.secondary,
+        } as CSSProperties : {}}
         className={clsx(
             styles.button,
             styles[kind],

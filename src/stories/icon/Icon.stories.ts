@@ -26,3 +26,4 @@ const getArgs = (icon: IconDefinition): Story => ({
 export const Close: Story = getArgs(Icons.Close);
 export const ChevronLeft: Story = getArgs(Icons.ChevronLeft);
 export const ChevronRight: Story = getArgs(Icons.ChevronRight);
+export const Ellipsis: Story = getArgs(Icons.Ellipsis);

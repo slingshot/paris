@@ -1,0 +1,43 @@
+.content {
+    background-color: var(--pte-colors-backgroundSecondary);
+    border-radius: 6px;
+    width: 100%;
+    padding: 8px 10px;
+    color: var(--pte-colors-contentTertiary);
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+
+    .icon {
+        width: 16px;
+        height: 16px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+
+        svg {
+            width: 13px !important;
+            height: 13px !important;
+        }
+    }
+
+    &.warning {
+        background-color: var(--pte-colors-backgroundWarning);
+        color: var(--pte-colors-contentWarning);
+    }
+
+    &.negative {
+        background-color: var(--pte-colors-backgroundNegative);
+        color: var(--pte-colors-contentNegative);
+    }
+
+    &.positive {
+        .icon {
+            color: var(--pte-colors-contentPositive);
+        }
+    }
+}

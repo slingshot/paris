@@ -35,11 +35,11 @@ export type SelectProps<T = Record<string, any>> = {
      *
      * This should exactly match one of the option IDs passed in the `options` prop. If `null`, no option will be selected.
      */
-    value?: string | null;
+    value?: Option<T>['id'] | null;
     /**
      * The interaction handler for the Select.
      */
-    onChange?: (value: string | null) => void | Promise<void>;
+    onChange?: (value: Option<T>['id'] | null) => void | Promise<void>;
     /**
      * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
      */

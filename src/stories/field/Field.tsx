@@ -95,7 +95,7 @@ export const Field: FC<PropsWithChildren<FieldProps>> = ({
                 </Text>
             )
             : (
-                <label htmlFor={htmlFor}>
+                <label htmlFor={htmlFor} className={clsx({ [styles.hidden]: props.hideLabel })}>
                     {props.label}
                 </label>
             )}
@@ -117,7 +117,10 @@ export const Field: FC<PropsWithChildren<FieldProps>> = ({
                 </Text>
             )
             : (
-                <div id={`${htmlFor}-description`}>
+                <div
+                    id={`${htmlFor}-description`}
+                    className={clsx({ [styles.hidden]: !props.description || props.hideDescription })}
+                >
                     {props.description}
                 </div>
             )}

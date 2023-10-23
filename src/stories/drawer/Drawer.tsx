@@ -227,7 +227,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                 // Hide when requested, or when pagination is enabled (the title isn't relevant to any specific page).
                                     when={hideTitle || isPaginated}
                                 >
-                                    <Dialog.Title as="h2">
+                                    <Dialog.Title as="h2" className={styles.titleTextContainer}>
                                         <TextWhenString kind="paragraphSmall" weight="medium">
                                             {title}
                                         </TextWhenString>

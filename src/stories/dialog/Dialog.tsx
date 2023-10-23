@@ -227,48 +227,53 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                             onMouseUp={handleMouseUp}
                             onMouseMove={handleMouseMove}
                         >
-                            <div
-                                {...overrides.panelHeader}
-                                className={clsx(
-                                    styles.header,
-                                    overrides.panelHeader?.className,
-                                )}
-                            >
-                                <VisuallyHidden when={hideTitle}>
-                                    <HDialog.Title
-                                        {...overrides.panelTitle}
-                                        as="h1"
-                                        className={clsx(
-                                            styles.title,
-                                            overrides.panelTitle?.className,
-                                        )}
-                                    >
-                                        <TextWhenString
-                                            kind="headingXSmall"
+                            <VisuallyHidden when={hideTitle && hideCloseButton}>
+                                <div
+                                    {...overrides.panelHeader}
+                                    className={clsx(
+                                        styles.header,
+                                        overrides.panelHeader?.className,
+                                    )}
+                                    style={(hideTitle && !hideCloseButton) || (!hideTitle && hideCloseButton) ? {
+                                        marginBottom: '-16px',
+                                    } : {}}
+                                >
+                                    <VisuallyHidden when={hideTitle}>
+                                        <HDialog.Title
+                                            {...overrides.panelTitle}
+                                            as="h1"
+                                            className={clsx(
+                                                styles.title,
+                                                overrides.panelTitle?.className,
+                                            )}
                                         >
-                                            {title}
-                                        </TextWhenString>
-                                    </HDialog.Title>
-                                </VisuallyHidden>
-                                <RemoveFromDOM when={hideCloseButton}>
-                                    <Button
-                                        kind="tertiary"
-                                        shape="circle"
-                                        onClick={() => onClose(false)}
-                                        startEnhancer={(
-                                            <Icon size={20} icon={Close} />
-                                        )}
-                                        {...overrides.panelCloseButton}
-                                        data-title-hidden={hideTitle}
-                                        className={clsx(
-                                            styles.closeButton,
-                                            overrides.panelCloseButton?.className,
-                                        )}
-                                    >
-                                        Close dialog
-                                    </Button>
-                                </RemoveFromDOM>
-                            </div>
+                                            <TextWhenString
+                                                kind="headingXSmall"
+                                            >
+                                                {title}
+                                            </TextWhenString>
+                                        </HDialog.Title>
+                                    </VisuallyHidden>
+                                    <RemoveFromDOM when={hideCloseButton}>
+                                        <Button
+                                            kind="tertiary"
+                                            shape="circle"
+                                            onClick={() => onClose(false)}
+                                            startEnhancer={(
+                                                <Icon size={20} icon={Close} />
+                                            )}
+                                            {...overrides.panelCloseButton}
+                                            data-title-hidden={hideTitle}
+                                            className={clsx(
+                                                styles.closeButton,
+                                                overrides.panelCloseButton?.className,
+                                            )}
+                                        >
+                                            Close dialog
+                                        </Button>
+                                    </RemoveFromDOM>
+                                </div>
+                            </VisuallyHidden>
                             {children}
                         </HDialog.Panel>
                     </Transition.Child>

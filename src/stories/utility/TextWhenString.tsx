@@ -1,12 +1,12 @@
 import type { PropsWithChildren } from 'react';
 import { memo } from 'react';
-import type { TextProps } from '../text';
+import type { TextElement, TextProps } from '../text';
 import { Text } from '../text';
 
 /**
  * A memoized component that renders its children as a {@link Text} component if `children` is just a string.
  */
-export const TextWhenString = memo<PropsWithChildren<TextProps>>(({
+export const TextWhenString = memo<PropsWithChildren<TextProps<TextElement>>>(({
     children,
     ...props
 }) => {

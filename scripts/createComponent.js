@@ -25,12 +25,12 @@ const cssModuleFile = `${componentDirectory}/${componentName}.module.scss`;
 const storyFile = `${componentDirectory}/${componentName}.stories.ts`;
 const indexFile = `${componentDirectory}/index.ts`;
 
-const componentCode = `import type { FC } from 'react';
+const componentCode = `import type { FC, ReactNode } from 'react';
 import styles from './${componentName}.module.scss';
 
 export type ${componentName}Props = {
     /** The contents of the ${componentName}. */
-    children?: string;
+    children?: ReactNode;
 };
 
 /**

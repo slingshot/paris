@@ -84,13 +84,13 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     z-index: 10;
 
     .enter {
-        transition: $duration var(--pte-animations-timing-easeOut);
+        transition: $duration var(--pte-animations-timing-easeOutQuad);
         transition-delay: $panelAnimationDelay;
         //transition-delay: 50ms;
     }
 
     .leave {
-        transition: $duration var(--pte-animations-timing-easeIn);
+        transition: $duration var(--pte-animations-timing-easeInQuad);
     }
 
     &.from-right {
@@ -246,6 +246,10 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     }
 }
 
+.titleTextContainer {
+    display: flex;
+}
+
 .titleBar {
     display: flex;
     flex-direction: row;
@@ -265,6 +269,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 .content {
     padding: 20px 20px 0;
     overflow-y: scroll;
+    height: 100%;
 }
 
 .paginationNav {

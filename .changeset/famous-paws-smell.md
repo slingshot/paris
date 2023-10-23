@@ -1,0 +1,5 @@
+---
+"paris": patch
+---
+
+Callout component
