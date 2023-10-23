@@ -1,5 +1,0 @@
----
-"paris": minor
----
-
-StyledLink component
