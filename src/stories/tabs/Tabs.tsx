@@ -35,6 +35,10 @@ export type TabsProps = {
      */
     defaultIndex?: number;
     /**
+     * Pass in a controlled index to control the selected tab.
+     */
+    index?: number;
+    /**
      * An optional handler for tab changes.
      * @param index - The index of the tab that was selected.
      */
@@ -58,6 +62,7 @@ export const Tabs: FC<TabsProps> = ({
     tabWidth = '150px',
     kind = 'auto',
     defaultIndex = 0,
+    index,
     onTabChange,
 }) => {
     const id = useId();
@@ -66,7 +71,7 @@ export const Tabs: FC<TabsProps> = ({
     return (
         <Tab.Group
             as="div"
-            selectedIndex={selectedIndex}
+            selectedIndex={index ?? selectedIndex}
             onChange={(i) => {
                 setSelectedIndex(i);
                 if (onTabChange) {
@@ -77,13 +82,13 @@ export const Tabs: FC<TabsProps> = ({
             <Tab.List
                 style={{
                     '--tab-width': tabWidth,
-                    '--tab-index': `${selectedIndex}`,
+                    '--tab-index': `${index ?? selectedIndex}`,
                 } as CSSProperties}
                 className={clsx(
                     styles.tabList,
                 )}
             >
-                {tabs.map(({ title }, index) => (
+                {tabs.map(({ title }, i) => (
                     <Tab
                         key={`${id}-tab-${title}`}
                         className={clsx(
@@ -93,7 +98,7 @@ export const Tabs: FC<TabsProps> = ({
                         )}
                     >
                         {title}
-                        {index === selectedIndex && (
+                        {i === (index ?? selectedIndex) && (
                             <motion.div
                                 key={`${id}-tab-active-border`}
                                 className={styles.activeTabUnderline}
