@@ -1,5 +1,16 @@
 # paris
 
+## 0.7.0
+
+### Minor Changes
+
+- 669cf98: `Avatar` component
+- 669cf98: `Popover` component
+
+### Patch Changes
+
+- 669cf98: Icon: `Spinner`
+
 ## 0.6.1
 
 ### Patch Changes
