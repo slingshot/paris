@@ -1,5 +1,0 @@
----
-"paris": minor
----
-
-`Popover` component
