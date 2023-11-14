@@ -1,6 +1,6 @@
-import type { FC, ReactNode } from 'react';
+import type { FC } from 'react';
 import type { ToasterProps } from 'react-hot-toast';
-import { toast, Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import clsx from 'clsx';
 import styles from './Toast.module.scss';
 import typography from '../text/Typography.module.css';
@@ -46,6 +46,4 @@ export const Toast: FC<ToastProps> = ({
     />
 );
 
-export {
-    toast,
-};
+export * from 'react-hot-toast';

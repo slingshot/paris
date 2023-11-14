@@ -13,6 +13,7 @@ import { Text } from '../text';
 import type { Enhancer } from '../../types/Enhancer';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 import { pvar } from '../theme';
+import { Spinner } from '../icon';
 
 const EnhancerSizes = {
     large: 13,
@@ -82,6 +83,11 @@ export type ButtonProps = {
      */
     disabled?: boolean;
     /**
+     * Displays a loading indicator inside the Button and disables user interaction.
+     * @default false
+     */
+    loading?: boolean;
+    /**
      * The interaction handler for the Button.
      */
     onClick?: MouseEventHandler<HTMLButtonElement>;
@@ -98,7 +104,7 @@ export type ButtonProps = {
      *
      * This should be text. When Button shape is `circle` or `square`, the action description should still be passed here for screen readers.
      */
-    children: ReactNode | ReactNode[];
+    children?: ReactNode | ReactNode[];
 } & Omit<AriaButtonProps, 'children' | 'disabled' | 'onClick'>;
 
 /**
@@ -126,6 +132,7 @@ export const Button: FC<ButtonProps> = ({
     onClick,
     children,
     disabled,
+    loading,
     href,
     ...props
 }) => (
@@ -148,7 +155,7 @@ export const Button: FC<ButtonProps> = ({
         aria-disabled={disabled ?? false}
         type={type}
         aria-details={typeof children === 'string' ? children : undefined}
-        onClick={!disabled && !href ? onClick : () => {}}
+        onClick={!disabled && !href && !loading ? onClick : () => {}}
         disabled={false}
         {...href ? {
             render: (properties) => (
@@ -170,7 +177,11 @@ export const Button: FC<ButtonProps> = ({
         )}
         {!['circle', 'square'].includes(shape) && (
             <Text kind="labelXSmall">
-                {children || 'Button'}
+                {!loading ? (
+                    children || 'Button'
+                ) : (
+                    <Spinner size={EnhancerSizes[size]} />
+                )}
             </Text>
         )}
         {!!endEnhancer && (

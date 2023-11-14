@@ -58,6 +58,7 @@
         "./icon": "./src/stories/icon/index.ts",
         "./input": "./src/stories/input/index.ts",
         "./pagination": "./src/stories/pagination/index.ts",
+        "./popover": "./src/stories/popover/index.ts",
         "./select": "./src/stories/select/index.ts",
         "./styledlink": "./src/stories/styledlink/index.ts",
         "./table": "./src/stories/table/index.ts",
@@ -80,6 +81,7 @@
         "pte": "^0.4.9",
         "react-hot-toast": "^2.4.1",
         "react-parallax-tilt": "^1.7.144",
+        "react-tiny-popover": "^8.0.4",
         "ts-deepmerge": "^6.0.3"
     },
     "peerDependencies": {

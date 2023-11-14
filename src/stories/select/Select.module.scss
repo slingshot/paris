@@ -62,13 +62,67 @@
         background-color: var(--pte-colors-backgroundTertiary);
     }
 
-    &[data-disabled=true] {
-        color: var(--pte-colors-contentDisabled);
+    &[data-disabled=true], &[data-headlessui-state~="disabled"] {
         pointer-events: none;
         cursor: default;
+
+        &, & * {
+            color: var(--pte-colors-contentDisabled);
+        }
     }
 }
 
 .content {
     width: 100%;
+}
+
+.radioContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.radioOption {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    justify-content: flex-start;
+    align-items: center;
+
+    &[data-headlessui-state~="active"] {
+        .radioCircle {
+            border-color: var(--pte-colors-contentPrimary);
+        }
+    }
+
+    &[data-headlessui-state~="checked"] {
+        .radioCircle {
+            border: 5px solid var(--pte-colors-contentPrimary);
+        }
+    }
+
+    &[data-headlessui-state~="disabled"] {
+        pointer-events: none;
+        cursor: default;
+
+        &, & * {
+            color: var(--pte-colors-contentDisabled);
+        }
+
+        .radioCircle {
+            border-color: var(--pte-colors-contentDisabled);
+        }
+    }
+}
+
+.radioCircle {
+    flex-shrink: 0;
+    margin: 0 8px;
+    width: 14px;
+    height: 14px;
+    border-radius: 100%;
+    border: 1.5px solid var(--pte-colors-contentTertiary);
+    transition: all var(--pte-animations-interaction);
 }

@@ -1,4 +1,6 @@
-import type { FC, ReactElement, ReactNode } from 'react';
+import type {
+    ComponentPropsWithoutRef, FC, ReactElement, ReactNode,
+} from 'react';
 import clsx from 'clsx';
 import styles from './Callout.module.scss';
 import { RemoveFromDOM, TextWhenString } from '../utility';
@@ -10,7 +12,7 @@ export type CalloutProps = {
     icon?: ReactElement;
     /** The contents of the Callout. */
     children?: ReactNode;
-};
+} & Omit<ComponentPropsWithoutRef<'div'>, 'children'>;
 
 /**
  * A Callout component.
@@ -28,8 +30,10 @@ export const Callout: FC<CalloutProps> = ({
     variant = 'default',
     icon,
     children,
+    className,
+    ...props
 }) => (
-    <div className={clsx(styles.content, styles[variant])}>
+    <div className={clsx(styles.content, styles[variant], className)} {...props}>
         <RemoveFromDOM when={!icon}>
             <div className={styles.icon}>
                 {icon}

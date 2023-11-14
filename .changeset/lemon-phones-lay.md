@@ -1,0 +1,5 @@
+---
+"paris": minor
+---
+
+`Avatar` component

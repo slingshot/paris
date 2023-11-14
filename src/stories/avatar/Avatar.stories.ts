@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { createElement } from 'react';
 import { Avatar } from './Avatar';
 
 const meta: Meta<typeof Avatar> = {
-    title: 'Uncategorized/Avatar',
+    title: 'Content/Avatar',
     component: Avatar,
     tags: ['autodocs'],
 };
@@ -12,12 +13,13 @@ type Story = StoryObj<typeof Avatar>;
 
 export const Default: Story = {
     args: {
-        children: 'Hello world! This is a new Avatar component.',
-    },
-};
-
-export const Secondary: Story = {
-    args: {
-        children: 'Hello world! This is a secondary component.',
+        width: '128px',
+        children: createElement(
+            'img',
+            {
+                src: 'https://swift.slingshot.fm/sling/static/Billie-Eilish.jpg',
+                alt: 'Avatar',
+            },
+        ),
     },
 };

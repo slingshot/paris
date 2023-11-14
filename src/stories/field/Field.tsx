@@ -57,6 +57,7 @@ export const Field: FC<PropsWithChildren<FieldProps>> = ({
     htmlFor,
     disabled,
     children,
+    // className,
     ...props
 }) => (
     // Disable a11y rules because the container doesn't need to be focusable for screen readers; the input itself should receive focus instead.
@@ -67,6 +68,7 @@ export const Field: FC<PropsWithChildren<FieldProps>> = ({
         className={clsx(
             props.overrides?.container?.className,
             styles.container,
+            // className,
         )}
         onClick={(e) => {
             e.preventDefault();

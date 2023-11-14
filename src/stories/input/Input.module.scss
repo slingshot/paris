@@ -102,6 +102,7 @@
 }
 
 .enhancer {
+    display: flex;
     color: var(--pte-colors-contentSecondary);
     margin-block-start: -0.5px;
     font-size: var(--pte-typography-styles-paragraphSmall-fontSize);

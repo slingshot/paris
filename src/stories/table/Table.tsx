@@ -107,6 +107,10 @@ export function Table<RowData extends Record<string, any>[]>({
                 onClick={() => {
                     if (clickableRows) onRowClick?.(rows[index]);
                 }}
+                onKeyDown={(e) => {
+                    if (clickableRows && (e.key === 'Enter' || e.key === ' ')) onRowClick?.(rows[index]);
+                }}
+                tabIndex={clickableRows ? 0 : undefined}
                 {...overrides?.trBody}
                 className={clsx(
                     clickableRows && styles.clickable,

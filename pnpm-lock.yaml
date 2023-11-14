@@ -44,6 +44,9 @@ dependencies:
   react-parallax-tilt:
     specifier: ^1.7.144
     version: 1.7.144(react-dom@18.2.0)(react@18.2.0)
+  react-tiny-popover:
+    specifier: ^8.0.4
+    version: 8.0.4(react-dom@18.2.0)(react@18.2.0)
   ts-deepmerge:
     specifier: ^6.0.3
     version: 6.0.3
@@ -11234,6 +11237,16 @@ packages:
       react: 18.2.0
       tslib: 2.5.0
     dev: true
+
+  /react-tiny-popover@8.0.4(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-pn0Y/G0gyMdYTBEWSKCCnaZsXAa54PkfnRE4fnMM5633SSClYrXxwXKc6vPYgJ9shLatGginxMjnhXq6guZmng==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /react@18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}

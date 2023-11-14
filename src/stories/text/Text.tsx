@@ -1,10 +1,11 @@
-import type { ComponentProps, FC, ReactNode } from 'react';
-import { createElement } from 'react';
+/* eslint-disable prefer-arrow-callback */
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import { createElement, memo } from 'react';
 import clsx from 'clsx';
 import type { CSSColor } from '@ssh/csstypes';
 import typography from './Typography.module.css';
 import styles from './Text.module.scss';
-import type { LightTheme, Theme } from '../theme';
+import type { LightTheme } from '../theme';
 
 export type TextElement = 'p' | 'span' | 'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label' | 'legend' | 'caption' | 'small';
 export type GlobalCSSValues = 'inherit' | 'initial' | 'revert' | 'revert-layer' | 'unset';
@@ -39,7 +40,7 @@ export type TextProps<T extends TextElement = TextElement> = {
 
     /** The contents of the Text element. */
     children: ReactNode;
-} & ComponentProps<T>;
+} & ComponentPropsWithoutRef<T>;
 
 /**
  * A `Text` component is used to render text with one of our theme formats.
@@ -61,7 +62,7 @@ export type TextProps<T extends TextElement = TextElement> = {
  * ```
  * @constructor
  */
-export function Text<T extends TextElement>({
+export const Text = memo(function TextComponent<T extends TextElement>({
     kind,
     as,
     weight,
@@ -89,4 +90,4 @@ export function Text<T extends TextElement>({
         },
         children,
     );
-}
+});

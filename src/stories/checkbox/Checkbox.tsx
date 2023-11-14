@@ -1,6 +1,7 @@
 import type { FC, ReactNode } from 'react';
 import { useId } from 'react';
 import * as RadixCheckbox from '@radix-ui/react-checkbox';
+import clsx from 'clsx';
 import styles from './Checkbox.module.scss';
 import { pvar } from '../theme';
 
@@ -10,7 +11,7 @@ export type CheckboxProps = {
     disabled?: boolean;
     /** The contents of the Checkbox. */
     children?: ReactNode | ReactNode[];
-};
+} & Omit<React.ComponentPropsWithoutRef<'label'>, 'onChange' | 'children'>;
 
 /**
 * A Checkbox component.
@@ -29,12 +30,15 @@ export const Checkbox: FC<CheckboxProps> = ({
     onChange,
     disabled,
     children,
+    className,
+    ...props
 }) => {
     const inputID = useId();
     return (
         <label
             htmlFor={inputID}
-            className={styles.container}
+            className={clsx(styles.container, className)}
+            {...props}
         >
             <RadixCheckbox.Root
                 id={inputID}

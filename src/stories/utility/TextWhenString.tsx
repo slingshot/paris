@@ -10,7 +10,7 @@ export const TextWhenString = memo<PropsWithChildren<TextProps<TextElement>>>(({
     children,
     ...props
 }) => {
-    if (typeof children === 'string') {
+    if (typeof children === 'string' || typeof children === 'number') {
         return (
             <Text
                 {...props}

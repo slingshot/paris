@@ -1,0 +1,22 @@
+@keyframes intro {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+.trigger {
+    width: fit-content;
+}
+
+.content {
+    background-color: var(--pte-colors-backgroundPrimary);
+    animation: var(--pte-animations-duration-normal) var(--pte-animations-timing-easeInOutExpo) 0s 1 intro;
+    width: fit-content;
+    border-radius: var(--pte-borders-radius-rounded);
+    box-shadow: var(--pte-lighting-shallowPopup);
+    border: 1px solid var(--pte-borders-dropdown-color)
+}
