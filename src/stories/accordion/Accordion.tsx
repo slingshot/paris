@@ -10,6 +10,10 @@ import { TextWhenString } from '../utility';
 export type AccordionProps = {
     /** The title of the Accordion. */
     title?: ReactNode;
+    /** Whether the Accordion is open. If provided, the Accordion will be a controlled component. */
+    isOpen?: boolean;
+    /** A handler for when the Accordion state changes. */
+    onOpenChange?: (open: boolean) => void | Promise<void>;
     /** The collapsible contents of the Accordion. */
     children?: ReactNode;
 };
@@ -28,9 +32,11 @@ export type AccordionProps = {
  */
 export const Accordion: FC<AccordionProps> = ({
     title,
+    isOpen,
+    onOpenChange,
     children,
 }) => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(isOpen ?? false);
 
     return (
         <div
@@ -43,6 +49,7 @@ export const Accordion: FC<AccordionProps> = ({
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
                         setOpen((o) => !o);
+                        onOpenChange?.(!open);
                     }
                 }}
                 role="button"
