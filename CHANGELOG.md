@@ -1,5 +1,15 @@
 # paris
 
+## 0.8.0
+
+### Minor Changes
+
+- 9192ce2: Button: rename `hrefTarget` prop to `hreftarget` for React compatibility
+
+### Patch Changes
+
+- 30bb138: Accordion: allow uncontrolled state management
+
 ## 0.7.0
 
 ### Minor Changes
