@@ -98,7 +98,7 @@ export type ButtonProps = {
     /**
      * Optionally, the target of the anchor element can be specified (defaults to `_self`).
      */
-    hrefTarget?: HTMLAttributeAnchorTarget;
+    hreftarget?: HTMLAttributeAnchorTarget;
     /**
      * The contents of the Button.
      *
@@ -163,8 +163,8 @@ export const Button: FC<ButtonProps> = ({
                 <a
                     {...properties}
                     href={href}
-                    target={props.hrefTarget ?? '_self'}
-                    rel={props.hrefTarget === '_self' ? undefined : 'noreferrer'}
+                    target={props.hreftarget ?? '_self'}
+                    rel={props.hreftarget === '_self' ? undefined : 'noreferrer'}
                 />
             ),
         } : {}}
