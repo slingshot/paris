@@ -273,7 +273,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                     >
                                         <div
                                             className={clsx(
-                                                styles.paginationButtons,
+                                                styles.paginationTitle,
                                             )}
                                         >
                                             <Button
@@ -306,6 +306,16 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                             >
                                                 Go to next page in this modal
                                             </Button>
+                                            <VisuallyHidden
+                                                // Hide when requested, or when pagination is enabled (the title isn't relevant to any specific page).
+                                                when={hideTitle}
+                                            >
+                                                <Dialog.Title as="h2" className={styles.titleTextContainer}>
+                                                    <TextWhenString kind="paragraphSmall" weight="medium">
+                                                        {title}
+                                                    </TextWhenString>
+                                                </Dialog.Title>
+                                            </VisuallyHidden>
                                         </div>
                                         <Button
                                             kind="tertiary"

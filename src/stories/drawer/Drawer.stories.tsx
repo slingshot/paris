@@ -42,13 +42,18 @@ export const Default: Story = {
 
 export const Paginated: Story = {
     args: {
-        title: 'Creation process',
         children: [],
     },
     render: (args) => {
         const [isOpen, setIsOpen] = useState(false);
         const pages = ['step1', 'step2', 'step3'] as const;
         const pagination = usePagination<typeof pages>('step1');
+
+        const currentPageTitle = {
+            step1: 'Step 1',
+            step2: 'Step 2',
+            step3: 'Step 3',
+        }[pagination.currentPage];
 
         return (
             <>
@@ -62,6 +67,7 @@ export const Paginated: Story = {
                     isOpen={isOpen}
                     onClose={setIsOpen}
                     pagination={pagination}
+                    title={currentPageTitle}
                 >
                     <div key="step1" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         Step 1: Enter your name
