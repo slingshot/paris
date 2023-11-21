@@ -40,6 +40,11 @@ export type PaginationState<T extends string[] | readonly string[] = string[]> =
      * The page history.
      */
     history: T[number][],
+
+    /**
+     * Clear the page history and reset to the initial page.
+     */
+    reset: () => void,
 };
 
 /**
@@ -94,6 +99,11 @@ export const usePagination = <T extends string[] | readonly string[] = string[]>
         }
     };
 
+    const reset = (): void => {
+        setCurrentPage(initialPage);
+        setHistory([initialPage]);
+    };
+
     return {
         currentPage,
         open,
@@ -101,6 +111,7 @@ export const usePagination = <T extends string[] | readonly string[] = string[]>
         back,
         canGoForward,
         forward,
+        reset,
         history,
     } as PaginationState<T>;
 };
