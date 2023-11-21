@@ -1,5 +1,12 @@
 # paris
 
+## 0.8.1
+
+### Patch Changes
+
+- c3a5648: Allow for title in paginated drawer
+- 963e618: Pagination: add `reset` function to reset the history state
+
 ## 0.8.0
 
 ### Minor Changes
