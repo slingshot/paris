@@ -1,11 +1,13 @@
+/* eslint-disable prefer-arrow-callback,func-names */
+
 'use client';
 
-import type { ReactNode, ComponentPropsWithoutRef } from 'react';
+import type { ReactNode, ComponentPropsWithoutRef, ForwardedRef } from 'react';
 import { Listbox, RadioGroup, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { useId } from 'react';
+import { forwardRef, useId } from 'react';
 import inputStyles from '../input/Input.module.scss';
 import dropdownStyles from '../utility/Dropdown.module.scss';
 import styles from './Select.module.scss';
@@ -75,7 +77,7 @@ export type SelectProps<T = Record<string, any>> = {
  * ```
  * @constructor
  */
-export function Select<T = Record<string, any>>({
+export const Select = forwardRef(function <T = Record<string, any>>({
     options,
     value,
     onChange,
@@ -90,7 +92,7 @@ export function Select<T = Record<string, any>>({
     disabled,
     kind = 'listbox',
     overrides,
-}: SelectProps<T>) {
+}: SelectProps<T>, ref: ForwardedRef<any>) {
     const inputID = useId();
     return (
         <Field
@@ -109,6 +111,7 @@ export function Select<T = Record<string, any>>({
             {kind === 'listbox' && (
                 <Listbox
                     as="div"
+                    ref={ref}
                     value={value}
                     onChange={onChange}
                 >
@@ -184,7 +187,7 @@ export function Select<T = Record<string, any>>({
                 </Listbox>
             )}
             {kind === 'radio' && (
-                <RadioGroup as="div" className={styles.radioContainer} value={value} onChange={onChange}>
+                <RadioGroup ref={ref} as="div" className={styles.radioContainer} value={value} onChange={onChange}>
                     {options.map((option) => (
                         <RadioGroup.Option
                             as="div"
@@ -205,4 +208,4 @@ export function Select<T = Record<string, any>>({
             )}
         </Field>
     );
-}
+});

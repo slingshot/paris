@@ -1,13 +1,12 @@
 'use client';
 
-import { useId } from 'react';
-import type { FC, ComponentPropsWithoutRef } from 'react';
+import { forwardRef, useId } from 'react';
+import type { FC, ComponentPropsWithoutRef, ForwardedRef } from 'react';
 import clsx from 'clsx';
 import styles from './Input.module.scss';
 import type { TextProps } from '../text';
-import { Text } from '../text';
 import type { Enhancer } from '../../types/Enhancer';
-import { pget, theme } from '../theme';
+import { theme } from '../theme';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 import type { FieldProps } from '../field';
 import { Field } from '../field';
@@ -65,7 +64,7 @@ export type InputProps = {
  * ```
  * @constructor
  */
-export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = ({
+export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = forwardRef(({
     label,
     status,
     type,
@@ -77,7 +76,7 @@ export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = ({
     disabled,
     overrides,
     ...props
-}) => {
+}, ref: ForwardedRef<HTMLInputElement>) => {
     const inputID = useId();
     return (
         <Field
@@ -117,6 +116,7 @@ export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = ({
                 <input
                     {...props}
                     id={inputID}
+                    ref={ref}
                     type={type || 'text'}
                     aria-label={typeof label === 'string' ? label : props['aria-label']}
                     aria-describedby={`${inputID}-description`}
@@ -140,4 +140,4 @@ export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = ({
             </div>
         </Field>
     );
-};
+});
