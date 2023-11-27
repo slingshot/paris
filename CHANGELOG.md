@@ -1,5 +1,11 @@
 # paris
 
+## 0.8.2
+
+### Patch Changes
+
+- 5206e66: Input, Select: `forwardRef`
+
 ## 0.8.1
 
 ### Patch Changes
