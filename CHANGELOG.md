@@ -1,5 +1,11 @@
 # paris
 
+## 0.8.3
+
+### Patch Changes
+
+- 536f830: TextArea: default `rows` prop to 3
+
 ## 0.8.2
 
 ### Patch Changes
