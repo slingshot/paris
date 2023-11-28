@@ -3,13 +3,12 @@
 import type {
     ComponentPropsWithoutRef, FC, MouseEventHandler, PropsWithChildren, ReactNode,
 } from 'react';
-import { Dialog as HDialog, Transition } from '@headlessui/react';
 import { Fragment, useEffect, useState } from 'react';
+import { Dialog as HDialog, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import styles from './Dialog.module.scss';
 import { Text } from '../text';
 import { Button } from '../button';
-import { pvar } from '../theme';
 import { TextWhenString } from '../utility/TextWhenString';
 import { VisuallyHidden } from '../utility/VisuallyHidden';
 import { RemoveFromDOM } from '../utility/RemoveFromDOM';

@@ -2,7 +2,6 @@ import type { FC, ReactNode } from 'react';
 import clsx from 'clsx';
 import styles from './Tag.module.scss';
 import typography from '../text/Typography.module.css';
-import { TextWhenString } from '../utility';
 
 export type TagProps = {
     /** The size of the Tag. */

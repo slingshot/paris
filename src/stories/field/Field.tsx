@@ -1,8 +1,5 @@
-import {
-    type FC, type PropsWithChildren, type ComponentPropsWithoutRef, cloneElement,
-} from 'react';
+import React, { type ComponentPropsWithoutRef, type FC, type PropsWithChildren } from 'react';
 import clsx from 'clsx';
-import React from 'react';
 import styles from '../input/Input.module.scss';
 import type { TextProps } from '../text';
 import { Text } from '../text';

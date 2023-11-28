@@ -2,16 +2,15 @@
 
 'use client';
 
-import type { ReactNode, ComponentPropsWithoutRef, ForwardedRef } from 'react';
+import type { ComponentPropsWithoutRef, ForwardedRef, ReactNode } from 'react';
+import { forwardRef, useId } from 'react';
 import { Listbox, RadioGroup, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { forwardRef, useId } from 'react';
 import inputStyles from '../input/Input.module.scss';
 import dropdownStyles from '../utility/Dropdown.module.scss';
 import styles from './Select.module.scss';
-import typography from '../text/Typography.module.css';
 import type { TextProps } from '../text';
 import { Text } from '../text';
 import type { InputProps } from '../input';

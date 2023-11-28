@@ -1,8 +1,8 @@
 import type {
     ComponentPropsWithoutRef, CSSProperties, FC, ReactNode,
 } from 'react';
-import type { CSSLength } from '@ssh/csstypes';
 import { useMemo } from 'react';
+import type { CSSLength } from '@ssh/csstypes';
 import clsx from 'clsx';
 import styles from './Avatar.module.scss';
 import { pvar } from '../theme';

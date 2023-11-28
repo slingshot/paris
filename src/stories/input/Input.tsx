@@ -1,7 +1,7 @@
 'use client';
 
+import type { ComponentPropsWithoutRef, FC, ForwardedRef } from 'react';
 import { forwardRef, useId } from 'react';
-import type { FC, ComponentPropsWithoutRef, ForwardedRef } from 'react';
 import clsx from 'clsx';
 import styles from './Input.module.scss';
 import type { TextProps } from '../text';

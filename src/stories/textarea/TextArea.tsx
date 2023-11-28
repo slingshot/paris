@@ -3,7 +3,6 @@ import { useId } from 'react';
 import clsx from 'clsx';
 import type { InputProps } from '../input';
 import styles from '../input/Input.module.scss';
-import { Text } from '../text';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 import { pget, theme } from '../theme';
 import { Field } from '../field';

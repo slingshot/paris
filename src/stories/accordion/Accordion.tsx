@@ -1,8 +1,8 @@
 import type { FC, ReactNode } from 'react';
+import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
 import clsx from 'clsx';
 import styles from './Accordion.module.scss';
 import { TextWhenString } from '../utility';

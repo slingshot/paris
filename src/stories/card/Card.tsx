@@ -1,7 +1,6 @@
 import type { FC, HTMLAttributes, ReactNode } from 'react';
 import clsx from 'clsx';
 import styles from './Card.module.scss';
-import { Tilt } from '../tilt';
 
 export type CardProps = {
     /**

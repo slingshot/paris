@@ -1,15 +1,14 @@
 'use client';
 
 import type { CSSProperties, FC, ReactNode } from 'react';
-import { Tab } from '@headlessui/react';
 import { useId, useState } from 'react';
+import { Tab } from '@headlessui/react';
 import clsx from 'clsx';
 import type { CSSLength } from '@ssh/csstypes';
 import { motion } from 'framer-motion';
 import styles from './Tabs.module.scss';
 import typography from '../text/Typography.module.css';
 import { easeInOutExpo } from '../utility';
-import { theme } from '../theme';
 
 export type TabsProps = {
     /**

@@ -1,9 +1,9 @@
 'use client';
 
-import type { ReactNode, ComponentPropsWithoutRef } from 'react';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import { useId, useState } from 'react';
 import { Combobox as HCombobox, Transition } from '@headlessui/react';
 import clsx from 'clsx';
-import { useId, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import inputStyles from '../input/Input.module.scss';

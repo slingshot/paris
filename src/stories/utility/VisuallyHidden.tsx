@@ -1,5 +1,5 @@
-import { memo } from 'react';
 import type { PropsWithChildren } from 'react';
+import { memo } from 'react';
 import { VisuallyHidden as AriaVisuallyHidden } from '@ariakit/react';
 
 /**

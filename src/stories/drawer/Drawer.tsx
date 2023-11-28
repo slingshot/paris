@@ -1,27 +1,20 @@
 'use client';
 
-import {
-    Fragment, useMemo, useState,
-} from 'react';
 import type { ReactNode } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import type { CSSLength } from '@ssh/csstypes';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClose, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { Simulate } from 'react-dom/test-utils';
 import styles from './Drawer.module.scss';
 import { Text } from '../text';
 import { VisuallyHidden } from '../utility/VisuallyHidden';
 import { TextWhenString } from '../utility/TextWhenString';
 import { Button } from '../button';
-import { pvar } from '../theme';
 import { RemoveFromDOM } from '../utility/RemoveFromDOM';
 import type { PaginationState } from '../pagination';
 import {
     ChevronLeft, ChevronRight, Close, Icon,
 } from '../icon';
-import { Ellipsis } from '../icon/Ellipsis';
 
 export const DrawerSizePresets = ['content', 'default', 'full'] as const;
 

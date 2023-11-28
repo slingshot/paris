@@ -1,8 +1,7 @@
 'use client';
 
 import type {
-    CSSProperties,
-    FC, HTMLAttributeAnchorTarget, MouseEventHandler, ReactNode,
+    CSSProperties, FC, HTMLAttributeAnchorTarget, MouseEventHandler, ReactNode,
 } from 'react';
 import type { ButtonProps as AriaButtonProps } from '@ariakit/react';
 import { Button as AriaButton } from '@ariakit/react';

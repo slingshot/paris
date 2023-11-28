@@ -1,6 +1,6 @@
 'use client';
 
-import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { useId, useMemo } from 'react';
 import clsx from 'clsx';
 import styles from './Table.module.scss';
