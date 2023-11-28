@@ -30,6 +30,7 @@ export const TextArea: FC<InputProps & ComponentPropsWithoutRef<'textarea'>> = (
     endEnhancer,
     disabled,
     overrides,
+    rows = 3,
     ...props
 }) => {
     const textareaID = useId();
@@ -69,6 +70,7 @@ export const TextArea: FC<InputProps & ComponentPropsWithoutRef<'textarea'>> = (
                     aria-describedby={`${textareaID}-description`}
                     aria-disabled={disabled}
                     readOnly={disabled}
+                    rows={rows}
                     className={clsx(
                         props.className,
                         styles.input,

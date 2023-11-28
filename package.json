@@ -27,10 +27,7 @@
         "storybook"
     ],
     "scripts": {
-        "dev": "next dev",
         "build": "pnpm generate:exports && next build",
-        "start": "next start",
-        "lint": "next lint",
         "storybook": "storybook dev -p 6006",
         "build:storybook": "storybook build",
         "create:component": "node ./scripts/createComponent.js",
