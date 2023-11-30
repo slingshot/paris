@@ -7,8 +7,14 @@
     user-select: var(--pte-utils-defaultUserSelect);
     cursor: default;
     z-index: -1;
+
     &button {
         all: unset;
+    }
+
+    &.disabled {
+        opacity: 0.4;
+        pointer-events: none;
     }
 }
 

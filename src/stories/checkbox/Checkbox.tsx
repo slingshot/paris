@@ -37,7 +37,7 @@ export const Checkbox: FC<CheckboxProps> = ({
     return (
         <label
             htmlFor={inputID}
-            className={clsx(styles.container, className)}
+            className={clsx(styles.container, disabled && styles.disabled, className)}
             {...props}
         >
             <RadixCheckbox.Root
