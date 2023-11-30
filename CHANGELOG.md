@@ -1,5 +1,12 @@
 # paris
 
+## 0.8.4
+
+### Patch Changes
+
+- c0e8369: Checkbox: visual disabled state
+- f3a8c6f: Checkbox: add `z-index: -1` to fix Select overlay bug
+
 ## 0.8.3
 
 ### Patch Changes
