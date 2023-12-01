@@ -35,8 +35,10 @@ export const Checkbox: FC<CheckboxProps> = ({
 }) => {
     const inputID = useId();
     return (
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions
         <label
             htmlFor={inputID}
+            onClick={() => onChange?.(!checked)}
             className={clsx(styles.container, disabled && styles.disabled, className)}
             {...props}
         >
