@@ -1,5 +1,13 @@
 # paris
 
+## 0.8.5
+
+### Patch Changes
+
+- 730f4ff: Checkbox: make label always clickable
+- 0b20210: Select: use Transition div for parent positioning to avoid z-index issues
+- 0b20210: Checkbox: revert temp z-index fix
+
 ## 0.8.4
 
 ### Patch Changes
