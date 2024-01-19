@@ -130,7 +130,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 
 
     &.from-left, &.from-right {
-        height: 100vh;
+        height: 100dvh;
         top: 0;
         bottom: 0;
 
@@ -187,7 +187,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
         right: 0;
 
         &.size-default {
-            height: min(100vh, $defaultSize);
+            height: min(100dvh, $defaultSize);
         }
 
         &.size-content {
@@ -195,7 +195,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
         }
 
         &.size-full {
-            height: 100vh;
+            height: 100dvh;
         }
     }
 }

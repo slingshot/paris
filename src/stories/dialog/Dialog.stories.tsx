@@ -42,7 +42,7 @@ export const Default: Story = {
                     // Make sure to also uncomment the pvar array above
                     // style={{
                     //     width: '80vw',
-                    //     height: '80vh',
+                    //     height: '80dvh',
                     //     backgroundColor: bg,
                     //     opacity: '0.8',
                     //     // eslint-disable-next-line css/no-shorthand-property-overrides
