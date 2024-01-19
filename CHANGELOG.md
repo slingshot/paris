@@ -1,5 +1,11 @@
 # paris
 
+## 0.8.6
+
+### Patch Changes
+
+- 64cf505: Use `dvh` instead of `vh` units
+
 ## 0.8.5
 
 ### Patch Changes
