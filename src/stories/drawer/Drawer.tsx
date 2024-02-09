@@ -13,8 +13,9 @@ import { Button } from '../button';
 import { RemoveFromDOM } from '../utility/RemoveFromDOM';
 import type { PaginationState } from '../pagination';
 import {
-    ChevronLeft, ChevronRight, Close, Icon,
+    ChevronLeft, ChevronRight, Close, Ellipsis, Icon,
 } from '../icon';
+import { Popover } from '../popover';
 
 export const DrawerSizePresets = ['content', 'default', 'full'] as const;
 
@@ -57,6 +58,11 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
      * An optional panel that will be rendered at the bottom of the Drawer. This is useful for adding a footer to the Drawer with actions.
      */
     bottomPanel?: ReactNode;
+
+    /**
+     * An optional action menu that will be rendered at the top of the Drawer next to the title. This is useful for adding actions to the Drawer. Recommended to use {@link ActionMenu} for the action menu.
+     */
+    actionMenu?: ReactNode;
     /**
      * The direction from which the Drawer will appear.
      */
@@ -118,6 +124,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
     hideTitle = false,
     hideCloseButton = false,
     bottomPanel,
+    actionMenu,
     from = 'right',
     size = 'default',
     pagination,
@@ -132,6 +139,9 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
 
     // Check if pagination is enabled.
     const isPaginated = useMemo(() => Boolean(pagination), [pagination]);
+
+    const hasActionMenu = useMemo(() => Boolean(actionMenu), [actionMenu]);
+    const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
 
     const [loadedPage, setLoadedPage] = useState<string | null>(pagination?.history[0] || null);
 
@@ -232,27 +242,53 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                     </Dialog.Title>
                                 </VisuallyHidden>
 
-                                {/* Close button */}
-                                <RemoveFromDOM
-                                // Hide when requested, or when pagination is enabled (the page navigation bar will render its own close button).
-                                    when={hideCloseButton || isPaginated}
-                                >
-                                    <Button
-                                        kind="tertiary"
-                                        size="small"
-                                        shape="circle"
-                                        onClick={() => onClose(false)}
-                                        startEnhancer={(
-                                            <Icon icon={Close} size={20} />
-                                        )}
-                                        data-title-hidden={hideTitle}
-                                        className={clsx(
-                                            styles.closeButton,
-                                        )}
+                                <div className={styles.titleBarButtons}>
+                                    {/* Action Menu */}
+                                    <RemoveFromDOM when={!hasActionMenu}>
+                                        <Popover
+                                            isOpen={isActionMenuOpen}
+                                            setIsOpen={setIsActionMenuOpen}
+                                            trigger={(
+                                                <Button
+                                                    kind="tertiary"
+                                                    shape="circle"
+                                                    startEnhancer={(
+                                                        <Ellipsis size={20} />
+                                                    )}
+                                                >
+                                                    Action menu
+                                                </Button>
+                                            )}
+                                            align="end"
+                                            containerStyle={{
+                                                zIndex: '11', // +1 of Drawer
+                                            }}
+                                        >
+                                            {actionMenu}
+                                        </Popover>
+                                    </RemoveFromDOM>
+
+                                    {/* Close button */}
+                                    <RemoveFromDOM
+                                        // Hide when requested, or when pagination is enabled (the page navigation bar will render its own close button).
+                                        when={hideCloseButton || isPaginated}
                                     >
-                                        Close dialog
-                                    </Button>
-                                </RemoveFromDOM>
+                                        <Button
+                                            kind="tertiary"
+                                            shape="circle"
+                                            onClick={() => onClose(false)}
+                                            startEnhancer={(
+                                                <Icon icon={Close} size={20} />
+                                            )}
+                                            data-title-hidden={hideTitle}
+                                            className={clsx(
+                                                styles.closeButton,
+                                            )}
+                                        >
+                                            Close dialog
+                                        </Button>
+                                    </RemoveFromDOM>
+                                </div>
 
                                 {/* Pagination Navbar */}
                                 <RemoveFromDOM

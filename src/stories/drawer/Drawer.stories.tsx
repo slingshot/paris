@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { Drawer } from './Drawer';
 import { Button } from '../button';
 import { usePagination } from '../pagination';
+import { ChevronRight, Ellipsis } from '../icon';
+
+import { ActionMenu } from '../actionmenu';
 
 const meta: Meta<typeof Drawer> = {
     title: 'Surfaces/Drawer',
@@ -32,6 +35,17 @@ export const Default: Story = {
                     {...args}
                     isOpen={isOpen}
                     onClose={setIsOpen}
+                    actionMenu={(
+                        <ActionMenu>
+                            <ActionMenu.Item>
+                                Transfer out
+                                <ChevronRight size={13} />
+                            </ActionMenu.Item>
+                            <ActionMenu.Item>
+                                Deposit Check
+                            </ActionMenu.Item>
+                        </ActionMenu>
+                    )}
                 >
                     {args.children}
                 </Drawer>
