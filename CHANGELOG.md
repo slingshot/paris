@@ -1,5 +1,11 @@
 # paris
 
+## 0.8.8
+
+### Patch Changes
+
+- 568588a: menu: refactor and add documention
+
 ## 0.8.7
 
 ### Patch Changes
