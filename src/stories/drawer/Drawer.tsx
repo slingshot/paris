@@ -57,6 +57,11 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
      * An optional panel that will be rendered at the bottom of the Drawer. This is useful for adding a footer to the Drawer with actions.
      */
     bottomPanel?: ReactNode;
+
+    /**
+     * An optional action menu that will be rendered at the top of the Drawer next to the title. This is useful for adding actions to the Drawer. Recommended to use {@link ActionMenu} for the action menu.
+     */
+    additionalActions?: ReactNode;
     /**
      * The direction from which the Drawer will appear.
      */
@@ -122,6 +127,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
     size = 'default',
     pagination,
     overlayStyle = 'blur',
+    additionalActions,
     children,
 }: DrawerProps<T>) => {
     // Check if the drawer is on the x-axis.
@@ -132,6 +138,8 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
 
     // Check if pagination is enabled.
     const isPaginated = useMemo(() => Boolean(pagination), [pagination]);
+
+    const hasAdditionalActions = useMemo(() => Boolean(additionalActions), [additionalActions]);
 
     const [loadedPage, setLoadedPage] = useState<string | null>(pagination?.history[0] || null);
 
@@ -232,27 +240,33 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                     </Dialog.Title>
                                 </VisuallyHidden>
 
-                                {/* Close button */}
-                                <RemoveFromDOM
-                                // Hide when requested, or when pagination is enabled (the page navigation bar will render its own close button).
-                                    when={hideCloseButton || isPaginated}
-                                >
-                                    <Button
-                                        kind="tertiary"
-                                        size="small"
-                                        shape="circle"
-                                        onClick={() => onClose(false)}
-                                        startEnhancer={(
-                                            <Icon icon={Close} size={20} />
-                                        )}
-                                        data-title-hidden={hideTitle}
-                                        className={clsx(
-                                            styles.closeButton,
-                                        )}
+                                <div className={styles.titleBarButtons}>
+                                    {/* Action Menu */}
+                                    <RemoveFromDOM when={!hasAdditionalActions}>
+                                        {additionalActions}
+                                    </RemoveFromDOM>
+
+                                    {/* Close button */}
+                                    <RemoveFromDOM
+                                        // Hide when requested, or when pagination is enabled (the page navigation bar will render its own close button).
+                                        when={hideCloseButton || isPaginated}
                                     >
-                                        Close dialog
-                                    </Button>
-                                </RemoveFromDOM>
+                                        <Button
+                                            kind="tertiary"
+                                            shape="circle"
+                                            onClick={() => onClose(false)}
+                                            startEnhancer={(
+                                                <Icon icon={Close} size={20} />
+                                            )}
+                                            data-title-hidden={hideTitle}
+                                            className={clsx(
+                                                styles.closeButton,
+                                            )}
+                                        >
+                                            Close dialog
+                                        </Button>
+                                    </RemoveFromDOM>
+                                </div>
 
                                 {/* Pagination Navbar */}
                                 <RemoveFromDOM

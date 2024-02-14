@@ -1,9 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+
 import { Drawer } from './Drawer';
 import { Button } from '../button';
+import {
+    Menu, MenuButton, MenuItem, MenuItems,
+} from '../menu';
 import { usePagination } from '../pagination';
+import { ChevronRight, Ellipsis } from '../icon';
 
 const meta: Meta<typeof Drawer> = {
     title: 'Surfaces/Drawer',
@@ -32,6 +37,30 @@ export const Default: Story = {
                     {...args}
                     isOpen={isOpen}
                     onClose={setIsOpen}
+                    additionalActions={(
+                        <Menu as="div">
+                            <MenuButton>
+                                <Button
+                                    kind="tertiary"
+                                    shape="circle"
+                                    startEnhancer={(
+                                        <Ellipsis size={20} />
+                                    )}
+                                >
+                                    Action menu
+                                </Button>
+                            </MenuButton>
+                            <MenuItems position="right">
+                                <MenuItem as="button">
+                                    Dispute
+                                </MenuItem>
+                                <MenuItem as="button">
+                                    Transfer
+                                    <ChevronRight size={20} />
+                                </MenuItem>
+                            </MenuItems>
+                        </Menu>
+                    )}
                 >
                     {args.children}
                 </Drawer>
