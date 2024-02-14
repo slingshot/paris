@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Drawer } from './Drawer';
 import { Button } from '../button';
 import {
-    Menu, MenuButton, MenuItem, MenuItems,
+    Menu,
 } from '../menu';
 import { usePagination } from '../pagination';
 import { ChevronRight, Ellipsis } from '../icon';
@@ -39,7 +39,7 @@ export const Default: Story = {
                     onClose={setIsOpen}
                     additionalActions={(
                         <Menu as="div">
-                            <MenuButton>
+                            <Menu.Button>
                                 <Button
                                     kind="tertiary"
                                     shape="circle"
@@ -49,16 +49,16 @@ export const Default: Story = {
                                 >
                                     Action menu
                                 </Button>
-                            </MenuButton>
-                            <MenuItems position="right">
-                                <MenuItem as="button">
+                            </Menu.Button>
+                            <Menu.Items position="right">
+                                <Menu.Item as="button">
                                     Dispute
-                                </MenuItem>
-                                <MenuItem as="button">
+                                </Menu.Item>
+                                <Menu.Item as="button">
                                     Transfer
                                     <ChevronRight size={20} />
-                                </MenuItem>
-                            </MenuItems>
+                                </Menu.Item>
+                            </Menu.Items>
                         </Menu>
                     )}
                 >

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import {
-    Menu, MenuItem, MenuItems, MenuButton,
+    Menu,
 } from './Menu';
 import { Button } from '../button';
 import { ChevronRight, Ellipsis } from '../icon';
@@ -20,7 +20,7 @@ export const Default: Story = {
     },
     render: (args) => (
         <Menu as="div">
-            <MenuButton>
+            <Menu.Button>
                 <Button
                     kind="tertiary"
                     shape="circle"
@@ -30,16 +30,16 @@ export const Default: Story = {
                 >
                     Action menu
                 </Button>
-            </MenuButton>
-            <MenuItems>
-                <MenuItem as="button">
+            </Menu.Button>
+            <Menu.Items>
+                <Menu.Item as="button">
                     Dispute
-                </MenuItem>
-                <MenuItem as="button">
+                </Menu.Item>
+                <Menu.Item as="button">
                     Transfer
                     <ChevronRight size={20} />
-                </MenuItem>
-            </MenuItems>
+                </Menu.Item>
+            </Menu.Items>
         </Menu>
     ),
 };

@@ -59,7 +59,7 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
     bottomPanel?: ReactNode;
 
     /**
-     * An optional action menu that will be rendered at the top of the Drawer next to the title. This is useful for adding actions to the Drawer. Recommended to use {@link ActionMenu} for the action menu.
+     * An optional area that will be rendered at the top of the Drawer next to the title. This is useful for adding actions to the Drawer. Recommended to use {@link Menu} for an action menu.
      */
     additionalActions?: ReactNode;
     /**
