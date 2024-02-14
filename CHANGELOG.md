@@ -1,5 +1,11 @@
 # paris
 
+## 0.8.7
+
+### Patch Changes
+
+- c0ba653: feat: Add Menu component
+
 ## 0.8.6
 
 ### Patch Changes
