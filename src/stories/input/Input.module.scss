@@ -136,3 +136,9 @@
 .hidden {
     display: none;
 }
+
+.input {
+    &::-webkit-calendar-picker-indicator {
+        display: none;
+    }
+}
