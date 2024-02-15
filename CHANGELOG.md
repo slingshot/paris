@@ -1,5 +1,11 @@
 # paris
 
+## 0.8.9
+
+### Patch Changes
+
+- 0c812a0: input: Remove system end enhancer
+
 ## 0.8.8
 
 ### Patch Changes
