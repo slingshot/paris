@@ -54,6 +54,7 @@
         "./field": "./src/stories/field/index.ts",
         "./icon": "./src/stories/icon/index.ts",
         "./input": "./src/stories/input/index.ts",
+        "./menu": "./src/stories/menu/index.ts",
         "./pagination": "./src/stories/pagination/index.ts",
         "./popover": "./src/stories/popover/index.ts",
         "./select": "./src/stories/select/index.ts",

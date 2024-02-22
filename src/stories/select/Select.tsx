@@ -2,7 +2,9 @@
 
 'use client';
 
-import type { ComponentPropsWithoutRef, ForwardedRef, ReactNode } from 'react';
+import type {
+    CSSProperties, ComponentPropsWithoutRef, ForwardedRef, ReactNode,
+} from 'react';
 import { forwardRef, useId } from 'react';
 import { Listbox, RadioGroup, Transition } from '@headlessui/react';
 import clsx from 'clsx';
@@ -49,6 +51,12 @@ export type SelectProps<T = Record<string, any>> = {
      * @default listbox
      */
     kind?: 'listbox' | 'radio';
+
+    /**
+     * The size of the options dropdown, in pixels. Only applicable to kind="listbox".
+     */
+    maxHeight?: number;
+
     /**
      * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
      */
@@ -90,6 +98,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
     endEnhancer,
     disabled,
     kind = 'listbox',
+    maxHeight = 320,
     overrides,
 }: SelectProps<T>, ref: ForwardedRef<any>) {
     const inputID = useId();
@@ -164,6 +173,9 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                                 overrides?.optionsContainer,
                                 styles.options,
                             )}
+                            style={{
+                                '--options-maxHeight': `${maxHeight}px`,
+                            } as CSSProperties}
                         >
                             {(options || []).map((option) => (
                                 <Listbox.Option

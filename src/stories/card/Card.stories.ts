@@ -27,7 +27,6 @@ export const Default: Story = {
 export const Flat: Story = {
     args: {
         kind: 'flat',
-        tilt: false,
         children: 'Revenue: $3000',
     },
 };

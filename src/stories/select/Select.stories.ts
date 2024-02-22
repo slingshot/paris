@@ -16,7 +16,7 @@ const render: Story['render'] = (args) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [selected, setSelected] = useState<string | null>(null);
     return createElement('div', {
-        style: { minHeight: '200px' },
+        style: { minHeight: '400px' },
     }, createElement(Select, {
         ...args,
         value: selected,
@@ -31,6 +31,18 @@ export const Default: Story = {
         options: [
             { id: '1', node: 'Single' },
             { id: '2', node: 'EP' },
+            { id: '3', node: 'Album (LP)' },
+            { id: '3', node: 'Album (LP)' },
+            { id: '3', node: 'Album (LP)' },
+            { id: '3', node: 'Album (LP)' },
+            { id: '3', node: 'Album (LP)' },
+            { id: '3', node: 'Album (LP)' },
+            { id: '3', node: 'Album (LP)' },
+            { id: '3', node: 'Album (LP)' },
+            { id: '3', node: 'Album (LP)' },
+            { id: '3', node: 'Album (LP)' },
+            { id: '3', node: 'Album (LP)' },
+            { id: '3', node: 'Album (LP)' },
             { id: '3', node: 'Album (LP)' },
         ],
     },
