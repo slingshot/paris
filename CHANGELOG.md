@@ -1,5 +1,11 @@
 # paris
 
+## 0.8.10
+
+### Patch Changes
+
+- e9430ae: misc: Add maxHeight to Select dropdown, fix prop error, add menu to exports
+
 ## 0.8.9
 
 ### Patch Changes
