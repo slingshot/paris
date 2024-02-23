@@ -330,7 +330,7 @@ export const LightTheme: Theme = {
 
         backgroundOverlayLight: 'rgba(255, 255, 255, 0.07)',
         backgroundOverlayXLight: 'rgba(255, 255, 255, 0.1)',
-        backgroundOverlayGrey: 'rgba(175, 175, 175, 0.8)',
+        backgroundOverlayGrey: 'rgba(60, 60, 60, 0.65)',
         backgroundOverlayDark: 'rgba(0, 0, 0, 0.1)',
         backgroundOverlayTeal: 'rgba(29, 238, 205, 0.1)',
 

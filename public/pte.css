@@ -89,7 +89,7 @@
     --pte-colors-backgroundInversePositive: #063717;
     --pte-colors-backgroundOverlayLight: rgba(255, 255, 255, 0.07);
     --pte-colors-backgroundOverlayXLight: rgba(255, 255, 255, 0.1);
-    --pte-colors-backgroundOverlayGrey: rgba(175, 175, 175, 0.8);
+    --pte-colors-backgroundOverlayGrey: rgba(60, 60, 60, 0.65);
     --pte-colors-backgroundOverlayDark: rgba(0, 0, 0, 0.1);
     --pte-colors-backgroundOverlayTeal: rgba(29, 238, 205, 0.1);
     --pte-colors-borderOpaque: #e2e2e2;

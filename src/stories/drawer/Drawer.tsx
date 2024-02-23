@@ -126,7 +126,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
     from = 'right',
     size = 'default',
     pagination,
-    overlayStyle = 'blur',
+    overlayStyle = 'greyed',
     additionalActions,
     children,
 }: DrawerProps<T>) => {

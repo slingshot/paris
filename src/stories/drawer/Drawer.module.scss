@@ -34,7 +34,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     }
 
     &.overlayGreyed {
-        background-color: rgba(175, 175, 175, 0); // Non-transparent backgroundOverlayGrey
+        background-color: rgba(175, 175, 175, 0); // Non-transparent backgroundOverlayGrey (for start animation)
         will-change: background-color, opacity;
     }
 }
