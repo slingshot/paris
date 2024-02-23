@@ -1,5 +1,11 @@
 # paris
 
+## 0.8.11
+
+### Patch Changes
+
+- 28104e0: feat(drawer): Make drawer overlay style default grey and adjust backgroundOverlayGrey color
+
 ## 0.8.10
 
 ### Patch Changes
