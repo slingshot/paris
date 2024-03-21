@@ -27,6 +27,14 @@
         border-bottom: 1px solid var(--pte-colors-borderOpaque);
     }
 
+    tr.empty {
+        border-bottom: none;
+
+        td {
+            padding: 20px 0 0 0;
+        }
+    }
+
     tbody tr.clickable {
         transition: background-color var(--pte-animations-interaction);
 

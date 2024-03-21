@@ -55,6 +55,11 @@ export type TableProps<
      * Whether the rows should be clickable.
      */
     clickableRows?: boolean;
+
+    /**
+     * The content to display when the table is empty.
+     */
+    emptyState?: ReactNode;
     /**
      * Prop overrides for rendered elements.
      */
@@ -87,6 +92,7 @@ export function Table<RowData extends Record<string, any>[]>({
     rowRenderFn,
     onRowClick,
     clickableRows = true,
+    emptyState,
     overrides,
 }: TableProps<RowData>) {
     const id = useId();
@@ -164,6 +170,15 @@ export function Table<RowData extends Record<string, any>[]>({
                 </tr>
             </thead>
             <tbody {...overrides?.tbody}>
+                {renderedRows.length === 0 && emptyState && (
+                    <>
+                        <tr className={styles.empty}>
+                            <td colSpan={columns.length} className={styles.emptyState}>
+                                {emptyState}
+                            </td>
+                        </tr>
+                    </>
+                )}
                 {renderedRows}
             </tbody>
         </table>
