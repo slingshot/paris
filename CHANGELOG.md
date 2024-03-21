@@ -1,5 +1,11 @@
 # paris
 
+## 0.8.12
+
+### Patch Changes
+
+- 9c1955b: Add emptyState render for Table when there are no rows to display
+
 ## 0.8.11
 
 ### Patch Changes
