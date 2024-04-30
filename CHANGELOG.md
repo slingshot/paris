@@ -1,5 +1,11 @@
 # paris
 
+## 0.8.13
+
+### Patch Changes
+
+- 74d5542: A bunch of minor changes and UI adjustments
+
 ## 0.8.12
 
 ### Patch Changes
