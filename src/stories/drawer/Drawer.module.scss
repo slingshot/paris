@@ -4,8 +4,7 @@ $translateOutX: 20%;
 $translateOutY: 60%;
 
 $panelMinMargin: 16px;
-$defaultSize: 360px;
-
+$defaultSize: 360px + $panelMinMargin;
 $panelPaddingX: 20px;
 $panelPaddingY: 20px;
 
@@ -276,7 +275,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 }
 
 .content {
-    padding: 20px 20px 0;
+    padding: 20px;
     overflow-y: scroll;
     height: 100%;
 }
