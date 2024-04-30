@@ -121,6 +121,7 @@ export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = forward
                     aria-label={typeof label === 'string' ? label : props['aria-label']}
                     aria-describedby={`${inputID}-description`}
                     aria-disabled={disabled}
+                    data-status={status}
                     readOnly={disabled}
                     className={clsx(
                         props.className,

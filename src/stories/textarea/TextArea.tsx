@@ -71,6 +71,7 @@ export const TextArea: FC<InputProps & ComponentPropsWithoutRef<'textarea'>> = (
                     aria-disabled={disabled}
                     readOnly={disabled}
                     rows={rows}
+                    data-status={status}
                     className={clsx(
                         props.className,
                         styles.input,

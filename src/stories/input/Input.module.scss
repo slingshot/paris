@@ -98,6 +98,30 @@
         &[type="file"]::-webkit-file-upload-button {
             display: none;
         }
+
+        &[data-status="disabled"] {
+            color: var(--pte-colors-contentDisabled);
+
+            &::placeholder {
+                color: var(--pte-colors-contentDisabled);
+            }
+        }
+    
+        &[data-status="error"] {
+            color: var(--pte-colors-contentNegative);
+
+            &::placeholder {
+                color: var(--pte-colors-contentNegative);
+            }
+        }
+    
+        &[data-status="success"] {
+            color: var(--pte-colors-contentPositive);
+
+            &::placeholder {
+                color: var(--pte-colors-contentPositive);
+            }
+        }
     }
 }
 
