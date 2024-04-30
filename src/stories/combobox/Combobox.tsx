@@ -1,6 +1,6 @@
 'use client';
 
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, CSSProperties, ReactNode } from 'react';
 import { useId, useState } from 'react';
 import { Combobox as HCombobox, Transition } from '@headlessui/react';
 import clsx from 'clsx';
@@ -68,6 +68,10 @@ export type ComboboxProps<T extends Record<string, any>> = {
      */
     customValueString?: string;
     /**
+     * The size of the options dropdown, in pixels. Only applicable to kind="listbox".
+     */
+    maxHeight?: number;
+    /**
      * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
      */
     overrides?: {
@@ -110,6 +114,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
     onInputChange,
     allowCustomValue,
     customValueString = 'Create "%v"',
+    maxHeight = 320,
     overrides,
 }: ComboboxProps<T>) {
     const inputID = useId();
@@ -224,6 +229,9 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                             overrides?.optionsContainer,
                             styles.options,
                         )}
+                        style={{
+                            '--options-maxHeight': `${maxHeight}px`,
+                        } as CSSProperties}
                     >
                         {(allowCustomValue && query.length > 0) && (
                             <HCombobox.Option
