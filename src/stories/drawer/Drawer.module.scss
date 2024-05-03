@@ -206,7 +206,6 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     //padding: $panelPaddingY $panelPaddingX;
     background-color: var(--pte-colors-backgroundPrimary);
     overflow: auto;
-    border: 1px solid transparent;
 
     display: flex;
     flex-direction: column;
@@ -256,7 +255,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     align-items: center;
 
     border-bottom: 1px solid var(--pte-colors-borderOpaque);
-    padding: 20px;
+    padding: 14px 16px;
 }
 
 .titleBarButtons {

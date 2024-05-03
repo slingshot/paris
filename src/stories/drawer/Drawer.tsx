@@ -327,7 +327,6 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                         <Button
                                             kind="tertiary"
                                             shape="circle"
-                                            size="small"
                                             onClick={() => onClose(false)}
                                             startEnhancer={(
                                                 <Icon icon={Close} size={20} />
