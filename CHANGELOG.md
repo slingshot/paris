@@ -1,5 +1,11 @@
 # paris
 
+## 0.8.14
+
+### Patch Changes
+
+- effd11c: Adjust height of drawer header to design
+
 ## 0.8.13
 
 ### Patch Changes
