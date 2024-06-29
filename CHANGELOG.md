@@ -1,5 +1,11 @@
 # paris
 
+## 0.8.15
+
+### Patch Changes
+
+- 5e230d9: Add 'new' variant Tag
+
 ## 0.8.14
 
 ### Patch Changes
