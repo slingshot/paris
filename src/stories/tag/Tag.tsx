@@ -7,7 +7,7 @@ export type TagProps = {
     /** The size of the Tag. */
     size?: 'normal' | 'compact';
     /** The kind of Tag. */
-    kind?: 'default' | 'secondary' | 'positive' | 'warning' | 'negative';
+    kind?: 'default' | 'secondary' | 'positive' | 'warning' | 'negative' | 'new';
     /** The contents of the Tag. */
     children: ReactNode;
 };

@@ -30,3 +30,11 @@ export const Compact: Story = {
         kind: 'negative',
     },
 };
+
+export const New: Story = {
+    args: {
+        children: 'New',
+        size: 'compact',
+        kind: 'new',
+    },
+};
