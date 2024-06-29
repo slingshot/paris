@@ -1,5 +1,11 @@
 # paris
 
+## 0.8.16
+
+### Patch Changes
+
+- 616d1e6: fix: Remove New Tag styling and add teal700
+
 ## 0.8.15
 
 ### Patch Changes
