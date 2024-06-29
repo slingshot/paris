@@ -44,9 +44,3 @@
     color: var(--pte-colors-contentNegative);
     border-color: var(--pte-colors-contentNegative);
 }
-
-.new {
-    border: 1px solid var(--pte-colors-borderAccent);
-    background-color: var(--pte-tokens-colors-teal200);
-    box-shadow: 0px 0px 10px 0px color-mix(in srgb, var(--pte-colors-contentAccent) 30%, transparent);
-}

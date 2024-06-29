@@ -23,6 +23,7 @@ export const Colors = {
     grey100: '#eeeeee',
     grey50: '#f6f6f6',
 
+    teal700: '#004136',
     teal600: '#18b199',
     teal500: '#1ad4b6',
     teal400: '#1deecd',
