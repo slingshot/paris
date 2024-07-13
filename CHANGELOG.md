@@ -1,5 +1,14 @@
 # paris
 
+## 0.8.17
+
+### Patch Changes
+
+- c1fd99a: feat(Tag): Add new Tag styling
+- c1fd99a: feat: Update menu component to support new feature styling
+- c1fd99a: chore: Update README typo
+- c1fd99a: feat(Button): Add notification dot support
+
 ## 0.8.16
 
 ### Patch Changes
