@@ -49,4 +49,25 @@
     &:hover {
         background-color: var(--pte-colors-backgroundSecondary);
     }
+    
+    @keyframes gradientFlow {
+        0% {
+            background-position: 0%;
+        }
+        100% {
+            background-position: 125%;
+        }
+    }
+}
+
+.newItem {
+    background: radial-gradient(circle, rgba(20,239,172,0.2) 0%, rgba(38,237,237,0.05) 75%);
+    background-size: 150% 100%;
+    animation: gradientFlow 2.5s ease-in-out infinite alternate;
+    background-position: 0%;
+
+    &:hover {
+        background-color: unset;
+        animation-play-state: paused;
+    }
 }

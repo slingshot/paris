@@ -13,6 +13,7 @@ import type { Enhancer } from '../../types/Enhancer';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 import { pvar } from '../theme';
 import { Spinner } from '../icon';
+import { NotificationDot } from '../icon/NotificationDot';
 
 const EnhancerSizes = {
     large: 13,
@@ -104,6 +105,8 @@ export type ButtonProps = {
      * This should be text. When Button shape is `circle` or `square`, the action description should still be passed here for screen readers.
      */
     children?: ReactNode | ReactNode[];
+
+    displayNotificationDot?: boolean;
 } & Omit<AriaButtonProps, 'children' | 'disabled' | 'onClick'>;
 
 /**
@@ -133,6 +136,7 @@ export const Button: FC<ButtonProps> = ({
     disabled,
     loading,
     href,
+    displayNotificationDot = false,
     ...props
 }) => (
     <AriaButton
@@ -145,6 +149,7 @@ export const Button: FC<ButtonProps> = ({
             '--pte-colors-backgroundTertiary': theme ? ButtonThemes[theme].secondary : colors?.secondary,
         } as CSSProperties : {}}
         className={clsx(
+            'relative',
             styles.button,
             styles[kind],
             styles[shape],
@@ -188,6 +193,11 @@ export const Button: FC<ButtonProps> = ({
                 enhancer={endEnhancer}
                 size={EnhancerSizes[size]}
             />
+        )}
+        {!!displayNotificationDot && (
+            <div className="absolute top-0 right-0">
+                <NotificationDot size={8} />
+            </div>
         )}
     </AriaButton>
 );

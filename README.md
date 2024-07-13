@@ -4,7 +4,7 @@ Paris is Slingshot's React design system, meant to work universally across serve
 
 Currently, Paris is provided as a set of *unbundled* `.tsx` components styled with SCSS modules. This means that you can import only the components you need, and you can use your own bundler to optimize your bundle size. As a result, Paris works best with frameworks like Next.js that have built-in support for TypeScript and SCSS modules.
 
-Paris 1.x styling is heavily inspired by Uber's [Base Web](https://baseweb.design), which we previously used in our production apps. We built Paris because to move away from Styletron and CSS-in-JS, since we're now largely working with React 18, RSC, and the Next.js `app` directory.
+Paris 1.x styling is heavily inspired by Uber's [Base Web](https://baseweb.design), which we previously used in our production apps. We built Paris to move away from Styletron and CSS-in-JS, since we're now largely working with React 18, RSC, and the Next.js `app` directory.
 
 <br />
 

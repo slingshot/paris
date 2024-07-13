@@ -31,9 +31,11 @@ export const Menu: FC<MenuProps<React.ElementType>> & {
     Items: FC<MenuItemsProps<React.ElementType> & {
         position?: 'left' | 'right';
     }>;
-    Item: FC<MenuItemProps<React.ElementType>>;
+    Item: FC<MenuItemProps<React.ElementType> & {
+        isNew?: boolean;
+    }>;
 } = ({ className, children, ...props }) => (
-    <HeadlessMenu as="div" className={clsx(className, styles.menu)} {...props}>
+    <HeadlessMenu as="div" className={clsx(styles.menu, className)} {...props}>
         {children}
     </HeadlessMenu>
 );
@@ -44,7 +46,7 @@ export const Menu: FC<MenuProps<React.ElementType>> & {
  * Should be used inside a `Menu` component to serve as the toggle for `MenuItems`.
  */
 Menu.Button = ({ className, children, ...props }) => (
-    <HeadlessMenu.Button className={clsx(className, styles.menuButton)} {...props}>
+    <HeadlessMenu.Button className={clsx(styles.menuButton, className)} {...props}>
         {children}
     </HeadlessMenu.Button>
 );
@@ -59,7 +61,7 @@ Menu.Button = ({ className, children, ...props }) => (
 Menu.Items = ({
     className, children, position = 'left', ...props
 }) => (
-    <HeadlessMenu.Items className={clsx(className, styles.menuItems, position === 'left' && styles.leftPosition, position === 'right' && styles.rightPosition)} {...props}>
+    <HeadlessMenu.Items className={clsx(styles.menuItems, position === 'left' && styles.leftPosition, position === 'right' && styles.rightPosition, className)} {...props}>
         {children}
     </HeadlessMenu.Items>
 );
@@ -69,9 +71,12 @@ Menu.Items = ({
  *
  * Should be used inside `MenuItems` to represent selectable options in the menu.
  *
+ * @param isNew - Whether the menu items should be styled as new items.
  */
-Menu.Item = ({ className, children, ...props }) => (
-    <HeadlessMenu.Item className={clsx(className, styles.menuItem)} {...props}>
+Menu.Item = ({
+    className, children, isNew = false, ...props
+}) => (
+    <HeadlessMenu.Item className={clsx(styles.menuItem, isNew && styles.newItem, className)} {...props}>
         {children}
     </HeadlessMenu.Item>
 );
