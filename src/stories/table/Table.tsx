@@ -42,7 +42,7 @@ export type TableProps<
      *
      * The function should return an object containing a property named `key` for the row's React key (should be a unique id), and a property named `nodes` containing an array of React nodes to be rendered as cells in the row.
      * @param row - The data for the row being rendered.
-     * @returns An object containing a property named `key` for the row's React key (should be a unique id), and a property named `nodes` containing an array of React nodes to be rendered as cells in the row.
+     * @returns An object containing a property named `key` for the row's React key (should be a unique id), and a property named `cells` containing an array of React nodes to be rendered as cells in the row.
      * @see RowRenderData
      */
     rowRenderFn?: (row: RowData[number]) => RowRenderData;
