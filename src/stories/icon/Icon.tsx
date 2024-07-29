@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, NamedExoticComponent } from 'react';
+import type { ComponentPropsWithoutRef, ElementType, NamedExoticComponent } from 'react';
 import { createElement, memo } from 'react';
 
 export type IconDefinitionProps = {
@@ -9,7 +9,7 @@ export type IconDefinitionProps = {
 };
 export type IconDefinition = NamedExoticComponent<IconDefinitionProps>;
 
-export type IconProps<T extends keyof JSX.IntrinsicElements = 'span'> = IconDefinitionProps & {
+export type IconProps<T extends ElementType = 'span'> = IconDefinitionProps & {
     icon: IconDefinition;
     as?: T;
     overrides?: {
@@ -31,7 +31,7 @@ export type IconProps<T extends keyof JSX.IntrinsicElements = 'span'> = IconDefi
 * ```
 * @constructor
 */
-export const Icon = memo<IconProps>(({
+export const Icon = memo<IconProps<ElementType>>(({
     as = 'span',
     icon,
     size,

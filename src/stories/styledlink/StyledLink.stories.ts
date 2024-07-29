@@ -12,12 +12,17 @@ type Story = StoryObj<typeof StyledLink>;
 
 export const Default: Story = {
     args: {
-        children: 'Hello world! This is a new StyledLink component.',
+        href: 'https://slingshot.fm',
+        target: '_blank',
+        children: 'Hello world! This is a styled link.',
     },
 };
 
-export const Secondary: Story = {
+export const AsButton: Story = {
     args: {
-        children: 'Hello world! This is a secondary component.',
+        as: 'button',
+        // eslint-disable-next-line no-alert
+        onClick: () => alert('Hello world!'),
+        children: 'Hello world! This is a StyledLink rendered as a button.',
     },
 };

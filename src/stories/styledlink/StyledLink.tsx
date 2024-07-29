@@ -24,7 +24,7 @@ export type StyledLinkProps<T extends ElementType = 'a'> = {
  * ```
  * @constructor
  */
-export const StyledLink: FC<StyledLinkProps> = ({
+export const StyledLink: FC<StyledLinkProps<ElementType>> = ({
     as = 'a',
     children,
     className,
