@@ -1,5 +1,11 @@
 # paris
 
+## 0.8.19
+
+### Patch Changes
+
+- 9ef8cb0: Menu: add z-index for MenuItems
+
 ## 0.8.18
 
 ### Patch Changes
