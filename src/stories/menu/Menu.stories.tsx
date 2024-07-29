@@ -6,7 +6,7 @@ import { Button } from '../button';
 import { ChevronRight, Ellipsis } from '../icon';
 
 const meta: Meta<typeof Menu> = {
-    title: 'Uncategorized/Menu',
+    title: 'Surfaces/Menu',
     component: Menu,
     tags: ['autodocs'],
 };
