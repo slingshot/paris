@@ -1,5 +1,14 @@
 # paris
 
+## 0.8.18
+
+### Patch Changes
+
+- 3a29baf: Menu: update category
+- e9d24cf: Icon: fix typings for `as` prop
+- e9d24cf: StyledLink: fix typings for `as` prop
+- 9b29f1d: Table: update docs to mention `cells` instead of `nodes` for `rowRenderFn`
+
 ## 0.8.17
 
 ### Patch Changes
