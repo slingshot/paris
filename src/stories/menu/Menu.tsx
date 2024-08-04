@@ -1,11 +1,13 @@
-import type { FC, ReactNode } from 'react';
+import type { FC } from 'react';
+import { Fragment, ReactNode } from 'react';
 import type {
     MenuProps, MenuItemsProps, MenuItemProps, MenuButtonProps,
 } from '@headlessui/react';
-import { Menu as HeadlessMenu } from '@headlessui/react';
+import { Menu as HeadlessMenu, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 
 import styles from './Menu.module.scss';
+import dropdownStyles from '../utility/Dropdown.module.scss';
 
 export { Menu as HeadlessMenu } from '@headlessui/react';
 
@@ -61,9 +63,19 @@ Menu.Button = ({ className, children, ...props }) => (
 Menu.Items = ({
     className, children, position = 'left', ...props
 }) => (
-    <HeadlessMenu.Items className={clsx(styles.menuItems, position === 'left' && styles.leftPosition, position === 'right' && styles.rightPosition, className)} {...props}>
-        {children}
-    </HeadlessMenu.Items>
+    <Transition
+        as={Fragment}
+        enter={dropdownStyles.transition}
+        enterFrom={dropdownStyles.enterFrom}
+        enterTo={dropdownStyles.enterTo}
+        leave={dropdownStyles.transition}
+        leaveFrom={dropdownStyles.leaveFrom}
+        leaveTo={dropdownStyles.leaveTo}
+    >
+        <HeadlessMenu.Items className={clsx(styles.menuItems, position === 'left' && styles.leftPosition, position === 'right' && styles.rightPosition, className)} {...props}>
+            {children}
+        </HeadlessMenu.Items>
+    </Transition>
 );
 
 /**

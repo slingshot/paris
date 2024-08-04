@@ -111,7 +111,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 .simple {
     border-radius: var(--pte-borders-radius-rounded);
     background: var(--pte-colors-backgroundPrimary);
-    border: 1px solid var(--pte-borders-dropdown-color);
+    border: var(--pte-borders-dropdown-border);
     backdrop-filter: var(--pte-surfaces-dialog-backdropFilter);
     outline: none;
     box-shadow: var(--pte-lighting-shallowBelow);

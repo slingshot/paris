@@ -204,6 +204,7 @@ export type Theme = {
         dropdown: {
             color: CSSColor,
             shadow: ShadowDefinition,
+            border: `${number}px ${string} ${CSSColor}` | 'none',
         },
     },
     surfaces: {
@@ -502,6 +503,7 @@ export const LightTheme: Theme = {
         dropdown: {
             shadow: Shadows.deepBelow,
             color: 'transparent',
+            border: 'none',
         },
     },
     surfaces: {
@@ -570,6 +572,7 @@ export const DarkTheme: Theme = merge(LightTheme, {
         dropdown: {
             shadow: 'none',
             color: T.colors.grey600,
+            border: `1px solid ${T.colors.grey600}`,
         },
     },
     surfaces: {

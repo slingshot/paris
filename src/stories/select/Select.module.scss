@@ -35,10 +35,8 @@
 
     background-color: var(--pte-colors-backgroundPrimary);
 
-    border-width: 1px;
-    border-style: solid;
+    border: var(--pte-borders-dropdown-border);
     border-radius: var(--pte-borders-radius-rectangle);
-    border-color: var(--pte-borders-dropdown-color);
     box-shadow: var(--pte-borders-dropdown-shadow);
 
     transition: var(--pte-animations-interaction);
