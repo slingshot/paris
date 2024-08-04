@@ -37,9 +37,7 @@
         "release": "pnpm generate:exports && pnpm changeset publish",
         "prepare": "husky install"
     },
-    "engines": {
-        "pnpm": "^8.x"
-    },
+    "packageManager": "pnpm@8.15.5",
     "exports": {
         "./*": "./src/stories/*",
         "./accordion": "./src/stories/accordion/index.ts",
