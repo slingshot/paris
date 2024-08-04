@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from 'react';
-import { useId } from 'react';
+import { useRef, useId } from 'react';
 import * as RadixCheckbox from '@radix-ui/react-checkbox';
 import clsx from 'clsx';
 import styles from './Checkbox.module.scss';
@@ -35,10 +35,8 @@ export const Checkbox: FC<CheckboxProps> = ({
 }) => {
     const inputID = useId();
     return (
-        // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions
         <label
             htmlFor={inputID}
-            onClick={() => onChange?.(!checked)}
             className={clsx(styles.container, disabled && styles.disabled, className)}
             {...props}
         >
