@@ -1,5 +1,12 @@
 # paris
 
+## 0.8.20
+
+### Patch Changes
+
+- beb687f: Menu: add animations for menu items
+- beb687f: Dropdowns: Light mode border style fixes
+
 ## 0.8.19
 
 ### Patch Changes
