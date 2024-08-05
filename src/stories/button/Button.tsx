@@ -137,6 +137,7 @@ export const Button: FC<ButtonProps> = ({
     loading,
     href,
     displayNotificationDot = false,
+    style,
     ...props
 }) => (
     <AriaButton
@@ -147,9 +148,9 @@ export const Button: FC<ButtonProps> = ({
             '--pte-colors-backgroundInverseTertiary': theme ? ButtonThemes[theme].secondary : colors?.secondary,
             '--pte-colors-contentPrimary': theme ? ButtonThemes[theme].primary : colors?.primary,
             '--pte-colors-backgroundTertiary': theme ? ButtonThemes[theme].secondary : colors?.secondary,
-        } as CSSProperties : {}}
+            ...style,
+        } as CSSProperties : style}
         className={clsx(
-            'relative',
             styles.button,
             styles[kind],
             styles[shape],
