@@ -4,6 +4,7 @@ import * as RadixCheckbox from '@radix-ui/react-checkbox';
 import clsx from 'clsx';
 import styles from './Checkbox.module.scss';
 import { pvar } from '../theme';
+import { TextWhenString } from '../utility';
 
 export type CheckboxProps = {
     checked?: boolean;
@@ -56,7 +57,9 @@ export const Checkbox: FC<CheckboxProps> = ({
                     </svg>
                 </RadixCheckbox.Indicator>
             </RadixCheckbox.Root>
-            {children}
+            <TextWhenString kind="paragraphXSmall">
+                {children}
+            </TextWhenString>
         </label>
     );
 };
