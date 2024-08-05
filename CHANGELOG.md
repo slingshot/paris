@@ -1,5 +1,13 @@
 # paris
 
+## 0.8.21
+
+### Patch Changes
+
+- 5d2f644: Checkbox: fix label onClick
+- 1476e89: Checkbox: default to `ParagraphXSmall` text styling for label when string is passed
+- ed42d02: Button: honor passed `style` prop
+
 ## 0.8.20
 
 ### Patch Changes
