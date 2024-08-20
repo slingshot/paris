@@ -68,7 +68,6 @@ export const Field: FC<PropsWithChildren<FieldProps>> = ({
             // className,
         )}
         onClick={(e) => {
-            e.preventDefault();
             if (typeof window !== 'undefined' && htmlFor) {
                 const input = document.getElementById(htmlFor);
                 if (input && !disabled) {
