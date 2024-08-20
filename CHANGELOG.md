@@ -1,5 +1,11 @@
 # paris
 
+## 0.8.22
+
+### Patch Changes
+
+- 0243ccb: fix(Field): Remove stopPropagation on Field component
+
 ## 0.8.21
 
 ### Patch Changes
