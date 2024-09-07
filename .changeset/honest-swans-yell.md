@@ -2,4 +2,4 @@
 "paris": minor
 ---
 
-Update to new color organization
+Theme: Revamped tokens and variables with updated structures, plus new materials and blurs

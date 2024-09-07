@@ -19,7 +19,19 @@ export type FontClassDefinition = Omit<FontDefinition, 'fontSize' | 'lineHeight'
 
 export type ShadowDefinition = `${PixelSize} ${PixelSize} ${PixelSize} ${PixelSize} ${CSSColor}` | 'none';
 
-const Shadows = {
+export type ShadowsType = {
+    shallowAbove: ShadowDefinition,
+    deepAbove: ShadowDefinition,
+    shallowBelow: ShadowDefinition,
+    deepBelow: ShadowDefinition,
+    shallowLeft: ShadowDefinition,
+    shallowRight: ShadowDefinition,
+    subtlePopup: ShadowDefinition,
+    shallowPopup: ShadowDefinition,
+    deepPopup: ShadowDefinition,
+};
+
+const Shadows: ShadowsType = {
     shallowAbove: '0px -4px 20px 0px rgba(0, 0, 0, 0.2)',
     deepAbove: '0px -8px 20px 0px rgba(0, 0, 0, 0.2)',
     shallowBelow: '0px 4px 20px 0px rgba(0, 0, 0, 0.2)',
@@ -29,14 +41,15 @@ const Shadows = {
     subtlePopup: '0px 0px 10px 0px rgba(0, 0, 0, 0.1)',
     shallowPopup: '0px 0px 30px 0px rgba(0, 0, 0, 0.2)',
     deepPopup: '0px 0px 40px 0px rgba(0, 0, 0, 0.2)',
-} as const;
+};
 
-const ShadowsDark = {
+const ShadowsDark: ShadowsType = {
+    ...Shadows,
     deepBelow: '0px 20px 30px 10px rgba(0, 0, 0, 0.5)',
     shallowLeft: '-20px 0px 60px 20px rgba(0, 0, 0, 0.25)',
     shallowRight: '20px 0px 60px 20px rgba(0, 0, 0, 0.25)',
     deepPopup: '0px 0px 40px 15px rgba(0, 0, 0, 0.35)',
-} as const;
+};
 
 export type TimingFunction = `cubic-bezier(${number}, ${number}, ${number}, ${number})` | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear';
 export type Duration = `${number}ms` | `${number}s`;
@@ -52,7 +65,7 @@ const TimingFunctions: Omit<Theme['animations']['timing'], 'default'> = {
 
 export type Theme = {
     new: {
-        tokens: TokensT,
+        tokens: TokensT['new'],
         utils: {
             defaultUserSelect: Property.UserSelect,
         }
@@ -594,74 +607,74 @@ export const ParagraphFontClass: FontClassDefinition = {
 
 export const LightTheme: Theme = {
     new: {
-        tokens: T,
+        tokens: T.new,
         utils: {
             defaultUserSelect: 'none',
         },
         colors: {
             // Content
-            contentPrimary: T.colors.new.grey2400,
-            contentSecondary: T.colors.new.grey1600,
-            contentTertiary: T.colors.new.grey1400,
-            contentDisabled: T.colors.new.grey1100,
-            contentAccent: T.colors.new.teal400,
-            contentNegative: T.colors.new.red400,
-            contentWarning: T.colors.new.yellow500,
-            contentPositive: T.colors.new.green400,
+            contentPrimary: T.new.colors.grey2400,
+            contentSecondary: T.new.colors.grey1600,
+            contentTertiary: T.new.colors.grey1400,
+            contentDisabled: T.new.colors.grey1100,
+            contentAccent: T.new.colors.teal400,
+            contentNegative: T.new.colors.red400,
+            contentWarning: T.new.colors.yellow500,
+            contentPositive: T.new.colors.green400,
 
             // Content Inverse
-            contentInversePrimary: T.colors.new.white,
-            contentInverseSecondary: T.colors.new.grey600,
-            contentInverseTertiary: T.colors.new.grey1000,
-            contentInverseDisabled: T.colors.new.grey1400,
+            contentInversePrimary: T.new.colors.white,
+            contentInverseSecondary: T.new.colors.grey600,
+            contentInverseTertiary: T.new.colors.grey1000,
+            contentInverseDisabled: T.new.colors.grey1400,
 
             // Background
-            backgroundPrimary: T.colors.new.white,
-            backgroundSecondary: T.colors.new.grey100,
-            backgroundMobilePrimary: T.colors.new.white,
-            backgroundMobileSecondary: T.colors.new.grey100,
-            backgroundNegative: T.colors.new.red100,
-            backgroundNegativeMedium: T.colors.new.red200,
-            backgroundNegativeStrong: T.colors.new.red300,
-            backgroundWarning: T.colors.new.yellow100,
-            backgroundWarningMedium: T.colors.new.yellow200,
-            backgroundWarningStrong: T.colors.new.yellow300,
-            backgroundPositive: T.colors.new.green100,
-            backgroundPositiveMedium: T.colors.new.green200,
-            backgroundPositiveStrong: T.colors.new.green300,
-            backgroundAccent: T.colors.new.teal100,
-            backgroundAccentMedium: T.colors.new.teal200,
-            backgroundAccentStrong: T.colors.new.teal300,
+            backgroundPrimary: T.new.colors.white,
+            backgroundSecondary: T.new.colors.grey100,
+            backgroundMobilePrimary: T.new.colors.white,
+            backgroundMobileSecondary: T.new.colors.grey100,
+            backgroundNegative: T.new.colors.red100,
+            backgroundNegativeMedium: T.new.colors.red200,
+            backgroundNegativeStrong: T.new.colors.red300,
+            backgroundWarning: T.new.colors.yellow100,
+            backgroundWarningMedium: T.new.colors.yellow200,
+            backgroundWarningStrong: T.new.colors.yellow300,
+            backgroundPositive: T.new.colors.green100,
+            backgroundPositiveMedium: T.new.colors.green200,
+            backgroundPositiveStrong: T.new.colors.green300,
+            backgroundAccent: T.new.colors.teal100,
+            backgroundAccentMedium: T.new.colors.teal200,
+            backgroundAccentStrong: T.new.colors.teal300,
 
             // Surface
-            surfacePrimary: T.colors.new.white,
-            surfaceSecondary: T.colors.new.grey200,
-            surfaceTertiary: T.colors.new.grey400,
-            surfaceQuaternary: T.colors.new.grey100,
+            surfacePrimary: T.new.colors.white,
+            surfaceSecondary: T.new.colors.grey200,
+            surfaceTertiary: T.new.colors.grey400,
+            surfaceQuaternary: T.new.colors.grey100,
 
             // Border
-            borderSubtle: T.colors.new.grey400,
-            borderMedium: T.colors.new.grey600,
-            borderStrong: T.colors.new.grey700,
-            borderUltrastrong: T.colors.new.grey1400,
+            borderSubtle: T.new.colors.grey400,
+            borderMedium: T.new.colors.grey600,
+            borderStrong: T.new.colors.grey700,
+            borderUltrastrong: T.new.colors.grey1400,
 
             // Button
-            buttonFill: T.colors.new.grey2400,
-            buttonFillHover: T.colors.new.grey1900,
-            buttonFillDisabled: T.colors.new.grey500,
-            buttonFillHoverAlt: T.colors.new.grey300,
-            buttonFillHoverNegative: T.colors.new.red100,
-            buttonBorder: T.colors.new.grey2400,
-            buttonBorderDisabled: T.colors.new.grey1000,
-            buttonBorderNegative: T.colors.new.red400,
+            buttonFill: T.new.colors.grey2400,
+            buttonFillHover: T.new.colors.grey1900,
+            buttonFillDisabled: T.new.colors.grey500,
+            buttonFillHoverAlt: T.new.colors.grey300,
+            buttonFillHoverNegative: T.new.colors.red100,
+            buttonBorder: T.new.colors.grey2400,
+            buttonBorderDisabled: T.new.colors.grey1000,
+            buttonBorderNegative: T.new.colors.red400,
 
             // Input
-            inputFill: T.colors.new.grey300,
-            inputFillFocus: T.colors.new.grey400,
-            inputFillNegative: T.colors.new.red100,
-            inputFillDisabled: T.colors.new.grey200,
-            inputBorderFocus: T.colors.new.grey1400,
-            inputBorderNegative: T.colors.new.red400,
+            inputFill: T.new.colors.grey300,
+            inputFillFocus: T.new.colors.grey400,
+            inputFillNegative: T.new.colors.red100,
+            inputFillDisabled: T.new.colors.grey200,
+            inputBorderFocus: T.new.colors.grey1400,
+            inputBorderNegative: T.new.colors.red400,
 
             // Overlay
             overlaySubtle: 'rgba(0, 0, 0, 0.02)',
@@ -1233,62 +1246,62 @@ export const DarkTheme: Theme = merge(LightTheme, {
     new: {
         colors: {
             // Content
-            contentPrimary: T.colors.new.grey200,
-            contentSecondary: T.colors.new.grey800,
-            contentTertiary: T.colors.new.grey1000,
-            contentDisabled: T.colors.new.grey1300,
+            contentPrimary: T.new.colors.grey200,
+            contentSecondary: T.new.colors.grey800,
+            contentTertiary: T.new.colors.grey1000,
+            contentDisabled: T.new.colors.grey1300,
 
-            contentInversePrimary: T.colors.new.grey2400,
-            contentInverseSecondary: T.colors.new.grey1600,
-            contentInverseTertiary: T.colors.new.grey1400,
-            contentInverseDisabled: T.colors.new.grey1000,
+            contentInversePrimary: T.new.colors.grey2400,
+            contentInverseSecondary: T.new.colors.grey1600,
+            contentInverseTertiary: T.new.colors.grey1400,
+            contentInverseDisabled: T.new.colors.grey1000,
 
             // Background
-            backgroundPrimary: T.colors.new.grey2400,
-            backgroundSecondary: T.colors.new.grey2200,
-            backgroundMobilePrimary: T.colors.new.black,
-            backgroundMobileSecondary: T.colors.new.grey2300,
-            backgroundNegative: T.colors.new.red800,
-            backgroundNegativeMedium: T.colors.new.red700,
-            backgroundNegativeStrong: T.colors.new.red600,
-            backgroundWarning: T.colors.new.yellow800,
-            backgroundWarningMedium: T.colors.new.yellow700,
-            backgroundWarningStrong: T.colors.new.yellow600,
-            backgroundPositive: T.colors.new.green800,
-            backgroundPositiveMedium: T.colors.new.green700,
-            backgroundPositiveStrong: T.colors.new.green600,
-            backgroundAccent: T.colors.new.teal800,
-            backgroundAccentMedium: T.colors.new.teal700,
-            backgroundAccentStrong: T.colors.new.teal600,
+            backgroundPrimary: T.new.colors.grey2400,
+            backgroundSecondary: T.new.colors.grey2200,
+            backgroundMobilePrimary: T.new.colors.black,
+            backgroundMobileSecondary: T.new.colors.grey2300,
+            backgroundNegative: T.new.colors.red800,
+            backgroundNegativeMedium: T.new.colors.red700,
+            backgroundNegativeStrong: T.new.colors.red600,
+            backgroundWarning: T.new.colors.yellow800,
+            backgroundWarningMedium: T.new.colors.yellow700,
+            backgroundWarningStrong: T.new.colors.yellow600,
+            backgroundPositive: T.new.colors.green800,
+            backgroundPositiveMedium: T.new.colors.green700,
+            backgroundPositiveStrong: T.new.colors.green600,
+            backgroundAccent: T.new.colors.teal800,
+            backgroundAccentMedium: T.new.colors.teal700,
+            backgroundAccentStrong: T.new.colors.teal600,
 
             // Surface
-            surfacePrimary: T.colors.new.grey2000,
-            surfaceSecondary: T.colors.new.grey2100,
-            surfaceTertiary: T.colors.new.grey2200,
-            surfaceQuaternary: T.colors.new.grey1900,
+            surfacePrimary: T.new.colors.grey2000,
+            surfaceSecondary: T.new.colors.grey2100,
+            surfaceTertiary: T.new.colors.grey2200,
+            surfaceQuaternary: T.new.colors.grey1900,
 
             // Border
-            borderSubtle: T.colors.new.grey2000,
-            borderMedium: T.colors.new.grey1700,
-            borderStrong: T.colors.new.grey1600,
-            borderUltrastrong: T.colors.new.grey900,
+            borderSubtle: T.new.colors.grey2000,
+            borderMedium: T.new.colors.grey1700,
+            borderStrong: T.new.colors.grey1600,
+            borderUltrastrong: T.new.colors.grey900,
 
             // Button
-            buttonFill: T.colors.new.grey200,
-            buttonFillHover: T.colors.new.grey400,
-            buttonFillDisabled: T.colors.new.grey1700,
-            buttonFillHoverAlt: T.colors.new.grey2000,
-            buttonFillHoverNegative: T.colors.new.red800,
-            buttonBorder: T.colors.new.grey100,
-            buttonBorderDisabled: T.colors.new.grey1400,
-            buttonBorderNegative: T.colors.new.red400,
+            buttonFill: T.new.colors.grey200,
+            buttonFillHover: T.new.colors.grey400,
+            buttonFillDisabled: T.new.colors.grey1700,
+            buttonFillHoverAlt: T.new.colors.grey2000,
+            buttonFillHoverNegative: T.new.colors.red800,
+            buttonBorder: T.new.colors.grey100,
+            buttonBorderDisabled: T.new.colors.grey1400,
+            buttonBorderNegative: T.new.colors.red400,
 
             // Input
-            inputFill: T.colors.new.grey2200,
-            inputFillFocus: T.colors.new.grey2300,
-            inputFillNegative: T.colors.new.red800,
-            inputFillDisabled: T.colors.new.grey2100,
-            inputBorderFocus: T.colors.new.grey900,
+            inputFill: T.new.colors.grey2200,
+            inputFillFocus: T.new.colors.grey2300,
+            inputFillNegative: T.new.colors.red800,
+            inputFillDisabled: T.new.colors.grey2100,
+            inputBorderFocus: T.new.colors.grey900,
 
             // Overlay
             overlaySubtle: 'rgba(255, 255, 255, 0.03)',
@@ -1335,8 +1348,8 @@ export const DarkTheme: Theme = merge(LightTheme, {
         borders: {
             dropdown: {
                 shadow: 'none',
-                color: T.colors.new.grey1600,
-                border: `1px solid ${T.colors.new.grey1600}`,
+                color: T.new.colors.grey1600,
+                border: `1px solid ${T.new.colors.grey1600}`,
             },
         },
         surfaces: {
