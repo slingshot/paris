@@ -17,7 +17,7 @@ export const Default: Story = {
         description: 'Description.',
         children: createElement('div', {
             style: {
-                backgroundColor: 'var(--pte-colors-backgroundSecondary)',
+                backgroundColor: 'var(--pte-new-colors-inputFill)',
                 height: '36px',
                 width: '100%',
                 display: 'flex',
@@ -27,6 +27,6 @@ export const Default: Story = {
                 paddingLeft: '12px',
                 border: '1px solid pink',
             },
-        }, 'Children are inserted here.'),
+        }, 'Children input components are inserted here.'),
     },
 };

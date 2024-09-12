@@ -28,7 +28,7 @@ export type AvatarProps = {
  * @constructor
  */
 export const Avatar: FC<AvatarProps> = ({
-    frameColor = pvar('colors.borderOpaque'),
+    frameColor = pvar('new.colors.borderMedium'),
     width = 'fit-content',
     children,
     className,

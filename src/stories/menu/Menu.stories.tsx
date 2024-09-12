@@ -19,33 +19,29 @@ export const Default: Story = {
         children: 'Hello world! This is a new Menu component.',
     },
     render: (args) => (
-        <Menu as="div">
-            <Menu.Button>
-                <Button
-                    kind="tertiary"
-                    shape="circle"
-                    startEnhancer={(
-                        <Ellipsis size={20} />
-                    )}
-                >
-                    Action menu
-                </Button>
-            </Menu.Button>
-            <Menu.Items>
-                <Menu.Item as="button">
-                    Dispute
-                </Menu.Item>
-                <Menu.Item as="button">
-                    Transfer
-                    <ChevronRight size={20} />
-                </Menu.Item>
-            </Menu.Items>
-        </Menu>
+        <div style={{ height: '150px' }}>
+            <Menu as="div">
+                <Menu.Button>
+                    <Button
+                        kind="tertiary"
+                        shape="circle"
+                        startEnhancer={(
+                            <Ellipsis size={20} />
+                        )}
+                    >
+                        Action menu
+                    </Button>
+                </Menu.Button>
+                <Menu.Items>
+                    <Menu.Item as="button">
+                        Dispute
+                    </Menu.Item>
+                    <Menu.Item as="button">
+                        Transfer
+                        <ChevronRight size={20} />
+                    </Menu.Item>
+                </Menu.Items>
+            </Menu>
+        </div>
     ),
-};
-
-export const Secondary: Story = {
-    args: {
-        children: 'Hello world! This is a secondary component.',
-    },
 };

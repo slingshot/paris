@@ -13,10 +13,10 @@
 }
 
 .content {
-    background-color: var(--pte-colors-backgroundPrimary);
+    background-color: var(--pte-new-colors-surfacePrimary);
     animation: var(--pte-animations-duration-normal) var(--pte-animations-timing-easeInOutExpo) 0s 1 intro;
     width: fit-content;
     border-radius: var(--pte-borders-radius-rounded);
-    box-shadow: var(--pte-lighting-shallowPopup);
-    border: var(--pte-borders-dropdown-border);
+    box-shadow: var(--pte-new-lighting-shallowPopup);
+    border: var(--pte-new-borders-dropdown-border);
 }

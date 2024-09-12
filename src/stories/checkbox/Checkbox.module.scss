@@ -13,13 +13,14 @@
     }
 
     &.disabled {
-        opacity: 0.4;
+        //opacity: 0.4;
+        color: var(--pte-new-colors-contentDisabled);
         pointer-events: none;
     }
 }
 
 .root {
-    background-color: var(--pte-colors-backgroundPrimary);
+    background-color: transparent;
     width: 14px;
     height: 14px;
     display: flex;
@@ -27,15 +28,15 @@
     justify-content: center;
     flex-shrink: 0;
 
-    border: 2px solid var(--pte-colors-contentPrimary);
+    border: 2px solid var(--pte-new-colors-contentTertiary);
     border-radius: var(--pte-borders-radius-rectangle);
-    box-shadow: var(--pte-lighting-shallowBelow);
+    //box-shadow: var(--pte-new-lighting-shallowBelow);
 
     &:hover {
         //background-color: ;
     }
     &:focus-visible {
-        outline: 1px solid var(--pte-colors-contentTertiary);
+        outline: 1px solid var(--pte-new-colors-borderUltrastrong);
     }
 
     position: relative;
@@ -44,7 +45,7 @@
         width: 100%;
         height: 100%;
         position: absolute;
-        background-color: var(--pte-colors-backgroundPrimary);
+        background-color: transparent;
         transition: var(--pte-animations-interaction);
         transition-delay: 50ms;
     }
@@ -55,6 +56,10 @@
         }
     }
 
+    &[data-disabled=true] {
+        border-color: var(--pte-new-colors-contentDisabled);
+    }
+
     & span {
         transition: var(--pte-animations-interaction);
     }
@@ -62,4 +67,12 @@
 
 .indicator {
     cursor: default;
+}
+
+.checkSvg {
+    fill: var(--pte-new-colors-contentPrimary);
+
+    &[data-disabled=true] {
+        fill: var(--pte-new-colors-contentDisabled);
+    }
 }

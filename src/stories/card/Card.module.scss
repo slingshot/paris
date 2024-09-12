@@ -1,7 +1,7 @@
 .container {
-    border: var(--pte-borders-dropdown-border);
+    border: var(--pte-new-borders-dropdown-border);
     border-radius: var(--pte-borders-radius-rounded);
-    box-shadow: var(--pte-lighting-subtlePopup);
+    box-shadow: var(--pte-new-lighting-subtlePopup);
 
     user-select: var(--pte-utils-defaultUserSelect);
     width: auto;
@@ -9,6 +9,6 @@
 
     &.flat {
         box-shadow: none;
-        border-color: var(--pte-colors-borderOpaque);
+        border-color: var(--pte-new-colors-borderMedium);
     }
 }

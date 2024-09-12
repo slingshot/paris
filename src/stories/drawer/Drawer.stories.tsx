@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { Drawer } from './Drawer';
 import { Button } from '../button';
+import { Callout } from '../callout';
 import {
     Menu,
 } from '../menu';
@@ -23,6 +24,7 @@ export const Default: Story = {
     args: {
         title: 'Transaction details',
         children: 'This was a transaction for $22.89 at Il Tramezzino in Beverly Hills, CA.',
+        size: 'default',
     },
     render: (args) => {
         const [isOpen, setIsOpen] = useState(false);
@@ -97,6 +99,30 @@ export const Paginated: Story = {
                     onClose={setIsOpen}
                     pagination={pagination}
                     title={currentPageTitle}
+                    additionalActions={(
+                        <Menu as="div">
+                            <Menu.Button>
+                                <Button
+                                    kind="tertiary"
+                                    shape="circle"
+                                    startEnhancer={(
+                                        <Ellipsis size={20} />
+                                    )}
+                                >
+                                    Action menu
+                                </Button>
+                            </Menu.Button>
+                            <Menu.Items position="right">
+                                <Menu.Item as="button">
+                                    Dispute
+                                </Menu.Item>
+                                <Menu.Item as="button">
+                                    Transfer
+                                    <ChevronRight size={20} />
+                                </Menu.Item>
+                            </Menu.Items>
+                        </Menu>
+                    )}
                 >
                     <div key="step1" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         Step 1: Enter your name
@@ -122,6 +148,131 @@ export const Paginated: Story = {
                     <div key="step3" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         Step 3: Enter your credit card information
                     </div>
+                </Drawer>
+            </>
+        );
+    },
+};
+
+export const BottomPanel: Story = {
+    args: {
+        title: 'Transfer Out',
+        children: (
+            <div style={{
+                width: '100%', display: 'flex', flexDirection: 'column', gap: '12px',
+            }}
+            >
+                <h1>
+                    Transfer Policies:
+                </h1>
+                <Button kind="secondary">
+                    Read more...
+                </Button>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec
+                    pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus.
+                    Fusce blandit leo in lectus blandit, sed elementum enim accumsan. Vestibulum ante ipsum primis in
+                    faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque pretium erat at lacus ultricies
+                    tincidunt. Praesent non luctus magna, ac efficitur ligula. Sed a justo fermentum, feugiat mauris
+                    vel, ultrices turpis. Ut interdum malesuada lacus, ac posuere sapien feugiat et. Nulla dignissim
+                    bibendum gravida. Donec pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi
+                    libero sit amet purus.
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec
+                    pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus.
+                    Fusce blandit leo in lectus blandit, sed elementum enim accumsan. Vestibulum ante ipsum primis in
+                    faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque pretium erat at lacus ultricies
+                    tincidunt. Praesent non luctus magna, ac efficitur ligula. Sed a justo fermentum, feugiat mauris
+                    vel, ultrices turpis. Ut interdum malesuada lacus, ac posuere sapien feugiat et. Nulla dignissim
+                    bibendum gravida. Donec pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi
+                    libero sit amet purus.
+                </p>
+            </div>
+        ),
+        bottomPanel: (
+            <div style={{
+                width: '100%', display: 'flex', flexDirection: 'column', gap: '12px', padding: '20px',
+            }}
+            >
+                <Callout>
+                    Transfer should arrive in your account within 2-3 business days.
+                </Callout>
+                <Button>
+                    Initiate
+                </Button>
+                <Button kind="secondary" theme="negative">
+                    Cancel
+                </Button>
+            </div>
+        ),
+    },
+    render: (args) => {
+        const [isOpen, setIsOpen] = useState(false);
+        return (
+            <>
+                <Button
+                    onClick={() => setIsOpen(true)}
+                >
+                    Transfer Out
+                </Button>
+                <Drawer
+                    {...args}
+                    isOpen={isOpen}
+                    onClose={setIsOpen}
+                    additionalActions={(
+                        <Menu as="div">
+                            <Menu.Button>
+                                <Button
+                                    kind="tertiary"
+                                    shape="circle"
+                                    startEnhancer={(
+                                        <Ellipsis size={20} />
+                                    )}
+                                >
+                                    Action menu
+                                </Button>
+                            </Menu.Button>
+                            <Menu.Items position="right">
+                                <Menu.Item as="button">
+                                    Dispute
+                                </Menu.Item>
+                                <Menu.Item as="button">
+                                    Transfer
+                                    <ChevronRight size={20} />
+                                </Menu.Item>
+                            </Menu.Items>
+                        </Menu>
+                    )}
+                >
+                    {args.children}
+                </Drawer>
+            </>
+        );
+    },
+};
+
+export const Full: Story = {
+    args: {
+        title: 'Transaction details',
+        children: 'This was a transaction for $22.89 at Il Tramezzino in Beverly Hills, CA.',
+        size: 'full',
+    },
+    render: (args) => {
+        const [isOpen, setIsOpen] = useState(false);
+        return (
+            <>
+                <Button
+                    onClick={() => setIsOpen(true)}
+                >
+                    View details
+                </Button>
+                <Drawer
+                    {...args}
+                    isOpen={isOpen}
+                    onClose={setIsOpen}
+                >
+                    {args.children}
                 </Drawer>
             </>
         );

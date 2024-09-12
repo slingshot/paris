@@ -1,7 +1,10 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { Fragment, useMemo, useState } from 'react';
+import {
+    useEffect,
+    useRef, Fragment, useMemo, useState,
+} from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import type { CSSLength } from '@ssh/csstypes';
@@ -15,8 +18,9 @@ import type { PaginationState } from '../pagination';
 import {
     ChevronLeft, ChevronRight, Close, Icon,
 } from '../icon';
+import { useResizeObserver } from '../../helpers/useResizeObserver';
 
-export const DrawerSizePresets = ['content', 'default', 'full'] as const;
+export const DrawerSizePresets = ['content', 'default', 'full', 'fullWithMargin', 'fullOnMobile'] as const;
 
 export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
     /**
@@ -69,7 +73,11 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
     /**
      * The size of the Drawer, either a preset or a valid {@link CSSLength} string.
      *
-     * 'content' is the size of the Drawer's content. 'default' is the default size (360px). 'full' is the size of the viewport, minus the panel container's padding.
+     * `default` is the default size (360px), with a margin until the screen hits 370px.
+     * `fullOnMobile` uses the default size (360px) until the mobile breakpoint (480px), where it then fills the viewport.
+     * `full` is the size of the viewport.
+     * `fullWithMargin` is the size of the viewport, minus the panel container's padding.
+     * `content` is the size of the Drawer's content.
      *
      * @see DrawerSizePresets
      * @default 'default'
@@ -79,15 +87,15 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
      * An optional pagination state. If provided, each child of the Drawer will be rendered in its own page, and the Drawer will contain back and next buttons that will be used to navigate between pages.
      *
      * The state should be created using the {@link usePagination} hook and the entire state should be passed to the Drawer. For example:
-     * ```tsx
-     * const pagination = usePagination<['step1', 'step2', 'step3']>();
-     * // ...
-     * <Drawer pagination={pagination}>
-     *     <div key="step1">Step 1</div>
-     *     <div key="step2">Step 2</div>
-     *     <div key="step3">Step 3</div>
-     * </Drawer>
-     * ```
+     * ```tsx```
+     * ```const pagination = usePagination<['step1', 'step2', 'step3']>();```
+     * ```// ...```
+     * ```<Drawer pagination={pagination}>```
+     *     ```<div key="step1">Step 1</div>```
+     *     ```<div key="step2">Step 2</div>```
+     *     ```<div key="step3">Step 3</div>```
+     * ```</Drawer>```
+     *
      *
      * @see {@link PaginationState} for more information on the pagination state and available methods
      * @see {@link usePagination} for more information on how to create the pagination state
@@ -143,6 +151,16 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
 
     const [loadedPage, setLoadedPage] = useState<string | null>(pagination?.history[0] || null);
 
+    // const bottomPanelRef = useRef<HTMLDivElement>(null);
+    // const { width = 0, height = 0 } = useResizeObserver({
+    //     ref: bottomPanelRef,
+    //     box: 'border-box',
+    // });
+    //
+    // useEffect(() => {
+    //     console.log(bottomPanelRef.current);
+    // }, [bottomPanelRef.current]);
+
     // Decide what children to render.
     const currentChild: ReactNode = useMemo(() => {
         // If no children are provided, render nothing.
@@ -179,7 +197,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
             >
                 <div
                     className={clsx(
-                        overlayStyle === 'blur' && styles.overlayBluredContainer,
+                        overlayStyle === 'blur' && styles.overlayBlurContainer,
                         overlayStyle === 'greyed' && styles.overlayGreyedContainer,
                     )}
                 >
@@ -195,7 +213,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                         <Dialog.Overlay
                             className={clsx(
                                 styles.overlay,
-                                overlayStyle === 'blur' && styles.overlayBlured,
+                                overlayStyle === 'blur' && styles.overlayBlur,
                                 overlayStyle === 'greyed' && styles.overlayGreyed,
                             )}
                         />
@@ -229,17 +247,59 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                         >
                             {/* Dialog title bar */}
                             <div className={styles.titleBar}>
-                                <VisuallyHidden
-                                // Hide when requested, or when pagination is enabled (the title isn't relevant to any specific page).
-                                    when={hideTitle || isPaginated}
+                                <div
+                                    className={clsx(
+                                        styles.titleArea,
+                                    )}
                                 >
-                                    <Dialog.Title as="h2" className={styles.titleTextContainer}>
-                                        <TextWhenString kind="paragraphSmall" weight="medium">
-                                            {title}
-                                        </TextWhenString>
-                                    </Dialog.Title>
-                                </VisuallyHidden>
-
+                                    <RemoveFromDOM
+                                        // Hide when pagination is not enabled.
+                                        when={!isPaginated}
+                                    >
+                                        <div className={clsx(styles.paginationButtons)}>
+                                            <Button
+                                                className={clsx(
+                                                    styles.navButton,
+                                                )}
+                                                size="medium"
+                                                kind="tertiary"
+                                                shape="circle"
+                                                onClick={() => pagination?.back()}
+                                                disabled={!pagination?.canGoBack()}
+                                                startEnhancer={(
+                                                    <Icon icon={ChevronLeft} size={16} />
+                                                )}
+                                            >
+                                                Go to previous page in this modal
+                                            </Button>
+                                            <Button
+                                                className={clsx(
+                                                    styles.navButton,
+                                                )}
+                                                size="medium"
+                                                kind="tertiary"
+                                                shape="circle"
+                                                onClick={() => pagination?.forward()}
+                                                disabled={!pagination?.canGoForward()}
+                                                startEnhancer={(
+                                                    <Icon icon={ChevronRight} size={16} />
+                                                )}
+                                            >
+                                                Go to next page in this modal
+                                            </Button>
+                                        </div>
+                                    </RemoveFromDOM>
+                                    <VisuallyHidden
+                                        // Hide when requested, or when pagination is enabled (the title isn't relevant to any specific page).
+                                        when={hideTitle}
+                                    >
+                                        <Dialog.Title as="h2" className={styles.titleTextContainer}>
+                                            <TextWhenString kind="paragraphSmall" weight="medium">
+                                                {title}
+                                            </TextWhenString>
+                                        </Dialog.Title>
+                                    </VisuallyHidden>
+                                </div>
                                 <div className={styles.titleBarButtons}>
                                     {/* Action Menu */}
                                     <RemoveFromDOM when={!hasAdditionalActions}>
@@ -249,7 +309,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                     {/* Close button */}
                                     <RemoveFromDOM
                                         // Hide when requested, or when pagination is enabled (the page navigation bar will render its own close button).
-                                        when={hideCloseButton || isPaginated}
+                                        when={hideCloseButton}
                                     >
                                         <Button
                                             kind="tertiary"
@@ -267,107 +327,44 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                         </Button>
                                     </RemoveFromDOM>
                                 </div>
-
-                                {/* Pagination Navbar */}
-                                <RemoveFromDOM
-                                    // Hide when pagination is not enabled.
-                                    when={!isPaginated}
-                                >
-                                    <div
-                                        className={clsx(
-                                            styles.paginationNav,
-                                        )}
-                                    >
-                                        <div
-                                            className={clsx(
-                                                styles.paginationTitle,
-                                            )}
-                                        >
-                                            <Button
-                                                className={clsx(
-                                                    styles.navButton,
-                                                )}
-                                                size="small"
-                                                kind="tertiary"
-                                                shape="circle"
-                                                onClick={() => pagination?.back()}
-                                                disabled={!pagination?.canGoBack()}
-                                                startEnhancer={(
-                                                    <Icon icon={ChevronLeft} size={20} />
-                                                )}
-                                            >
-                                                Go to previous page in this modal
-                                            </Button>
-                                            <Button
-                                                className={clsx(
-                                                    styles.navButton,
-                                                )}
-                                                size="small"
-                                                kind="tertiary"
-                                                shape="circle"
-                                                onClick={() => pagination?.forward()}
-                                                disabled={!pagination?.canGoForward()}
-                                                startEnhancer={(
-                                                    <Icon icon={ChevronRight} size={20} />
-                                                )}
-                                            >
-                                                Go to next page in this modal
-                                            </Button>
-                                            <VisuallyHidden
-                                                // Hide when requested, or when pagination is enabled (the title isn't relevant to any specific page).
-                                                when={hideTitle}
-                                            >
-                                                <Dialog.Title as="h2" className={styles.titleTextContainer}>
-                                                    <TextWhenString kind="paragraphSmall" weight="medium">
-                                                        {title}
-                                                    </TextWhenString>
-                                                </Dialog.Title>
-                                            </VisuallyHidden>
-                                        </div>
-                                        <Button
-                                            kind="tertiary"
-                                            shape="circle"
-                                            onClick={() => onClose(false)}
-                                            startEnhancer={(
-                                                <Icon icon={Close} size={20} />
-                                            )}
-                                            data-title-hidden={hideTitle}
-                                            className={clsx(
-                                                styles.closeButton,
-                                            )}
-                                        >
-                                            Close dialog
-                                        </Button>
-                                    </div>
-                                </RemoveFromDOM>
                             </div>
 
                             <div className={styles.content}>
-                                {(isPaginated && Array.isArray(children)) ? children.map((child) => (child && typeof child === 'object' && 'key' in child) && (
-                                    <Transition
-                                        show={child.key === pagination?.currentPage && loadedPage === child.key}
-                                        key={`transition_${child.key}`}
-                                        as="div"
-                                        enter={styles.paginationEnter}
-                                        enterFrom={styles.enterFromOpacity}
-                                        enterTo={styles.enterToOpacity}
-                                        leave={styles.paginationLeave}
-                                        leaveFrom={styles.leaveFromOpacity}
-                                        leaveTo={styles.leaveToOpacity}
-                                        afterLeave={() => {
-                                            setLoadedPage(pagination?.currentPage || null);
-                                        }}
-                                    >
-                                        {child}
-                                    </Transition>
-                                )) : children}
-                            </div>
-
-                            <RemoveFromDOM when={!bottomPanel}>
-                                <div className={styles.bottomPanel}>
-                                    {bottomPanel}
+                                <div className={styles.contentChildren}>
+                                    {(isPaginated && Array.isArray(children)) ? children.map((child) => (child && typeof child === 'object' && 'key' in child) && (
+                                        <Transition
+                                            show={child.key === pagination?.currentPage && loadedPage === child.key}
+                                            key={`transition_${child.key}`}
+                                            as="div"
+                                            enter={styles.paginationEnter}
+                                            enterFrom={styles.enterFromOpacity}
+                                            enterTo={styles.enterToOpacity}
+                                            leave={styles.paginationLeave}
+                                            leaveFrom={styles.leaveFromOpacity}
+                                            leaveTo={styles.leaveToOpacity}
+                                            afterLeave={() => {
+                                                setLoadedPage(pagination?.currentPage || null);
+                                            }}
+                                        >
+                                            {child}
+                                        </Transition>
+                                    )) : children}
                                 </div>
-                            </RemoveFromDOM>
+                                {bottomPanel && (
+                                    <>
+                                        <div tabIndex={-1} aria-hidden="true" className={styles.bottomPanelSpacer}>
+                                            {bottomPanel}
+                                        </div>
+                                        <div className={styles.bottomPanel}>
+                                            <div className={styles.glassOpacity} />
+                                            <div className={styles.glassBlend} />
+                                            <div className={styles.bottomPanelContent}>
+                                                {bottomPanel}
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
                         </Dialog.Panel>
                     </Transition.Child>
                 </div>

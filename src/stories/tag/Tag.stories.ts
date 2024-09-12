@@ -1,4 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { createElement } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Tag } from './Tag';
 
 const meta: Meta<typeof Tag> = {
@@ -12,7 +15,7 @@ type Story = StoryObj<typeof Tag>;
 
 export const Default: Story = {
     args: {
-        children: 'Explicit',
+        children: 'Label',
     },
 };
 
@@ -36,5 +39,12 @@ export const New: Story = {
         children: 'New',
         size: 'compact',
         kind: 'new',
+    },
+};
+export const Small: Story = {
+    args: {
+        children: 'New',
+        size: 'small',
+        kind: 'positive',
     },
 };

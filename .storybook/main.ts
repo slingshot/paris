@@ -17,8 +17,8 @@ const config: StorybookConfig = {
   previewHead: head => `${head}
 <style>
     body {
-        color: var(--pte-colors-contentPrimary);
-        background-color: var(--pte-colors-backgroundPrimary);
+        color: var(--pte-new-colors-contentPrimary);
+        background-color: var(--pte-new-colors-backgroundPrimary);
         transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
     }
     

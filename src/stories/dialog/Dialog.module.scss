@@ -14,39 +14,64 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     inset: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--pte-colors-backgroundOverlayDark);
-    backdrop-filter: blur(0);
-    will-change: opacity, backdrop-filter;
-    opacity: 0;
     transition: var(--pte-animations-duration-normal) var(--pte-animations-timing-easeInOut);
+
+    &.overlayBlur {
+        backdrop-filter: blur(0);
+        background-color: var(--pte-new-colors-overlayPageBackground);
+        will-change: backdrop-filter, opacity;
+    }
+
+    &.overlayGreyed {
+        background-color: var(--pte-new-colors-overlayPageBackground);
+        will-change: opacity;
+    }
 }
 
 .open {
     transition-delay: 0ms;
     opacity: 1;
-    backdrop-filter: blur(2px);
 }
 
-.overlayContainer {
+.overlayBlurContainer {
     .enterFrom {
         backdrop-filter: blur(0);
+        opacity: 0;
     }
-
     .enterTo {
         backdrop-filter: blur(2px);
+        opacity: 1;
     }
-
     .leave {
         transition-delay: $panelAnimationDelay;
     }
-
     .leaveFrom {
         backdrop-filter: blur(2px);
+        opacity: 1;
     }
-
     .leaveTo {
         backdrop-filter: blur(0);
+        opacity: 0;
     }
+}
+
+.overlayGreyedContainer {
+    .enterFrom {
+        opacity: 0;
+    }
+    .enterTo {
+        opacity: 1;
+    }
+    .leave {
+        transition-delay: $panelAnimationDelay;
+    }
+    .leaveFrom {
+        opacity: 1;
+    }
+    .leaveTo {
+        opacity: 0;
+    }
+
 }
 
 .panelContainer {
@@ -110,20 +135,19 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 
 .simple {
     border-radius: var(--pte-borders-radius-rounded);
-    background: var(--pte-colors-backgroundPrimary);
-    border: var(--pte-borders-dropdown-border);
-    backdrop-filter: var(--pte-surfaces-dialog-backdropFilter);
+    background: var(--pte-new-colors-surfacePrimary);
+    border: var(--pte-new-borders-dropdown-border);
     outline: none;
-    box-shadow: var(--pte-lighting-shallowBelow);
+    box-shadow: var(--pte-new-lighting-deepPopup);
 }
 
 .glass {
     border-radius: var(--pte-borders-radius-roundedXL);
-    background: var(--pte-surfaces-dialog-background);
-    border: var(--pte-surfaces-dialog-border);
-    backdrop-filter: var(--pte-surfaces-dialog-backdropFilter);
-    outline: var(--pte-surfaces-dialog-outline);
-    box-shadow: var(--pte-lighting-shallowBelow);
+    background: var(--pte-new-surfaces-dialog-background);
+    border: var(--pte-new-surfaces-dialog-border);
+    backdrop-filter: var(--pte-new-surfaces-dialog-backdropFilter);
+    outline: var(--pte-new-surfaces-dialog-outline);
+    box-shadow: var(--pte-new-lighting-shallowPopup);
 }
 
 .w-compact {

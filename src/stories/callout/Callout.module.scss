@@ -1,9 +1,9 @@
 .content {
-    background-color: var(--pte-colors-backgroundSecondary);
+    background-color: var(--pte-new-colors-overlayMedium);
     border-radius: 6px;
     width: 100%;
     padding: 8px 10px;
-    color: var(--pte-colors-contentTertiary);
+    color: var(--pte-new-colors-contentSecondary);
 
     display: flex;
     flex-direction: row;
@@ -26,18 +26,18 @@
     }
 
     &.warning {
-        background-color: var(--pte-colors-backgroundWarning);
-        color: var(--pte-colors-contentWarning);
+        background-color: var(--pte-new-colors-backgroundWarning);
+        color: var(--pte-new-colors-contentWarning);
     }
 
     &.negative {
-        background-color: var(--pte-colors-backgroundNegative);
-        color: var(--pte-colors-contentNegative);
+        background-color: var(--pte-new-colors-overlayRed);
+        color: var(--pte-new-colors-contentNegative);
     }
 
     &.positive {
         .icon {
-            color: var(--pte-colors-contentPositive);
+            color: var(--pte-new-colors-contentPositive);
         }
     }
 }

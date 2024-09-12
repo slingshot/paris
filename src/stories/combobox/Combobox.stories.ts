@@ -24,40 +24,40 @@ export const Default: Story = {
                 id: '1',
                 node: createElement(Text, {
                     kind: 'paragraphSmall',
-                    children: "Billie O'Connell",
+                    children: 'Mia Dolan',
                 }),
                 metadata: {
-                    name: "Billie O'Connell",
+                    name: 'Mia Dolan',
                 },
             },
             {
                 id: '2',
                 node: createElement(Text, {
                     kind: 'paragraphSmall',
-                    children: "Finneas O'Connell",
+                    children: 'Sebastian Wilder',
                 }),
                 metadata: {
-                    name: "Finneas O'Connell",
+                    name: 'Sebastian Wilder',
                 },
             },
             {
                 id: '3',
                 node: createElement(Text, {
                     kind: 'paragraphSmall',
-                    children: 'Taylor Alison Swift',
+                    children: 'Amy Brandt',
                 }),
                 metadata: {
-                    name: 'Taylor Alison Swift',
+                    name: 'Amy Brandt',
                 },
             },
             {
                 id: '4',
                 node: createElement(Text, {
                     kind: 'paragraphSmall',
-                    children: 'Taylor Alison Swift',
+                    children: 'Laura Wilder',
                 }),
                 metadata: {
-                    name: 'Taylor Alison Swift',
+                    name: 'Laura Wilder',
                 },
             },
         ],

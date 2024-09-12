@@ -69,6 +69,12 @@ export type DialogProps = {
      */
     appearance?: 'simple' | 'glass';
     /**
+     * The overlay style for the dialog. `greyed` is a simple grey overlay. `blur` is a blurred overlay.
+     *
+     * @default 'greyed'
+     */
+    overlayStyle?: 'greyed' | 'blur';
+    /**
      * Optional overrides for props of each dialog component.
      *
      * Valid keys are: `root`, `overlayContainer`, `overlay`, `panelContainer`, `panel`, `panelHeader`, `panelTitle`, `panelCloseButton`.
@@ -118,6 +124,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
     height = 'content',
     draggable = false,
     appearance = 'simple',
+    overlayStyle = 'greyed',
     children,
 }) => {
     const [dragging, setDragging] = useState(false);
@@ -173,7 +180,8 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                 <HDialog.Overlay
                     {...overrides.overlayContainer}
                     className={clsx(
-                        styles.overlayContainer,
+                        overlayStyle === 'blur' && styles.overlayBlurContainer,
+                        overlayStyle === 'greyed' && styles.overlayGreyedContainer,
                         overrides.overlayContainer?.className,
                     )}
                 >
@@ -190,6 +198,8 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                             {...overrides.overlay}
                             className={clsx(
                                 styles.overlay,
+                                overlayStyle === 'blur' && styles.overlayBlur,
+                                overlayStyle === 'greyed' && styles.overlayGreyed,
                                 overrides.overlay?.className,
                             )}
                         />
@@ -254,22 +264,23 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                                         </HDialog.Title>
                                     </VisuallyHidden>
                                     <RemoveFromDOM when={hideCloseButton}>
-                                        <Button
-                                            kind="tertiary"
-                                            shape="circle"
-                                            onClick={() => onClose(false)}
-                                            startEnhancer={(
-                                                <Icon size={20} icon={Close} />
-                                            )}
-                                            {...overrides.panelCloseButton}
-                                            data-title-hidden={hideTitle}
-                                            className={clsx(
-                                                styles.closeButton,
-                                                overrides.panelCloseButton?.className,
-                                            )}
-                                        >
-                                            Close dialog
-                                        </Button>
+                                        <div className={clsx(styles.closeButton)}>
+                                            <Button
+                                                kind="tertiary"
+                                                shape="circle"
+                                                onClick={() => onClose(false)}
+                                                startEnhancer={(
+                                                    <Icon size={20} icon={Close} />
+                                                )}
+                                                {...overrides.panelCloseButton}
+                                                data-title-hidden={hideTitle}
+                                                className={clsx(
+                                                    overrides.panelCloseButton?.className,
+                                                )}
+                                            >
+                                                Close dialog
+                                            </Button>
+                                        </div>
                                     </RemoveFromDOM>
                                 </div>
                             </VisuallyHidden>

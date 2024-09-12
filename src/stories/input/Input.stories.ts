@@ -15,7 +15,7 @@ type Story = StoryObj<typeof Input>;
 
 export const Default: Story = {
     args: {
-        placeholder: 'Billie Eilish',
+        placeholder: 'Mia Dolan',
         label: 'Name',
         description: 'Type your full name here.',
     },
@@ -32,7 +32,7 @@ export const Password: Story = {
 
 export const Success: Story = {
     args: {
-        placeholder: 'billie@eilish.com',
+        placeholder: 'mia@slingshot.fm',
         value: 'valid@email.com',
         onChange: () => {},
         type: 'email',
@@ -44,7 +44,7 @@ export const Success: Story = {
 
 export const Error: Story = {
     args: {
-        placeholder: 'billie@eilish.com',
+        placeholder: 'mia@slingshot.fm',
         value: 'notavalid@email',
         onChange: () => {},
         type: 'email',
@@ -56,7 +56,7 @@ export const Error: Story = {
 
 export const Disabled: Story = {
     args: {
-        placeholder: 'billie@eilish.com',
+        placeholder: 'mia@slingshot.fm',
         type: 'email',
         label: 'Email',
         description: 'Enter your email address.',
@@ -66,7 +66,7 @@ export const Disabled: Story = {
 
 export const WithEnhancer: Story = {
     args: {
-        placeholder: 'Billie Eilish',
+        placeholder: 'Mia Dolan',
         label: 'Name',
         description: 'Type your full name here.',
         startEnhancer: ({ size }) => createElement(FontAwesomeIcon, {
@@ -78,7 +78,7 @@ export const WithEnhancer: Story = {
 
 export const WithEndEnhancer: Story = {
     args: {
-        placeholder: 'Billie Eilish',
+        placeholder: 'Mia Dolan',
         label: 'Name',
         description: 'Type your full name here.',
         endEnhancer: ({ size }) => createElement(FontAwesomeIcon, {
@@ -90,7 +90,7 @@ export const WithEndEnhancer: Story = {
 
 export const WithCustomLabel: Story = {
     args: {
-        placeholder: 'Billie Eilish',
+        placeholder: 'Mia Dolan',
         label: createElement(
             'span',
             null,

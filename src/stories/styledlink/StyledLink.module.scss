@@ -1,11 +1,11 @@
 .link {
     text-decoration: none;
-    border-bottom: 1px solid var(--pte-colors-borderOpaque);
+    border-bottom: 1px solid var(--pte-new-colors-borderMedium);
     cursor: pointer;
     font-weight: var(--pte-typography-fontWeights-medium);
     transition: border-bottom-color var(--pte-animations-interaction);
 
     &:hover {
-        border-bottom: 1px solid var(--pte-colors-contentPrimary);
+        border-bottom: 1px solid var(--pte-new-colors-contentPrimary);
     }
 }

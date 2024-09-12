@@ -151,7 +151,7 @@ export function Table<RowData extends Record<string, any>[]>({
             }}
         >
             <thead {...overrides?.thead}>
-                <tr {...overrides?.trHead}>
+                <tr {...overrides?.trHead} className={styles.tableHeader}>
                     {columns.map((column) => (
                         <th
                             {...{

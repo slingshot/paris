@@ -159,7 +159,12 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                     data-disabled={disabled}
                 >
                     {!!startEnhancer && (
-                        <div {...overrides?.startEnhancerContainer} className={clsx(inputStyles.enhancer, overrides?.startEnhancerContainer?.className)}>
+                        <div
+                            {...overrides?.startEnhancerContainer}
+                            className={clsx(inputStyles.enhancer, overrides?.startEnhancerContainer?.className)}
+                            data-status={status}
+                            data-disabled={disabled}
+                        >
                             {!!startEnhancer && (
                                 <MemoizedEnhancer
                                     enhancer={startEnhancer}
@@ -181,7 +186,9 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                     if (overrides?.input?.onChange) overrides.input.onChange(e);
                                 }}
                                 aria-disabled={disabled}
-                                data-status={disabled ? 'disabled' : (status || 'default')}
+                                data-status={status}
+                                data-disabled={disabled}
+                                // data-status={disabled ? 'disabled' : (status || 'default')}
                                 className={clsx(
                                     overrides?.input?.className,
                                     inputStyles.input,
@@ -206,7 +213,12 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                         </Button>
                     )}
                     {!!endEnhancer && (
-                        <div {...overrides?.endEnhancerContainer} className={clsx(inputStyles.enhancer, overrides?.endEnhancerContainer?.className)}>
+                        <div
+                            {...overrides?.endEnhancerContainer}
+                            className={clsx(inputStyles.enhancer, overrides?.endEnhancerContainer?.className)}
+                            data-status={status}
+                            data-disabled={disabled}
+                        >
                             {!!endEnhancer && (
                                 <MemoizedEnhancer
                                     enhancer={endEnhancer}

@@ -9,9 +9,9 @@
     margin-top: 6px;
 
     border-radius: 8px;
-    background: var(--pte-colors-backgroundPrimary);
-    box-shadow: var(--pte-borders-dropdown-shadow);
-    border: var(--pte-borders-dropdown-border);
+    background: var(--pte-new-colors-surfacePrimary);
+    box-shadow: var(--pte-new-lighting-deepBelow);
+    border: var(--pte-new-borders-dropdown-border);
 
     display: flex;
     width: 200px;
@@ -40,16 +40,16 @@
     align-items: center;
     justify-content: space-between;
 
-    color: var(--pte-colors-contentSecondary);
+    color: var(--pte-new-colors-contentPrimary);
 
-    border-bottom: 0.5px solid var(--pte-colors-borderOpaque);
+    border-bottom: 0.5px solid var(--pte-new-colors-borderMedium);
 
     &:last-child {
         border-bottom: none;
     }
 
     &:hover {
-        background-color: var(--pte-colors-backgroundSecondary);
+        background-color: var(--pte-new-colors-overlayMedium);
     }
 
     @keyframes gradientFlow {

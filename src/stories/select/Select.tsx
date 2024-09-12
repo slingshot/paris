@@ -20,6 +20,7 @@ import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 import { pget, theme } from '../theme';
 import { Field } from '../field';
 import { TextWhenString } from '../utility';
+import { Check, Icon } from '../icon';
 
 export type Option<T = Record<string, any>> = {
     id: string,
@@ -127,15 +128,23 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                         id={inputID}
                         {...overrides?.selectInput}
                         aria-disabled={disabled}
-                        data-status={disabled ? 'disabled' : (status || 'default')}
+                        data-disabled={disabled}
+                        data-status={status}
+                        // data-status={disabled ? 'disabled' : (status || 'default')}
                         className={clsx(
                             overrides?.selectInput?.className,
                             inputStyles.inputContainer,
+                            styles.listboxButton,
                             styles.field,
                         )}
                     >
                         {!!startEnhancer && (
-                            <div {...overrides?.startEnhancerContainer} className={clsx(inputStyles.enhancer, overrides?.startEnhancerContainer?.className)}>
+                            <div
+                                {...overrides?.startEnhancerContainer}
+                                className={clsx(inputStyles.enhancer, overrides?.startEnhancerContainer?.className)}
+                                data-status={status}
+                                data-disabled={disabled}
+                            >
                                 {!!startEnhancer && (
                                     <MemoizedEnhancer
                                         enhancer={startEnhancer}
@@ -146,7 +155,12 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                         )}
                         {options?.find((o) => o.id === value)?.node || placeholder || 'Select an option'}
                         {endEnhancer ? (
-                            <div {...overrides?.endEnhancerContainer} className={clsx(inputStyles.enhancer, overrides?.endEnhancerContainer?.className)}>
+                            <div
+                                {...overrides?.endEnhancerContainer}
+                                className={clsx(inputStyles.enhancer, overrides?.endEnhancerContainer?.className)}
+                                data-status={status}
+                                data-disabled={disabled}
+                            >
                                 {!!endEnhancer && (
                                     <MemoizedEnhancer
                                         enhancer={endEnhancer}
@@ -155,7 +169,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                                 )}
                             </div>
                         ) : (
-                            <FontAwesomeIcon className={inputStyles.enhancer} width="10px" icon={faChevronDown} />
+                            <FontAwesomeIcon className={clsx(inputStyles.enhancer, styles.chevron)} data-status={status} data-disabled={disabled} width="10px" icon={faChevronDown} />
                         )}
                     </Listbox.Button>
                     <Transition
@@ -193,6 +207,9 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                                             {option.node}
                                         </Text>
                                     ) : option.node}
+                                    {option.id === value && (
+                                        <Icon icon={Check} size={12} />
+                                    )}
                                 </Listbox.Option>
                             ))}
                         </Listbox.Options>
@@ -210,6 +227,8 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                             key={option.id}
                             value={option.id}
                             disabled={option.disabled || false}
+                            data-disabled={disabled}
+                            data-status={status}
                         >
                             <div className={styles.radioCircle} />
                             <TextWhenString kind="paragraphXSmall">

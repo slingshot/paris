@@ -16,7 +16,7 @@ const render: Story['render'] = (args) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [selected, setSelected] = useState<string | null>(null);
     return createElement('div', {
-        style: { minHeight: '400px' },
+        style: { minHeight: '250px' },
     }, createElement(Select, {
         ...args,
         value: selected,
@@ -32,18 +32,7 @@ export const Default: Story = {
             { id: '1', node: 'Single' },
             { id: '2', node: 'EP' },
             { id: '3', node: 'Album (LP)' },
-            { id: '3', node: 'Album (LP)' },
-            { id: '3', node: 'Album (LP)' },
-            { id: '3', node: 'Album (LP)' },
-            { id: '3', node: 'Album (LP)' },
-            { id: '3', node: 'Album (LP)' },
-            { id: '3', node: 'Album (LP)' },
-            { id: '3', node: 'Album (LP)' },
-            { id: '3', node: 'Album (LP)' },
-            { id: '3', node: 'Album (LP)' },
-            { id: '3', node: 'Album (LP)' },
-            { id: '3', node: 'Album (LP)' },
-            { id: '3', node: 'Album (LP)' },
+            { id: '4', node: 'Compilation' },
         ],
     },
     render,
@@ -79,6 +68,21 @@ export const WithCustomNodes: Story = {
                     children: 'Option 3',
                 }),
             },
+        ],
+    },
+    render,
+};
+
+export const Radio: Story = {
+    args: {
+        label: 'Release type',
+        description: 'Select the type of release you want to create.',
+        kind: 'radio',
+        options: [
+            { id: '1', node: 'Single' },
+            { id: '2', node: 'EP' },
+            { id: '3', node: 'Album (LP)' },
+            { id: '4', node: 'Compilation' },
         ],
     },
     render,

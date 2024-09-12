@@ -17,22 +17,29 @@ import { NotificationDot } from '../icon/NotificationDot';
 
 const EnhancerSizes = {
     large: 13,
+    medium: 12,
     small: 11,
     xs: 9,
 };
 
 export const ButtonThemes = {
     negative: {
-        primary: pvar('colors.contentNegative'),
-        secondary: pvar('colors.backgroundNegative'),
+        primary: pvar('new.colors.buttonBorderNegative'),
+        secondary: pvar('new.colors.buttonFillHoverNegative'),
+        primaryAlt: pvar('new.colors.contentNegative'),
+        secondaryAlt: pvar('new.colors.backgroundNegativeStrong'),
     },
     positive: {
-        primary: pvar('colors.contentPositive'),
-        secondary: pvar('colors.backgroundPositive'),
+        primary: pvar('new.colors.contentPositive'),
+        secondary: pvar('new.colors.backgroundPositive'),
+        primaryAlt: pvar('new.colors.contentPositive'),
+        secondaryAlt: pvar('new.colors.backgroundPositiveStrong'),
     },
     warning: {
-        primary: pvar('colors.contentWarning'),
-        secondary: pvar('colors.backgroundWarning'),
+        primary: pvar('new.colors.contentWarning'),
+        secondary: pvar('new.colors.backgroundWarning'),
+        primaryAlt: pvar('new.colors.contentWarning'),
+        secondaryAlt: pvar('new.colors.backgroundWarningStrong'),
     },
 } as const;
 
@@ -46,7 +53,7 @@ export type ButtonProps = {
      * The size of the Button.
      * @default large
      */
-    size?: 'large' | 'small' | 'xs';
+    size?: 'large' | 'medium' | 'small' | 'xs';
     /**
      * The shape of the Button.
      * @default pill
@@ -143,11 +150,12 @@ export const Button: FC<ButtonProps> = ({
     <AriaButton
         {...props}
         style={(theme || colors) ? {
-            '--pte-colors-contentInversePrimary': fontColorContrast(theme ? ButtonThemes[theme].primary : colors?.primary || pvar('colors.contentPrimary')),
-            '--pte-colors-backgroundInversePrimary': theme ? ButtonThemes[theme].primary : colors?.primary,
-            '--pte-colors-backgroundInverseTertiary': theme ? ButtonThemes[theme].secondary : colors?.secondary,
-            '--pte-colors-contentPrimary': theme ? ButtonThemes[theme].primary : colors?.primary,
-            '--pte-colors-backgroundTertiary': theme ? ButtonThemes[theme].secondary : colors?.secondary,
+            '--pte-new-colors-contentInversePrimary': fontColorContrast(theme ? ButtonThemes[theme].primary : colors?.primary || pvar('new.colors.contentPrimary')), // text for primary
+            '--pte-new-colors-buttonFill': theme ? ButtonThemes[theme].primaryAlt : colors?.primary, // background for primary
+            '--pte-new-colors-buttonFillHover': theme ? ButtonThemes[theme].secondaryAlt : colors?.secondary, // hover background for primary
+            '--pte-new-colors-contentPrimary': theme ? ButtonThemes[theme].primary : colors?.primary, // text for secondary/tertiary
+            '--pte-new-colors-buttonBorder': theme ? ButtonThemes[theme].primary : colors?.primary, // border for secondary/tertiary
+            '--pte-new-colors-overlayMedium': theme ? ButtonThemes[theme].secondary : colors?.secondary, // hover background for secondary/tertiary
             ...style,
         } as CSSProperties : style}
         className={clsx(
