@@ -86,13 +86,40 @@ export const Glass: Story = {
                     </div>
                 ),
             },
+            { title: 'Invoices', content: 'Tab 4 content' },
+            { title: 'Payments', content: 'Tab 5 content' },
+            { title: 'Payroll', content: 'Tab 6 content' },
+            { title: 'Insights', content: 'Tab 7 content' },
+            { title: 'Settings', content: 'Tab 8 content' },
+            { title: 'Account', content: 'Tab 9 content' },
         ],
     },
     render: (args) => (
-        <div style={{ background: 'var(--pte-new-colors.backgroundPrimary)' }}>
+        <div style={{ background: 'var(--pte-new-colors-backgroundPrimary)' }}>
             <div style={{ height: '120px' }}>
                 <Tabs {...args} />
             </div>
+        </div>
+    ),
+};
+
+export const Scroll: Story = {
+    args: {
+        tabs: [
+            { title: 'Transactions', content: 'Tab 1 content' },
+            { title: 'Cards', content: 'Tab 2 content' },
+            { title: 'Documents', content: 'Tab 3 content' },
+            { title: 'Invoices', content: 'Tab 4 content' },
+            { title: 'Payments', content: 'Tab 5 content' },
+            { title: 'Payroll', content: 'Tab 6 content' },
+            { title: 'Insights', content: 'Tab 7 content' },
+            { title: 'Settings', content: 'Tab 8 content' },
+            { title: 'Account', content: 'Tab 9 content' },
+        ],
+    },
+    render: (args) => (
+        <div style={{ background: 'var(--pte-new-colors-backgroundPrimary)' }}>
+            <Tabs {...args} />
         </div>
     ),
 };

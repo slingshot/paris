@@ -151,7 +151,13 @@ export function Table<RowData extends Record<string, any>[]>({
             }}
         >
             <thead {...overrides?.thead}>
-                <tr {...overrides?.trHead} className={styles.tableHeader}>
+                <tr
+                    {...overrides?.trHead}
+                    className={clsx(
+                        styles.tableHeader,
+                        overrides?.trHead?.className,
+                    )}
+                >
                     {columns.map((column) => (
                         <th
                             {...{

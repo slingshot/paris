@@ -9,10 +9,8 @@ import { Icon, ArrowRight } from '../icon';
 export type CalloutProps = {
     /** The variant of the Callout. */
     variant?: 'default' | 'warning' | 'positive' | 'negative';
-    /** An icon to display in the Callout. For best results, use an SVG icon with fill set to `currentColor`. */
-    icon?: ReactElement;
-    /** Option to hide the icon from the Callout. */
-    hideIcon?: boolean;
+    /** An icon to display in the Callout. To hide icon, set `icon={null}`. For best results, use an SVG icon with fill set to `currentColor`. */
+    icon?: ReactElement | null;
     /** The contents of the Callout. */
     children?: ReactNode;
 } & Omit<ComponentPropsWithoutRef<'div'>, 'children'>;
@@ -31,24 +29,16 @@ export type CalloutProps = {
  */
 export const Callout: FC<CalloutProps> = ({
     variant = 'default',
-    icon,
-    hideIcon = false,
+    icon = <Icon icon={ArrowRight} size={16} className={styles.icon} />,
     children,
     className,
     ...props
 }) => (
     <div className={clsx(styles.content, styles[variant], className)} {...props}>
-        <RemoveFromDOM when={hideIcon}>
-            <RemoveFromDOM when={!!icon}>
-                <div className={styles.icon}>
-                    <Icon icon={ArrowRight} size={16} className={styles.icon} />
-                </div>
-            </RemoveFromDOM>
-            <RemoveFromDOM when={!icon}>
-                <div className={styles.icon}>
-                    {icon}
-                </div>
-            </RemoveFromDOM>
+        <RemoveFromDOM when={!icon}>
+            <div className={styles.icon}>
+                {icon}
+            </div>
         </RemoveFromDOM>
         <TextWhenString as="p" kind="paragraphXSmall">
             {children}

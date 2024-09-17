@@ -50,15 +50,13 @@ export const TextArea: FC<InputProps & ComponentPropsWithoutRef<'textarea'>> = (
         >
             <div
                 className={styles.inputContainer}
-                data-status={status}
-                data-disabled={disabled}
+                data-status={disabled ? 'disabled' : (status || 'default')}
             >
                 {!!startEnhancer && (
                     <div
                         {...overrides?.startEnhancerContainer}
                         className={clsx(styles.enhancer, overrides?.startEnhancerContainer?.className)}
-                        data-status={status}
-                        data-disabled={disabled}
+                        data-status={disabled ? 'disabled' : (status || 'default')}
                     >
                         {!!startEnhancer && (
                             <MemoizedEnhancer
@@ -76,7 +74,7 @@ export const TextArea: FC<InputProps & ComponentPropsWithoutRef<'textarea'>> = (
                     aria-disabled={disabled}
                     readOnly={disabled}
                     rows={rows}
-                    data-status={status}
+                    data-status={disabled ? 'disabled' : (status || 'default')}
                     className={clsx(
                         props.className,
                         styles.input,
@@ -86,8 +84,7 @@ export const TextArea: FC<InputProps & ComponentPropsWithoutRef<'textarea'>> = (
                     <div
                         {...overrides?.endEnhancerContainer}
                         className={clsx(styles.enhancer, overrides?.endEnhancerContainer?.className)}
-                        data-status={status}
-                        data-disabled={disabled}
+                        data-status={disabled ? 'disabled' : (status || 'default')}
                     >
                         {!!endEnhancer && (
                             <MemoizedEnhancer

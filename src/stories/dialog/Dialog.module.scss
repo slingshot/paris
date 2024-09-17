@@ -22,7 +22,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
         will-change: backdrop-filter, opacity;
     }
 
-    &.overlayGreyed {
+    &.overlayGrey {
         background-color: var(--pte-new-colors-overlayPageBackground);
         will-change: opacity;
     }
@@ -55,7 +55,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     }
 }
 
-.overlayGreyedContainer {
+.overlayGreyContainer {
     .enterFrom {
         opacity: 0;
     }

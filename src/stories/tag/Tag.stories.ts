@@ -41,10 +41,21 @@ export const New: Story = {
         kind: 'new',
     },
 };
-export const Small: Story = {
+
+export const Square: Story = {
     args: {
         children: 'New',
-        size: 'small',
+        size: 'compact',
+        shape: 'square',
         kind: 'positive',
+    },
+};
+
+export const RoundedXL: Story = {
+    args: {
+        children: 'Label',
+        size: 'normal',
+        corners: 'roundedXL',
+        kind: 'default',
     },
 };

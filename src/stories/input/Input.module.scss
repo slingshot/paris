@@ -31,7 +31,7 @@
         background-color: var(--pte-new-colors-inputFillFocus);
     }
 
-    &[data-disabled=true] {
+    &[data-status="disabled"] {
         border-color: var(--pte-new-colors-inputFillDisabled);
         background-color: var(--pte-new-colors-inputFillDisabled);
         color: var(--pte-new-colors-contentDisabled);
@@ -99,7 +99,7 @@
             display: none;
         }
 
-        &[data-disabled=true] {
+        &[data-status="disabled"] {
             color: var(--pte-new-colors-contentDisabled);
 
             &::placeholder {
@@ -136,7 +136,7 @@
     line-height: var(--pte-typography-styles-paragraphSmall-lineHeight);
     text-transform: var(--pte-typography-styles-paragraphSmall-textTransform);
 
-    &[data-disabled=true] {
+    &[data-status="disabled"] {
         color: var(--pte-new-colors-contentDisabled);
     }
 

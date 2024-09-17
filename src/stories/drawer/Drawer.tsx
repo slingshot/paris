@@ -87,15 +87,15 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
      * An optional pagination state. If provided, each child of the Drawer will be rendered in its own page, and the Drawer will contain back and next buttons that will be used to navigate between pages.
      *
      * The state should be created using the {@link usePagination} hook and the entire state should be passed to the Drawer. For example:
-     * ```tsx```
-     * ```const pagination = usePagination<['step1', 'step2', 'step3']>();```
-     * ```// ...```
-     * ```<Drawer pagination={pagination}>```
-     *     ```<div key="step1">Step 1</div>```
-     *     ```<div key="step2">Step 2</div>```
-     *     ```<div key="step3">Step 3</div>```
-     * ```</Drawer>```
-     *
+     * ```tsx
+     * const pagination = usePagination<['step1', 'step2', 'step3']>();
+     * // ...
+     * <Drawer pagination={pagination}>
+     *     <div key="step1">Step 1</div>
+     *     <div key="step2">Step 2</div>
+     *     <div key="step3">Step 3</div>
+     * </Drawer>
+     *```
      *
      * @see {@link PaginationState} for more information on the pagination state and available methods
      * @see {@link usePagination} for more information on how to create the pagination state
@@ -198,7 +198,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                 <div
                     className={clsx(
                         overlayStyle === 'blur' && styles.overlayBlurContainer,
-                        overlayStyle === 'greyed' && styles.overlayGreyedContainer,
+                        overlayStyle === 'greyed' && styles.overlayGreyContainer,
                     )}
                 >
                     <Transition.Child
@@ -214,7 +214,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                             className={clsx(
                                 styles.overlay,
                                 overlayStyle === 'blur' && styles.overlayBlur,
-                                overlayStyle === 'greyed' && styles.overlayGreyed,
+                                overlayStyle === 'greyed' && styles.overlayGrey,
                             )}
                         />
                     </Transition.Child>

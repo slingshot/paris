@@ -56,6 +56,6 @@ export const IconHidden: Story = {
     args: {
         variant: 'default',
         children: 'Please upload a receipt',
-        hideIcon: true,
+        icon: null,
     },
 };

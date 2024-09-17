@@ -2,4 +2,4 @@
 "paris": minor
 ---
 
-Callout: color updates, default ArrowRight icon, `hideIcon` prop
+Callout: color updates, default ArrowRight icon

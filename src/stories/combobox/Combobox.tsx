@@ -155,15 +155,13 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
             >
                 <div
                     className={inputStyles.inputContainer}
-                    data-status={status}
-                    data-disabled={disabled}
+                    data-status={disabled ? 'disabled' : (status || 'default')}
                 >
                     {!!startEnhancer && (
                         <div
                             {...overrides?.startEnhancerContainer}
                             className={clsx(inputStyles.enhancer, overrides?.startEnhancerContainer?.className)}
-                            data-status={status}
-                            data-disabled={disabled}
+                            data-status={disabled ? 'disabled' : (status || 'default')}
                         >
                             {!!startEnhancer && (
                                 <MemoizedEnhancer
@@ -186,9 +184,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                     if (overrides?.input?.onChange) overrides.input.onChange(e);
                                 }}
                                 aria-disabled={disabled}
-                                data-status={status}
-                                data-disabled={disabled}
-                                // data-status={disabled ? 'disabled' : (status || 'default')}
+                                data-status={disabled ? 'disabled' : (status || 'default')}
                                 className={clsx(
                                     overrides?.input?.className,
                                     inputStyles.input,
@@ -216,8 +212,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                         <div
                             {...overrides?.endEnhancerContainer}
                             className={clsx(inputStyles.enhancer, overrides?.endEnhancerContainer?.className)}
-                            data-status={status}
-                            data-disabled={disabled}
+                            data-status={disabled ? 'disabled' : (status || 'default')}
                         >
                             {!!endEnhancer && (
                                 <MemoizedEnhancer

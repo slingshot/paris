@@ -57,3 +57,27 @@ export const WithEnhancer: Story = {
         }),
     },
 };
+
+export const Circle: Story = {
+    args: {
+        children: 'Button',
+        shape: 'circle',
+        kind: 'tertiary',
+        startEnhancer: ({ size }) => createElement(FontAwesomeIcon, {
+            icon: faPlus,
+            width: `${size}px`,
+        }),
+    },
+};
+
+export const Rounded: Story = {
+    args: {
+        children: 'Button',
+        shape: 'rectangle',
+        corners: 'rounded',
+        startEnhancer: ({ size }) => createElement(FontAwesomeIcon, {
+            icon: faPlus,
+            width: `${size}px`,
+        }),
+    },
+};

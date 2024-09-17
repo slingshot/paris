@@ -192,7 +192,7 @@ export const BottomPanel: Story = {
         ),
         bottomPanel: (
             <div style={{
-                width: '100%', display: 'flex', flexDirection: 'column', gap: '12px', padding: '20px',
+                width: '100%', display: 'flex', flexDirection: 'column', gap: '12px',
             }}
             >
                 <Callout>

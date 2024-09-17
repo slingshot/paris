@@ -32,7 +32,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
         will-change: backdrop-filter, opacity;
     }
 
-    &.overlayGreyed {
+    &.overlayGrey {
         //background-color: rgba(175, 175, 175, 0); // Non-transparent backgroundOverlayGrey (for start animation)
         background-color: var(--pte-new-colors-overlayPageBackground);
         will-change: opacity;
@@ -61,7 +61,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     }
 }
 
-.overlayGreyedContainer {
+.overlayGreyContainer {
     .enterFrom {
         opacity: 0;
     }
@@ -103,12 +103,12 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
         &.size-content, &.size-fullWithMargin {
             padding-left: $panelMinMargin;
         }
-        @media (width > 370px) {
+        @media (min-width: 371px) {
             &.size-default {
                 padding-left: $panelMinMargin;
             }
         }
-        @media (width > 480px) {
+        @media (min-width: 481px) {
             &.size-fullOnMobile {
                 padding-left: $panelMinMargin;
             }
@@ -133,12 +133,12 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
         &.size-content, &.size-fullWithMargin {
             padding-right: $panelMinMargin;
         }
-        @media (width > 370px) {
+        @media (min-width: 371px) {
             &.size-default {
                 padding-right: $panelMinMargin;
             }
         }
-        @media (width > 480px) {
+        @media (min-width: 481px) {
             &.size-fullOnMobile {
                 padding-right: $panelMinMargin;
             }
@@ -164,7 +164,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
         top: 0;
         bottom: 0;
 
-        @media (width > 370px) {
+        @media (min-width: 371px) {
             &.size-default {
                 width: min(100vw, $defaultSize);
             }
@@ -174,7 +174,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
                 width: 100vw;
             }
         }
-        @media (width > 480px) {
+        @media (min-width: 481px) {
             &.size-fullOnMobile {
                 width: min(100vw, $defaultSize);
             }
@@ -198,7 +198,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
         &.size-content, &.size-fullWithMargin, &.size-default {
             padding-bottom: $panelMinMargin;
         }
-        @media (width > 480px) {
+        @media (min-width: 481px) {
             &.size-fullOnMobile {
                 padding-bottom: $panelMinMargin;
             }
@@ -223,7 +223,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
         &.size-content, &.size-fullWithMargin, &.size-default {
             padding-top: $panelMinMargin;
         }
-        @media (width > 480px) {
+        @media (min-width: 481px) {
             &.size-fullOnMobile {
                 padding-top: $panelMinMargin;
             }
@@ -250,7 +250,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
         &.size-default {
             height: min(100dvh, $defaultSize);
         }
-        @media (width > 480px) {
+        @media (min-width: 481px) {
             &.size-fullOnMobile {
                 height: min(100dvh, $defaultSize);
             }
@@ -414,11 +414,11 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 
 .bottomPanelContent {
     position: relative;
-    //padding: 20px;
+    padding: 20px;
 }
 
 .bottomPanelSpacer {
-    //padding: 20px;
+    padding: 20px;
     opacity: 0;
     pointer-events: none;
 }

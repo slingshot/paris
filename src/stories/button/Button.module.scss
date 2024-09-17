@@ -122,16 +122,26 @@
     border-radius: var(--pte-borders-radius-circle);
 }
 
-.rounded {
-    border-radius: var(--pte-borders-radius-rounded);
-
-    &.small {
-        border-radius: var(--pte-borders-radius-roundedSmall);
-    }
-}
-
 .square, .rectangle {
-    border-radius: var(--pte-borders-radius-rectangle);
+    &.sharp {
+        border-radius: var(--pte-borders-radius-rectangle);
+    }
+
+    &.rounded {
+        border-radius: var(--pte-borders-radius-rounded);
+
+        &.small {
+            border-radius: var(--pte-borders-radius-roundedSmall);
+        }
+    }
+
+    &.roundedXL {
+        border-radius: var(--pte-borders-radius-roundedLarge);
+
+        &.small {
+            border-radius: var(--pte-borders-radius-rounded);
+        }
+    }
 }
 
 .circle, .square {

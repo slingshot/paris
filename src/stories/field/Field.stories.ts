@@ -27,6 +27,6 @@ export const Default: Story = {
                 paddingLeft: '12px',
                 border: '1px solid pink',
             },
-        }, 'Children input components are inserted here.'),
+        }, 'Children are inserted here.'),
     },
 };

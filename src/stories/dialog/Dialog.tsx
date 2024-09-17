@@ -181,7 +181,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                     {...overrides.overlayContainer}
                     className={clsx(
                         overlayStyle === 'blur' && styles.overlayBlurContainer,
-                        overlayStyle === 'greyed' && styles.overlayGreyedContainer,
+                        overlayStyle === 'greyed' && styles.overlayGreyContainer,
                         overrides.overlayContainer?.className,
                     )}
                 >
@@ -199,7 +199,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                             className={clsx(
                                 styles.overlay,
                                 overlayStyle === 'blur' && styles.overlayBlur,
-                                overlayStyle === 'greyed' && styles.overlayGreyed,
+                                overlayStyle === 'greyed' && styles.overlayGrey,
                                 overrides.overlay?.className,
                             )}
                         />

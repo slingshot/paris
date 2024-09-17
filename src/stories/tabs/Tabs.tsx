@@ -91,9 +91,15 @@ export const Tabs: FC<TabsProps> = ({
                     onTabChange?.(i);
                 }
             }}
-            className={clsx(styles.tabGroup)}
+            className={clsx(styles.tabGroup, styles[backgroundStyle])}
         >
             <div className={clsx(styles.tabBackground, styles[backgroundStyle])}>
+                {backgroundStyle === 'glass' && (
+                    <div className={styles.glassContainer}>
+                        <div className={styles.glassOpacity} />
+                        <div className={styles.glassBlend} />
+                    </div>
+                )}
                 <Tab.List
                     style={{
                         '--tab-width': tabWidth,
@@ -105,13 +111,6 @@ export const Tabs: FC<TabsProps> = ({
                         styles[backgroundStyle],
                     )}
                 >
-                    {backgroundStyle === 'glass' && (
-                        <div className={styles.glassContainer}>
-                            <div className={styles.glassOpacity} />
-                            <div className={styles.glassBlend} />
-                        </div>
-                    )}
-
                     {tabs.map(({ title }, i) => (
                         <Tab
                             key={`${id}-tab-${title}`}
@@ -140,7 +139,9 @@ export const Tabs: FC<TabsProps> = ({
                 <div className={clsx(styles.tabListBorder, styles[barStyle])} />
             </div>
 
-            <Tab.Panels>
+            <Tab.Panels
+                className={clsx(styles.tabPanels, styles[backgroundStyle])}
+            >
                 {tabs.map(({ title, content }) => (
                     <Tab.Panel
                         key={`${id}-tab-${title}-content`}

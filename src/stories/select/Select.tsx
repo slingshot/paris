@@ -128,9 +128,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                         id={inputID}
                         {...overrides?.selectInput}
                         aria-disabled={disabled}
-                        data-disabled={disabled}
-                        data-status={status}
-                        // data-status={disabled ? 'disabled' : (status || 'default')}
+                        data-status={disabled ? 'disabled' : (status || 'default')}
                         className={clsx(
                             overrides?.selectInput?.className,
                             inputStyles.inputContainer,
@@ -142,8 +140,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                             <div
                                 {...overrides?.startEnhancerContainer}
                                 className={clsx(inputStyles.enhancer, overrides?.startEnhancerContainer?.className)}
-                                data-status={status}
-                                data-disabled={disabled}
+                                data-status={disabled ? 'disabled' : (status || 'default')}
                             >
                                 {!!startEnhancer && (
                                     <MemoizedEnhancer
@@ -158,8 +155,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                             <div
                                 {...overrides?.endEnhancerContainer}
                                 className={clsx(inputStyles.enhancer, overrides?.endEnhancerContainer?.className)}
-                                data-status={status}
-                                data-disabled={disabled}
+                                data-status={disabled ? 'disabled' : (status || 'default')}
                             >
                                 {!!endEnhancer && (
                                     <MemoizedEnhancer
@@ -169,7 +165,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                                 )}
                             </div>
                         ) : (
-                            <FontAwesomeIcon className={clsx(inputStyles.enhancer, styles.chevron)} data-status={status} data-disabled={disabled} width="10px" icon={faChevronDown} />
+                            <FontAwesomeIcon className={clsx(inputStyles.enhancer, styles.chevron)} data-status={disabled ? 'disabled' : (status || 'default')} width="10px" icon={faChevronDown} />
                         )}
                     </Listbox.Button>
                     <Transition
@@ -227,8 +223,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                             key={option.id}
                             value={option.id}
                             disabled={option.disabled || false}
-                            data-disabled={disabled}
-                            data-status={status}
+                            data-status={disabled ? 'disabled' : (status || 'default')}
                         >
                             <div className={styles.radioCircle} />
                             <TextWhenString kind="paragraphXSmall">
