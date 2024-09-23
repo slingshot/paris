@@ -69,13 +69,13 @@ export const Default: Story = {
     },
 };
 
-export const Blur: Story = {
+export const Grey: Story = {
     args: {
         title: 'Confirmation',
         appearance: 'simple',
         width: 'default',
         height: 'content',
-        overlayStyle: 'blur',
+        overlayStyle: 'grey',
         draggable: false,
         isOpen: false,
         children: (

@@ -103,11 +103,11 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
      */
     pagination?: PaginationState<T>;
     /**
-     * The overlay style of the Drawer, either 'greyed' or 'blur'.
+     * The overlay style of the Drawer, either 'grey' or 'blur'.
      *
-     * @default 'blur'
+     * @default 'grey'
      */
-    overlayStyle?: 'greyed' | 'blur';
+    overlayStyle?: 'grey' | 'blur';
     /** The contents of the Drawer. */
     children?: ReactNode | ReactNode[];
 };
@@ -134,7 +134,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
     from = 'right',
     size = 'default',
     pagination,
-    overlayStyle = 'greyed',
+    overlayStyle = 'grey',
     additionalActions,
     children,
 }: DrawerProps<T>) => {
@@ -198,7 +198,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                 <div
                     className={clsx(
                         overlayStyle === 'blur' && styles.overlayBlurContainer,
-                        overlayStyle === 'greyed' && styles.overlayGreyContainer,
+                        overlayStyle === 'grey' && styles.overlayGreyContainer,
                     )}
                 >
                     <Transition.Child
@@ -214,7 +214,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                             className={clsx(
                                 styles.overlay,
                                 overlayStyle === 'blur' && styles.overlayBlur,
-                                overlayStyle === 'greyed' && styles.overlayGrey,
+                                overlayStyle === 'grey' && styles.overlayGrey,
                             )}
                         />
                     </Transition.Child>

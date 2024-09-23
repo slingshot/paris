@@ -69,11 +69,11 @@ export type DialogProps = {
      */
     appearance?: 'simple' | 'glass';
     /**
-     * The overlay style for the dialog. `greyed` is a simple grey overlay. `blur` is a blurred overlay.
+     * The overlay style for the dialog. `grey` is a simple grey overlay. `blur` is a blurred overlay.
      *
-     * @default 'greyed'
+     * @default 'blur'
      */
-    overlayStyle?: 'greyed' | 'blur';
+    overlayStyle?: 'grey' | 'blur';
     /**
      * Optional overrides for props of each dialog component.
      *
@@ -124,7 +124,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
     height = 'content',
     draggable = false,
     appearance = 'simple',
-    overlayStyle = 'greyed',
+    overlayStyle = 'blur',
     children,
 }) => {
     const [dragging, setDragging] = useState(false);
@@ -181,7 +181,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                     {...overrides.overlayContainer}
                     className={clsx(
                         overlayStyle === 'blur' && styles.overlayBlurContainer,
-                        overlayStyle === 'greyed' && styles.overlayGreyContainer,
+                        overlayStyle === 'grey' && styles.overlayGreyContainer,
                         overrides.overlayContainer?.className,
                     )}
                 >
@@ -199,7 +199,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                             className={clsx(
                                 styles.overlay,
                                 overlayStyle === 'blur' && styles.overlayBlur,
-                                overlayStyle === 'greyed' && styles.overlayGrey,
+                                overlayStyle === 'grey' && styles.overlayGrey,
                                 overrides.overlay?.className,
                             )}
                         />
