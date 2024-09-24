@@ -1,5 +1,35 @@
 # paris
 
+## 0.9.0
+
+### Minor Changes
+
+- a8941e5: Tabs: color and styling updates, kind `full`, `barStyle` thick or thin, `backgroundStyle` with glass option
+- ecd7deb: Theme: Revamped tokens and variables with updated structures, plus new materials and blurs
+- a8941e5: Theme: updated “materials” variables, added accent glows to “lighting”
+- a8941e5: Drawer: color and styling updates, new sizes `fullWithMargin` and `fullOnMobile` with tweaked `full` behavior, `bottomPanel` with glass material and removed padding, `additionalActions` available on paginated drawers, `overlayStyle` "greyed" renamed to "grey"
+- a8941e5: Dialog: color and styling updates, `overlayStyle` with default `blur` and option `grey`
+- a8941e5: Callout: color updates, default ArrowRight icon
+- a8941e5: Tag: color and styling updates, `shape` prop for `square` variant with `icon`, `corners` prop for border and radius, planned`and`void`kinds,`colorLevel` to adjust color background
+- a8941e5: Button: color updates, added `medium` size, `corners` prop for border-radius, removed `rounded` shape
+
+### Patch Changes
+
+- a8941e5: Accordion: color updates
+- a8941e5: Styled Link: color updates
+- a8941e5: Table: color and styling updates
+- a8941e5: Toast: color updates
+- a8941e5: Popover: color updates
+- a8941e5: Checkbox: color updates
+- a8941e5: Select: color and styling updates, fixed disabled states
+- a8941e5: Menu: color updates
+- a8941e5: TextArea: color updates, enhancer updates to match Input
+- a8941e5: Card: color updates
+- a8941e5: Avatar: color updates
+- a8941e5: Combobox: color and styling updates
+- a8941e5: Icon: `Check` and `ArrowRight`
+- a8941e5: Input: color and styling updates, enhancer color states
+
 ## 0.8.22
 
 ### Patch Changes
