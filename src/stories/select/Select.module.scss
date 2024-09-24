@@ -7,6 +7,16 @@
     }
 }
 
+.listboxButton {
+    &[aria-expanded = true] {
+        .chevron {
+            color: var(--pte-new-colors-contentPrimary);
+        }
+        border-color: var(--pte-new-colors-inputBorderFocus);
+        background-color: var(--pte-new-colors-inputFillFocus);
+    }
+}
+
 .field {
     display: flex;
     flex-direction: row;
@@ -33,11 +43,11 @@
     display: flex;
     flex-direction: column;
 
-    background-color: var(--pte-colors-backgroundPrimary);
+    background-color: var(--pte-new-colors-surfacePrimary);
 
-    border: var(--pte-borders-dropdown-border);
+    border: var(--pte-new-borders-dropdown-border);
     border-radius: var(--pte-borders-radius-rectangle);
-    box-shadow: var(--pte-borders-dropdown-shadow);
+    box-shadow: var(--pte-new-lighting-deepBelow);
 
     transition: var(--pte-animations-interaction);
 
@@ -49,12 +59,12 @@
 .option {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     gap: 8px;
 
-    padding: 8px 16px;
-    margin: -1px;
+    padding: 6.5px 14px;
+    //margin: -1px;
 
     // border: 1px solid var(--pte-borders-dropdown-color);
     //border-right: 1px solid var(--pte-borders-dropdown-color);
@@ -62,19 +72,19 @@
     transition: var(--pte-animations-interaction);
 
     &:hover, &[data-headlessui-state="active"] {
-        background-color: var(--pte-colors-backgroundSecondary);
+        background-color: var(--pte-new-colors-overlayMedium);
     }
 
     &[data-selected=true] {
-        background-color: var(--pte-colors-backgroundTertiary);
+        background-color: var(--pte-new-colors-overlaySubtle);
     }
 
-    &[data-disabled=true], &[data-headlessui-state~="disabled"] {
+    &[data-status="disabled"], &[data-headlessui-state~="disabled"] {
         pointer-events: none;
         cursor: default;
 
         &, & * {
-            color: var(--pte-colors-contentDisabled);
+            color: var(--pte-new-colors-contentDisabled);
         }
     }
 }
@@ -100,26 +110,38 @@
 
     &[data-headlessui-state~="active"] {
         .radioCircle {
-            border-color: var(--pte-colors-contentPrimary);
+            border-color: var(--pte-new-colors-contentPrimary);
         }
     }
 
     &[data-headlessui-state~="checked"] {
         .radioCircle {
-            border: 5px solid var(--pte-colors-contentPrimary);
+            border: 5px solid var(--pte-new-colors-contentPrimary);
         }
     }
 
-    &[data-headlessui-state~="disabled"] {
+    &[data-status="disabled"], &[data-headlessui-state~="disabled"] {
         pointer-events: none;
         cursor: default;
 
         &, & * {
-            color: var(--pte-colors-contentDisabled);
+            color: var(--pte-new-colors-contentDisabled);
         }
 
         .radioCircle {
-            border-color: var(--pte-colors-contentDisabled);
+            border-color: var(--pte-new-colors-contentDisabled);
+        }
+    }
+
+    &[data-status="error"] {
+        .radioCircle {
+            border-color: var(--pte-new-colors-contentNegative);
+        }
+    }
+
+    &[data-status="success"] {
+        .radioCircle {
+            border-color: var(--pte-new-colors-contentPositive);
         }
     }
 }
@@ -130,6 +152,6 @@
     width: 14px;
     height: 14px;
     border-radius: 100%;
-    border: 1.5px solid var(--pte-colors-contentTertiary);
+    border: 1.5px solid var(--pte-new-colors-contentTertiary);
     transition: all var(--pte-animations-interaction);
 }

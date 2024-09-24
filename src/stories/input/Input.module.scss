@@ -3,13 +3,13 @@
     flex-direction: row;
     align-items: center;
     gap: 12px;
-    min-height: 36px;
+    min-height: 34px;
 
-    background-color: var(--pte-colors-backgroundSecondary);
+    background-color: var(--pte-new-colors-inputFill);
 
     //height: 36px;
     width: 100%;
-    padding: calc(7.5px - var(--pte-typography-verticalMetricsAdjust)) 15px 7.5px;
+    padding: calc(7.5px - var(--pte-typography-verticalMetricsAdjust)) 14px 7.5px;
 
     font-size: var(--pte-typography-styles-paragraphSmall-fontSize);
     font-style: var(--pte-typography-styles-paragraphSmall-fontStyle);
@@ -20,46 +20,46 @@
 
     border-width: 1px;
     border-style: solid;
-    border-color: var(--pte-colors-backgroundSecondary);
+    border-color: var(--pte-new-colors-inputFill);
     border-radius: var(--pte-borders-radius-rectangle);
 
     transition: var(--pte-animations-interaction);
 
     &:focus-within {
         outline: none;
-        border-color: var(--pte-colors-borderSelected);
-        background-color: var(--pte-colors-backgroundTertiary);
+        border-color: var(--pte-new-colors-inputBorderFocus);
+        background-color: var(--pte-new-colors-inputFillFocus);
     }
 
     &[data-status="disabled"] {
-        border-color: var(--pte-colors-backgroundTertiary);
-        background-color: var(--pte-colors-backgroundTertiary);
-        color: var(--pte-colors-contentDisabled);
+        border-color: var(--pte-new-colors-inputFillDisabled);
+        background-color: var(--pte-new-colors-inputFillDisabled);
+        color: var(--pte-new-colors-contentDisabled);
         pointer-events: none;
         cursor: default;
 
         &:focus-within {
-            border-color: var(--pte-colors-backgroundTertiary) !important;
+            border-color: var(--pte-new-colors-inputFillDisabled) !important;
         }
     }
 
     &[data-status="error"] {
-        border-color: var(--pte-colors-borderNegative);
-        background-color: var(--pte-colors-backgroundNegative);
-        color: var(--pte-colors-contentNegative);
+        border-color: var(--pte-new-colors-inputBorderNegative);
+        background-color: var(--pte-new-colors-inputFillNegative);
+        color: var(--pte-new-colors-contentNegative);
 
         &:focus-within {
-            color: var(--pte-colors-contentPrimary);
+            color: var(--pte-new-colors-contentPrimary);
         }
     }
 
     &[data-status="success"] {
-        border-color: var(--pte-colors-borderPositive);
-        background-color: var(--pte-colors-backgroundPositive);
-        color: var(--pte-colors-contentPositive);
+        border-color: var(--pte-new-colors-contentPositive);
+        background-color: var(--pte-new-colors-backgroundPositive);
+        color: var(--pte-new-colors-contentPositive);
 
         &:focus-within {
-            color: var(--pte-colors-contentPrimary);
+            color: var(--pte-new-colors-contentPrimary);
         }
     }
 
@@ -73,20 +73,20 @@
         outline: none;
 
         &::placeholder {
-            color: var(--pte-colors-contentTertiary);
+            color: var(--pte-new-colors-contentTertiary);
         }
 
         &[aria-disabled=true] {
-            color: var(--pte-colors-contentDisabled);
+            color: var(--pte-new-colors-contentDisabled);
             cursor: default;
 
             &::placeholder {
-                color: var(--pte-colors-contentDisabled);
+                color: var(--pte-new-colors-contentDisabled);
             }
         }
 
         &[type="color"]::-webkit-color-swatch {
-            border: 1px solid var(--pte-colors-borderSelected);
+            border: 1px solid var(--pte-new-colors-inputBorderFocus);
             border-radius: var(--pte-borders-radius-circle);
         }
 
@@ -100,26 +100,26 @@
         }
 
         &[data-status="disabled"] {
-            color: var(--pte-colors-contentDisabled);
+            color: var(--pte-new-colors-contentDisabled);
 
             &::placeholder {
-                color: var(--pte-colors-contentDisabled);
+                color: var(--pte-new-colors-contentDisabled);
             }
         }
     
         &[data-status="error"] {
-            color: var(--pte-colors-contentNegative);
+            color: var(--pte-new-colors-contentNegative);
 
             &::placeholder {
-                color: var(--pte-colors-contentNegative);
+                color: var(--pte-new-colors-contentNegative);
             }
         }
     
         &[data-status="success"] {
-            color: var(--pte-colors-contentPositive);
+            color: var(--pte-new-colors-contentPositive);
 
             &::placeholder {
-                color: var(--pte-colors-contentPositive);
+                color: var(--pte-new-colors-contentPositive);
             }
         }
     }
@@ -127,7 +127,7 @@
 
 .enhancer {
     display: flex;
-    color: var(--pte-colors-contentSecondary);
+    color: var(--pte-new-colors-contentSecondary);
     margin-block-start: -0.5px;
     font-size: var(--pte-typography-styles-paragraphSmall-fontSize);
     font-style: var(--pte-typography-styles-paragraphSmall-fontStyle);
@@ -135,6 +135,18 @@
     letter-spacing: var(--pte-typography-styles-paragraphSmall-letterSpacing);
     line-height: var(--pte-typography-styles-paragraphSmall-lineHeight);
     text-transform: var(--pte-typography-styles-paragraphSmall-textTransform);
+
+    &[data-status="disabled"] {
+        color: var(--pte-new-colors-contentDisabled);
+    }
+
+    &[data-status="error"] {
+        color: var(--pte-new-colors-contentNegative);
+    }
+
+    &[data-status="success"] {
+        color: var(--pte-new-colors-contentPositive);
+    }
 }
 
 .container {
@@ -148,13 +160,13 @@
 
 // Use double selector to ensure specificity is higher than the default styles
 .label.label {
-    color: var(--pte-colors-contentPrimary);
+    color: var(--pte-new-colors-contentPrimary);
     font-weight: var(--pte-typography-fontWeights-medium);
 }
 
 // Use double selector to ensure specificity is higher than the default styles
 .description.description {
-    color: var(--pte-colors-contentTertiary);
+    color: var(--pte-new-colors-contentTertiary);
 }
 
 .hidden {

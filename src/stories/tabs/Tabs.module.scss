@@ -1,6 +1,5 @@
 .tabList {
-    //border-bottom: 4px solid var(--pte-colors-borderOpaque);
-    padding-bottom: 4px;
+    //padding-bottom: 4px;
     overflow-x: scroll;
     //overflow-y: visible;
     position: relative;
@@ -12,20 +11,87 @@
     &::-webkit-scrollbar {
         display: none;
     }
+
+    &.thick {
+        padding-bottom: 4px;
+        //border-bottom: 4px solid var(--pte-new-colors-borderMedium);
+    }
+    &.thin {
+        padding-bottom: 1px;
+        //border-bottom: 1px solid var(--pte-new-colors-borderMedium);
+    }
+
+    &.full {
+        justify-content: stretch;
+    }
+    //&.glass {
+    //    position: absolute;
+    //    width: 100%;
+    //}
+}
+
+.tabBackground {
+    &.glass {
+        position: absolute;
+        width: 100%;
+    }
+}
+
+.tabGroup {
+    width: 100%;
+    overflow: auto;
+    height: 100%;
+
+    &.glass {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+    }
+}
+
+.glassContainer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.glassBlend {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--pte-new-materials-secondaryRegular-backgroundBlend);
+    mix-blend-mode: var(--pte-new-materials-secondaryRegular-mixBlendMode);
+}
+
+.glassOpacity {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--pte-new-materials-secondaryRegular-background);
+    backdrop-filter: var(--pte-new-blurs-strong);
 }
 
 .tabListBorder {
-    border-bottom: 4px solid var(--pte-colors-borderOpaque);
     width: 100%;
-    margin-top: -4px;
+    position: relative;
+
+    &.thick {
+        border-bottom: 4px solid var(--pte-new-colors-borderMedium);
+        margin-top: -4px;
+    }
+    &.thin {
+        border-bottom: 1px solid var(--pte-new-colors-borderMedium);
+        margin-top: -1px;
+    }
 }
 
+// I think activeTabBorder is no longer used?
 .activeTabBorder {
     position: absolute;
     bottom: 0;
     width: var(--tab-width);
     height: 4px;
-    background-color: var(--pte-colors-contentPrimary);
+    background-color: var(--pte-new-colors-contentPrimary);
 
     transition: transform var(--pte-animations-duration-slow) var(--pte-animations-timing-easeInOutExpo);
 
@@ -35,21 +101,26 @@
 
 .activeTabUnderline {
     position: absolute;
-    bottom: -4px;
     left: 0;
     right: 0;
-    height: 4px;
-    background-color: var(--pte-colors-contentPrimary);
+    background-color: var(--pte-new-colors-contentPrimary);
+    z-index: 1;
+    overflow: visible;
+
+    &.thick {
+        bottom: -4px;
+        height: 4px;
+    }
+    &.thin {
+        bottom: -1px;
+        height: 1px;
+    }
 }
 
 @mixin tabCompactStyles {
     width: auto;
     padding: 4px 0 6px 0;
     margin: 0 20px 0 0;
-
-    &:not([aria-selected="true"]) {
-        color: var(--pte-colors-contentTertiary) !important;
-    }
 };
 
 .tab {
@@ -63,42 +134,112 @@
 
     transition: all var(--pte-animations-duration-normal) var(--pte-animations-timing-easeInOut);
 
+    &:not([aria-selected="true"]) {
+        color: var(--pte-new-colors-contentTertiary) !important;
+    }
+
     &.compact {
         @include tabCompactStyles;
     }
 
-    @container (min-width: 640px) {
-        &[aria-selected="true"]:not(.compact) {
-            background-color: var(--pte-colors-backgroundSecondary);
+    &.full {
+        width: 100px;
+        padding: 13px 13px;
+        flex-grow: 1;
+    }
+
+    &.fixed, &.full {
+        &[aria-selected="true"]{
+            background-color: var(--pte-new-colors-overlayStrong);
         }
 
-        &:hover:not(.compact) {
-            background-color: var(--pte-colors-backgroundSecondary);
+        &:hover {
+            background-color: var(--pte-new-colors-overlayMedium);
         }
 
-        &:active:not(.compact) {
-            background-color: var(--pte-colors-backgroundTertiary);
+        &:active {
+            background-color: var(--pte-new-colors-overlayStrong);
         }
     }
 
+    @container (min-width: 641px) {
+        &.auto {
+            &[aria-selected="true"] {
+                background-color: var(--pte-new-colors-overlayStrong);
+            }
+
+            &:hover {
+                background-color: var(--pte-new-colors-overlayMedium);
+            }
+
+            &:active {
+                background-color: var(--pte-new-colors-overlayStrong);
+            }
+        }
+    }
     @container (max-width: 640px) {
         &.auto {
             @include tabCompactStyles;
-            &[aria-selected="true"]:not(.auto):not(.compact) {
-                background-color: var(--pte-colors-backgroundSecondary);
-            }
-
-            &:hover:not(.auto):not(.compact) {
-                background-color: var(--pte-colors-backgroundSecondary);
-            }
-
-            &:active:not(.auto):not(.compact) {
-                background-color: var(--pte-colors-backgroundTertiary);
-            }
         }
+    }
+}
+
+.tabPanels {
+    &.glass {
+        width: 100%;
     }
 }
 
 .panel {
     padding-top: 16px;
+    overflow-y: scroll;
+    height: 100%;
+    width: 100%;
+
+    &.glass {
+        &.full {
+            &.thick {
+                padding-top: 64px;
+            }
+            &.thin {
+                padding-top: 61px;
+            }
+        }
+        &.fixed {
+            &.thick {
+                padding-top: 56px;
+            }
+            &.thin {
+                padding-top: 53px;
+            }
+        }
+        &.compact {
+            &.thick {
+                padding-top: 48px;
+            }
+            &.thin {
+                padding-top: 45px;
+            }
+        }
+        @container (min-width: 641px) {
+            &.auto {
+                &.thick {
+                    padding-top: 56px;
+                }
+                &.thin {
+                    padding-top: 53px;
+                }
+            }
+        }
+        @container (max-width: 640px) {
+            &.auto {
+                &.thick {
+                    padding-top: 48px;
+                }
+                &.thin {
+                    padding-top: 45px;
+                }
+            }
+        }
+    }
 }

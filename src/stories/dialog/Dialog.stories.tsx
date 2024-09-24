@@ -68,3 +68,43 @@ export const Default: Story = {
         );
     },
 };
+
+export const Grey: Story = {
+    args: {
+        title: 'Confirmation',
+        appearance: 'simple',
+        width: 'default',
+        height: 'content',
+        overlayStyle: 'grey',
+        draggable: false,
+        isOpen: false,
+        children: (
+            <Text>
+                Are you sure? That's a lot of money.
+            </Text>
+        ),
+    },
+    render: (args) => {
+        const [isOpen, setIsOpen] = useState(false);
+        return (
+            <>
+                <div>
+                    <Button
+                        onClick={() => setIsOpen(true)}
+                    >
+                        Pay now
+                    </Button>
+                </div>
+                <Dialog
+                    {...args}
+                    isOpen={isOpen}
+                    onClose={() => {
+                        setIsOpen(false);
+                    }}
+                >
+                    {args.children}
+                </Dialog>
+            </>
+        );
+    },
+};

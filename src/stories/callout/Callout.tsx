@@ -4,12 +4,13 @@ import type {
 import clsx from 'clsx';
 import styles from './Callout.module.scss';
 import { RemoveFromDOM, TextWhenString } from '../utility';
+import { Icon, ArrowRight } from '../icon';
 
 export type CalloutProps = {
     /** The variant of the Callout. */
     variant?: 'default' | 'warning' | 'positive' | 'negative';
-    /** An icon to display in the Callout. For best results, use an SVG icon with fill set to `currentColor`. */
-    icon?: ReactElement;
+    /** An icon to display in the Callout. To hide icon, set `icon={null}`. For best results, use an SVG icon with fill set to `currentColor`. */
+    icon?: ReactElement | null;
     /** The contents of the Callout. */
     children?: ReactNode;
 } & Omit<ComponentPropsWithoutRef<'div'>, 'children'>;
@@ -28,7 +29,7 @@ export type CalloutProps = {
  */
 export const Callout: FC<CalloutProps> = ({
     variant = 'default',
-    icon,
+    icon = <Icon icon={ArrowRight} size={16} className={styles.icon} />,
     children,
     className,
     ...props

@@ -18,7 +18,7 @@ const getArgs = (icon: IconDefinition): Story => ({
         icon,
         size: 20,
         style: {
-            color: pvar('colors.contentPrimary'),
+            color: pvar('new.colors.contentPrimary'),
         },
     },
 });
@@ -27,3 +27,7 @@ export const Close: Story = getArgs(Icons.Close);
 export const ChevronLeft: Story = getArgs(Icons.ChevronLeft);
 export const ChevronRight: Story = getArgs(Icons.ChevronRight);
 export const Ellipsis: Story = getArgs(Icons.Ellipsis);
+export const NotificationDot: Story = getArgs(Icons.NotificationDot);
+export const Spinner: Story = getArgs(Icons.Spinner);
+export const Check: Story = getArgs(Icons.Check);
+export const ArrowRight: Story = getArgs(Icons.ArrowRight);

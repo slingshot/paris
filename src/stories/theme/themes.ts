@@ -51,6 +51,33 @@ const ShadowsDark: ShadowsType = {
     deepPopup: '0px 0px 40px 15px rgba(0, 0, 0, 0.35)',
 };
 
+export type GlowsType = {
+    glowSubtle1: ShadowDefinition,
+    glowSubtle2: ShadowDefinition,
+    glowSubtle3: ShadowDefinition,
+    glowDeep1: ShadowDefinition,
+    glowDeep2: ShadowDefinition,
+    glowDeep3: ShadowDefinition,
+};
+
+const Glows: GlowsType = {
+    glowSubtle1: '0px 0px 3px 0px rgba(29, 238, 205, 0.3)',
+    glowSubtle2: '0px 0px 6px 0px rgba(29, 238, 205, 0.2)',
+    glowSubtle3: '0px 0px 9px 0px rgba(29, 238, 205, 0.1)',
+    glowDeep1: '0px 0px 3px 1px rgba(29, 238, 205, 0.3)',
+    glowDeep2: '0px 0px 9px 3px rgba(29, 238, 205, 0.3)',
+    glowDeep3: '0px 0px 15px 0px rgba(29, 238, 205, 0.2)',
+};
+
+const GlowsDark: GlowsType = {
+    glowSubtle1: '0px 0px 3px 0px rgba(29, 238, 205, 0.15)',
+    glowSubtle2: '0px 0px 6px 0px rgba(29, 238, 205, 0.1)',
+    glowSubtle3: '0px 0px 9px 0px rgba(29, 238, 205, 0.05)',
+    glowDeep1: '0px 0px 3px 1px rgba(29, 238, 205, 0.15)',
+    glowDeep2: '0px 0px 9px 3px rgba(29, 238, 205, 0.15)',
+    glowDeep3: '0px 0px 12px 0px rgba(29, 238, 205, 0.1)',
+};
+
 export type TimingFunction = `cubic-bezier(${number}, ${number}, ${number}, ${number})` | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear';
 export type Duration = `${number}ms` | `${number}s`;
 
@@ -221,7 +248,13 @@ export type Theme = {
             deepPopup: ShadowDefinition,
             subtlePopup: ShadowDefinition,
             shallowLeft: ShadowDefinition,
-            shallowRight: ShadowDefinition, // archive
+            shallowRight: ShadowDefinition,
+            glowSubtle1: ShadowDefinition,
+            glowSubtle2: ShadowDefinition,
+            glowSubtle3: ShadowDefinition,
+            glowDeep1: ShadowDefinition,
+            glowDeep2: ShadowDefinition,
+            glowDeep3: ShadowDefinition,
         },
         materials: {
             // Simple Materials
@@ -247,51 +280,63 @@ export type Theme = {
             // Multi-part Materials
             lightGreyUltrathin: {
                 background: CSSColor,
-                backgroundBlendMode: string,
+                backgroundBlend: CSSColor
+                mixBlendMode: Property.MixBlendMode,
             },
             lightGreyThin: {
                 background: CSSColor,
-                backgroundBlendMode: string,
+                backgroundBlend: CSSColor
+                mixBlendMode: Property.MixBlendMode,
             },
             lightGreyRegular: {
                 background: CSSColor,
-                backgroundBlendMode: string,
+                backgroundBlend: CSSColor
+                mixBlendMode: Property.MixBlendMode,
             },
             lightGreyThick: {
                 background: CSSColor,
-                backgroundBlendMode: string,
+                backgroundBlend: CSSColor
+                mixBlendMode: Property.MixBlendMode,
             },
             darkGreyUltrathin: {
                 background: CSSColor,
-                backgroundBlendMode: string,
+                backgroundBlend: CSSColor
+                mixBlendMode: Property.MixBlendMode,
             },
             darkGreyThin: {
                 background: CSSColor,
-                backgroundBlendMode: string,
+                backgroundBlend: CSSColor
+                mixBlendMode: Property.MixBlendMode,
             },
             darkGreyRegular: {
                 background: CSSColor,
-                backgroundBlendMode: string,
+                backgroundBlend: CSSColor
+                mixBlendMode: Property.MixBlendMode,
             },
             darkGreyThick: {
                 background: CSSColor,
-                backgroundBlendMode: string,
+                backgroundBlend: CSSColor
+                mixBlendMode: Property.MixBlendMode,
             },
             greyUltrathin: {
                 background: CSSColor,
-                backgroundBlendMode: string,
+                backgroundBlend: CSSColor
+                mixBlendMode: Property.MixBlendMode,
             },
             greyThin: {
                 background: CSSColor,
-                backgroundBlendMode: string,
+                backgroundBlend: CSSColor
+                mixBlendMode: Property.MixBlendMode,
             },
             greyRegular: {
                 background: CSSColor,
-                backgroundBlendMode: string,
+                backgroundBlend: CSSColor
+                mixBlendMode: Property.MixBlendMode,
             },
             greyThick: {
                 background: CSSColor,
-                backgroundBlendMode: string,
+                backgroundBlend: CSSColor
+                mixBlendMode: Property.MixBlendMode,
             },
 
             // Material Variables
@@ -306,19 +351,23 @@ export type Theme = {
             },
             secondaryUltrathin: {
                 background: CSSColor,
-                backgroundBlendMode: string,
+                backgroundBlend: CSSColor
+                mixBlendMode: Property.MixBlendMode,
             },
             secondaryThin: {
                 background: CSSColor,
-                backgroundBlendMode: string,
+                backgroundBlend: CSSColor
+                mixBlendMode: Property.MixBlendMode,
             },
             secondaryRegular: {
                 background: CSSColor,
-                backgroundBlendMode: string,
+                backgroundBlend: CSSColor
+                mixBlendMode: Property.MixBlendMode,
             },
             secondaryThick: {
                 background: CSSColor,
-                backgroundBlendMode: string,
+                backgroundBlend: CSSColor
+                mixBlendMode: Property.MixBlendMode,
             },
         },
         borders: {
@@ -836,6 +885,7 @@ export const LightTheme: Theme = {
         },
         lighting: {
             ...Shadows,
+            ...Glows,
         },
         materials: {
             whiteThin: {
@@ -858,52 +908,64 @@ export const LightTheme: Theme = {
             },
 
             lightGreyUltrathin: {
-                background: 'linear-gradient(0deg, #303030 0%, #303030 100%), rgba(191, 191, 191, 0.44)',
-                backgroundBlendMode: 'color-dodge, normal',
+                background: 'rgba(191, 191, 191, 0.44)',
+                backgroundBlend: '#303030',
+                mixBlendMode: 'color-dodge',
             },
             lightGreyThin: {
-                background: 'linear-gradient(0deg, #3D3D3D 0%, #3D3D3D 100%), rgba(166, 166, 166, 0.70)',
-                backgroundBlendMode: 'color-dodge, normal',
+                background: 'rgba(166, 166, 166, 0.70)',
+                backgroundBlend: '#3D3D3D',
+                mixBlendMode: 'color-dodge',
             },
             lightGreyRegular: {
-                background: 'linear-gradient(0deg, #434343 0%, #434343 100%), rgba(179, 179, 179, 0.82)',
-                backgroundBlendMode: 'color-dodge, normal',
+                background: 'rgba(179, 179, 179, 0.82)',
+                backgroundBlend: '#434343',
+                mixBlendMode: 'color-dodge',
             },
             lightGreyThick: {
-                background: 'linear-gradient(0deg, #5F5F5F 0%, #5F5F5F 100%), rgba(153, 153, 153, 0.97)',
-                backgroundBlendMode: 'color-dodge, normal',
+                background: 'rgba(153, 153, 153, 0.97)',
+                backgroundBlend: '#5F5F5F',
+                mixBlendMode: 'color-dodge',
             },
             darkGreyUltrathin: {
-                background: 'linear-gradient(0deg, #9C9C9C 0%, #9C9C9C 100%), rgba(37, 37, 37, 0.55)',
-                backgroundBlendMode: 'overlay, normal',
+                background: 'rgba(37, 37, 37, 0.55)',
+                backgroundBlend: '#9C9C9C',
+                mixBlendMode: 'overlay',
             },
             darkGreyThin: {
-                background: 'linear-gradient(0deg, #9C9C9C 0%, #9C9C9C 100%), rgba(37, 37, 37, 0.70)',
-                backgroundBlendMode: 'overlay, normal',
+                background: 'rgba(37, 37, 37, 0.70)',
+                backgroundBlend: '#9C9C9C',
+                mixBlendMode: 'overlay',
             },
             darkGreyRegular: {
-                background: 'linear-gradient(0deg, #8C8C8C 0%, #8C8C8C 100%), rgba(37, 37, 37, 0.82)',
-                backgroundBlendMode: 'overlay, normal',
+                background: 'rgba(37, 37, 37, 0.82)',
+                backgroundBlend: '#8C8C8C',
+                mixBlendMode: 'overlay',
             },
             darkGreyThick: {
-                background: 'linear-gradient(0deg, #7C7C7C 0%, #7C7C7C 100%), rgba(37, 37, 37, 0.90)',
-                backgroundBlendMode: 'overlay, normal',
+                background: 'rgba(37, 37, 37, 0.90)',
+                backgroundBlend: '#7C7C7C',
+                mixBlendMode: 'overlay',
             },
             greyUltrathin: {
-                background: 'linear-gradient(0deg, #D2D2D2 0%, #D2D2D2 100%), rgba(37, 37, 37, 0.55)',
-                backgroundBlendMode: 'overlay, normal',
+                background: 'rgba(37, 37, 37, 0.55)',
+                backgroundBlend: '#D2D2D2',
+                mixBlendMode: 'overlay',
             },
             greyThin: {
-                background: 'linear-gradient(0deg, #CFCFCF 0%, #CFCFCF 100%), rgba(37, 37, 37, 0.70)',
-                backgroundBlendMode: 'overlay, normal',
+                background: 'rgba(37, 37, 37, 0.70)',
+                backgroundBlend: '#CFCFCF',
+                mixBlendMode: 'overlay',
             },
             greyRegular: {
-                background: 'linear-gradient(0deg, #BCBCBC 0%, #BCBCBC 100%), rgba(37, 37, 37, 0.82)',
-                backgroundBlendMode: 'overlay, normal',
+                background: 'rgba(37, 37, 37, 0.82)',
+                backgroundBlend: '#BCBCBC',
+                mixBlendMode: 'overlay',
             },
             greyThick: {
-                background: 'linear-gradient(0deg, #B6B6B6 0%, #B6B6B6 100%), rgba(37, 37, 37, 0.90)',
-                backgroundBlendMode: 'overlay, normal',
+                background: 'rgba(37, 37, 37, 0.90)',
+                backgroundBlend: '#B6B6B6',
+                mixBlendMode: 'overlay',
             },
 
             primaryThin: {
@@ -916,20 +978,24 @@ export const LightTheme: Theme = {
                 background: 'rgba(255, 255, 255, 0.93)',
             },
             secondaryUltrathin: {
-                background: 'linear-gradient(0deg, #303030 0%, #303030 100%), rgba(191, 191, 191, 0.44)',
-                backgroundBlendMode: 'color-dodge, normal',
+                background: 'rgba(191, 191, 191, 0.44)',
+                backgroundBlend: '#303030',
+                mixBlendMode: 'color-dodge',
             },
             secondaryThin: {
-                background: 'linear-gradient(0deg, #3D3D3D 0%, #3D3D3D 100%), rgba(166, 166, 166, 0.70)',
-                backgroundBlendMode: 'color-dodge, normal',
+                background: 'rgba(166, 166, 166, 0.70)',
+                backgroundBlend: '#3D3D3D',
+                mixBlendMode: 'color-dodge',
             },
             secondaryRegular: {
-                background: 'linear-gradient(0deg, #434343 0%, #434343 100%), rgba(179, 179, 179, 0.82)',
-                backgroundBlendMode: 'color-dodge, normal',
+                background: 'rgba(179, 179, 179, 0.82)',
+                backgroundBlend: '#434343',
+                mixBlendMode: 'color-dodge',
             },
             secondaryThick: {
-                background: 'linear-gradient(0deg, #5F5F5F 0%, #5F5F5F 100%), rgba(153, 153, 153, 0.97)',
-                backgroundBlendMode: 'color-dodge, normal',
+                background: 'rgba(153, 153, 153, 0.97)',
+                backgroundBlend: '#5F5F5F',
+                mixBlendMode: 'color-dodge',
             },
         },
         borders: {
@@ -1317,6 +1383,7 @@ export const DarkTheme: Theme = merge(LightTheme, {
         },
         lighting: {
             ...ShadowsDark,
+            ...GlowsDark,
         },
         materials: {
             primaryThin: {
@@ -1329,27 +1396,31 @@ export const DarkTheme: Theme = merge(LightTheme, {
                 background: 'rgba(0, 0, 0, 0.85)',
             },
             secondaryUltrathin: {
-                background: 'linear-gradient(0deg, #9C9C9C 0%, #9C9C9C 100%), rgba(37, 37, 37, 0.55)',
-                backgroundBlendMode: 'overlay, normal',
+                background: 'rgba(37, 37, 37, 0.55)',
+                backgroundBlend: '#9C9C9C',
+                mixBlendMode: 'overlay',
             },
             secondaryThin: {
-                background: 'linear-gradient(0deg, #9C9C9C 0%, #9C9C9C 100%), rgba(37, 37, 37, 0.70)',
-                backgroundBlendMode: 'overlay, normal',
+                background: 'rgba(37, 37, 37, 0.70)',
+                backgroundBlend: '#9C9C9C',
+                mixBlendMode: 'overlay',
             },
             secondaryRegular: {
-                background: 'linear-gradient(0deg, #8C8C8C 0%, #8C8C8C 100%), rgba(37, 37, 37, 0.82)',
-                backgroundBlendMode: 'overlay, normal',
+                background: 'rgba(37, 37, 37, 0.82)',
+                backgroundBlend: '#8C8C8C',
+                mixBlendMode: 'overlay',
             },
             secondaryThick: {
-                background: 'linear-gradient(0deg, #7C7C7C 0%, #7C7C7C 100%), rgba(37, 37, 37, 0.90)',
-                backgroundBlendMode: 'overlay, normal',
+                background: 'rgba(37, 37, 37, 0.90)',
+                backgroundBlend: '#7C7C7C',
+                mixBlendMode: 'overlay',
             },
         },
         borders: {
             dropdown: {
                 shadow: 'none',
-                color: T.new.colors.grey1600,
-                border: `1px solid ${T.new.colors.grey1600}`,
+                color: 'none',
+                border: 'none',
             },
         },
         surfaces: {

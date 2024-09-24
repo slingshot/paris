@@ -18,13 +18,13 @@ export const Light = create({
     ...sharedConfig,
     base: 'light',
     brandImage: 'https://fast.slingshot.fm/sling/logo/paris-sb.png',
-    appBg: LightTheme.colors.backgroundPrimary,
+    appBg: LightTheme.new.colors.backgroundPrimary,
 });
 
 export const Dark = create({
     ...sharedConfig,
     base: 'dark',
     brandImage: 'https://fast.slingshot.fm/sling/logo/paris-sb-white.png',
-    appBg: DarkTheme.colors.backgroundPrimary,
-    appContentBg: DarkTheme.colors.backgroundPrimary,
+    appBg: DarkTheme.new.colors.backgroundPrimary,
+    appContentBg: DarkTheme.new.colors.backgroundPrimary,
 });

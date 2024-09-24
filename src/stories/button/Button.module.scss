@@ -21,7 +21,7 @@
 
     &:hover {
         cursor: default;
-        background-color: var(--pte-colors-backgroundInverseTertiary);
+        background-color: var(--pte-new-colors-buttonFillHover);
     }
 
     &[aria-disabled=false]:active {
@@ -40,45 +40,47 @@
  */
 
 .primary {
-    color: var(--pte-colors-contentInversePrimary);
-    background-color: var(--pte-colors-backgroundInversePrimary);
-    border-color: var(--pte-colors-backgroundInversePrimary);
+    color: var(--pte-new-colors-contentInversePrimary);
+    background-color: var(--pte-new-colors-buttonFill);
+    border-color: var(--pte-new-colors-buttonFill);
 
     &:hover {
-        border-color: var(--pte-colors-backgroundInverseTertiary);
+        border-color: var(-pte-new-colors-buttonFillHover);
     }
 
     &[aria-disabled=true] {
-        color: var(--pte-colors-contentDisabled);
-        background-color: var(--pte-colors-backgroundTertiary);
-        border-color: var(--pte-colors-backgroundTertiary);
+        color: var(--pte-new-colors-contentDisabled);
+        background-color: var(--pte-new-colors-buttonFillDisabled);
+        border-color: var(--pte-new-colors-buttonFillDisabled);
     }
 }
 
 .secondary {
-    color: var(--pte-colors-contentPrimary);
+    color: var(--pte-new-colors-contentPrimary);
     background-color: transparent;
-    border-color: var(--pte-colors-contentPrimary);
+    border-color: var(--pte-new-colors-buttonBorder);
+
+    &:hover {
+        background-color: var(--pte-new-colors-overlayMedium);
+    }
 
     &[aria-disabled=true] {
-        color: var(--pte-colors-contentDisabled);
-        border-color: var(--pte-colors-contentDisabled);
+        color: var(--pte-new-colors-contentDisabled);
+        border-color: var(--pte-new-colors-buttonBorderDisabled);
     }
 }
 
 .tertiary {
-    color: var(--pte-colors-contentPrimary);
+    color: var(--pte-new-colors-contentPrimary);
     background-color: transparent;
     border-color: transparent;
-}
 
-.secondary, .tertiary {
     &:hover {
-        background-color: var(--pte-colors-backgroundTertiary);
+        background-color: var(--pte-new-colors-overlayMedium);
     }
 
     &[aria-disabled=true] {
-        color: var(--pte-colors-contentDisabled);
+        color: var(--pte-new-colors-contentDisabled);
     }
 }
 
@@ -90,6 +92,11 @@
 .large {
     height: 32px;
     padding: 8px 15px;
+}
+
+.medium {
+    height: 28px;
+    padding: 6px 14px;
 }
 
 .small {
@@ -115,22 +122,37 @@
     border-radius: var(--pte-borders-radius-circle);
 }
 
-.rounded {
-    border-radius: var(--pte-borders-radius-rounded);
-
-    &.small {
-        border-radius: var(--pte-borders-radius-roundedSmall);
-    }
-}
-
 .square, .rectangle {
-    border-radius: var(--pte-borders-radius-rectangle);
+    &.sharp {
+        border-radius: var(--pte-borders-radius-rectangle);
+    }
+
+    &.rounded {
+        border-radius: var(--pte-borders-radius-rounded);
+
+        &.small {
+            border-radius: var(--pte-borders-radius-roundedSmall);
+        }
+    }
+
+    &.roundedXL {
+        border-radius: var(--pte-borders-radius-roundedLarge);
+
+        &.small {
+            border-radius: var(--pte-borders-radius-rounded);
+        }
+    }
 }
 
 .circle, .square {
     &.large {
         width: 32px;
         padding: 8px;
+    }
+
+    &.medium {
+        width: 28px;
+        padding: 4px;
     }
 
     &.small {

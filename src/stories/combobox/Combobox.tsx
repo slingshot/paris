@@ -155,11 +155,14 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
             >
                 <div
                     className={inputStyles.inputContainer}
-                    data-status={status}
-                    data-disabled={disabled}
+                    data-status={disabled ? 'disabled' : (status || 'default')}
                 >
                     {!!startEnhancer && (
-                        <div {...overrides?.startEnhancerContainer} className={clsx(inputStyles.enhancer, overrides?.startEnhancerContainer?.className)}>
+                        <div
+                            {...overrides?.startEnhancerContainer}
+                            className={clsx(inputStyles.enhancer, overrides?.startEnhancerContainer?.className)}
+                            data-status={disabled ? 'disabled' : (status || 'default')}
+                        >
                             {!!startEnhancer && (
                                 <MemoizedEnhancer
                                     enhancer={startEnhancer}
@@ -206,7 +209,11 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                         </Button>
                     )}
                     {!!endEnhancer && (
-                        <div {...overrides?.endEnhancerContainer} className={clsx(inputStyles.enhancer, overrides?.endEnhancerContainer?.className)}>
+                        <div
+                            {...overrides?.endEnhancerContainer}
+                            className={clsx(inputStyles.enhancer, overrides?.endEnhancerContainer?.className)}
+                            data-status={disabled ? 'disabled' : (status || 'default')}
+                        >
                             {!!endEnhancer && (
                                 <MemoizedEnhancer
                                     enhancer={endEnhancer}

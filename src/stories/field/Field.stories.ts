@@ -17,7 +17,7 @@ export const Default: Story = {
         description: 'Description.',
         children: createElement('div', {
             style: {
-                backgroundColor: 'var(--pte-colors-backgroundSecondary)',
+                backgroundColor: 'var(--pte-new-colors-inputFill)',
                 height: '36px',
                 width: '100%',
                 display: 'flex',

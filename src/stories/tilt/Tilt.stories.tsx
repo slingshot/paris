@@ -17,7 +17,7 @@ export const Default: Story = {
     args: {
         style: {},
         children: (
-            <Text kind="headingMedium">Billie Eilish</Text>
+            <Text kind="headingMedium">Tilt Component</Text>
         ),
         onEnter: undefined,
         onLeave: undefined,
@@ -29,10 +29,10 @@ export const Default: Story = {
             style={{
                 width: 'max-content',
                 userSelect: pvar('utils.defaultUserSelect') as Property.UserSelect,
-                // backgroundColor: pvar('colors.backgroundOverlayDark'),
-                boxShadow: pvar('lighting.shallowBelow'),
+                backgroundColor: pvar('new.colors.surfacePrimary'),
+                boxShadow: pvar('new.lighting.shallowBelow'),
                 padding: '8px 16px',
-                border: `1px solid ${pvar('borders.dropdown.color')}`,
+                // border: `1px solid ${pvar('new.borders.dropdown.color')}`,
                 borderRadius: pvar('borders.radius.rounded'),
                 ...style,
             }}

@@ -100,11 +100,16 @@ export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = forward
         >
             <div
                 className={styles.inputContainer}
-                data-status={status}
-                data-disabled={disabled}
+                // data-status={status}
+                // data-disabled={disabled}
+                data-status={disabled ? 'disabled' : (status || 'default')}
             >
                 {!!startEnhancer && (
-                    <div {...overrides?.startEnhancerContainer} className={clsx(styles.enhancer, overrides?.startEnhancerContainer?.className)}>
+                    <div
+                        {...overrides?.startEnhancerContainer}
+                        className={clsx(styles.enhancer, overrides?.startEnhancerContainer?.className)}
+                        data-status={disabled ? 'disabled' : (status || 'default')}
+                    >
                         {!!startEnhancer && (
                             <MemoizedEnhancer
                                 enhancer={startEnhancer}
@@ -121,7 +126,7 @@ export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = forward
                     aria-label={typeof label === 'string' ? label : props['aria-label']}
                     aria-describedby={`${inputID}-description`}
                     aria-disabled={disabled}
-                    data-status={status}
+                    data-status={disabled ? 'disabled' : (status || 'default')}
                     readOnly={disabled}
                     className={clsx(
                         props.className,
@@ -129,7 +134,11 @@ export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = forward
                     )}
                 />
                 {!!endEnhancer && (
-                    <div {...overrides?.endEnhancerContainer} className={clsx(styles.enhancer, overrides?.endEnhancerContainer?.className)}>
+                    <div
+                        {...overrides?.endEnhancerContainer}
+                        className={clsx(styles.enhancer, overrides?.endEnhancerContainer?.className)}
+                        data-status={disabled ? 'disabled' : (status || 'default')}
+                    >
                         {!!endEnhancer && (
                             <MemoizedEnhancer
                                 enhancer={endEnhancer}

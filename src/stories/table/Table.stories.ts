@@ -19,7 +19,7 @@ export const Default: Story = {
                 title: 'Name',
             },
             {
-                title: 'Type',
+                title: 'Role',
                 hideBelow: 'sm',
             },
             {
@@ -29,21 +29,21 @@ export const Default: Story = {
         rows: [
             {
                 id: 1,
-                name: 'Billie Eilish',
-                type: 'Artist',
-                email: 'billie@slingshot.fm',
+                name: 'Mia Dolan',
+                type: 'Actress',
+                email: 'mia@slingshot.fm',
             },
             {
                 id: 2,
-                name: 'Taylor Swift',
+                name: 'Sebastian Wilder',
                 type: 'Artist',
-                email: 'taylor@slingshot.fm',
+                email: 'seb@slingshot.fm',
             },
             {
                 id: 3,
-                name: 'Valkyrae',
-                type: 'Creator',
-                email: 'valkyrae@slingshot.fm',
+                name: 'Amy Brandt',
+                type: 'Casting',
+                email: 'amy@slingshot.fm',
             },
         ],
         rowRenderFn: (row) => ({

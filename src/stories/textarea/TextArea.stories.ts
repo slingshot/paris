@@ -13,7 +13,7 @@ type Story = StoryObj<typeof TextArea>;
 
 export const Default: Story = {
     args: {
-        placeholder: 'Billie Eilish',
+        placeholder: 'Mia Dolan',
         label: 'Name',
         description: 'Type your full name here.',
     },
@@ -21,7 +21,7 @@ export const Default: Story = {
 
 export const WithCustomLabel: Story = {
     args: {
-        placeholder: 'Billie Eilish',
+        placeholder: 'Mia Dolan',
         label: createElement(
             'span',
             {},
