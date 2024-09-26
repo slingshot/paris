@@ -1,5 +1,11 @@
 # paris
 
+## 0.9.1
+
+### Patch Changes
+
+- 525d2ff: feat: Add override props and make TextArea forward ref
+
 ## 0.9.0
 
 ### Minor Changes
