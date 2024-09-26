@@ -1,5 +1,5 @@
-import type { ComponentPropsWithoutRef, FC } from 'react';
-import { useId } from 'react';
+import type { ComponentPropsWithoutRef, ForwardedRef } from 'react';
+import { forwardRef, useId } from 'react';
 import clsx from 'clsx';
 import type { InputProps } from '../input';
 import styles from '../input/Input.module.scss';
@@ -19,7 +19,7 @@ import { Field } from '../field';
  * ```
  * @constructor
  */
-export const TextArea: FC<InputProps & ComponentPropsWithoutRef<'textarea'>> = ({
+export const TextArea = forwardRef<HTMLTextAreaElement, InputProps & ComponentPropsWithoutRef<'textarea'>>(({
     label,
     status,
     type,
@@ -32,7 +32,7 @@ export const TextArea: FC<InputProps & ComponentPropsWithoutRef<'textarea'>> = (
     overrides,
     rows = 3,
     ...props
-}) => {
+}, ref: ForwardedRef<HTMLTextAreaElement>) => {
     const textareaID = useId();
     return (
         <Field
@@ -69,6 +69,7 @@ export const TextArea: FC<InputProps & ComponentPropsWithoutRef<'textarea'>> = (
                 <textarea
                     {...props}
                     id={textareaID}
+                    ref={ref}
                     aria-label={typeof label === 'string' ? label : props['aria-label']}
                     aria-describedby={`${textareaID}-description`}
                     aria-disabled={disabled}
@@ -97,4 +98,4 @@ export const TextArea: FC<InputProps & ComponentPropsWithoutRef<'textarea'>> = (
             </div>
         </Field>
     );
-};
+});

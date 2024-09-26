@@ -1,6 +1,8 @@
 'use client';
 
-import type { CSSProperties, FC, ReactNode } from 'react';
+import type {
+    ComponentPropsWithoutRef, CSSProperties, FC, ReactNode,
+} from 'react';
 import { useId, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import clsx from 'clsx';
@@ -54,6 +56,16 @@ export type TabsProps = {
      * @param index - The index of the tab that was selected.
      */
     onTabChange?: (index: number) => void | Promise<void>;
+    /**
+     * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
+     */
+    overrides?: {
+        group?: ComponentPropsWithoutRef<'div'>;
+        panel?: ComponentPropsWithoutRef<'div'>;
+        panelContainer?: ComponentPropsWithoutRef<'div'>;
+        tabList?: ComponentPropsWithoutRef<'div'>;
+        tabBackground?: ComponentPropsWithoutRef<'div'>;
+    }
 };
 
 /**
@@ -77,6 +89,7 @@ export const Tabs: FC<TabsProps> = ({
     defaultIndex = 0,
     index,
     onTabChange,
+    overrides,
 }) => {
     const id = useId();
     const [selectedIndex, setSelectedIndex] = useState(defaultIndex);
@@ -91,9 +104,9 @@ export const Tabs: FC<TabsProps> = ({
                     onTabChange?.(i);
                 }
             }}
-            className={clsx(styles.tabGroup, styles[backgroundStyle])}
+            className={clsx(styles.tabGroup, styles[backgroundStyle], overrides?.group?.className)}
         >
-            <div className={clsx(styles.tabBackground, styles[backgroundStyle])}>
+            <div className={clsx(styles.tabBackground, styles[backgroundStyle], overrides?.tabBackground?.className)}>
                 {backgroundStyle === 'glass' && (
                     <div className={styles.glassContainer}>
                         <div className={styles.glassOpacity} />
@@ -109,6 +122,7 @@ export const Tabs: FC<TabsProps> = ({
                         styles.tabList,
                         styles[barStyle],
                         styles[backgroundStyle],
+                        overrides?.tabList?.className,
                     )}
                 >
                     {tabs.map(({ title }, i) => (
@@ -140,7 +154,7 @@ export const Tabs: FC<TabsProps> = ({
             </div>
 
             <Tab.Panels
-                className={clsx(styles.tabPanels, styles[backgroundStyle])}
+                className={clsx(styles.tabPanels, styles[backgroundStyle], overrides?.panelContainer?.className)}
             >
                 {tabs.map(({ title, content }) => (
                     <Tab.Panel
@@ -150,6 +164,7 @@ export const Tabs: FC<TabsProps> = ({
                             styles[backgroundStyle],
                             styles[barStyle],
                             styles[kind],
+                            overrides?.panel?.className,
                         )}
                     >
                         {content}

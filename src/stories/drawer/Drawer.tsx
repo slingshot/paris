@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import type { ReactNode, ComponentPropsWithoutRef } from 'react';
 import {
     useEffect,
     useRef, Fragment, useMemo, useState,
@@ -110,6 +110,23 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
     overlayStyle?: 'grey' | 'blur';
     /** The contents of the Drawer. */
     children?: ReactNode | ReactNode[];
+
+    /** Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component. */
+    overrides?: {
+        dialog?: ComponentPropsWithoutRef<'div'>;
+        overlay?: ComponentPropsWithoutRef<'div'>;
+        panelContainer?: ComponentPropsWithoutRef<'div'>;
+        panel?: ComponentPropsWithoutRef<'div'>;
+        titleBar?: ComponentPropsWithoutRef<'div'>;
+        titleArea?: ComponentPropsWithoutRef<'div'>;
+        titleBarButtons?: ComponentPropsWithoutRef<'div'>;
+        content?: ComponentPropsWithoutRef<'div'>;
+        contentChildren?: ComponentPropsWithoutRef<'div'>;
+        contentChildrenChildren: ComponentPropsWithoutRef<'div'>;
+        bottomPanelSpacer?: ComponentPropsWithoutRef<'div'>;
+        bottomPanel?: ComponentPropsWithoutRef<'div'>;
+        bottomPanelContent?: ComponentPropsWithoutRef<'div'>;
+    };
 };
 
 /**
@@ -137,6 +154,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
     overlayStyle = 'grey',
     additionalActions,
     children,
+    overrides,
 }: DrawerProps<T>) => {
     // Check if the drawer is on the x-axis.
     const xAxisDrawer = useMemo(() => ['left', 'right'].includes(from), [from]);
@@ -192,13 +210,16 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                 as="div"
                 className={clsx(
                     styles.root,
+                    overrides?.dialog?.className,
                 )}
                 onClose={onClose}
+                {...overrides?.dialog}
             >
                 <div
                     className={clsx(
                         overlayStyle === 'blur' && styles.overlayBlurContainer,
                         overlayStyle === 'grey' && styles.overlayGreyContainer,
+                        overrides?.overlay?.className,
                     )}
                 >
                     <Transition.Child
@@ -225,10 +246,13 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                         styles.panelContainer,
                         styles[`from-${from}`],
                         { [styles[`size-${size}`]]: sizeIsPreset },
+                        overrides?.panelContainer?.className,
                     )}
                     style={!sizeIsPreset ? {
                         [xAxisDrawer ? 'width' : 'height']: size,
-                    } : {}}
+                        ...overrides?.panelContainer?.style,
+                    } : overrides?.panelContainer?.style}
+                    {...overrides?.panelContainer}
                 >
                     <Transition.Child
                         as={Fragment}
@@ -243,14 +267,13 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                             className={clsx(
                                 styles.panel,
                                 styles[`from-${from}`],
+                                overrides?.panel?.className,
                             )}
                         >
                             {/* Dialog title bar */}
-                            <div className={styles.titleBar}>
+                            <div className={clsx(styles.titleBar, overrides?.titleBar?.className)}>
                                 <div
-                                    className={clsx(
-                                        styles.titleArea,
-                                    )}
+                                    className={clsx(styles.titleArea, overrides?.titleArea?.className)}
                                 >
                                     <RemoveFromDOM
                                         // Hide when pagination is not enabled.
@@ -300,7 +323,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                         </Dialog.Title>
                                     </VisuallyHidden>
                                 </div>
-                                <div className={styles.titleBarButtons}>
+                                <div className={clsx(styles.titleBarButtons, overrides?.titleBarButtons?.className)}>
                                     {/* Action Menu */}
                                     <RemoveFromDOM when={!hasAdditionalActions}>
                                         {additionalActions}
@@ -329,8 +352,8 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                 </div>
                             </div>
 
-                            <div className={styles.content}>
-                                <div className={styles.contentChildren}>
+                            <div className={clsx(styles.content, overrides?.content?.className)}>
+                                <div className={clsx(styles.contentChildren, overrides?.contentChildren?.className)}>
                                     {(isPaginated && Array.isArray(children)) ? children.map((child) => (child && typeof child === 'object' && 'key' in child) && (
                                         <Transition
                                             show={child.key === pagination?.currentPage && loadedPage === child.key}
@@ -345,6 +368,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                             afterLeave={() => {
                                                 setLoadedPage(pagination?.currentPage || null);
                                             }}
+                                            className={clsx(overrides?.contentChildrenChildren?.className)}
                                         >
                                             {child}
                                         </Transition>
@@ -352,13 +376,13 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                 </div>
                                 {bottomPanel && (
                                     <>
-                                        <div tabIndex={-1} aria-hidden="true" className={styles.bottomPanelSpacer}>
+                                        <div tabIndex={-1} aria-hidden="true" className={clsx(styles.bottomPanelSpacer, overrides?.bottomPanelSpacer?.className)}>
                                             {bottomPanel}
                                         </div>
-                                        <div className={styles.bottomPanel}>
+                                        <div className={clsx(styles.bottomPanel, overrides?.bottomPanel?.className)}>
                                             <div className={styles.glassOpacity} />
                                             <div className={styles.glassBlend} />
-                                            <div className={styles.bottomPanelContent}>
+                                            <div className={clsx(styles.bottomPanelContent, overrides?.bottomPanelContent?.className)}>
                                                 {bottomPanel}
                                             </div>
                                         </div>
