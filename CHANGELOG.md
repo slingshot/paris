@@ -1,5 +1,11 @@
 # paris
 
+## 0.9.2
+
+### Patch Changes
+
+- 087723b: Input: Adjusted padding to reduce input height to 34px
+
 ## 0.9.1
 
 ### Patch Changes
