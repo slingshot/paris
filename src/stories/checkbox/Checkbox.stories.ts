@@ -25,3 +25,19 @@ export const Default: Story = {
         });
     },
 };
+
+export const Card: Story = {
+    args: {
+        children: 'ACH Bank Transfer',
+        kind: 'surface',
+    },
+    render: (args) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [checked, setChecked] = useState(false);
+        return createElement(Checkbox, {
+            ...args,
+            checked,
+            onChange: (e) => setChecked(!!e),
+        });
+    },
+};

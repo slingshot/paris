@@ -4,17 +4,17 @@ import styles from './Card.module.scss';
 
 export type CardProps = {
     /**
-     * The visual variant of the Card.
+     * The visual variant of the Card. `raised` is the default variant with a drop shadow, `surface` is a variant with a border and overlay, `flat` is a variant with a border.
      *
-     * @default "hover"
+     * @default "raised"
      */
-    kind?: 'hover' | 'flat';
-    // /**
-    //  * Whether the Card should tilt on hover.
-    //  *
-    //  * @default true
-    //  */
-    // tilt?: boolean;
+    kind?: 'raised' | 'surface' | 'flat';
+    /**
+     * The status of the Card. `pending` adds a dashed border.
+     *
+     * @default "default"
+     */
+    status?: 'default' | 'pending';
     /** The contents of the Card. */
     children?: ReactNode | ReactNode[];
     // /**
@@ -38,7 +38,8 @@ export type CardProps = {
  * @constructor
  */
 export const Card: FC<CardProps> = ({
-    kind = 'hover',
+    kind = 'raised',
+    status = 'default',
     children,
     ...props
 }) => (
@@ -47,6 +48,7 @@ export const Card: FC<CardProps> = ({
         className={clsx(
             styles.container,
             styles[kind],
+            styles[status],
             props?.className,
         )}
     >

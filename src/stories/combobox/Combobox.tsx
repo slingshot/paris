@@ -68,9 +68,14 @@ export type ComboboxProps<T extends Record<string, any>> = {
      */
     customValueString?: string;
     /**
-     * The size of the options dropdown, in pixels. Only applicable to kind="listbox".
+     * The size of the options dropdown, in pixels.
      */
     maxHeight?: number;
+    /**
+     * Adds a bottom border to the dropdown options.
+     * @default false
+     */
+    optionBorder?: boolean;
     /**
      * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
      */
@@ -115,6 +120,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
     allowCustomValue,
     customValueString = 'Create "%v"',
     maxHeight = 320,
+    optionBorder = false,
     overrides,
 }: ComboboxProps<T>) {
     const inputID = useId();
@@ -262,6 +268,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                 className={clsx(
                                     overrides?.option,
                                     styles.option,
+                                    optionBorder && styles.optionBorder,
                                 )}
                             >
                                 {typeof option.node === 'string' ? (

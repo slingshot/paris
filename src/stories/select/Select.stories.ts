@@ -48,6 +48,7 @@ export const Default: Story = {
 
 export const WithCustomNodes: Story = {
     args: {
+        optionBorder: true,
         options: [
             {
                 id: '1',
@@ -86,6 +87,21 @@ export const Radio: Story = {
         label: 'Release type',
         description: 'Select the type of release you want to create.',
         kind: 'radio',
+        options: [
+            { id: '1', node: 'Single' },
+            { id: '2', node: 'EP' },
+            { id: '3', node: 'Album (LP)' },
+            { id: '4', node: 'Compilation' },
+        ],
+    },
+    render,
+};
+
+export const Card: Story = {
+    args: {
+        label: 'Release type',
+        description: 'Select the type of release you want to create.',
+        kind: 'card',
         options: [
             { id: '1', node: 'Single' },
             { id: '2', node: 'EP' },

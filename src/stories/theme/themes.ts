@@ -378,6 +378,7 @@ export type Theme = {
                 rectangle: CSSLength,
                 rounded: CSSLength,
                 roundedSmall: CSSLength,
+                roundedMedium: CSSLength,
                 roundedLarge: CSSLength,
                 roundedXL: CSSLength,
             },
@@ -1005,6 +1006,7 @@ export const LightTheme: Theme = {
                 rectangle: '0px',
                 rounded: '8px',
                 roundedSmall: '4px',
+                roundedMedium: '6px',
                 roundedLarge: '12px',
                 roundedXL: '16px',
             },
@@ -1418,8 +1420,8 @@ export const DarkTheme: Theme = merge(LightTheme, {
         },
         borders: {
             dropdown: {
-                shadow: 'none',
-                color: 'none',
+                shadow: ShadowsDark.deepBelow,
+                color: 'transparent',
                 border: 'none',
             },
         },

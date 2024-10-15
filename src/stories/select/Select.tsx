@@ -48,15 +48,19 @@ export type SelectProps<T = Record<string, any>> = {
      */
     onChange?: (value: Option<T>['id'] | null) => void | Promise<void>;
     /**
-     * The visual variant of the Select. Listboxes will render as a dropdown menu, and radios will render as a radio group.
+     * The visual variant of the Select. `listbox` will render as a dropdown menu, `radio` will render as a radio group, and `card` will render as selectable cards.
      * @default listbox
      */
-    kind?: 'listbox' | 'radio';
-
+    kind?: 'listbox' | 'radio' | 'card';
     /**
      * The size of the options dropdown, in pixels. Only applicable to kind="listbox".
      */
     maxHeight?: number;
+    /**
+     * Adds a bottom border to the dropdown options. Only applicable to kind="listbox".
+     * @default false
+     */
+    optionBorder?: boolean;
 
     /**
      * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
@@ -100,6 +104,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
     disabled,
     kind = 'listbox',
     maxHeight = 320,
+    optionBorder = false,
     overrides,
 }: SelectProps<T>, ref: ForwardedRef<any>) {
     const inputID = useId();
@@ -195,6 +200,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                                     className={clsx(
                                         overrides?.option,
                                         styles.option,
+                                        optionBorder && styles.optionBorder,
                                     )}
                                     disabled={option.disabled || false}
                                 >
@@ -229,6 +235,28 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                             <TextWhenString kind="paragraphXSmall">
                                 {option.node}
                             </TextWhenString>
+                        </RadioGroup.Option>
+                    ))}
+                </RadioGroup>
+            )}
+            {kind === 'card' && (
+                <RadioGroup ref={ref} as="div" className={styles.cardContainer} value={value} onChange={onChange}>
+                    {options.map((option) => (
+                        <RadioGroup.Option
+                            as="div"
+                            className={clsx(
+                                styles.cardOption,
+                            )}
+                            key={option.id}
+                            value={option.id}
+                            disabled={option.disabled || false}
+                            data-status={disabled ? 'disabled' : (status || 'default')}
+                        >
+                            <div className={styles.cardSurface}>
+                                <TextWhenString kind="paragraphXSmall">
+                                    {option.node}
+                                </TextWhenString>
+                            </div>
                         </RadioGroup.Option>
                     ))}
                 </RadioGroup>
