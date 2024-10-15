@@ -1378,9 +1378,9 @@ export const DarkTheme: Theme = merge(LightTheme, {
             overlayInverseSubtle: 'rgba(0, 0, 0, 0.02)',
             overlayInverseMedium: 'rgba(0, 0, 0, 0.05)',
             overlayWhiteUltrastrong: 'rgba(0, 0, 0, 0.18)',
-            overlayBlackSubtle: 'rgba(255, 255, 255, 0.2)',
-            overlayBlackMedium: 'rgba(255, 255, 255, 0.3)',
-            overlayBlackStrong: 'rgba(255, 255, 255, 0.4)',
+            overlayBlackSubtle: 'rgba(0, 0, 0, 0.2)',
+            overlayBlackMedium: 'rgba(0, 0, 0, 0.3)',
+            overlayBlackStrong: 'rgba(0, 0, 0, 0.4)',
             overlayPageBackground: 'rgba(18, 18, 18, 0.75)',
         },
         lighting: {
