@@ -60,7 +60,7 @@ export type SelectProps<T = Record<string, any>> = {
      * Adds a bottom border to the dropdown options. Only applicable to kind="listbox".
      * @default false
      */
-    optionBorder?: boolean;
+    hasOptionBorder?: boolean;
 
     /**
      * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
@@ -104,7 +104,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
     disabled,
     kind = 'listbox',
     maxHeight = 320,
-    optionBorder = false,
+    hasOptionBorder = false,
     overrides,
 }: SelectProps<T>, ref: ForwardedRef<any>) {
     const inputID = useId();
@@ -200,7 +200,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                                     className={clsx(
                                         overrides?.option,
                                         styles.option,
-                                        optionBorder && styles.optionBorder,
+                                        hasOptionBorder && styles.optionBorder,
                                     )}
                                     disabled={option.disabled || false}
                                 >

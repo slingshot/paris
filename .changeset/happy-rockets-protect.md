@@ -2,4 +2,4 @@
 "paris": minor
 ---
 
-Surface: new `card` kind, and `optionBorder` prop for listbox
+Select: new `card` kind, and `hasOptionBorder` prop for listbox

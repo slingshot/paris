@@ -2,4 +2,4 @@
 "paris": patch
 ---
 
-Combobox: added `optionBorder` prop to match Select listbox
+Combobox: added `hasOptionBorder` prop to match Select listbox

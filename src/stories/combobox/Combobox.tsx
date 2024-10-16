@@ -75,7 +75,7 @@ export type ComboboxProps<T extends Record<string, any>> = {
      * Adds a bottom border to the dropdown options.
      * @default false
      */
-    optionBorder?: boolean;
+    hasOptionBorder?: boolean;
     /**
      * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
      */
@@ -120,7 +120,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
     allowCustomValue,
     customValueString = 'Create "%v"',
     maxHeight = 320,
-    optionBorder = false,
+    hasOptionBorder = false,
     overrides,
 }: ComboboxProps<T>) {
     const inputID = useId();
@@ -268,7 +268,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                 className={clsx(
                                     overrides?.option,
                                     styles.option,
-                                    optionBorder && styles.optionBorder,
+                                    hasOptionBorder && styles.optionBorder,
                                 )}
                             >
                                 {typeof option.node === 'string' ? (

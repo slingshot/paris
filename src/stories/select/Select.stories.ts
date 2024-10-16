@@ -48,7 +48,7 @@ export const Default: Story = {
 
 export const WithCustomNodes: Story = {
     args: {
-        optionBorder: true,
+        hasOptionBorder: true,
         options: [
             {
                 id: '1',
