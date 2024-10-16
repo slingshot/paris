@@ -1,6 +1,6 @@
 .container {
     color: var(--pte-new-colors-contentPrimary);
-    border-bottom: 1px solid var(--pte-new-colors-borderSubtle);
+    border-bottom: 1px solid var(--pte-new-colors-borderMedium);
     cursor: pointer;
     transition: all var(--pte-animations-duration-relaxed) var(--pte-animations-timing-easeInOutExpo);
 
@@ -19,7 +19,7 @@
         border-bottom: 1px solid transparent;
         transition: border-bottom-color var(--pte-animations-duration-gradual) var(--pte-animations-timing-easeInOutExpo);
         &.open {
-            border-bottom-color: var(--pte-new-colors-borderSubtle);
+            border-bottom-color: var(--pte-new-colors-borderMedium);
         }
     }
 
