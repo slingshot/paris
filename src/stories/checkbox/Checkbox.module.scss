@@ -69,7 +69,7 @@
 
     &.surface {
         width: 100%;
-        padding: 6px 14px;
+        padding: 6px 10px;
         color: var(--pte-new-colors-contentSecondary);
         display: flex;
         align-items: center;
@@ -81,7 +81,7 @@
         }
 
         &[data-state="checked"], &[data-state="indeterminate"] {
-            background-color: var(--pte-new-colors-overlayBlackSubtle);
+            background-color: var(--pte-new-colors-overlayMedium);
             color: var(--pte-new-colors-contentPrimary);
         }
 
@@ -90,7 +90,7 @@
         }
 
         &:hover {
-            background-color: var(--pte-new-colors-overlayBlackMedium);
+            background-color: var(--pte-new-colors-overlayStrong);
         }
     }
 }
