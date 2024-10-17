@@ -10,18 +10,29 @@ const meta: Meta<typeof Card> = {
 export default meta;
 type Story = StoryObj<typeof Card>;
 
-export const Default: Story = {
+export const Raised: Story = {
     args: {
-        children: 'Revenue: $3000',
+        children: 'Hello world!',
     },
 };
 
-/**
- * Setting the `kind` prop to `flat` will remove the shadow from the card.
- */
+export const Surface: Story = {
+    args: {
+        kind: 'surface',
+        children: 'Hello world!',
+    },
+};
+
 export const Flat: Story = {
     args: {
         kind: 'flat',
-        children: 'Revenue: $3000',
+        children: 'Hello world!',
+    },
+};
+
+export const Pending: Story = {
+    args: {
+        children: 'Hello world!',
+        status: 'pending',
     },
 };

@@ -87,6 +87,13 @@
             color: var(--pte-new-colors-contentDisabled);
         }
     }
+
+    &.optionBorder {
+        border-bottom: 0.5px solid var(--pte-new-colors-borderMedium);
+    }
+    &.optionBorder:last-child {
+        border-bottom: none;
+    }
 }
 
 .content {
@@ -154,4 +161,77 @@
     border-radius: 100%;
     border: 1.5px solid var(--pte-new-colors-contentTertiary);
     transition: all var(--pte-animations-interaction);
+}
+
+.cardContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.cardOption {
+    background-color: var(--pte-new-colors-surfacePrimary);
+    border-radius: 6px;
+    width: 100%;
+
+    &[data-headlessui-state~="active"] {
+        //.cardSurface {
+        //    background-color: var(--pte-new-colors-overlayWhiteSubtle);
+        //    border-color: var(--pte-new-colors-borderStrong);
+        //}
+    }
+
+    &[data-headlessui-state~="checked"] {
+        .cardSurface {
+            background-color: var(--pte-new-colors-overlayMedium);
+            border-color: var(--pte-new-colors-borderUltrastrong);
+        }
+    }
+
+    &[data-status="disabled"], &[data-headlessui-state~="disabled"] {
+        pointer-events: none;
+        cursor: default;
+
+        &, & * {
+            color: var(--pte-new-colors-contentDisabled);
+        }
+
+        //.cardSurface {
+        //    background-color: var(--pte-new-colors-overlayWhiteSubtle);
+        //    border-color: var(--pte-new-colors-borderStrong);
+        //}
+    }
+
+    &[data-status="error"] {
+        .cardSurface {
+            background-color: var(--pte-new-colors-backgroundNegative);
+        }
+    }
+
+    &[data-status="success"] {
+        .cardSurface {
+            background-color: var(--pte-new-colors-backgroundPositive);
+        }
+    }
+
+    &:hover {
+        .cardSurface {
+            background-color: var(--pte-new-colors-overlayStrong);
+        }
+    }
+}
+
+.cardSurface {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    transition: all var(--pte-animations-interaction);
+
+    border-radius: 6px;
+    background-color: var(--pte-new-colors-overlayWhiteSubtle);
+    border: 1px solid var(--pte-new-colors-borderStrong);
 }

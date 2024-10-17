@@ -1,0 +1,33 @@
+.container {
+    user-select: var(--pte-utils-defaultUserSelect);
+    width: auto;
+    background: var(--pte-new-colors-surfacePrimary);
+    border-radius: var(--pte-new-borders-radius-roundedMedium);
+}
+
+.card {
+    transition: var(--pte-animations-interaction);
+    width: 100%;
+
+    border: 1px solid var(--pte-new-colors-borderStrong);
+    background-color: var(--pte-new-colors-overlayWhiteSubtle);
+    border-radius: var(--pte-new-borders-radius-roundedMedium);
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    &:hover {
+        background-color: var(--pte-new-colors-overlayStrong);
+        cursor: default;
+    }
+
+    &[aria-disabled=false]:active {
+        border: 1px solid var(--pte-new-colors-borderUltrastrong);
+        background-color: var(--pte-new-colors-overlayMedium);
+    }
+
+    &[aria-disabled=true] {
+        pointer-events: none;
+    }
+}

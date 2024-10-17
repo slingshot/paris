@@ -344,6 +344,7 @@
     --pte-new-borders-radius-rectangle: 0px;
     --pte-new-borders-radius-rounded: 8px;
     --pte-new-borders-radius-roundedSmall: 4px;
+    --pte-new-borders-radius-roundedMedium: 6px;
     --pte-new-borders-radius-roundedLarge: 12px;
     --pte-new-borders-radius-roundedXL: 16px;
     --pte-new-borders-dropdown-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.2);
