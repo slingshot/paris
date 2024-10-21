@@ -252,8 +252,8 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                             disabled={option.disabled || false}
                             data-status={disabled ? 'disabled' : (status || 'default')}
                         >
-                            <div className={styles.cardSurface}>
-                                <TextWhenString kind="paragraphXSmall">
+                            <div className={clsx(styles.cardSurface, typeof option.node === 'string' && styles.text)}>
+                                <TextWhenString kind="paragraphSmall">
                                     {option.node}
                                 </TextWhenString>
                             </div>

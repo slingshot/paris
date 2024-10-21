@@ -26,7 +26,7 @@ export const Default: Story = {
     },
 };
 
-export const Card: Story = {
+export const Surface: Story = {
     args: {
         children: 'ACH Bank Transfer',
         kind: 'surface',

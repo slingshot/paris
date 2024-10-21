@@ -234,4 +234,8 @@
     border-radius: 6px;
     background-color: var(--pte-new-colors-overlayWhiteSubtle);
     border: 1px solid var(--pte-new-colors-borderStrong);
+
+    &.text {
+        padding: 4px 10px;
+    }
 }

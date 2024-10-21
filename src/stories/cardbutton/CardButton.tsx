@@ -7,6 +7,7 @@ import type { ButtonProps as AriaButtonProps } from '@ariakit/react';
 import { Button as AriaButton } from '@ariakit/react';
 import clsx from 'clsx';
 import styles from './CardButton.module.scss';
+import { TextWhenString } from '../utility';
 
 export type CardButtonProps = {
     /**
@@ -57,6 +58,7 @@ export const CardButton: FC<CardButtonProps> = ({
             {...props}
             className={clsx(
                 styles.card,
+                typeof children === 'string' && styles.text,
                 props?.className,
             )}
             aria-disabled={disabled ?? false}
@@ -76,7 +78,9 @@ export const CardButton: FC<CardButtonProps> = ({
                 ),
             } : {}}
         >
-            {children}
+            <TextWhenString kind="paragraphMedium">
+                {children}
+            </TextWhenString>
         </AriaButton>
     </div>
 );

@@ -23,11 +23,21 @@
     }
 
     &[aria-disabled=false]:active {
-        border: 1px solid var(--pte-new-colors-borderUltrastrong);
+        //border: 1px solid var(--pte-new-colors-borderUltrastrong);
         background-color: var(--pte-new-colors-overlayMedium);
+        transform: scale(0.996);
     }
 
     &[aria-disabled=true] {
         pointer-events: none;
+
+        &.text {
+            color: var(--pte-new-colors-contentDisabled);
+        }
     }
+}
+
+.text {
+    padding: 4px 10px;
+    color: var(--pte-new-colors-contentPrimary);
 }

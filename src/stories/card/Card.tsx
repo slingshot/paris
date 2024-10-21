@@ -1,6 +1,7 @@
 import type { FC, HTMLAttributes, ReactNode } from 'react';
 import clsx from 'clsx';
 import styles from './Card.module.scss';
+import { TextWhenString } from '../utility';
 
 export type CardProps = {
     /**
@@ -49,9 +50,12 @@ export const Card: FC<CardProps> = ({
             styles.container,
             styles[kind],
             styles[status],
+            typeof children === 'string' && styles.text,
             props?.className,
         )}
     >
-        {children}
+        <TextWhenString kind="paragraphMedium">
+            {children}
+        </TextWhenString>
     </div>
 );
