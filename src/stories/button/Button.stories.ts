@@ -81,3 +81,10 @@ export const Rounded: Story = {
         }),
     },
 };
+
+export const Notification: Story = {
+    args: {
+        children: 'Button',
+        displayNotificationDot: true,
+    },
+};

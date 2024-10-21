@@ -123,7 +123,9 @@ export type ButtonProps = {
      * This should be text. When Button shape is `circle` or `square`, the action description should still be passed here for screen readers.
      */
     children?: ReactNode | ReactNode[];
-
+    /**
+     * Displays a notification dot.
+     */
     displayNotificationDot?: boolean;
 } & Omit<AriaButtonProps, 'children' | 'disabled' | 'onClick'>;
 
