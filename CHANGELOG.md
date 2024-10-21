@@ -1,5 +1,20 @@
 # paris
 
+## 0.10.0
+
+### Minor Changes
+
+- 41e4bb5: CardButton: new component, clickable card button
+- 41e4bb5: Select: new `card` kind, and `hasOptionBorder` prop for listbox
+- 41e4bb5: Card: removed `hover` kind, replaced with `raised` kind, new `surface` kind, updates to `flat` kind, new `status` prop with a `pending` state
+- 41e4bb5: Checkbox: added `surface` kind
+
+### Patch Changes
+
+- 41e4bb5: Accordion: updated border-bottom color
+- 41e4bb5: Theme: added `roundedMedium` border radius, updated dark mode dropdown and overlayBlack variables
+- 41e4bb5: Combobox: added `hasOptionBorder` prop to match Select listbox
+
 ## 0.9.2
 
 ### Patch Changes
