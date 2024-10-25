@@ -1,5 +1,11 @@
 # paris
 
+## 0.10.1
+
+### Patch Changes
+
+- acfbb1a: Theme: adjust tailwind preflight button style specificity
+
 ## 0.10.0
 
 ### Minor Changes
