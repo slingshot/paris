@@ -1,5 +1,11 @@
 # paris
 
+## 0.10.2
+
+### Patch Changes
+
+- 014a642: Button: hide enhancers in loading state
+
 ## 0.10.1
 
 ### Patch Changes
