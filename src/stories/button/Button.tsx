@@ -14,8 +14,7 @@ import { Text } from '../text';
 import type { Enhancer } from '../../types/Enhancer';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 import { pvar } from '../theme';
-import { Spinner } from '../icon';
-import { NotificationDot } from '../icon/NotificationDot';
+import { Spinner, NotificationDot } from '../icon';
 
 const EnhancerSizes = {
     large: 13,
@@ -200,7 +199,7 @@ export const Button: FC<ButtonProps> = ({
                 ),
             } : {}}
         >
-            {!!startEnhancer && (
+            {!!(startEnhancer && !loading) && (
                 <MemoizedEnhancer
                     enhancer={startEnhancer}
                     size={EnhancerSizes[size]}
@@ -215,7 +214,7 @@ export const Button: FC<ButtonProps> = ({
                     )}
                 </Text>
             )}
-            {!!endEnhancer && (
+            {!!(endEnhancer && !loading) && (
                 <MemoizedEnhancer
                     enhancer={endEnhancer}
                     size={EnhancerSizes[size]}
