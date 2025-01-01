@@ -1,5 +1,11 @@
 # paris
 
+## 0.11.1
+
+### Patch Changes
+
+- ef55a9d: Combobox: fix displayValue rendering when allowCustomValue is false
+
 ## 0.11.0
 
 ### Minor Changes
