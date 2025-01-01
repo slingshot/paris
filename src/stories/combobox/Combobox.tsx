@@ -217,7 +217,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                 {...overrides?.input}
                                 placeholder={placeholder}
                                 // value={query}
-                                displayValue={(allowCustomValue && typeof value?.node === 'string') ? () => value.node as string : undefined}
+                                displayValue={() => value?.node as string}
                                 onChange={(e) => {
                                     setQuery(e.target.value);
                                     if (onInputChange) onInputChange(e.target.value);
