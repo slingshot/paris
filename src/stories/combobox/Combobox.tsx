@@ -112,7 +112,7 @@ export type ComboboxProps<T extends Record<string, any>> = {
 /**
  * A Combobox component is used to render a searchable select.
  *
- * When the selected option node is a strings, the combobox will act like an input even when an option is selected, allowing users to edit the selected option directly in order to pick a new one. To circumvent this and make selected options non-editable, pass nodes that are `Text` components instead.
+ * When the selected option node is a string, the combobox will act like an input even when an option is selected, allowing users to edit the selected option directly in order to pick a new one. To circumvent this and make selected options non-editable, pass nodes that are `Text` components instead.
  *
  * When `allowCustomValue` is `true`, a custom value option will be added to the dropdown. This option's text can be customized by passing a value for `customValueString`, where `%v` within the string is the user's input. You can provide an entirely custom node through `renderCustomValueOption`. By default, `onChange` will be called for every input change when custom values are allowed.
  *
