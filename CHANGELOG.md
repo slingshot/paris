@@ -1,5 +1,15 @@
 # paris
 
+## 0.11.0
+
+### Minor Changes
+
+- 2e075cc: Combobox: Improved custom option props, allowing comboboxes to act more like auto-complete inputs
+
+### Patch Changes
+
+- 2e075cc: Combobox: add Field overrides
+
 ## 0.10.2
 
 ### Patch Changes
