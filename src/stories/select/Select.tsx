@@ -10,6 +10,7 @@ import { Listbox, RadioGroup, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { motion } from 'framer-motion';
 import inputStyles from '../input/Input.module.scss';
 import dropdownStyles from '../utility/Dropdown.module.scss';
 import styles from './Select.module.scss';
@@ -48,10 +49,10 @@ export type SelectProps<T = Record<string, any>> = {
      */
     onChange?: (value: Option<T>['id'] | null) => void | Promise<void>;
     /**
-     * The visual variant of the Select. `listbox` will render as a dropdown menu, `radio` will render as a radio group, and `card` will render as selectable cards.
+     * The visual variant of the Select. `listbox` will render as a dropdown menu, `radio` will render as a radio group, `card` will render as selectable cards, and `segmented` will render as a segmented control.
      * @default listbox
      */
-    kind?: 'listbox' | 'radio' | 'card';
+    kind?: 'listbox' | 'radio' | 'card' | 'segmented';
     /**
      * The size of the options dropdown, in pixels. Only applicable to kind="listbox".
      */
@@ -61,6 +62,11 @@ export type SelectProps<T = Record<string, any>> = {
      * @default false
      */
     hasOptionBorder?: boolean;
+    /**
+     * Controls the height of the segment control. Only applicable to kind="segmented".
+     * @default compact
+     */
+    segmentedHeight?: 'compact' | 'tall';
 
     /**
      * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
@@ -105,6 +111,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
     kind = 'listbox',
     maxHeight = 320,
     hasOptionBorder = false,
+    segmentedHeight = 'compact',
     overrides,
 }: SelectProps<T>, ref: ForwardedRef<any>) {
     const inputID = useId();
@@ -257,6 +264,36 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                                     {option.node}
                                 </TextWhenString>
                             </div>
+                        </RadioGroup.Option>
+                    ))}
+                </RadioGroup>
+            )}
+            {kind === 'segmented' && (
+                <RadioGroup ref={ref} as="div" className={styles.segmentedContainer} value={value || options[0].id} onChange={onChange}>
+                    {options.map((option) => (
+                        <RadioGroup.Option
+                            as="div"
+                            className={clsx(
+                                styles.segmentedOption,
+                                styles[segmentedHeight],
+                            )}
+                            key={option.id}
+                            value={option.id}
+                            disabled={option.disabled || false}
+                            data-status={disabled ? 'disabled' : (status || 'default')}
+                        >
+                            {(option.id === value || (!value && option.id === options[0].id)) && (
+                                <motion.div
+                                    className={styles.segmentedBackground}
+                                    layoutId={`${inputID}-segmented-selected`}
+                                    transition={{
+                                        ease: 'easeInOut',
+                                    }}
+                                />
+                            )}
+                            <TextWhenString kind="paragraphXSmall" weight="medium" className={styles.segmentedText}>
+                                {option.node}
+                            </TextWhenString>
                         </RadioGroup.Option>
                     ))}
                 </RadioGroup>
