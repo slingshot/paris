@@ -1,5 +1,11 @@
 # paris
 
+## 0.12.0
+
+### Minor Changes
+
+- fc32202: Field: description position prop
+
 ## 0.11.1
 
 ### Patch Changes
