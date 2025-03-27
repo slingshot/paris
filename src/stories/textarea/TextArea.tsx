@@ -26,6 +26,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, InputProps & ComponentPr
     hideLabel,
     description,
     hideDescription,
+    descriptionPosition,
     startEnhancer,
     endEnhancer,
     disabled,
@@ -41,6 +42,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, InputProps & ComponentPr
             hideLabel={hideLabel}
             description={description}
             hideDescription={hideDescription}
+            descriptionPosition={descriptionPosition}
             disabled={disabled}
             overrides={{
                 container: overrides?.container,

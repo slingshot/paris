@@ -98,6 +98,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
     hideLabel,
     description,
     hideDescription,
+    descriptionPosition,
     placeholder,
     startEnhancer,
     endEnhancer,
@@ -115,6 +116,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
             hideLabel={hideLabel}
             description={description}
             hideDescription={hideDescription}
+            descriptionPosition={descriptionPosition}
             disabled={disabled}
             overrides={{
                 container: overrides?.container,

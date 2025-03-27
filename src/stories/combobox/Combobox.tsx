@@ -134,6 +134,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
     hideLabel,
     description,
     hideDescription,
+    descriptionPosition,
     placeholder,
     startEnhancer,
     endEnhancer,
@@ -166,6 +167,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
             hideLabel={hideLabel}
             description={description}
             hideDescription={hideDescription}
+            descriptionPosition={descriptionPosition}
             disabled={disabled}
             overrides={{
                 container: overrides?.container,

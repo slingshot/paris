@@ -31,10 +31,16 @@ export type FieldProps = {
      * Disables the field, disallowing user interaction.
      */
     disabled?: boolean;
+    /**
+     * Position of the description relative to the children/input.
+     * @default 'bottom'
+     */
+    descriptionPosition?: 'top' | 'bottom';
     overrides?: {
         container?: ComponentPropsWithoutRef<'div'>;
         label?: TextProps<'label'>;
         description?: TextProps<'p'>;
+        labelContainer?: ComponentPropsWithoutRef<'div'>;
     }
 };
 
@@ -53,74 +59,92 @@ export type FieldProps = {
 export const Field: FC<PropsWithChildren<FieldProps>> = ({
     htmlFor,
     disabled,
+    descriptionPosition = 'bottom',
     children,
     // className,
     ...props
-}) => (
-    // Disable a11y rules because the container doesn't need to be focusable for screen readers; the input itself should receive focus instead.
-    // The container is only made clickable for usability purposes.
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
-    <div
-        {...props.overrides?.container}
-        className={clsx(
-            props.overrides?.container?.className,
-            styles.container,
-            // className,
-        )}
-        onClick={(e) => {
-            if (typeof window !== 'undefined' && htmlFor) {
-                const input = document.getElementById(htmlFor);
-                if (input && !disabled) {
-                    if (input.tagName === 'BUTTON') input.click();
-                    else input.focus();
+}) => {
+    const label = typeof props.label === 'string'
+        ? (
+            <Text
+                {...props.overrides?.label}
+                as="label"
+                kind="paragraphSmall"
+                htmlFor={htmlFor}
+                className={clsx(
+                    styles.label,
+                    { [styles.hidden]: props.hideLabel },
+                )}
+            >
+                {props.label}
+            </Text>
+        )
+        : (
+            <label htmlFor={htmlFor} className={clsx({ [styles.hidden]: props.hideLabel })}>
+                {props.label}
+            </label>
+        );
+
+    const description = typeof props.description === 'string'
+        ? (
+            <Text
+                id={`${htmlFor}-description`}
+                {...props.overrides?.description}
+                as="p"
+                kind="paragraphXSmall"
+                className={clsx(
+                    styles.description,
+                    { [styles.hidden]: !props.description || props.hideDescription },
+                    props.overrides?.description?.className,
+                )}
+            >
+                {props.description}
+            </Text>
+        )
+        : (
+            <div
+                id={`${htmlFor}-description`}
+                className={clsx({ [styles.hidden]: !props.description || props.hideDescription })}
+            >
+                {props.description}
+            </div>
+        );
+
+    return (
+        // Disable a11y rules because the container doesn't need to be focusable for screen readers; the input itself should receive focus instead.
+        // The container is only made clickable for usability purposes.
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
+        <div
+            {...props.overrides?.container}
+            className={clsx(
+                props.overrides?.container?.className,
+                styles.container,
+                // className,
+            )}
+            onClick={(e) => {
+                if (typeof window !== 'undefined' && htmlFor) {
+                    const input = document.getElementById(htmlFor);
+                    if (input && !disabled) {
+                        if (input.tagName === 'BUTTON') input.click();
+                        else input.focus();
+                    }
                 }
-            }
-        }}
-    >
-        {typeof props.label === 'string'
-            ? (
-                <Text
-                    {...props.overrides?.label}
-                    as="label"
-                    kind="paragraphSmall"
-                    htmlFor={htmlFor}
-                    className={clsx(
-                        styles.label,
-                        { [styles.hidden]: props.hideLabel },
-                    )}
-                >
-                    {props.label}
-                </Text>
-            )
-            : (
-                <label htmlFor={htmlFor} className={clsx({ [styles.hidden]: props.hideLabel })}>
-                    {props.label}
-                </label>
-            )}
-        {children}
-        {typeof props.description === 'string'
-            ? (
-                <Text
-                    id={`${htmlFor}-description`}
-                    {...props.overrides?.description}
-                    as="p"
-                    kind="paragraphXSmall"
-                    className={clsx(
-                        styles.description,
-                        { [styles.hidden]: !props.description || props.hideDescription },
-                        props.overrides?.description?.className,
-                    )}
-                >
-                    {props.description}
-                </Text>
-            )
-            : (
+            }}
+        >
+            {descriptionPosition === 'top' ? (
                 <div
-                    id={`${htmlFor}-description`}
-                    className={clsx({ [styles.hidden]: !props.description || props.hideDescription })}
+                    {...props.overrides?.labelContainer}
+                    className={clsx(
+                        styles.labelContainer,
+                        props.overrides?.labelContainer?.className,
+                    )}
                 >
-                    {props.description}
+                    {label}
+                    {description}
                 </div>
-            )}
-    </div>
-);
+            ) : label}
+            {children}
+            {descriptionPosition === 'bottom' ? description : <></>}
+        </div>
+    );
+};

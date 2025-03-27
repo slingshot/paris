@@ -71,6 +71,7 @@ export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = forward
     hideLabel,
     description,
     hideDescription,
+    descriptionPosition,
     startEnhancer,
     endEnhancer,
     disabled,
@@ -86,6 +87,7 @@ export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = forward
             description={description}
             hideDescription={hideDescription}
             disabled={disabled}
+            descriptionPosition={descriptionPosition}
             overrides={{
                 container: {
                     ...overrides?.container,
