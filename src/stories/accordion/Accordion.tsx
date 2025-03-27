@@ -6,10 +6,21 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import clsx from 'clsx';
 import styles from './Accordion.module.scss';
 import { TextWhenString } from '../utility';
+import { ChevronRight, Icon } from '../icon';
 
 export type AccordionProps = {
     /** The title of the Accordion. */
     title?: ReactNode;
+    /**
+     * The style of the Accordion.
+     * @default default
+     */
+    kind?: 'default' | 'card';
+    /**
+     * The size of the Accordion. Only affects kind="card".
+     * @default small
+     */
+    size?: 'small' | 'large';
     /** Whether the Accordion is open. If provided, the Accordion will be a controlled component. */
     isOpen?: boolean;
     /** A handler for when the Accordion state changes. */
@@ -32,6 +43,8 @@ export type AccordionProps = {
  */
 export const Accordion: FC<AccordionProps> = ({
     title,
+    kind = 'default',
+    size = 'small',
     isOpen,
     onOpenChange,
     children,
@@ -40,10 +53,10 @@ export const Accordion: FC<AccordionProps> = ({
 
     return (
         <div
-            className={styles.container}
+            className={clsx(styles[kind], open && styles.open)}
         >
             <div
-                className={clsx(styles.title, open && styles.open)}
+                className={clsx(styles.title, styles[size], open && styles.open)}
                 onClick={() => setOpen((o) => !o)}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -60,12 +73,21 @@ export const Accordion: FC<AccordionProps> = ({
                         {title}
                     </TextWhenString>
                 </div>
-                <div className={styles.plusIcon}>
-                    <FontAwesomeIcon
-                        icon={faPlus}
-                        className={clsx(open && styles.open)}
+                {kind === 'default' && (
+                    <div className={styles.plusIcon}>
+                        <FontAwesomeIcon
+                            icon={faPlus}
+                            className={clsx(open && styles.open)}
+                        />
+                    </div>
+                )}
+                {kind === 'card' && (
+                    <Icon
+                        icon={ChevronRight}
+                        size={16}
+                        className={clsx(styles.chevron, open && styles.open)}
                     />
-                </div>
+                )}
             </div>
             <AnimatePresence>
                 {open && (
@@ -84,7 +106,7 @@ export const Accordion: FC<AccordionProps> = ({
                             ease: [0.87, 0, 0.13, 1],
                         }}
                     >
-                        <div className={styles.dropdownContent}>
+                        <div className={clsx(styles.dropdownContent, styles[size])}>
                             <TextWhenString kind="paragraphXSmall">
                                 {children}
                             </TextWhenString>

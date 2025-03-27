@@ -7,3 +7,4 @@ export { Spinner } from './Spinner';
 export { NotificationDot } from './NotificationDot';
 export { Check } from './Check';
 export { ArrowRight } from './ArrowRight';
+export { Info } from './Info';

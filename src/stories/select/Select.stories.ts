@@ -111,3 +111,17 @@ export const Card: Story = {
     },
     render,
 };
+
+export const Segmented: Story = {
+    args: {
+        label: 'Donation',
+        description: 'Select the frequency of your donation.',
+        kind: 'segmented',
+        options: [
+            { id: '1', node: 'One Time' },
+            { id: '2', node: 'Monthly' },
+            { id: '3', node: 'Quarterly' },
+        ],
+    },
+    render,
+};

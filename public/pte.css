@@ -60,6 +60,8 @@
     --pte-new-tokens-colors-teal600: #005548;
     --pte-new-tokens-colors-teal700: #004137;
     --pte-new-tokens-colors-teal800: #002620;
+    --pte-new-tokens-colors-blue400: #7a96fc;
+    --pte-new-tokens-colors-blue500: #3760f5;
     --pte-new-tokens-colors-gradientTeal: linear-gradient(95.14deg, #26EDED 0%, #14EFAC 100%);
     --pte-new-tokens-colors-gradientOrange: linear-gradient(95.14deg, #FF814A 0%, #FFA800 100%);
     --pte-new-tokens-colors-gradientPink: linear-gradient(90deg, #FF4BED 0%, #F6418D 100%);
@@ -73,6 +75,7 @@
     --pte-new-colors-contentNegative: #fd4d2e;
     --pte-new-colors-contentWarning: #f4a60b;
     --pte-new-colors-contentPositive: #08c94e;
+    --pte-new-colors-contentLink: #3760f5;
     --pte-new-colors-contentInversePrimary: #ffffff;
     --pte-new-colors-contentInverseSecondary: #e2e2e2;
     --pte-new-colors-contentInverseTertiary: #afafaf;
@@ -483,6 +486,8 @@
     --pte-tokens-new-colors-teal600: #005548;
     --pte-tokens-new-colors-teal700: #004137;
     --pte-tokens-new-colors-teal800: #002620;
+    --pte-tokens-new-colors-blue400: #7a96fc;
+    --pte-tokens-new-colors-blue500: #3760f5;
     --pte-tokens-new-colors-gradientTeal: linear-gradient(95.14deg, #26EDED 0%, #14EFAC 100%);
     --pte-tokens-new-colors-gradientOrange: linear-gradient(95.14deg, #FF814A 0%, #FFA800 100%);
     --pte-tokens-new-colors-gradientPink: linear-gradient(90deg, #FF4BED 0%, #F6418D 100%);

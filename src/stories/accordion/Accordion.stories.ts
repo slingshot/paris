@@ -16,3 +16,20 @@ export const Default: Story = {
         children: 'In an alleyway, drinking champagne.',
     },
 };
+
+export const Card: Story = {
+    args: {
+        title: 'Where were we?',
+        children: 'In an alleyway, drinking champagne.',
+        kind: 'card',
+    },
+};
+
+export const CardLarge: Story = {
+    args: {
+        title: 'Where were we?',
+        children: 'In an alleyway, drinking champagne.',
+        kind: 'card',
+        size: 'large',
+    },
+};
