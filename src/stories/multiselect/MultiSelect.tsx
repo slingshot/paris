@@ -6,14 +6,12 @@ import type {
     CSSProperties, ComponentPropsWithoutRef, ForwardedRef, ReactNode,
 } from 'react';
 import {
-    useState,
     forwardRef, useId,
 } from 'react';
-import { Listbox, RadioGroup, Transition } from '@headlessui/react';
+import { Listbox, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { motion } from 'framer-motion';
 import inputStyles from '../input/Input.module.scss';
 import dropdownStyles from '../utility/Dropdown.module.scss';
 import styles from '../select/Select.module.scss';
@@ -23,7 +21,6 @@ import type { InputProps } from '../input';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 import { pget, theme } from '../theme';
 import { Field } from '../field';
-import { TextWhenString } from '../utility';
 import { Check, Icon } from '../icon';
 
 export type Option<T = Record<string, any>> = {

@@ -17,6 +17,8 @@ export type InformationalTooltipProps = {
     trigger?: ReactNode;
     /** The heading text in the tooltip. If null, the heading will be hidden. */
     heading?: string | null;
+    /** The heading icon in the tooltip. If undefined, will show info icon. If pass in an element, it will display in the heading. If set to null, will hide icon. */
+    headingIcon?: ReactNode | null | undefined;
     /** The contents of the tooltip. */
     children?: ReactNode;
     /**
@@ -65,6 +67,7 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
     size = 'large',
     trigger,
     heading,
+    headingIcon,
     children,
     side = 'bottom',
     sideOffset = 6,
@@ -80,10 +83,9 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
             onOpenChange={onOpenChange}
         >
             <RadixTooltip.Trigger>
-                {!trigger && (
+                {!trigger ? (
                     <Icon icon={Info} size={14} className={styles.icon} />
-                )}
-                {trigger && (
+                ) : (
                     <>
                         {trigger}
                     </>
@@ -96,14 +98,16 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
                     align={align}
                 >
                     <motion.div
-                        initial={{ opacity: 0, y: 10 }}
+                        initial={{ opacity: 0, y: 3 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.15 }}
+                        transition={{ duration: 0.2 }}
                         className={clsx(styles.tooltip, styles[size])}
                     >
                         {heading && (
                             <div className={styles.heading}>
-                                <Icon icon={Info} size={14} className={styles.icon} />
+                                {headingIcon === null ? null : headingIcon || (
+                                    <Icon icon={Info} size={14} className={styles.icon} />
+                                )}
                                 <TextWhenString as="p" kind="paragraphXSmall" weight="medium">
                                     {heading}
                                 </TextWhenString>

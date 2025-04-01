@@ -287,7 +287,8 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                                     className={styles.segmentedBackground}
                                     layoutId={`${inputID}-segmented-selected`}
                                     transition={{
-                                        ease: 'easeInOut',
+                                        ease: [0.42, 0.0, 0.58, 1.0],
+                                        duration: 0.25,
                                     }}
                                 />
                             )}
