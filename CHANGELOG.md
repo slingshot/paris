@@ -1,5 +1,11 @@
 # paris
 
+## 0.13.1
+
+### Patch Changes
+
+- b1e9011: Accordion: add overrides
+
 ## 0.13.0
 
 ### Minor Changes
