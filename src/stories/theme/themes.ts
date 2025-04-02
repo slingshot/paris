@@ -106,6 +106,7 @@ export type Theme = {
             contentNegative: CSSColor,
             contentWarning: CSSColor,
             contentPositive: CSSColor,
+            contentLink: CSSColor,
 
             // Content Inverse
             contentInversePrimary: CSSColor,
@@ -671,6 +672,7 @@ export const LightTheme: Theme = {
             contentNegative: T.new.colors.red400,
             contentWarning: T.new.colors.yellow500,
             contentPositive: T.new.colors.green400,
+            contentLink: T.new.colors.blue500,
 
             // Content Inverse
             contentInversePrimary: T.new.colors.white,
@@ -1318,6 +1320,7 @@ export const DarkTheme: Theme = merge(LightTheme, {
             contentSecondary: T.new.colors.grey800,
             contentTertiary: T.new.colors.grey1000,
             contentDisabled: T.new.colors.grey1300,
+            contentLink: T.new.colors.blue400,
 
             contentInversePrimary: T.new.colors.grey2400,
             contentInverseSecondary: T.new.colors.grey1600,
