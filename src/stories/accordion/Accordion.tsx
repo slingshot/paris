@@ -1,5 +1,6 @@
-import type { FC, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { useState } from 'react';
+import type { MotionProps } from 'framer-motion';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -27,6 +28,12 @@ export type AccordionProps = {
     onOpenChange?: (open: boolean) => void | Promise<void>;
     /** The collapsible contents of the Accordion. */
     children?: ReactNode;
+    overrides?: {
+        container?: ComponentPropsWithoutRef<'div'>;
+        titleContainer?: ComponentPropsWithoutRef<'div'>;
+        dropdownContainer?: ComponentPropsWithoutRef<'div'> & MotionProps;
+        dropdownContent?: ComponentPropsWithoutRef<'div'>;
+    }
 };
 
 /**
@@ -48,15 +55,20 @@ export const Accordion: FC<AccordionProps> = ({
     isOpen,
     onOpenChange,
     children,
+    overrides,
 }) => {
     const [open, setOpen] = useState(isOpen ?? false);
 
     return (
         <div
-            className={clsx(styles[kind], open && styles.open)}
+            {...overrides?.container}
+            className={clsx(
+                styles[kind],
+                open && styles.open,
+                overrides?.container?.className,
+            )}
         >
             <div
-                className={clsx(styles.title, styles[size], open && styles.open)}
                 onClick={() => setOpen((o) => !o)}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -67,6 +79,13 @@ export const Accordion: FC<AccordionProps> = ({
                 }}
                 role="button"
                 tabIndex={0}
+                {...overrides?.titleContainer}
+                className={clsx(
+                    styles.title,
+                    styles[size],
+                    open && styles.open,
+                    overrides?.titleContainer?.className,
+                )}
             >
                 <div>
                     <TextWhenString kind="paragraphSmall" weight="medium">
@@ -92,7 +111,6 @@ export const Accordion: FC<AccordionProps> = ({
             <AnimatePresence>
                 {open && (
                     <motion.div
-                        className={styles.dropdown}
                         key="content"
                         initial="collapsed"
                         animate="open"
@@ -105,8 +123,20 @@ export const Accordion: FC<AccordionProps> = ({
                             duration: 0.8,
                             ease: [0.87, 0, 0.13, 1],
                         }}
+                        {...overrides?.dropdownContainer}
+                        className={clsx(
+                            styles.dropdown,
+                            overrides?.dropdownContainer?.className,
+                        )}
                     >
-                        <div className={clsx(styles.dropdownContent, styles[size])}>
+                        <div
+                            {...overrides?.dropdownContent}
+                            className={clsx(
+                                styles.dropdownContent,
+                                styles[size],
+                                overrides?.dropdownContent?.className,
+                            )}
+                        >
                             <TextWhenString kind="paragraphXSmall">
                                 {children}
                             </TextWhenString>
