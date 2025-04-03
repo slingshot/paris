@@ -85,7 +85,7 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
         >
             <RadixTooltip.Trigger>
                 {!trigger ? (
-                    <Icon icon={Info} size={14} className={styles.icon} color={pvar('new.colors.contentSecondary')} />
+                    <Icon icon={Info} size={14} className={styles.icon} style={{ color: pvar('new.colors.contentSecondary') }} />
                 ) : (
                     <>
                         {trigger}
