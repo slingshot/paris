@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import styles from './InformationalTooltip.module.scss';
 import { TextWhenString } from '../utility';
 import { Icon, Info } from '../icon';
+import { pvar } from '../theme';
 
 export type InformationalTooltipProps = {
     /**
@@ -106,7 +107,7 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
                         {heading && (
                             <div className={styles.heading}>
                                 {headingIcon === null ? null : headingIcon || (
-                                    <Icon icon={Info} size={14} className={styles.icon} />
+                                    <Icon icon={Info} size={14} className={styles.icon} color={pvar('new.colors.contentSecondary')} />
                                 )}
                                 <TextWhenString as="p" kind="paragraphXSmall" weight="medium">
                                     {heading}

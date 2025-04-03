@@ -52,6 +52,7 @@
         "./drawer": "./src/stories/drawer/index.ts",
         "./field": "./src/stories/field/index.ts",
         "./icon": "./src/stories/icon/index.ts",
+        "./informationaltooltip": "./src/stories/informationaltooltip/index.ts",
         "./input": "./src/stories/input/index.ts",
         "./menu": "./src/stories/menu/index.ts",
         "./pagination": "./src/stories/pagination/index.ts",
