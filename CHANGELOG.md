@@ -1,5 +1,11 @@
 # paris
 
+## 0.13.2
+
+### Patch Changes
+
+- faaf862: Tabs: fix overrides implementation
+
 ## 0.13.1
 
 ### Patch Changes
