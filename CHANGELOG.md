@@ -1,5 +1,11 @@
 # paris
 
+## 0.13.3
+
+### Patch Changes
+
+- 8b8e6ce: InformationalTooltip: default info icon color to contentSecondary
+
 ## 0.13.2
 
 ### Patch Changes
