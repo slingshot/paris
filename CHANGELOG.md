@@ -1,5 +1,11 @@
 # paris
 
+## 0.13.4
+
+### Patch Changes
+
+- 4955fd0: InformationalTooltip: change default trigger icon color
+
 ## 0.13.3
 
 ### Patch Changes
