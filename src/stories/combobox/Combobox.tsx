@@ -2,6 +2,8 @@
 
 import type { ComponentPropsWithoutRef, CSSProperties, ReactNode } from 'react';
 import {
+    Fragment,
+
     useMemo, useId, useState,
 } from 'react';
 import { Combobox as HCombobox, Transition } from '@headlessui/react';
@@ -282,6 +284,8 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                     )}
                 </div>
                 <Transition
+                    as="div"
+                    className={dropdownStyles.transitionContainer}
                     enter={dropdownStyles.transition}
                     enterFrom={dropdownStyles.enterFrom}
                     enterTo={dropdownStyles.enterTo}

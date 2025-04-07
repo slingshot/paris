@@ -184,13 +184,13 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                     </Listbox.Button>
                     <Transition
                         as="div"
+                        className={dropdownStyles.transitionContainer}
                         enter={dropdownStyles.transition}
                         enterFrom={dropdownStyles.enterFrom}
                         enterTo={dropdownStyles.enterTo}
                         leave={dropdownStyles.transition}
                         leaveFrom={dropdownStyles.leaveFrom}
                         leaveTo={dropdownStyles.leaveTo}
-                        className={styles.transitionContainer}
                     >
                         <Listbox.Options
                             className={clsx(

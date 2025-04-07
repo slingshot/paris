@@ -1,3 +1,8 @@
+.transitionContainer {
+    position: relative;
+    z-index: 10;
+}
+
 .transition {
     transition: var(--pte-animations-interaction);
 }
