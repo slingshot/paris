@@ -18,7 +18,9 @@ import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 import { pget, theme } from '../theme';
 import type { FieldProps } from '../field';
 import { Field } from '../field';
+import type { ButtonProps } from '../button';
 import { Button } from '../button';
+import { TextWhenString } from '../utility';
 
 export type Option<T extends Record<string, any> = Record<string, any>> = {
     id: string,
@@ -99,13 +101,15 @@ export type ComboboxProps<T extends Record<string, any>> = {
     overrides?: {
         field?: FieldProps;
         container?: ComponentPropsWithoutRef<'div'>;
+        inputContainer?: ComponentPropsWithoutRef<'div'>;
         input?: ComponentPropsWithoutRef<'input'>;
-        optionsContainer?: ComponentPropsWithoutRef<'div'>;
-        option?: ComponentPropsWithoutRef<'div'>;
+        optionsContainer?: ComponentPropsWithoutRef<'ul'>;
+        option?: ComponentPropsWithoutRef<'li'>;
         label?: TextProps<'label'>;
         description?: TextProps<'p'>;
         startEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
         endEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
+        clearButton?: ButtonProps;
     }
 } & Omit<InputProps, 'type' | 'overrides'>;
 
@@ -195,8 +199,12 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                 }}
             >
                 <div
-                    className={inputStyles.inputContainer}
                     data-status={disabled ? 'disabled' : (status || 'default')}
+                    {...overrides?.inputContainer}
+                    className={clsx(
+                        overrides?.inputContainer?.className,
+                        inputStyles.inputContainer,
+                    )}
                 >
                     {!!startEnhancer && (
                         <div
@@ -253,6 +261,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                 }
                                 setSelectedID(null);
                             }}
+                            {...overrides?.clearButton}
                         >
                             Clear
                         </Button>
@@ -281,12 +290,14 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                     leaveTo={dropdownStyles.leaveTo}
                 >
                     <HCombobox.Options
+                        {...overrides?.optionsContainer}
                         className={clsx(
-                            overrides?.optionsContainer,
+                            overrides?.optionsContainer?.className,
                             styles.options,
                         )}
                         style={{
                             '--options-maxHeight': `${maxHeight}px`,
+                            ...overrides?.optionsContainer?.style,
                         } as CSSProperties}
                     >
                         {(allowCustomValue && showCustomValueOption && !customValueToOption && query.length > 0) && (
@@ -294,9 +305,10 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                 value={query}
                                 data-selected={false}
                                 className={clsx(
-                                    overrides?.option,
+                                    overrides?.option?.className,
                                     styles.option,
                                 )}
+                                {...overrides?.option}
                             >
                                 <Text as="span" kind="paragraphSmall">
                                     {customValueString.replace('%v', query)}
@@ -311,18 +323,17 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                     <HCombobox.Option
                                         key={option.id}
                                         value={option.id}
+                                        {...overrides?.option}
                                         data-selected={option.id === value}
                                         className={clsx(
-                                            overrides?.option,
+                                            overrides?.option?.className,
                                             styles.option,
                                             hasOptionBorder && styles.optionBorder,
                                         )}
                                     >
-                                        {typeof option.node === 'string' ? (
-                                            <Text as="span" kind="paragraphSmall">
-                                                {option.node}
-                                            </Text>
-                                        ) : option.node}
+                                        <TextWhenString as="span" kind="paragraphSmall">
+                                            {option.node}
+                                        </TextWhenString>
                                     </HCombobox.Option>
                                 ))
                         }
