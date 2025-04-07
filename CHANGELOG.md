@@ -1,5 +1,11 @@
 # paris
 
+## 0.13.6
+
+### Patch Changes
+
+- 1d092ca: Dropdowns: fix z-index positioning with transition containers
+
 ## 0.13.5
 
 ### Patch Changes
