@@ -1,5 +1,11 @@
 # paris
 
+## 0.13.5
+
+### Patch Changes
+
+- 5dffbd7: Combobox: fix overrides implementation
+
 ## 0.13.4
 
 ### Patch Changes
