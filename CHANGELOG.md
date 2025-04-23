@@ -1,5 +1,55 @@
 # paris
 
+## 0.13.6
+
+### Patch Changes
+
+- 1d092ca: Dropdowns: fix z-index positioning with transition containers
+
+## 0.13.5
+
+### Patch Changes
+
+- 5dffbd7: Combobox: fix overrides implementation
+
+## 0.13.4
+
+### Patch Changes
+
+- 4955fd0: InformationalTooltip: change default trigger icon color
+
+## 0.13.3
+
+### Patch Changes
+
+- 8b8e6ce: InformationalTooltip: default info icon color to contentSecondary
+
+## 0.13.2
+
+### Patch Changes
+
+- faaf862: Tabs: fix overrides implementation
+
+## 0.13.1
+
+### Patch Changes
+
+- b1e9011: Accordion: add overrides
+
+## 0.13.0
+
+### Minor Changes
+
+- 60c9428: InformationalTooltip: new component, tooltip with a heading and body text
+- 60c9428: Select: added new `segmented` kind and `segmentedHeight` prop
+- 60c9428: Accordion: added new `card` kind and `size` prop
+
+### Patch Changes
+
+- 60c9428: Icon: new `info` icon
+- 60c9428: Theme: new blue400 and blue500 tokens, with contentLink variable
+- 60c9428: Select: hover color appears above selected color
+
 ## 0.12.0
 
 ### Minor Changes

@@ -24,11 +24,6 @@
     align-items: center;
 }
 
-.transitionContainer {
-    position: relative;
-    z-index: 10;
-}
-
 .options {
     max-height: var(--options-maxHeight, auto);
     overflow-y: auto;
@@ -71,12 +66,12 @@
 
     transition: var(--pte-animations-interaction);
 
-    &:hover, &[data-headlessui-state="active"] {
-        background-color: var(--pte-new-colors-overlayMedium);
-    }
-
     &[data-selected=true] {
         background-color: var(--pte-new-colors-overlaySubtle);
+    }
+
+    &:hover, &[data-headlessui-state="active"] {
+        background-color: var(--pte-new-colors-overlayMedium);
     }
 
     &[data-status="disabled"], &[data-headlessui-state~="disabled"] {
@@ -238,4 +233,72 @@
     &.text {
         padding: 4px 10px;
     }
+}
+
+.segmentedContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--pte-new-colors-surfaceTertiary);
+    border-radius: var(--pte-new-borders-radius-roundedMedium);
+    padding: 4px;
+    gap: 2px;
+}
+
+.segmentedOption {
+    padding: 3px 20px;
+    border-radius: var(--pte-new-borders-radius-roundedSmall);
+    width: 100%;
+    color: var(--pte-new-colors-contentTertiary);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: var(--pte-animations-interaction);
+
+    &.tall {
+        padding: 6px 20px;
+    }
+
+    &[data-headlessui-state~="active"] {
+
+    }
+
+    &[data-status="disabled"], &[data-headlessui-state~="disabled"] {
+        pointer-events: none;
+        cursor: default;
+
+        &, & * {
+            color: var(--pte-new-colors-contentDisabled);
+        }
+
+        //.cardSurface {
+        //    background-color: var(--pte-new-colors-overlayWhiteSubtle);
+        //    border-color: var(--pte-new-colors-borderStrong);
+        //}
+    }
+
+    &:hover {
+        background-color: var(--pte-new-colors-surfaceSecondary);
+        color: var(--pte-new-colors-contentSecondary);
+    }
+
+    &[data-headlessui-state~="checked"] {
+        color: var(--pte-new-colors-contentPrimary);
+    }
+}
+
+.segmentedBackground {
+    position: absolute;
+    height: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--pte-new-colors-surfaceQuaternary);
+    border-radius: var(--pte-new-borders-radius-roundedSmall);
+}
+
+.segmentedText {
+    z-index: 1;
 }

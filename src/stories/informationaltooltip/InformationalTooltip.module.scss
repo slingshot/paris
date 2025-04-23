@@ -1,0 +1,24 @@
+.tooltip {
+    background-color: var(--pte-new-colors-surfacePrimary);
+    border-radius: var(--pte-new-borders-radius-rounded);
+    box-shadow: var(--pte-new-lighting-deepBelow);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    width: 280px;
+    padding: 12px;
+    color: var(--pte-new-colors-contentTertiary);
+
+    &.medium {
+        width: 240px;
+    }
+}
+
+.heading {
+    color: var(--pte-new-colors-contentSecondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 1px;
+}

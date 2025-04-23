@@ -125,6 +125,9 @@ export const ColorsNew = {
     teal700: '#004137',
     teal800: '#002620',
 
+    blue400: '#7a96fc',
+    blue500: '#3760f5',
+
     gradientTeal: 'linear-gradient(95.14deg, #26EDED 0%, #14EFAC 100%)',
     gradientOrange: 'linear-gradient(95.14deg, #FF814A 0%, #FFA800 100%)',
     gradientPink: 'linear-gradient(90deg, #FF4BED 0%, #F6418D 100%)',

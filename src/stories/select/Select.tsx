@@ -10,6 +10,7 @@ import { Listbox, RadioGroup, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { motion } from 'framer-motion';
 import inputStyles from '../input/Input.module.scss';
 import dropdownStyles from '../utility/Dropdown.module.scss';
 import styles from './Select.module.scss';
@@ -46,6 +47,14 @@ export type CommonSelectProps<T = Record<string, any>> = {
      * @default false
      */
     hasOptionBorder?: boolean;
+    /**
+     * Controls the height of the segment control. Only applicable to kind="segmented".
+     * @default compact
+     */
+    segmentedHeight?: 'compact' | 'tall';
+    /**
+     * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
+     */
     overrides?: {
         container?: ComponentPropsWithoutRef<'div'>;
         selectInput?: ComponentPropsWithoutRef<'button'>;
@@ -70,10 +79,10 @@ export type SingleSelectProps<T = Record<string, any>> = {
      */
     onChange?: (value: Option<T>['id'] | null) => void | Promise<void>;
     /**
-     * The visual variant of the Select. `listbox` will render as a dropdown menu, `radio` will render as a radio group, and `card` will render as selectable cards.
+     * The visual variant of the Select. `listbox` will render as a dropdown menu, `radio` will render as a radio group, `card` will render as selectable cards, and `segmented` will render as a segmented control.
      * @default listbox
      */
-    kind?: 'listbox' | 'radio' | 'card';
+    kind?: 'listbox' | 'radio' | 'card' | 'segmented';
     multiple?: false;
     multipleItemsName?: never;
 } & CommonSelectProps;
@@ -138,6 +147,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
     hasOptionBorder = false,
     multiple = false,
     multipleItemsName,
+    segmentedHeight = 'compact',
     overrides,
 }: SelectProps<T>, ref: ForwardedRef<any>) {
     const inputID = useId();
@@ -223,13 +233,13 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                     </Listbox.Button>
                     <Transition
                         as="div"
+                        className={dropdownStyles.transitionContainer}
                         enter={dropdownStyles.transition}
                         enterFrom={dropdownStyles.enterFrom}
                         enterTo={dropdownStyles.enterTo}
                         leave={dropdownStyles.transition}
                         leaveFrom={dropdownStyles.leaveFrom}
                         leaveTo={dropdownStyles.leaveTo}
-                        className={styles.transitionContainer}
                     >
                         <Listbox.Options
                             className={clsx(
@@ -305,6 +315,37 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                                     {option.node}
                                 </TextWhenString>
                             </div>
+                        </RadioGroup.Option>
+                    ))}
+                </RadioGroup>
+            )}
+            {kind === 'segmented' && (
+                <RadioGroup ref={ref} as="div" className={styles.segmentedContainer} value={value || options[0].id} onChange={onChange}>
+                    {options.map((option) => (
+                        <RadioGroup.Option
+                            as="div"
+                            className={clsx(
+                                styles.segmentedOption,
+                                styles[segmentedHeight],
+                            )}
+                            key={option.id}
+                            value={option.id}
+                            disabled={option.disabled || false}
+                            data-status={disabled ? 'disabled' : (status || 'default')}
+                        >
+                            {(option.id === value || (!value && option.id === options[0].id)) && (
+                                <motion.div
+                                    className={styles.segmentedBackground}
+                                    layoutId={`${inputID}-segmented-selected`}
+                                    transition={{
+                                        ease: [0.42, 0.0, 0.58, 1.0],
+                                        duration: 0.25,
+                                    }}
+                                />
+                            )}
+                            <TextWhenString kind="paragraphXSmall" weight="medium" className={styles.segmentedText}>
+                                {option.node}
+                            </TextWhenString>
                         </RadioGroup.Option>
                     ))}
                 </RadioGroup>

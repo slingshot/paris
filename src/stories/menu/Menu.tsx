@@ -64,7 +64,8 @@ Menu.Items = ({
     className, children, position = 'left', ...props
 }) => (
     <Transition
-        as={Fragment}
+        as="div"
+        className={dropdownStyles.transitionContainer}
         enter={dropdownStyles.transition}
         enterFrom={dropdownStyles.enterFrom}
         enterTo={dropdownStyles.enterTo}
