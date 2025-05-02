@@ -89,7 +89,7 @@ export type SingleSelectProps<T = Record<string, any>> = {
 
 export type MultiSelectProps<T = Record<string, any>> = {
     /**
-     * Controls the text of the Multiselect button when multiple items selected.
+     * Controls the text of the Multiselect button when multiple items selected, such as "All ___" or "2 ___"
      * @default items
      */
     multipleItemsName?: string;
