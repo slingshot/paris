@@ -29,7 +29,7 @@ export type Option<T = Record<string, any>> = {
     disabled?: boolean,
     metadata?: T,
 };
-export type SelectProps<T = Record<string, any>> = {
+export type CommonSelectProps<T = Record<string, any>> = {
     /**
      * The  {@link Option}s to render in the select box.
      *
@@ -38,21 +38,6 @@ export type SelectProps<T = Record<string, any>> = {
      * For type safety, you can pass in a type parameter to `SelectProps` component. This will be used as the type for the `metadata` property of each option.
      */
     options: Option<T>[];
-    /**
-     * The option ID to render as selected in the select box.
-     *
-     * This should exactly match one of the option IDs passed in the `options` prop. If `null`, no option will be selected.
-     */
-    value?: Option<T>['id'] | null;
-    /**
-     * The interaction handler for the Select.
-     */
-    onChange?: (value: Option<T>['id'] | null) => void | Promise<void>;
-    /**
-     * The visual variant of the Select. `listbox` will render as a dropdown menu, `radio` will render as a radio group, `card` will render as selectable cards, and `segmented` will render as a segmented control.
-     * @default listbox
-     */
-    kind?: 'listbox' | 'radio' | 'card' | 'segmented';
     /**
      * The size of the options dropdown, in pixels. Only applicable to kind="listbox".
      */
@@ -67,7 +52,6 @@ export type SelectProps<T = Record<string, any>> = {
      * @default compact
      */
     segmentedHeight?: 'compact' | 'tall';
-
     /**
      * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
      */
@@ -82,6 +66,55 @@ export type SelectProps<T = Record<string, any>> = {
         endEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
     }
 } & Omit<InputProps, 'type' | 'overrides'>;
+
+export type SingleSelectProps<T = Record<string, any>> = {
+    /**
+     * The option ID to render as selected in the select box.
+     *
+     * This should exactly match the option IDs passed in the `options` prop. If `null`, no option will be selected.
+     */
+    value?: Option<T>['id'] | null;
+    /**
+     * The interaction handler for the Select.
+     */
+    onChange?: (value: Option<T>['id'] | null) => void | Promise<void>;
+    /**
+     * The visual variant of the Select. `listbox` will render as a dropdown menu, `radio` will render as a radio group, `card` will render as selectable cards, and `segmented` will render as a segmented control.
+     * @default listbox
+     */
+    kind?: 'listbox' | 'radio' | 'card' | 'segmented';
+    multiple?: false;
+    multipleItemsName?: never;
+} & CommonSelectProps;
+
+export type MultiSelectProps<T = Record<string, any>> = {
+    /**
+     * Controls the text of the Multiselect button when multiple items selected, such as "All ___" or "2 ___"
+     * @default items
+     */
+    multipleItemsName?: string;
+    /**
+     * The visual variant of the Select. For multiselect, only `listbox` is supported.
+     * @default listbox
+     */
+    kind?: 'listbox',
+    /**
+     * Converts the single select into a multiselect.
+     */
+    multiple: true;
+    /**
+     * For multiselect, should be a string[] that matches the option IDs passed in the `options` prop. If `null`, no option will be selected.
+     */
+    value?: Option<T>['id'][] | null;
+    /**
+     * The interaction handler for the Select.
+     */
+    onChange?: (value: Option<T>['id'][] | null) => void | Promise<void>;
+} & CommonSelectProps;
+
+type SelectProps<T = Record<string, any>> =
+    | (SingleSelectProps<T>)
+    | (MultiSelectProps<T>);
 
 /**
  * A Select component is used to render a `select` box.
@@ -112,10 +145,25 @@ export const Select = forwardRef(function <T = Record<string, any>>({
     kind = 'listbox',
     maxHeight = 320,
     hasOptionBorder = false,
+    multiple = false,
+    multipleItemsName,
     segmentedHeight = 'compact',
     overrides,
 }: SelectProps<T>, ref: ForwardedRef<any>) {
     const inputID = useId();
+    const multiItems = multipleItemsName || 'items';
+    const buttonText = () => {
+        if (!value || value.length === 0) {
+            return placeholder || 'Select an option';
+        } if (!multiple) {
+            return options?.find((o) => o.id === value)?.node;
+        } if (value && value.length === 1) {
+            return options?.find((o) => o.id === value[0])?.node;
+        } if (value.length === options.length) {
+            return `All ${multiItems}`;
+        }
+        return `${value.length} ${multiItems}`;
+    };
     return (
         <Field
             htmlFor={inputID}
@@ -137,6 +185,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                     ref={ref}
                     value={value}
                     onChange={onChange}
+                    multiple={multiple}
                 >
                     <Listbox.Button
                         id={inputID}
@@ -164,7 +213,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                                 )}
                             </div>
                         )}
-                        {options?.find((o) => o.id === value)?.node || placeholder || 'Select an option'}
+                        {buttonText()}
                         {endEnhancer ? (
                             <div
                                 {...overrides?.endEnhancerContainer}
@@ -205,7 +254,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                                 <Listbox.Option
                                     key={option.id}
                                     value={option.id}
-                                    data-selected={option.id === value}
+                                    data-selected={option.id === value || (value && value.includes(option.id))}
                                     className={clsx(
                                         overrides?.option,
                                         styles.option,
@@ -218,7 +267,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                                             {option.node}
                                         </Text>
                                     ) : option.node}
-                                    {option.id === value && (
+                                    {(option.id === value || (value && value.includes(option.id))) && (
                                         <Icon icon={Check} size={12} />
                                     )}
                                 </Listbox.Option>

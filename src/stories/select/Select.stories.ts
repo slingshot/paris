@@ -15,13 +15,20 @@ type Story = StoryObj<typeof Select>;
 const render: Story['render'] = (args) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [selected, setSelected] = useState<string | null>(null);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [selectedMultiple, setSelectedMultiple] = useState<string[] | null>([]);
     return createElement('div', {
         style: { minHeight: '400px' },
-    }, createElement(Select, {
+    }, createElement(Select, args.multiple ? {
         ...args,
-        value: selected,
-        onChange: (e) => setSelected(e),
-    }));
+        value: selectedMultiple,
+        onChange: (value: string[] | null) => setSelectedMultiple(value),
+    }
+        : {
+            ...args,
+            value: selected,
+            onChange: (value: string | null) => setSelected(value),
+        }));
 };
 
 export const Default: Story = {
@@ -112,6 +119,21 @@ export const Card: Story = {
     render,
 };
 
+export const Multiple: Story = {
+    args: {
+        label: 'Release type',
+        description: 'Select the type of release you want to create.',
+        options: [
+            { id: '1', node: 'Single' },
+            { id: '2', node: 'EP' },
+            { id: '3', node: 'Album (LP)' },
+        ],
+        multiple: true,
+        multipleItemsName: 'releases',
+    },
+    render,
+};
+      
 export const Segmented: Story = {
     args: {
         label: 'Donation',
