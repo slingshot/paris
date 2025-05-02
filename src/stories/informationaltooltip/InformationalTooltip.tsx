@@ -84,7 +84,8 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
         const match = timeValue.match(/^([\d.]+)(ms|s)$/);
 
         if (!match) {
-            throw new Error('Invalid CSS time format. Expected formats: "100ms", "0.5s"');
+            console.warn('Invalid CSS time format. Expected formats: "100ms", "0.5s"');
+            return 0;
         }
 
         const [, value, unit] = match;
