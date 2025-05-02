@@ -46,6 +46,11 @@ export type InformationalTooltipProps = {
      * @default false
      */
     defaultOpen?: boolean;
+    /**
+     * By default, tooltip opens on hover and on click (for mobile support). If you want to disable the click event, set this to true.
+     * @default false
+     */
+    disableClick?: boolean;
 };
 
 /**
@@ -70,6 +75,7 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
     sideOffset = 6,
     align = 'start',
     defaultOpen = false,
+    disableClick = false,
 }) => {
     const [isOpen, setOpen] = useState(defaultOpen);
 
@@ -104,7 +110,11 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
                 onOpenChange={setOpen}
             >
                 <RadixTooltip.Trigger
-                    onTouchStart={() => setOpen(!isOpen)}
+                    onClick={() => {
+                        if (!disableClick) {
+                            setOpen(!isOpen);
+                        }
+                    }}
                 >
                     {!trigger ? (
                         <Icon icon={Info} size={14} className={styles.icon} style={{ color: pvar('new.colors.contentSecondary') }} />
