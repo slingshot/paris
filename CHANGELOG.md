@@ -1,5 +1,17 @@
 # paris
 
+## 0.14.0
+
+### Minor Changes
+
+- a805866: Select: added `multiple` prop to convert listbox into a multiselect
+
+### Patch Changes
+
+- fa49d95: Select: updated hover state for segemented control
+- fa49d95: InformationalTooltip: added `defaultOpen` prop, replacing previous `open` prop
+- fa49d95: InformationalTooltip: added exit animation, and animations use duration theme variables
+
 ## 0.13.6
 
 ### Patch Changes
