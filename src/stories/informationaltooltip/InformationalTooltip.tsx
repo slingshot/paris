@@ -104,7 +104,7 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
                 onOpenChange={setOpen}
             >
                 <RadixTooltip.Trigger
-                    onClick={() => setOpen(!isOpen)}
+                    onTouchStart={() => setOpen(!isOpen)}
                 >
                     {!trigger ? (
                         <Icon icon={Info} size={14} className={styles.icon} style={{ color: pvar('new.colors.contentSecondary') }} />
