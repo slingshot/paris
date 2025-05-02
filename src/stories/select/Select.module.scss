@@ -281,8 +281,7 @@
     }
 
     &:hover {
-        background-color: var(--pte-new-colors-surfaceSecondary);
-        color: var(--pte-new-colors-contentSecondary);
+        color: var(--pte-new-colors-contentPrimary);
     }
 
     &[data-headlessui-state~="checked"] {

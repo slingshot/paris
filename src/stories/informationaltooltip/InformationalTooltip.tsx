@@ -1,11 +1,12 @@
 import type { FC, ReactNode } from 'react';
+import { useState } from 'react';
 import clsx from 'clsx';
 import * as RadixTooltip from '@radix-ui/react-tooltip';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import styles from './InformationalTooltip.module.scss';
 import { TextWhenString } from '../utility';
 import { Icon, Info } from '../icon';
-import { pvar } from '../theme';
+import { pvar, pget } from '../theme';
 
 export type InformationalTooltipProps = {
     /**
@@ -41,15 +42,10 @@ export type InformationalTooltipProps = {
      */
     align?: 'start' | 'center' | 'end';
     /**
-     * The tooltip's open state.
+     * Whether the tooltip should be open by default.
+     * @default false
      */
-    open?: boolean;
-    /**
-     * Event handler called when the open state of the tooltip changes.
-     *
-     * @param value {boolean} - The new open state of the tooltip.
-     */
-    onOpenChange?: (value: boolean) => void | Promise<void>;
+    defaultOpen?: boolean;
 };
 
 /**
@@ -73,53 +69,84 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
     side = 'bottom',
     sideOffset = 6,
     align = 'start',
-    open,
-    onOpenChange,
-}) => (
-    <RadixTooltip.Provider
-        delayDuration={150}
-    >
-        <RadixTooltip.Root
-            open={open}
-            onOpenChange={onOpenChange}
+    defaultOpen = false,
+}) => {
+    const [isOpen, setOpen] = useState(defaultOpen);
+
+    /**
+     * Converts a CSS time value string to milliseconds
+     * @param timeValue - The CSS time value (e.g. '100ms', '0.5s')
+     * @returns The time value in milliseconds
+     * @throws Error if the time value format is invalid
+     */
+    const parseCSSTime = (timeValue: string): number => {
+        // Match the value and unit
+        const match = timeValue.match(/^([\d.]+)(ms|s)$/);
+
+        if (!match) {
+            console.warn('Invalid CSS time format. Expected formats: "100ms", "0.5s"');
+            return 0;
+        }
+
+        const [, value, unit] = match;
+        const numValue = parseFloat(value);
+
+        // Convert to milliseconds based on the unit
+        return unit === 's' ? numValue * 1000 : numValue;
+    };
+
+    return (
+        <RadixTooltip.Provider
+            delayDuration={parseCSSTime(pget('new.animations.duration.normal'))}
         >
-            <RadixTooltip.Trigger>
-                {!trigger ? (
-                    <Icon icon={Info} size={14} className={styles.icon} style={{ color: pvar('new.colors.contentSecondary') }} />
-                ) : (
-                    <>
-                        {trigger}
-                    </>
-                )}
-            </RadixTooltip.Trigger>
-            <RadixTooltip.Portal>
-                <RadixTooltip.Content
-                    side={side}
-                    sideOffset={sideOffset}
-                    align={align}
-                >
-                    <motion.div
-                        initial={{ opacity: 0, y: 3 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className={clsx(styles.tooltip, styles[size])}
-                    >
-                        {heading && (
-                            <div className={styles.heading}>
-                                {headingIcon === null ? null : headingIcon || (
-                                    <Icon icon={Info} size={14} className={styles.icon} />
-                                )}
-                                <TextWhenString as="p" kind="paragraphXSmall" weight="medium">
-                                    {heading}
-                                </TextWhenString>
-                            </div>
-                        )}
-                        <TextWhenString as="p" kind="paragraphXSmall">
-                            {children}
-                        </TextWhenString>
-                    </motion.div>
-                </RadixTooltip.Content>
-            </RadixTooltip.Portal>
-        </RadixTooltip.Root>
-    </RadixTooltip.Provider>
-);
+            <RadixTooltip.Root
+                open={isOpen}
+                onOpenChange={setOpen}
+            >
+                <RadixTooltip.Trigger>
+                    {!trigger ? (
+                        <Icon icon={Info} size={14} className={styles.icon} style={{ color: pvar('new.colors.contentSecondary') }} />
+                    ) : (
+                        <>
+                            {trigger}
+                        </>
+                    )}
+                </RadixTooltip.Trigger>
+                <AnimatePresence>
+                    {isOpen && (
+                        <RadixTooltip.Portal forceMount>
+                            <RadixTooltip.Content
+                                side={side}
+                                sideOffset={sideOffset}
+                                align={align}
+                                asChild
+                            >
+                                <motion.div
+                                    initial={{ opacity: 0, y: 3 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: 3 }}
+                                    transition={{ duration: parseCSSTime(pget('new.animations.duration.normal')) / 1000 }}
+                                    className={clsx(styles.tooltip, styles[size])}
+                                >
+                                    {heading && (
+                                        <div className={styles.heading}>
+                                            {headingIcon === null ? null : headingIcon || (
+                                                <Icon icon={Info} size={14} className={styles.icon} />
+                                            )}
+                                            <TextWhenString as="p" kind="paragraphXSmall" weight="medium">
+                                                {heading}
+                                            </TextWhenString>
+                                        </div>
+                                    )}
+                                    <TextWhenString as="p" kind="paragraphXSmall">
+                                        {children}
+                                    </TextWhenString>
+                                </motion.div>
+                            </RadixTooltip.Content>
+                        </RadixTooltip.Portal>
+                    )}
+                </AnimatePresence>
+            </RadixTooltip.Root>
+        </RadixTooltip.Provider>
+    );
+};
