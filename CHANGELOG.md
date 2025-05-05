@@ -1,5 +1,12 @@
 # paris
 
+## 0.14.1
+
+### Patch Changes
+
+- ffa4d0c: InformationalTooltip: Removed `headingIcon` prop
+- ffa4d0c: InformationalTooltip: Opens onClick for mobile support, new `disableClick` prop to disable that behavior
+
 ## 0.14.0
 
 ### Minor Changes
