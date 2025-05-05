@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { createElement } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { InformationalTooltip } from './InformationalTooltip';
 
 const meta: Meta<typeof InformationalTooltip> = {
@@ -60,29 +58,6 @@ export const CustomAlign: Story = {
                 This tooltip below is set to align = `end`
             </div>
         ),
-    },
-    render,
-};
-
-export const HeadingIcon: Story = {
-    args: {
-        children: 'This is a medium tooltip with a heading',
-        size: 'medium',
-        headingIcon: (createElement(FontAwesomeIcon, {
-            icon: faPlus,
-            width: '14px',
-        })),
-        heading: 'Custom icon',
-    },
-    render,
-};
-
-export const NullIcon: Story = {
-    args: {
-        children: 'But the headingIcon is null',
-        size: 'medium',
-        headingIcon: null,
-        heading: 'This has a heading',
     },
     render,
 };

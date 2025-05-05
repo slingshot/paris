@@ -19,8 +19,6 @@ export type InformationalTooltipProps = {
     trigger?: ReactNode;
     /** The heading text in the tooltip. If null, the heading will be hidden. */
     heading?: string | null;
-    /** The heading icon in the tooltip. If undefined, will show info icon. If pass in an element, it will display in the heading. If set to null, will hide icon. */
-    headingIcon?: ReactNode | null | undefined;
     /** The contents of the tooltip. */
     children?: ReactNode;
     /**
@@ -69,7 +67,6 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
     size = 'large',
     trigger,
     heading,
-    headingIcon,
     children,
     side = 'bottom',
     sideOffset = 6,
@@ -142,9 +139,6 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
                                 >
                                     {heading && (
                                         <div className={styles.heading}>
-                                            {headingIcon === null ? null : headingIcon || (
-                                                <Icon icon={Info} size={14} className={styles.icon} />
-                                            )}
                                             <TextWhenString as="p" kind="paragraphXSmall" weight="medium">
                                                 {heading}
                                             </TextWhenString>
