@@ -19,8 +19,6 @@ export type InformationalTooltipProps = {
     trigger?: ReactNode;
     /** The heading text in the tooltip. If null, the heading will be hidden. */
     heading?: string | null;
-    /** The heading icon in the tooltip. If undefined, will show info icon. If pass in an element, it will display in the heading. If set to null, will hide icon. */
-    headingIcon?: ReactNode | null | undefined;
     /** The contents of the tooltip. */
     children?: ReactNode;
     /**
@@ -46,6 +44,11 @@ export type InformationalTooltipProps = {
      * @default false
      */
     defaultOpen?: boolean;
+    /**
+     * By default, tooltip opens on hover and on click (for mobile support). If you want to disable the click event, set this to true.
+     * @default false
+     */
+    disableClick?: boolean;
 };
 
 /**
@@ -64,12 +67,12 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
     size = 'large',
     trigger,
     heading,
-    headingIcon,
     children,
     side = 'bottom',
     sideOffset = 6,
     align = 'start',
     defaultOpen = false,
+    disableClick = false,
 }) => {
     const [isOpen, setOpen] = useState(defaultOpen);
 
@@ -103,7 +106,13 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
                 open={isOpen}
                 onOpenChange={setOpen}
             >
-                <RadixTooltip.Trigger>
+                <RadixTooltip.Trigger
+                    onClick={() => {
+                        if (!disableClick) {
+                            setOpen(!isOpen);
+                        }
+                    }}
+                >
                     {!trigger ? (
                         <Icon icon={Info} size={14} className={styles.icon} style={{ color: pvar('new.colors.contentSecondary') }} />
                     ) : (
@@ -130,9 +139,6 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
                                 >
                                     {heading && (
                                         <div className={styles.heading}>
-                                            {headingIcon === null ? null : headingIcon || (
-                                                <Icon icon={Info} size={14} className={styles.icon} />
-                                            )}
                                             <TextWhenString as="p" kind="paragraphXSmall" weight="medium">
                                                 {heading}
                                             </TextWhenString>
