@@ -1,7 +1,8 @@
-import type { FC, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { useState } from 'react';
 import clsx from 'clsx';
 import * as RadixTooltip from '@radix-ui/react-tooltip';
+import type { HTMLMotionProps } from 'framer-motion';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './InformationalTooltip.module.scss';
 import { TextWhenString } from '../utility';
@@ -49,6 +50,17 @@ export type InformationalTooltipProps = {
      * @default false
      */
     disableClick?: boolean;
+    /**
+     * Optional overrides for props of each tooltip element.
+     *
+     * Valid keys are: `tooltip`, `heading`.
+     */
+    overrides?: {
+        /** The main tooltip element  */
+        tooltip?: HTMLMotionProps<'div'>,
+        /** The heading element */
+        heading?: ComponentPropsWithoutRef<'div'>,
+    }
 };
 
 /**
@@ -73,6 +85,7 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
     align = 'start',
     defaultOpen = false,
     disableClick = false,
+    overrides,
 }) => {
     const [isOpen, setOpen] = useState(defaultOpen);
 
@@ -135,10 +148,14 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: 3 }}
                                     transition={{ duration: parseCSSTime(pget('new.animations.duration.normal')) / 1000 }}
-                                    className={clsx(styles.tooltip, styles[size])}
+                                    {...overrides?.tooltip}
+                                    className={clsx(styles.tooltip, styles[size], overrides?.tooltip?.className)}
                                 >
                                     {heading && (
-                                        <div className={styles.heading}>
+                                        <div
+                                            {...overrides?.heading}
+                                            className={clsx(styles.heading, overrides?.heading?.className)}
+                                        >
                                             <TextWhenString as="p" kind="paragraphXSmall" weight="medium">
                                                 {heading}
                                             </TextWhenString>
