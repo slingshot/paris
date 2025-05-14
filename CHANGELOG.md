@@ -1,5 +1,12 @@
 # paris
 
+## 0.14.2
+
+### Patch Changes
+
+- 8252518: InformationalTooltip: Added overrides, and increased padding
+- 8252518: Menu: Item side padding from 16px to 14px
+
 ## 0.14.1
 
 ### Patch Changes
