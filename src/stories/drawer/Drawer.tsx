@@ -2,10 +2,11 @@
 
 import type { ReactNode, ComponentPropsWithoutRef } from 'react';
 import {
-    useEffect,
-    useRef, Fragment, useMemo, useState,
+    useMemo, useState,
 } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
+import {
+    Dialog, DialogPanel, DialogTitle, Transition, TransitionChild,
+} from '@headlessui/react';
 import clsx from 'clsx';
 import type { CSSLength } from '@ssh/csstypes';
 import styles from './Drawer.module.scss';
@@ -205,7 +206,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
     }, [children, pagination]);
 
     return (
-        <Transition show={isOpen} as={Fragment}>
+        <Transition show={isOpen}>
             <Dialog
                 as="div"
                 className={clsx(
@@ -214,6 +215,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                 )}
                 onClose={onClose}
                 {...overrides?.dialog}
+                role="dialog"
             >
                 <div
                     className={clsx(
@@ -222,8 +224,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                         overrides?.overlay?.className,
                     )}
                 >
-                    <Transition.Child
-                        as={Fragment}
+                    <TransitionChild
                         enter={styles.enter}
                         enterFrom={styles.enterFrom}
                         enterTo={styles.enterTo}
@@ -231,14 +232,14 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                         leaveFrom={styles.leaveFrom}
                         leaveTo={styles.leaveTo}
                     >
-                        <Dialog.Overlay
+                        <div
                             className={clsx(
                                 styles.overlay,
                                 overlayStyle === 'blur' && styles.overlayBlur,
                                 overlayStyle === 'grey' && styles.overlayGrey,
                             )}
                         />
-                    </Transition.Child>
+                    </TransitionChild>
                 </div>
 
                 <div
@@ -254,8 +255,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                     } : overrides?.panelContainer?.style}
                     {...overrides?.panelContainer}
                 >
-                    <Transition.Child
-                        as={Fragment}
+                    <TransitionChild
                         enter={styles.enter}
                         enterFrom={styles.enterFrom}
                         enterTo={styles.enterTo}
@@ -263,7 +263,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                         leaveFrom={styles.leaveFrom}
                         leaveTo={styles.leaveTo}
                     >
-                        <Dialog.Panel
+                        <DialogPanel
                             className={clsx(
                                 styles.panel,
                                 styles[`from-${from}`],
@@ -316,11 +316,11 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                         // Hide when requested, or when pagination is enabled (the title isn't relevant to any specific page).
                                         when={hideTitle}
                                     >
-                                        <Dialog.Title as="h2" className={styles.titleTextContainer}>
+                                        <DialogTitle as="h2" className={styles.titleTextContainer}>
                                             <TextWhenString kind="paragraphSmall" weight="medium">
                                                 {title}
                                             </TextWhenString>
-                                        </Dialog.Title>
+                                        </DialogTitle>
                                     </VisuallyHidden>
                                 </div>
                                 <div className={clsx(styles.titleBarButtons, overrides?.titleBarButtons?.className)}>
@@ -389,8 +389,8 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                     </>
                                 )}
                             </div>
-                        </Dialog.Panel>
-                    </Transition.Child>
+                        </DialogPanel>
+                    </TransitionChild>
                 </div>
             </Dialog>
         </Transition>

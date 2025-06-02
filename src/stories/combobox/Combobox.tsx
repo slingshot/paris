@@ -2,11 +2,11 @@
 
 import type { ComponentPropsWithoutRef, CSSProperties, ReactNode } from 'react';
 import {
-    Fragment,
-
     useMemo, useId, useState,
 } from 'react';
-import { Combobox as HCombobox, Transition } from '@headlessui/react';
+import {
+    Combobox as HCombobox, ComboboxInput, ComboboxOptions, ComboboxOption, Transition,
+} from '@headlessui/react';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
@@ -98,6 +98,11 @@ export type ComboboxProps<T extends Record<string, any>> = {
      */
     hasOptionBorder?: boolean;
     /**
+     * Whether the dropdown should open immediately when focused, vs only after starting to type.
+     * @default false
+     */
+    hideOptionsInitially?: boolean;
+    /**
      * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
      */
     overrides?: {
@@ -153,6 +158,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
     hideClearButton = false,
     maxHeight = 320,
     hasOptionBorder = false,
+    hideOptionsInitially = false,
     overrides,
 }: ComboboxProps<T>) {
     const inputID = useId();
@@ -184,6 +190,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
         >
             <HCombobox
                 as="div"
+                immediate={!hideOptionsInitially}
                 value={selectedID}
                 onChange={(id) => {
                     if (onChange) {
@@ -224,7 +231,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                     )}
                     <div className={styles.content}>
                         {(value?.node && typeof value.node !== 'string') ? value.node : (
-                            <HCombobox.Input
+                            <ComboboxInput
                                 id={inputID}
                                 {...overrides?.input}
                                 placeholder={placeholder}
@@ -293,7 +300,8 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                     leaveFrom={dropdownStyles.leaveFrom}
                     leaveTo={dropdownStyles.leaveTo}
                 >
-                    <HCombobox.Options
+                    <ComboboxOptions
+                        as="ul"
                         {...overrides?.optionsContainer}
                         className={clsx(
                             overrides?.optionsContainer?.className,
@@ -305,7 +313,8 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                         } as CSSProperties}
                     >
                         {(allowCustomValue && showCustomValueOption && !customValueToOption && query.length > 0) && (
-                            <HCombobox.Option
+                            <ComboboxOption
+                                as="li"
                                 value={query}
                                 data-selected={false}
                                 className={clsx(
@@ -317,14 +326,15 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                 <Text as="span" kind="paragraphSmall">
                                     {customValueString.replace('%v', query)}
                                 </Text>
-                            </HCombobox.Option>
+                            </ComboboxOption>
                         )}
                         {
                             (
                                 optionsWithCustomValue || []
                             )
                                 .map((option) => (
-                                    <HCombobox.Option
+                                    <ComboboxOption
+                                        as="li"
                                         key={option.id}
                                         value={option.id}
                                         {...overrides?.option}
@@ -338,10 +348,10 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                         <TextWhenString as="span" kind="paragraphSmall">
                                             {option.node}
                                         </TextWhenString>
-                                    </HCombobox.Option>
+                                    </ComboboxOption>
                                 ))
                         }
-                    </HCombobox.Options>
+                    </ComboboxOptions>
                 </Transition>
             </HCombobox>
         </Field>

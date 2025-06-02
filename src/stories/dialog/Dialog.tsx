@@ -3,8 +3,10 @@
 import type {
     ComponentPropsWithoutRef, FC, MouseEventHandler, PropsWithChildren, ReactNode,
 } from 'react';
-import { Fragment, useEffect, useState } from 'react';
-import { Dialog as HDialog, Transition } from '@headlessui/react';
+import { useEffect, useState } from 'react';
+import {
+    Dialog as HDialog, DialogPanel, DialogTitle, Transition, TransitionChild,
+} from '@headlessui/react';
 import clsx from 'clsx';
 import styles from './Dialog.module.scss';
 import { Text } from '../text';
@@ -166,7 +168,6 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
         <Transition
             appear
             show={isOpen}
-            as={Fragment}
         >
             <HDialog
                 as="div"
@@ -176,8 +177,9 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                     styles.root,
                     overrides.root?.className,
                 )}
+                role="dialog"
             >
-                <HDialog.Overlay
+                <div
                     {...overrides.overlayContainer}
                     className={clsx(
                         overlayStyle === 'blur' && styles.overlayBlurContainer,
@@ -185,8 +187,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                         overrides.overlayContainer?.className,
                     )}
                 >
-                    <Transition.Child
-                        as={Fragment}
+                    <TransitionChild
                         enter={styles.enter}
                         enterFrom={styles.enterFrom}
                         enterTo={styles.enterTo}
@@ -203,8 +204,8 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                                 overrides.overlay?.className,
                             )}
                         />
-                    </Transition.Child>
-                </HDialog.Overlay>
+                    </TransitionChild>
+                </div>
 
                 <div
                     {...overrides.panelContainer}
@@ -213,8 +214,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                         overrides.panelContainer?.className,
                     )}
                 >
-                    <Transition.Child
-                        as={Fragment}
+                    <TransitionChild
                         enter={styles.enter}
                         enterFrom={styles.enterFrom}
                         enterTo={styles.enterTo}
@@ -222,7 +222,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                         leaveFrom={styles.leaveFrom}
                         leaveTo={styles.leaveTo}
                     >
-                        <HDialog.Panel
+                        <DialogPanel
                             {...overrides.panel}
                             className={clsx(
                                 styles.panel,
@@ -248,7 +248,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                                     } : {}}
                                 >
                                     <VisuallyHidden when={hideTitle}>
-                                        <HDialog.Title
+                                        <DialogTitle
                                             {...overrides.panelTitle}
                                             as="h1"
                                             className={clsx(
@@ -261,7 +261,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                                             >
                                                 {title}
                                             </TextWhenString>
-                                        </HDialog.Title>
+                                        </DialogTitle>
                                     </VisuallyHidden>
                                     <RemoveFromDOM when={hideCloseButton}>
                                         <div className={clsx(styles.closeButton)}>
@@ -285,8 +285,8 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                                 </div>
                             </VisuallyHidden>
                             {children}
-                        </HDialog.Panel>
-                    </Transition.Child>
+                        </DialogPanel>
+                    </TransitionChild>
                 </div>
             </HDialog>
         </Transition>

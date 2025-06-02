@@ -17,7 +17,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     transition: var(--pte-animations-duration-normal) var(--pte-animations-timing-easeInOut);
 
     &.overlayBlur {
-        backdrop-filter: blur(0);
+        backdrop-filter: blur(2px);
         background-color: var(--pte-new-colors-overlayPageBackground);
         will-change: backdrop-filter, opacity;
     }
