@@ -5,7 +5,9 @@ import type {
 } from 'react';
 import { useId, useState } from 'react';
 import type { TabGroupProps, TabPanelProps, TabProps } from '@headlessui/react';
-import { Tab } from '@headlessui/react';
+import {
+    Tab, TabGroup, TabList, TabPanels, TabPanel,
+} from '@headlessui/react';
 import clsx from 'clsx';
 import type { CSSLength } from '@ssh/csstypes';
 import { motion } from 'framer-motion';
@@ -99,7 +101,7 @@ export const Tabs: FC<TabsProps> = ({
     const [selectedIndex, setSelectedIndex] = useState(defaultIndex);
 
     return (
-        <Tab.Group
+        <TabGroup
             as="div"
             selectedIndex={index ?? selectedIndex}
             onChange={(i) => {
@@ -121,7 +123,7 @@ export const Tabs: FC<TabsProps> = ({
                         <div className={styles.glassBlend} />
                     </div>
                 )}
-                <Tab.List
+                <TabList
                     {...overrides?.tabList}
                     style={{
                         '--tab-width': tabWidth,
@@ -160,19 +162,19 @@ export const Tabs: FC<TabsProps> = ({
                     ))}
 
                     {/* <div key={`${id}-tab-active-border`} className={styles.activeTabBorder} /> */}
-                </Tab.List>
+                </TabList>
                 <div
                     {...overrides?.tabListBorder}
                     className={clsx(styles.tabListBorder, styles[barStyle], overrides?.tabListBorder?.className)}
                 />
             </div>
 
-            <Tab.Panels
+            <TabPanels
                 {...overrides?.panelContainer}
                 className={clsx(styles.tabPanels, styles[backgroundStyle], overrides?.panelContainer?.className)}
             >
                 {tabs.map(({ title, content }) => (
-                    <Tab.Panel
+                    <TabPanel
                         key={`${id}-tab-${title}-content`}
                         {...overrides?.panel}
                         className={clsx(
@@ -184,9 +186,9 @@ export const Tabs: FC<TabsProps> = ({
                         )}
                     >
                         {content}
-                    </Tab.Panel>
+                    </TabPanel>
                 ))}
-            </Tab.Panels>
-        </Tab.Group>
+            </TabPanels>
+        </TabGroup>
     );
 };

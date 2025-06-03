@@ -41,3 +41,36 @@ export const Surface: Story = {
         });
     },
 };
+
+export const Switch: Story = {
+    args: {
+        children: 'ACH Bank Transfer',
+        kind: 'switch',
+    },
+    render: (args) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [checked, setChecked] = useState(false);
+        return createElement(Checkbox, {
+            ...args,
+            checked,
+            onChange: (e) => setChecked(!!e),
+        });
+    },
+};
+
+export const HideLabel: Story = {
+    args: {
+        children: 'ACH Bank Transfer',
+        kind: 'switch',
+        hideLabel: true,
+    },
+    render: (args) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [checked, setChecked] = useState(false);
+        return createElement(Checkbox, {
+            ...args,
+            checked,
+            onChange: (e) => setChecked(!!e),
+        });
+    },
+};

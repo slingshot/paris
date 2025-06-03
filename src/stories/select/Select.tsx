@@ -6,7 +6,9 @@ import type {
     CSSProperties, ComponentPropsWithoutRef, ForwardedRef, ReactNode,
 } from 'react';
 import { forwardRef, useId } from 'react';
-import { Listbox, RadioGroup, Transition } from '@headlessui/react';
+import {
+    Listbox, ListboxButton, ListboxOptions, ListboxOption, RadioGroup, Radio, Transition,
+} from '@headlessui/react';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -187,7 +189,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                     onChange={onChange}
                     multiple={multiple}
                 >
-                    <Listbox.Button
+                    <ListboxButton
                         id={inputID}
                         {...overrides?.selectInput}
                         aria-disabled={disabled}
@@ -230,7 +232,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                         ) : (
                             <FontAwesomeIcon className={clsx(inputStyles.enhancer, styles.chevron)} data-status={disabled ? 'disabled' : (status || 'default')} width="10px" icon={faChevronDown} />
                         )}
-                    </Listbox.Button>
+                    </ListboxButton>
                     <Transition
                         as="div"
                         className={dropdownStyles.transitionContainer}
@@ -241,7 +243,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                         leaveFrom={dropdownStyles.leaveFrom}
                         leaveTo={dropdownStyles.leaveTo}
                     >
-                        <Listbox.Options
+                        <ListboxOptions
                             className={clsx(
                                 overrides?.optionsContainer,
                                 styles.options,
@@ -251,10 +253,9 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                             } as CSSProperties}
                         >
                             {(options || []).map((option) => (
-                                <Listbox.Option
+                                <ListboxOption
                                     key={option.id}
                                     value={option.id}
-                                    data-selected={option.id === value || (value && value.includes(option.id))}
                                     className={clsx(
                                         overrides?.option,
                                         styles.option,
@@ -270,16 +271,16 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                                     {(option.id === value || (value && value.includes(option.id))) && (
                                         <Icon icon={Check} size={12} />
                                     )}
-                                </Listbox.Option>
+                                </ListboxOption>
                             ))}
-                        </Listbox.Options>
+                        </ListboxOptions>
                     </Transition>
                 </Listbox>
             )}
             {kind === 'radio' && (
                 <RadioGroup ref={ref} as="div" className={styles.radioContainer} value={value} onChange={onChange}>
                     {options.map((option) => (
-                        <RadioGroup.Option
+                        <Radio
                             as="div"
                             className={clsx(
                                 styles.radioOption,
@@ -293,14 +294,14 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                             <TextWhenString kind="paragraphXSmall">
                                 {option.node}
                             </TextWhenString>
-                        </RadioGroup.Option>
+                        </Radio>
                     ))}
                 </RadioGroup>
             )}
             {kind === 'card' && (
                 <RadioGroup ref={ref} as="div" className={styles.cardContainer} value={value} onChange={onChange}>
                     {options.map((option) => (
-                        <RadioGroup.Option
+                        <Radio
                             as="div"
                             className={clsx(
                                 styles.cardOption,
@@ -315,14 +316,14 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                                     {option.node}
                                 </TextWhenString>
                             </div>
-                        </RadioGroup.Option>
+                        </Radio>
                     ))}
                 </RadioGroup>
             )}
             {kind === 'segmented' && (
                 <RadioGroup ref={ref} as="div" className={styles.segmentedContainer} value={value || options[0].id} onChange={onChange}>
                     {options.map((option) => (
-                        <RadioGroup.Option
+                        <Radio
                             as="div"
                             className={clsx(
                                 styles.segmentedOption,
@@ -346,7 +347,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                             <TextWhenString kind="paragraphXSmall" weight="medium" className={styles.segmentedText}>
                                 {option.node}
                             </TextWhenString>
-                        </RadioGroup.Option>
+                        </Radio>
                     ))}
                 </RadioGroup>
             )}

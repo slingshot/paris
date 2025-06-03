@@ -6,7 +6,7 @@ import { Drawer } from './Drawer';
 import { Button } from '../button';
 import { Callout } from '../callout';
 import {
-    Menu,
+    Menu, MenuButton, MenuItems, MenuItem,
 } from '../menu';
 import { usePagination } from '../pagination';
 import { ChevronRight, Ellipsis } from '../icon';
@@ -41,7 +41,7 @@ export const Default: Story = {
                     onClose={setIsOpen}
                     additionalActions={(
                         <Menu as="div">
-                            <Menu.Button>
+                            <MenuButton>
                                 <Button
                                     kind="tertiary"
                                     shape="circle"
@@ -51,16 +51,16 @@ export const Default: Story = {
                                 >
                                     Action menu
                                 </Button>
-                            </Menu.Button>
-                            <Menu.Items position="right">
-                                <Menu.Item as="button">
+                            </MenuButton>
+                            <MenuItems position="right">
+                                <MenuItem as="button">
                                     Dispute
-                                </Menu.Item>
-                                <Menu.Item as="button">
+                                </MenuItem>
+                                <MenuItem as="button">
                                     Transfer
                                     <ChevronRight size={20} />
-                                </Menu.Item>
-                            </Menu.Items>
+                                </MenuItem>
+                            </MenuItems>
                         </Menu>
                     )}
                 >
@@ -101,7 +101,7 @@ export const Paginated: Story = {
                     title={currentPageTitle}
                     additionalActions={(
                         <Menu as="div">
-                            <Menu.Button>
+                            <MenuButton>
                                 <Button
                                     kind="tertiary"
                                     shape="circle"
@@ -111,16 +111,16 @@ export const Paginated: Story = {
                                 >
                                     Action menu
                                 </Button>
-                            </Menu.Button>
-                            <Menu.Items position="right">
-                                <Menu.Item as="button">
+                            </MenuButton>
+                            <MenuItems position="right">
+                                <MenuItem as="button">
                                     Dispute
-                                </Menu.Item>
-                                <Menu.Item as="button">
+                                </MenuItem>
+                                <MenuItem as="button">
                                     Transfer
                                     <ChevronRight size={20} />
-                                </Menu.Item>
-                            </Menu.Items>
+                                </MenuItem>
+                            </MenuItems>
                         </Menu>
                     )}
                 >
@@ -222,7 +222,7 @@ export const BottomPanel: Story = {
                     onClose={setIsOpen}
                     additionalActions={(
                         <Menu as="div">
-                            <Menu.Button>
+                            <MenuButton>
                                 <Button
                                     kind="tertiary"
                                     shape="circle"
@@ -232,16 +232,16 @@ export const BottomPanel: Story = {
                                 >
                                     Action menu
                                 </Button>
-                            </Menu.Button>
-                            <Menu.Items position="right">
-                                <Menu.Item as="button">
+                            </MenuButton>
+                            <MenuItems position="right">
+                                <MenuItem as="button">
                                     Dispute
-                                </Menu.Item>
-                                <Menu.Item as="button">
+                                </MenuItem>
+                                <MenuItem as="button">
                                     Transfer
                                     <ChevronRight size={20} />
-                                </Menu.Item>
-                            </Menu.Items>
+                                </MenuItem>
+                            </MenuItems>
                         </Menu>
                     )}
                 >
