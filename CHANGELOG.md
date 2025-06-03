@@ -1,5 +1,11 @@
 # paris
 
+## 0.15.1
+
+### Patch Changes
+
+- 26ddb63: Select: fixed rendering bug on listbox checkmark for selected options
+
 ## 0.15.0
 
 ### Minor Changes
