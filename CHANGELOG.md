@@ -1,5 +1,19 @@
 # paris
 
+## 0.15.0
+
+### Minor Changes
+
+- 5072392: Menu: refactored from dot notation to named exports, so new MenuButton, MenuItems, and MenuItem replaces Menu.Button, etc
+
+### Patch Changes
+
+- 5072392: Checkbox: new `switch` kind and `hideLabel` prop
+- 5072392: Select: multiselect listbox stays open for selecting multiple options
+- 5072392: Combobox: options dropdown opens initially on focus, can disable with `hideOptionsInitially` prop
+- 5072392: General: upgraded headlessui package to v2
+- 5072392: Menu, Select, Combobox: dropdowns now render as modal, meaning page scroll is locked
+
 ## 0.14.2
 
 ### Patch Changes
