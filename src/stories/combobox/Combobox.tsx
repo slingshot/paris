@@ -17,7 +17,7 @@ import type { TextProps } from '../text';
 import { Text } from '../text';
 import type { InputProps } from '../input';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
-import { pget, theme } from '../theme';
+import { pget, pvar, theme } from '../theme';
 import type { FieldProps } from '../field';
 import { Field } from '../field';
 import type { ButtonProps } from '../button';
@@ -29,10 +29,14 @@ export type Option<T extends Record<string, any> = Record<string, any>> = {
     id: string,
     node: ReactNode,
     metadata?: T,
+    category?: string,
+    suggested?: boolean,
 } | {
     id: null,
     node: string,
     metadata?: T,
+    category?: string,
+    suggested?: boolean,
 };
 
 export type ComboboxProps<T extends Record<string, any>> = {
@@ -40,6 +44,10 @@ export type ComboboxProps<T extends Record<string, any>> = {
      * The  {@link Option}s to render in the select box.
      *
      * Each option should have an id (`string`) and node ({@link ReactNode}) property at minimum. You can also pass in any other metadata through the `metadata` attribute.
+     *
+     * If you want to use categories, you can pass in a `category` property to each option. This should match one of the IDs in the `categories` prop.
+     *
+     * If you want to have a suggested section up top, you can pass in a `suggested` property to each option. These options will be rendered both in a separate section in the dropdown, in addition to the main list of options. This is useful for showing frequently used options at the top of the list.
      *
      * For type safety, you can pass in a type parameter to `ComboboxProps`. This will be used as the type for the `metadata` property of each option.
      */
@@ -104,6 +112,29 @@ export type ComboboxProps<T extends Record<string, any>> = {
      */
     hideOptionsInitially?: boolean;
     /**
+     * Optional categories that will appear as headings in the dropdown. Make sure your options have a `category` property that matches one of the category IDs.
+     *
+     * Each option should have an id (`string`) and node ({@link ReactNode}) property at minimum. You can also pass in any other metadata through the `metadata` attribute.
+     *
+     * For type safety, you can pass in a type parameter to `ComboboxProps`. This will be used as the type for the `metadata` property of each option.
+     */
+    categories?: Option<T>[];
+    /**
+     * When categories are displayed, this label will be used for options that do not belong to any category. If some categories are provided, this will default to "Other." If no categories are provided, this will display if there is a suggested section, which will default this label to "All."
+     * @default "Other" | "All"
+     */
+    uncategorizedLabel?: string;
+    /**
+     * The label for the suggested options section. This will be rendered at the top of the dropdown if any options have the `suggested` property set to `true`.
+     * @default "Suggested"
+     */
+    suggestedLabel?: string;
+    /**
+     * Whether to hide the suggested section at the top, only applicable if options have the `suggested` prop.
+     * @default false
+     */
+    hideSuggested?: boolean;
+    /**
      * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
      */
     overrides?: {
@@ -160,6 +191,10 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
     maxHeight = 320,
     hasOptionBorder = false,
     hideOptionsInitially = false,
+    categories,
+    uncategorizedLabel,
+    suggestedLabel = 'Suggested',
+    hideSuggested = false,
     overrides,
 }: ComboboxProps<T>) {
     const inputID = useId();
@@ -329,11 +364,90 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                 </Text>
                             </ComboboxOption>
                         )}
-                        {
-                            (
-                                optionsWithCustomValue || []
-                            )
-                                .map((option) => (
+                        {(optionsWithCustomValue || []).reduce((acc, option) => {
+                            if (!hideSuggested && option.suggested) {
+                                if (acc.length === 0) {
+                                    acc.push(
+                                        <div className={styles.category} key={`category-${suggestedLabel}`}>
+                                            <TextWhenString as="span" kind="paragraphXSmall" color={pvar('new.colors.contentTertiary')}>
+                                                {suggestedLabel}
+                                            </TextWhenString>
+                                        </div>,
+                                    );
+                                }
+                                acc.push(
+                                    <ComboboxOption
+                                        as="li"
+                                        key={`${option.id}-suggested`}
+                                        value={option.id}
+                                        {...overrides?.option}
+                                        className={clsx(
+                                            overrides?.option?.className,
+                                            styles.option,
+                                            styles.optionCategory,
+                                            hasOptionBorder && styles.optionBorder,
+                                        )}
+                                    >
+                                        <TextWhenString as="span" kind="paragraphSmall">
+                                            {option.node}
+                                        </TextWhenString>
+                                        <Icon icon={Check} size={12} className={styles.check} />
+                                    </ComboboxOption>,
+                                );
+                            }
+                            return acc;
+                        }, [] as any[]) || []}
+                        {(categories && categories.length > 0) && (
+                            categories.map((category) => (
+                                <>
+                                    {(optionsWithCustomValue || []).reduce((acc, option) => {
+                                        if (option.category === category.id) {
+                                            if (acc.length === 0) {
+                                                acc.push(
+                                                    <div className={styles.category} key={`category-${category.id}`}>
+                                                        <TextWhenString as="span" kind="paragraphXSmall" color={pvar('new.colors.contentTertiary')}>
+                                                            {category.node}
+                                                        </TextWhenString>
+                                                    </div>,
+                                                );
+                                            }
+                                            acc.push(
+                                                <ComboboxOption
+                                                    as="li"
+                                                    key={option.id}
+                                                    value={option.id}
+                                                    {...overrides?.option}
+                                                    className={clsx(
+                                                        overrides?.option?.className,
+                                                        styles.option,
+                                                        styles.optionCategory,
+                                                        hasOptionBorder && styles.optionBorder,
+                                                    )}
+                                                >
+                                                    <TextWhenString as="span" kind="paragraphSmall">
+                                                        {option.node}
+                                                    </TextWhenString>
+                                                    <Icon icon={Check} size={12} className={styles.check} />
+                                                </ComboboxOption>,
+                                            );
+                                        }
+                                        return acc;
+                                    }, [] as any[]) || []}
+                                </>
+                            ))
+                        )}
+                        {(optionsWithCustomValue || []).reduce((acc, option) => {
+                            if (!option.category || !categories?.find((c) => c.id === option.category)) {
+                                if (acc.length === 0 && (categories || options.find((o) => o.suggested))) {
+                                    acc.push(
+                                        <div className={styles.category} key="uncategorized-heading">
+                                            <TextWhenString as="span" kind="paragraphXSmall" color={pvar('new.colors.contentTertiary')}>
+                                                {uncategorizedLabel || categories ? 'Other' : 'All'}
+                                            </TextWhenString>
+                                        </div>,
+                                    );
+                                }
+                                acc.push(
                                     <ComboboxOption
                                         as="li"
                                         key={option.id}
@@ -342,15 +456,19 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                         className={clsx(
                                             overrides?.option?.className,
                                             styles.option,
+                                            (categories || options.find((o) => o.suggested)) && styles.optionCategory,
                                             hasOptionBorder && styles.optionBorder,
                                         )}
                                     >
                                         <TextWhenString as="span" kind="paragraphSmall">
                                             {option.node}
                                         </TextWhenString>
-                                    </ComboboxOption>
-                                ))
-                        }
+                                        <Icon icon={Check} size={12} className={styles.check} />
+                                    </ComboboxOption>,
+                                );
+                            }
+                            return acc;
+                        }, [] as any[]) || []}
                     </ComboboxOptions>
                 </Transition>
             </HCombobox>
