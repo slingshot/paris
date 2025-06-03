@@ -133,7 +133,7 @@ export const Multiple: Story = {
     },
     render,
 };
-      
+
 export const Segmented: Story = {
     args: {
         label: 'Donation',

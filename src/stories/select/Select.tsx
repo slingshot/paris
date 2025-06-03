@@ -256,7 +256,6 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                                 <ListboxOption
                                     key={option.id}
                                     value={option.id}
-                                    data-selected={option.id === value || (value && value.includes(option.id))}
                                     className={clsx(
                                         overrides?.option,
                                         styles.option,

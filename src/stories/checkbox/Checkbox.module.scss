@@ -126,14 +126,14 @@
 
     background-color: var(--pte-new-colors-contentTertiary);
 
-    &[data-headlessui-state="checked"], &[data-state="indeterminate"] {
+    &[data-checked], &[data-state="indeterminate"] {
         background-color: var(--pte-new-colors-contentPrimary);
     }
 
     &[data-disabled=true] {
         background-color: var(--pte-new-colors-contentInverseSecondary);
 
-        &[data-headlessui-state="checked"], &[data-state="indeterminate"] {
+        &[data-checked], &[data-state="indeterminate"] {
             background-color: var(--pte-new-colors-contentInverseTertiary);
         }
     }

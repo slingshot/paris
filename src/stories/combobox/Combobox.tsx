@@ -23,6 +23,7 @@ import { Field } from '../field';
 import type { ButtonProps } from '../button';
 import { Button } from '../button';
 import { TextWhenString } from '../utility';
+import { Check, Icon } from '../icon';
 
 export type Option<T extends Record<string, any> = Record<string, any>> = {
     id: string,
@@ -338,7 +339,6 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                         key={option.id}
                                         value={option.id}
                                         {...overrides?.option}
-                                        data-selected={option.id === value}
                                         className={clsx(
                                             overrides?.option?.className,
                                             styles.option,
