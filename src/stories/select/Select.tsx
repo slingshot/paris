@@ -268,9 +268,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                                             {option.node}
                                         </Text>
                                     ) : option.node}
-                                    {(option.id === value || (value && value.includes(option.id))) && (
-                                        <Icon icon={Check} size={12} />
-                                    )}
+                                    <Icon icon={Check} size={12} className={styles.check} />
                                 </ListboxOption>
                             ))}
                         </ListboxOptions>
