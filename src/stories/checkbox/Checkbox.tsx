@@ -8,8 +8,8 @@ import { TextWhenString, VisuallyHidden } from '../utility';
 import { Check, Icon } from '../icon';
 
 export type CheckboxProps = {
-    /** The visual style of the Checkbox. `default` is a standard checkbox with a label next to it, `surface` is a clickable card that displays a check when selected, `switch` is a switch toggle.  */
-    kind?: 'default' | 'surface' | 'switch'
+    /** The visual style of the Checkbox. `default` is a standard checkbox with a label next to it, `surface` is a clickable card that displays a check when selected, `panel` is a clickable card with the checkbox aligned right, `switch` is a switch toggle.  */
+    kind?: 'default' | 'surface' | 'panel' | 'switch';
     checked?: boolean;
     onChange?: (checked: boolean | 'indeterminate') => void;
     disabled?: boolean;
@@ -52,7 +52,7 @@ export const Checkbox: FC<CheckboxProps> = ({
             className={clsx(styles.container, disabled && styles.disabled, className, checked && styles.checked)}
             {...props}
         >
-            {(kind === 'default' || kind === 'surface') && (
+            {(kind === 'default' || kind === 'surface' || kind === 'panel') && (
                 <RadixCheckbox.Root
                     id={inputID}
                     className={clsx(styles.root, styles[kind])}
@@ -61,13 +61,14 @@ export const Checkbox: FC<CheckboxProps> = ({
                     data-disabled={disabled}
                     aria-details={typeof children === 'string' ? children : undefined}
                 >
-                    {kind === 'surface' && (
+                    {(kind === 'surface' || kind === 'panel') && (
                         <TextWhenString kind="paragraphXSmall">
                             {children}
                         </TextWhenString>
                     )}
+                    {kind === 'panel' && <div className={styles.box} />}
                     <RadixCheckbox.Indicator className={styles.indicator}>
-                        {kind === 'default' && (
+                        {(kind === 'default' || kind === 'panel') && (
                             <svg width={14} height={14} viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     className={styles.checkSvg}

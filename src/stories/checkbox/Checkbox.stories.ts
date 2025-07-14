@@ -42,6 +42,22 @@ export const Surface: Story = {
     },
 };
 
+export const Panel: Story = {
+    args: {
+        children: 'Credit/debit card',
+        kind: 'panel',
+    },
+    render: (args) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [checked, setChecked] = useState(false);
+        return createElement(Checkbox, {
+            ...args,
+            checked,
+            onChange: (e) => setChecked(!!e),
+        });
+    },
+};
+
 export const Switch: Story = {
     args: {
         children: 'ACH Bank Transfer',
