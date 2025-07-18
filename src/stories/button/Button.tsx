@@ -1,7 +1,7 @@
 'use client';
 
 import type {
-    CSSProperties, FC, HTMLAttributeAnchorTarget, MouseEventHandler, ReactNode,
+    CSSProperties, FC, HTMLAttributeAnchorTarget, HTMLAttributes, MouseEventHandler, ReactNode,
 } from 'react';
 import { useMemo } from 'react';
 import type { ButtonProps as AriaButtonProps } from '@ariakit/react';
@@ -188,7 +188,7 @@ export const Button: FC<ButtonProps> = ({
             onClick={!disabled && !href && !loading ? onClick : () => {}}
             disabled={false}
             {...href ? {
-                render: (properties) => (
+                render: (properties: HTMLAttributes<HTMLAnchorElement>) => (
                     // eslint-disable-next-line jsx-a11y/anchor-has-content
                     <a
                         {...properties}

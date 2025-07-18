@@ -1,7 +1,7 @@
 'use client';
 
 import type {
-    FC, HTMLAttributeAnchorTarget, MouseEventHandler, ReactNode,
+    FC, HTMLAttributeAnchorTarget, HTMLAttributes, MouseEventHandler, ReactNode,
 } from 'react';
 import type { ButtonProps as AriaButtonProps } from '@ariakit/react';
 import { Button as AriaButton } from '@ariakit/react';
@@ -67,7 +67,7 @@ export const CardButton: FC<CardButtonProps> = ({
             onClick={!disabled && !href ? onClick : () => {}}
             disabled={false}
             {...href ? {
-                render: (properties) => (
+                render: (properties: HTMLAttributes<HTMLAnchorElement>) => (
                     // eslint-disable-next-line jsx-a11y/anchor-has-content
                     <a
                         {...properties}
