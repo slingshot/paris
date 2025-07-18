@@ -22,6 +22,29 @@ const initialSize: Size = {
     height: undefined,
 };
 
+type BoxSizesKey = keyof Pick<
+ResizeObserverEntry,
+'borderBoxSize' | 'contentBoxSize' | 'devicePixelContentBoxSize'
+>;
+
+function extractSize(
+    entry: ResizeObserverEntry,
+    box: BoxSizesKey,
+    sizeType: keyof ResizeObserverSize,
+): number | undefined {
+    if (!entry[box]) {
+        if (box === 'contentBoxSize') {
+            return entry.contentRect[sizeType === 'inlineSize' ? 'width' : 'height'];
+        }
+        return undefined;
+    }
+
+    return Array.isArray(entry[box])
+        ? entry[box][0][sizeType]
+        // @ts-ignore Support Firefox's non-standard behavior
+        : (entry[box][sizeType] as number);
+}
+
 export function useResizeObserver<T extends HTMLElement = HTMLElement>(
     options: UseResizeObserverOptions<T>,
 ): Size {
@@ -33,11 +56,12 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>(
     onResize.current = options.onResize;
 
     useEffect(() => {
-        if (!ref.current) return;
+        if (!ref.current) return () => {};
 
-        if (typeof window === 'undefined' || !('ResizeObserver' in window)) return;
+        if (typeof window === 'undefined' || !('ResizeObserver' in window)) return () => {};
 
         const observer = new ResizeObserver(([entry]) => {
+            // eslint-disable-next-line no-nested-ternary
             const boxProp = box === 'border-box'
                 ? 'borderBoxSize'
                 : box === 'device-pixel-content-box'
@@ -71,27 +95,4 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>(
     }, [box, ref, isMounted]);
 
     return { width, height };
-}
-
-type BoxSizesKey = keyof Pick<
-ResizeObserverEntry,
-'borderBoxSize' | 'contentBoxSize' | 'devicePixelContentBoxSize'
->;
-
-function extractSize(
-    entry: ResizeObserverEntry,
-    box: BoxSizesKey,
-    sizeType: keyof ResizeObserverSize,
-): number | undefined {
-    if (!entry[box]) {
-        if (box === 'contentBoxSize') {
-            return entry.contentRect[sizeType === 'inlineSize' ? 'width' : 'height'];
-        }
-        return undefined;
-    }
-
-    return Array.isArray(entry[box])
-        ? entry[box][0][sizeType]
-        : // @ts-ignore Support Firefox's non-standard behavior
-        (entry[box][sizeType] as number);
 }

@@ -27,10 +27,12 @@ interface TriggerProps extends ComponentPropsWithoutRef<'div'> {
     onClick: () => void;
 }
 const Trigger = forwardRef<HTMLDivElement, TriggerProps>((props, ref) => (
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
-    (<div className={styles.trigger} ref={ref} onClick={props.onClick}>
-        {props.children}
-    </div>)
+    (
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
+        <div className={styles.trigger} ref={ref} onClick={props.onClick}>
+            {props.children}
+        </div>
+    )
 ));
 
 /**
