@@ -1,7 +1,7 @@
 import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { useState } from 'react';
-import type { MotionProps } from 'framer-motion';
-import { AnimatePresence, motion } from 'framer-motion';
+import type { MotionProps } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import clsx from 'clsx';

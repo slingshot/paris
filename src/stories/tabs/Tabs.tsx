@@ -10,7 +10,7 @@ import {
 } from '@headlessui/react';
 import clsx from 'clsx';
 import type { CSSLength } from '@ssh/csstypes';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import type { TabListProps } from '@ariakit/react';
 import styles from './Tabs.module.scss';
 import typography from '../text/Typography.module.css';

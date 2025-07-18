@@ -12,7 +12,7 @@ import {
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import inputStyles from '../input/Input.module.scss';
 import dropdownStyles from '../utility/Dropdown.module.scss';
 import styles from './Select.module.scss';
