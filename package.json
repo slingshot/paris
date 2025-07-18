@@ -37,7 +37,7 @@
         "release": "pnpm generate:exports && pnpm changeset publish",
         "prepare": "husky install"
     },
-    "packageManager": "pnpm@8.15.5",
+    "packageManager": "pnpm@9.15.9",
     "exports": {
         "./*": "./src/stories/*",
         "./accordion": "./src/stories/accordion/index.ts",
