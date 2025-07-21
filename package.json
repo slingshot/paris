@@ -37,6 +37,9 @@
         "release": "pnpm generate:exports && pnpm changeset publish",
         "prepare": "husky install"
     },
+    "engines": {
+        "node": ">=22"
+    },
     "packageManager": "pnpm@9.15.9",
     "exports": {
         "./*": "./src/stories/*",
