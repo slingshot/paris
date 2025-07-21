@@ -40,7 +40,7 @@
     "engines": {
         "node": ">=22"
     },
-    "packageManager": "pnpm@9.15.9",
+    "packageManager": "pnpm@10.13.1",
     "exports": {
         "./*": "./src/stories/*",
         "./accordion": "./src/stories/accordion/index.ts",
