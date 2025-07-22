@@ -16,9 +16,7 @@ type Story = StoryObj<typeof Tilt>;
 export const Default: Story = {
     args: {
         style: {},
-        children: (
-            <Text kind="headingMedium">Tilt Component</Text>
-        ),
+        children: <Text kind="headingMedium">Tilt Component</Text>,
         onEnter: undefined,
         onLeave: undefined,
         onMove: undefined,

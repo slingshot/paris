@@ -1,4 +1,3 @@
-/* eslint-disable prefer-arrow-callback */
 import type { ComponentPropsWithoutRef, ReactNode, JSX } from 'react';
 import { createElement, memo } from 'react';
 import clsx from 'clsx';

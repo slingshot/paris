@@ -23,7 +23,7 @@ const initialSize: Size = {
 };
 
 type BoxSizesKey = keyof Pick<
-ResizeObserverEntry,
+    ResizeObserverEntry,
 'borderBoxSize' | 'contentBoxSize' | 'devicePixelContentBoxSize'
 >;
 
@@ -41,13 +41,11 @@ function extractSize(
 
     return Array.isArray(entry[box])
         ? entry[box][0][sizeType]
-        // @ts-ignore Support Firefox's non-standard behavior
+        // @ts-expect-error Support Firefox's non-standard behavior
         : (entry[box][sizeType] as number);
 }
 
-export function useResizeObserver<T extends HTMLElement = HTMLElement>(
-    options: UseResizeObserverOptions<T>,
-): Size {
+export function useResizeObserver<T extends HTMLElement = HTMLElement>(options: UseResizeObserverOptions<T>): Size {
     const { ref, box = 'content-box' } = options;
     const [{ width, height }, setSize] = useState<Size>(initialSize);
     const isMounted = useIsMounted();
@@ -61,7 +59,6 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>(
         if (typeof window === 'undefined' || !('ResizeObserver' in window)) return () => {};
 
         const observer = new ResizeObserver(([entry]) => {
-            // eslint-disable-next-line no-nested-ternary
             const boxProp = box === 'border-box'
                 ? 'borderBoxSize'
                 : box === 'device-pixel-content-box'

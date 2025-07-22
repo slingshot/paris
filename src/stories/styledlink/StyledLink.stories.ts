@@ -21,7 +21,7 @@ export const Default: Story = {
 export const AsButton: Story = {
     args: {
         as: 'button',
-        // eslint-disable-next-line no-alert
+
         onClick: () => alert('Hello world!'),
         children: 'Hello world! This is a StyledLink rendered as a button.',
     },

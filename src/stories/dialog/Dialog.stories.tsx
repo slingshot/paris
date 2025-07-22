@@ -22,11 +22,7 @@ export const Default: Story = {
         height: 'content',
         draggable: false,
         isOpen: false,
-        children: (
-            <Text>
-                Are you sure? That's a lot of money.
-            </Text>
-        ),
+        children: <Text>Are you sure? That's a lot of money.</Text>,
     },
     render: (args) => {
         const [isOpen, setIsOpen] = useState(false);
@@ -49,11 +45,7 @@ export const Default: Story = {
                     //     background: `repeating-linear-gradient( -45deg, ${primary}, ${primary} 4px, transparent 4px, transparent 25px )`,
                     // }}
                 >
-                    <Button
-                        onClick={() => setIsOpen(true)}
-                    >
-                        Pay now
-                    </Button>
+                    <Button onClick={() => setIsOpen(true)}>Pay now</Button>
                 </div>
                 <Dialog
                     {...args}
@@ -78,22 +70,14 @@ export const Grey: Story = {
         overlayStyle: 'grey',
         draggable: false,
         isOpen: false,
-        children: (
-            <Text>
-                Are you sure? That's a lot of money.
-            </Text>
-        ),
+        children: <Text>Are you sure? That's a lot of money.</Text>,
     },
     render: (args) => {
         const [isOpen, setIsOpen] = useState(false);
         return (
             <>
                 <div>
-                    <Button
-                        onClick={() => setIsOpen(true)}
-                    >
-                        Pay now
-                    </Button>
+                    <Button onClick={() => setIsOpen(true)}>Pay now</Button>
                 </div>
                 <Dialog
                     {...args}

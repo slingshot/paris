@@ -1,6 +1,8 @@
 'use client';
 
-import type { ComponentPropsWithoutRef, FC, ForwardedRef } from 'react';
+import type {
+    ComponentPropsWithoutRef, FC, ForwardedRef, ReactNode,
+} from 'react';
 import { forwardRef, useId } from 'react';
 import clsx from 'clsx';
 import styles from './Input.module.scss';
@@ -15,7 +17,7 @@ export type InputProps = {
     /**
      * This is required for accessibility. If the label is not a string, you should provide an `aria-label` prop directly to specify the text used for accessibility
      */
-    label: React.ReactNode;
+    label: ReactNode;
     /**
      * The status of the input field.
      * @default default
@@ -91,10 +93,7 @@ export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = forward
             overrides={{
                 container: {
                     ...overrides?.container,
-                    className: clsx(
-                        // styles.fieldContainer,
-                        overrides?.container?.className,
-                    ),
+                    className: clsx(overrides?.container?.className), // styles.fieldContainer,
                 },
                 label: overrides?.label,
                 description: overrides?.description,

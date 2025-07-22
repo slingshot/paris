@@ -1,0 +1,2 @@
+overrides:
+  '@ssh/eslint-config': link:../eslint-config-slingshot

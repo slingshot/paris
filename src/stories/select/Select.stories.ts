@@ -17,18 +17,26 @@ const render: Story['render'] = (args) => {
     const [selected, setSelected] = useState<string | null>(null);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [selectedMultiple, setSelectedMultiple] = useState<string[] | null>([]);
-    return createElement('div', {
-        style: { minHeight: '400px' },
-    }, createElement(Select, args.multiple ? {
-        ...args,
-        value: selectedMultiple,
-        onChange: (value: string[] | null) => setSelectedMultiple(value),
-    }
-        : {
-            ...args,
-            value: selected,
-            onChange: (value: string | null) => setSelected(value),
-        }));
+    return createElement(
+        'div',
+        {
+            style: { minHeight: '400px' },
+        },
+        createElement(
+            Select,
+            args.multiple
+                ? {
+                    ...args,
+                    value: selectedMultiple,
+                    onChange: (value: string[] | null) => setSelectedMultiple(value),
+                }
+                : {
+                    ...args,
+                    value: selected,
+                    onChange: (value: string | null) => setSelected(value),
+                },
+        ),
+    );
 };
 
 export const Default: Story = {

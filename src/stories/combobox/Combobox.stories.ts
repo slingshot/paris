@@ -100,44 +100,66 @@ export const Default: Story = {
     render: (args) => {
         const [selected, setSelected] = useState<Option<{ name: string }> | null>(null);
         const [inputValue, setInputValue] = useState<string>('');
-        return createElement('div', {
-            style: { minHeight: '200px' },
-        }, createElement(Combobox<{ name: string }>, {
-            ...args,
-            value: (selected?.id === null) ? {
-                id: null,
-                node: inputValue,
-                metadata: {
-                    name: inputValue,
-                },
-            } : selected as Option<{ name: string }> | null,
-            options: (args.options as Option<{ name: string }>[]).filter((o) => (o.metadata?.name as string || '').toLowerCase().includes(inputValue.toLowerCase())),
-            onChange: (e) => setSelected(e),
-            onInputChange: (e) => setInputValue(e),
-        }));
+        return createElement(
+            'div',
+            {
+                style: { minHeight: '200px' },
+            },
+            createElement(Combobox<{ name: string }>, {
+                ...args,
+                value:
+          selected?.id === null
+              ? {
+                  id: null,
+                  node: inputValue,
+                  metadata: {
+                      name: inputValue,
+                  },
+              }
+              : (selected as Option<{ name: string }> | null),
+                options: (args.options as Option<{ name: string }>[]).filter((o) => ((o.metadata?.name as string) || '')
+                    .toLowerCase()
+                    .includes(inputValue.toLowerCase())),
+                onChange: (e) => setSelected(e),
+                onInputChange: (e) => setInputValue(e),
+            }),
+        );
     },
 };
 
 export const AllowCustomValue: Story = {
-    args: { ...ComboboxArgs, allowCustomValue: true, customValueString: 'Add "%v"' },
+    args: {
+        ...ComboboxArgs,
+        allowCustomValue: true,
+        customValueString: 'Add "%v"',
+    },
     render: (args) => {
         const [selected, setSelected] = useState<Option | null>(null);
         const [inputValue, setInputValue] = useState<string>('');
-        return createElement('div', {
-            style: { minHeight: '200px' },
-        }, createElement(Combobox<{ name: string }>, {
-            ...args,
-            value: (selected?.id === null) ? {
-                id: null,
-                node: inputValue,
-                metadata: {
-                    name: inputValue,
-                },
-            } : selected as Option<{ name: string }> | null,
-            options: (args.options as Option<{ name: string }>[]).filter((o) => (o.metadata?.name as string || '').toLowerCase().includes(inputValue.toLowerCase())),
-            onChange: (e) => setSelected(e),
-            onInputChange: (e) => setInputValue(e),
-        }));
+        return createElement(
+            'div',
+            {
+                style: { minHeight: '200px' },
+            },
+            createElement(Combobox<{ name: string }>, {
+                ...args,
+                value:
+          selected?.id === null
+              ? {
+                  id: null,
+                  node: inputValue,
+                  metadata: {
+                      name: inputValue,
+                  },
+              }
+              : (selected as Option<{ name: string }> | null),
+                options: (args.options as Option<{ name: string }>[]).filter((o) => ((o.metadata?.name as string) || '')
+                    .toLowerCase()
+                    .includes(inputValue.toLowerCase())),
+                onChange: (e) => setSelected(e),
+                onInputChange: (e) => setInputValue(e),
+            }),
+        );
     },
 };
 
@@ -146,22 +168,31 @@ export const HideOptionsInitially: Story = {
     render: (args) => {
         const [selected, setSelected] = useState<Option<{ name: string }> | null>(null);
         const [inputValue, setInputValue] = useState<string>('');
-        return createElement('div', {
-            style: { minHeight: '200px' },
-        }, createElement(Combobox<{ name: string }>, {
-            ...args,
-            value: (selected?.id === null) ? {
-                id: null,
-                node: inputValue,
-                metadata: {
-                    name: inputValue,
-                },
-            } : selected as Option<{ name: string }> | null,
-            options: (args.options as Option<{ name: string }>[]).filter((o) => (o.metadata?.name as string || '').toLowerCase().includes(inputValue.toLowerCase())),
-            onChange: (e) => setSelected(e),
-            onInputChange: (e) => setInputValue(e),
-            hideOptionsInitially: true,
-        }));
+        return createElement(
+            'div',
+            {
+                style: { minHeight: '200px' },
+            },
+            createElement(Combobox<{ name: string }>, {
+                ...args,
+                value:
+          selected?.id === null
+              ? {
+                  id: null,
+                  node: inputValue,
+                  metadata: {
+                      name: inputValue,
+                  },
+              }
+              : (selected as Option<{ name: string }> | null),
+                options: (args.options as Option<{ name: string }>[]).filter((o) => ((o.metadata?.name as string) || '')
+                    .toLowerCase()
+                    .includes(inputValue.toLowerCase())),
+                onChange: (e) => setSelected(e),
+                onInputChange: (e) => setInputValue(e),
+                hideOptionsInitially: true,
+            }),
+        );
     },
 };
 
@@ -170,21 +201,30 @@ export const HideClearButton: Story = {
     render: (args) => {
         const [selected, setSelected] = useState<Option<{ name: string }> | null>(null);
         const [inputValue, setInputValue] = useState<string>('');
-        return createElement('div', {
-            style: { minHeight: '200px' },
-        }, createElement(Combobox<{ name: string }>, {
-            ...args,
-            value: (selected?.id === null) ? {
-                id: null,
-                node: inputValue,
-                metadata: {
-                    name: inputValue,
-                },
-            } : selected as Option<{ name: string }> | null,
-            options: (args.options as Option<{ name: string }>[]).filter((o) => (o.metadata?.name as string || '').toLowerCase().includes(inputValue.toLowerCase())),
-            onChange: (e) => setSelected(e),
-            onInputChange: (e) => setInputValue(e),
-            hideClearButton: true,
-        }));
+        return createElement(
+            'div',
+            {
+                style: { minHeight: '200px' },
+            },
+            createElement(Combobox<{ name: string }>, {
+                ...args,
+                value:
+          selected?.id === null
+              ? {
+                  id: null,
+                  node: inputValue,
+                  metadata: {
+                      name: inputValue,
+                  },
+              }
+              : (selected as Option<{ name: string }> | null),
+                options: (args.options as Option<{ name: string }>[]).filter((o) => ((o.metadata?.name as string) || '')
+                    .toLowerCase()
+                    .includes(inputValue.toLowerCase())),
+                onChange: (e) => setSelected(e),
+                onInputChange: (e) => setInputValue(e),
+                hideClearButton: true,
+            }),
+        );
     },
 };

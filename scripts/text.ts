@@ -23,18 +23,14 @@ jss.setup({
  * Generates a CSS module with all the typography classes.
  */
 export const text = async () => {
-    const styles = Object.fromEntries(
-        (Object.entries(theme.typography.styles) as Array<[keyof Theme['typography']['styles'], FontDefinition]>)
-            .map(([fontClass, value]) => [
-                fontClass,
-                Object.fromEntries(
-                    (Object.keys(value) as Array<keyof FontDefinition>).map((attr) => [
-                        attr,
-                        pvar(`typography.styles.${fontClass}.${attr}`),
-                    ]),
-                ),
-            ]),
-    );
+    const styles = Object.fromEntries((Object.entries(theme.typography.styles) as Array<[keyof Theme['typography']['styles'], FontDefinition]>)
+        .map(([fontClass, value]) => [
+            fontClass,
+            Object.fromEntries((Object.keys(value) as Array<keyof FontDefinition>).map((attr) => [
+                attr,
+                pvar(`typography.styles.${fontClass}.${attr}`),
+            ])),
+        ]));
     // const { styles } = theme.typography;
     const css = `/* Auto-generated with \`pnpm generate:text\` on ${new Date().toString()} */\n/* Do not edit manually; instead, edit the \`generateTextClasses\` function in \`scripts/text.ts\` and run \`pnpm generate:text -c\`. */\n\n${jss.createStyleSheet(styles).toString()}`;
     await fs.writeFile('src/stories/text/Typography.module.css', css
@@ -75,7 +71,7 @@ export const generateTextStories = async () => {
     const end = currentStories.indexOf('// @auto-generated-end');
 
     // Generate the new stories
-    const out = stories.map((story) => `export const ${pascalCase(story[0] as string).replace('Xx', 'XX')}: Story = ${JSON.stringify(story[1], null, 4)};`).join('\n\n');
+    const out = stories.map((story) => `export const ${pascalCase(story[0]).replace('Xx', 'XX')}: Story = ${JSON.stringify(story[1], null, 4)};`).join('\n\n');
 
     // If the start and end tags are found, replace the content between them
     if (start !== -1 && end !== -1) {

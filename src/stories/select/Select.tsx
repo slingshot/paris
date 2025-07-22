@@ -1,5 +1,3 @@
-/* eslint-disable prefer-arrow-callback,func-names */
-
 'use client';
 
 import type {
@@ -280,9 +278,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                     {options.map((option) => (
                         <Radio
                             as="div"
-                            className={clsx(
-                                styles.radioOption,
-                            )}
+                            className={clsx(styles.radioOption)}
                             key={option.id}
                             value={option.id}
                             disabled={option.disabled || false}
@@ -301,9 +297,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
                     {options.map((option) => (
                         <Radio
                             as="div"
-                            className={clsx(
-                                styles.cardOption,
-                            )}
+                            className={clsx(styles.cardOption)}
                             key={option.id}
                             value={option.id}
                             disabled={option.disabled || false}
