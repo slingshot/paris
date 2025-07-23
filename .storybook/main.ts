@@ -2,7 +2,12 @@ import type { StorybookConfig } from '@storybook/nextjs';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 const config: StorybookConfig = {
     stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
-    addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions', 'storybook-dark-mode', '@storybook/addon-mdx-gfm', '@storybook/addon-styling-webpack'],
+    addons: [
+        '@storybook/addon-links',
+        '@storybook-community/storybook-dark-mode',
+        '@storybook/addon-styling-webpack',
+        '@storybook/addon-docs',
+    ],
     framework: {
         name: '@storybook/nextjs',
         options: {

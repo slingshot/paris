@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import type { Property } from 'csstype';
 import { Tilt } from './Tilt';
 import { Text } from '../text';

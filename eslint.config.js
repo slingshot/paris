@@ -7,7 +7,7 @@ import { fixupConfigRules } from '@eslint/compat';
 export default [
     // Global ignores
     {
-        ignores: ['dist/', 'node_modules/', 'storybook-static/'],
+        ignores: ['dist/', 'node_modules/', 'storybook-static/', '.next/'],
     },
 
     // SSH base configuration

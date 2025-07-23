@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { StyledLink } from './StyledLink';
 
 const meta: Meta<typeof StyledLink> = {

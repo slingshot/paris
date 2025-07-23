@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { toast, Toast } from './Toast';
 import { Button } from '../button';
 import { ChevronRight, Icon } from '../icon';

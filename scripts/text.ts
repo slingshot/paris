@@ -8,7 +8,7 @@ import fs from 'fs/promises';
 import * as cp from 'child_process';
 import jss from 'jss';
 import preset from 'jss-preset-default';
-import type { StoryObj } from '@storybook/react';
+import type { StoryObj } from '@storybook/nextjs';
 import { pascalCase } from 'change-case';
 import type { FontDefinition, Theme } from '../src/stories/theme';
 import { theme, pvar, LightTheme } from '../src/stories/theme';

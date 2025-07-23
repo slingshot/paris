@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import type { Decorator, Preview } from '@storybook/react';
+import type { Decorator, Preview } from '@storybook/nextjs';
 import { Dark, Light } from './themes';
-import { DocsContainer } from '@storybook/blocks';
-import { useDarkMode, DARK_MODE_EVENT_NAME } from 'storybook-dark-mode';
+import { DocsContainer } from '@storybook/addon-docs/blocks';
+import { useDarkMode, DARK_MODE_EVENT_NAME } from '@storybook-community/storybook-dark-mode';
 import { createElement, useEffect, useState } from 'react';
 import { injectTheme, LightTheme, DarkTheme } from '../src/stories/theme';
 
@@ -12,7 +12,7 @@ import '../public/fira/fira_code.css';
 import '../src/styles/globals.css';
 import '../src/stories/theme/global.scss';
 import { config } from '@fortawesome/fontawesome-svg-core';
-import { addons } from '@storybook/preview-api';
+import { addons } from 'storybook/preview-api';
 
 config.autoAddCss = false;
 

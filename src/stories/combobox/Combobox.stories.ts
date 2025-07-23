@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks,react/no-children-prop */
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { createElement, useState } from 'react';
 import type { ComboboxProps, Option } from './Combobox';
 import { Combobox } from './Combobox';
