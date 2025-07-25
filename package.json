@@ -109,7 +109,7 @@
         "@storybook/addon-styling-webpack": "^2.0.0",
         "@storybook/nextjs": "9.0.18",
         "@stylistic/eslint-plugin": "^5.2.2",
-        "@types/node": "18.15.11",
+        "@types/node": "24.1.0",
         "@types/react": "^19.1.8",
         "@types/react-dom": "^19.1.6",
         "@typescript-eslint/eslint-plugin": "^8.38.0",
