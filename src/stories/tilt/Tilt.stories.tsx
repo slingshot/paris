@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import type { Property } from 'csstype';
 import { Tilt } from './Tilt';
 import { Text } from '../text';
@@ -16,9 +16,7 @@ type Story = StoryObj<typeof Tilt>;
 export const Default: Story = {
     args: {
         style: {},
-        children: (
-            <Text kind="headingMedium">Tilt Component</Text>
-        ),
+        children: <Text kind="headingMedium">Tilt Component</Text>,
         onEnter: undefined,
         onLeave: undefined,
         onMove: undefined,

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { createElement } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -91,25 +91,21 @@ export const WithEndEnhancer: Story = {
 export const WithCustomLabel: Story = {
     args: {
         placeholder: 'Mia Dolan',
-        label: createElement(
-            'span',
-            null,
-            [
-                createElement('b', null, 'Name'),
-                createElement('i', null, ' (optional)'),
-            ],
-        ),
+        label: createElement('span', null, [
+            createElement('b', null, 'Name'),
+            createElement('i', null, ' (optional)'),
+        ]),
         'aria-label': 'Name (optional)',
-        description: createElement(
-            'span',
-            null,
-            [
-                createElement('b', {
+        description: createElement('span', null, [
+            createElement(
+                'b',
+                {
                     style: {
                         color: 'red',
                     },
-                }, 'My custom description'),
-            ],
-        ),
+                },
+                'My custom description',
+            ),
+        ]),
     },
 };

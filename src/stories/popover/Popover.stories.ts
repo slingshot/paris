@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { createElement } from 'react';
 import { Popover } from './Popover';
 import { Button } from '../button';
@@ -14,11 +14,7 @@ type Story = StoryObj<typeof Popover>;
 
 export const Default: Story = {
     args: {
-        trigger: createElement(
-            Button,
-            {},
-            'Click me',
-        ),
+        trigger: createElement(Button, {}, 'Click me'),
         children: 'Hello world!',
     },
 };

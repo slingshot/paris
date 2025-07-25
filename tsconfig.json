@@ -33,9 +33,11 @@
     "**/*.tsx",
     "**/*.d.ts",
     "**/*.js",
-    "**/*.jsx"
+    "**/*.jsx",
+    ".storybook/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next"
   ]
 }

@@ -281,9 +281,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                     >
                                         <div className={clsx(styles.paginationButtons)}>
                                             <Button
-                                                className={clsx(
-                                                    styles.navButton,
-                                                )}
+                                                className={clsx(styles.navButton)}
                                                 size="medium"
                                                 kind="tertiary"
                                                 shape="circle"
@@ -296,9 +294,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                                 Go to previous page in this modal
                                             </Button>
                                             <Button
-                                                className={clsx(
-                                                    styles.navButton,
-                                                )}
+                                                className={clsx(styles.navButton)}
                                                 size="medium"
                                                 kind="tertiary"
                                                 shape="circle"
@@ -342,9 +338,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                                 <Icon icon={Close} size={20} />
                                             )}
                                             data-title-hidden={hideTitle}
-                                            className={clsx(
-                                                styles.closeButton,
-                                            )}
+                                            className={clsx(styles.closeButton)}
                                         >
                                             Close dialog
                                         </Button>

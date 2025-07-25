@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import type { TableProps } from './Table';
 import { Table } from './Table';
 
@@ -51,10 +51,12 @@ export const Default: Story = {
             cells: [row.name, row.type, row.email],
         }),
         onRowClick: (row) => console.log('Row clicked', row),
-    } satisfies TableProps<{
-        id: number;
-        name: string;
-        type: string;
-        email: string;
-    }[]>,
+    } satisfies TableProps<
+        {
+            id: number;
+            name: string;
+            type: string;
+            email: string;
+        }[]
+    >,
 };

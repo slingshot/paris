@@ -14,7 +14,7 @@ import typography from '../text/Typography.module.css';
 
 export type PopoverProps = {
     /** The trigger element for the Popover. */
-    trigger: ReactElement;
+    trigger: ReactElement<any>;
     /** Optionally, manage state for the Popover yourself by passing `isOpen` and `setIsOpen` props. */
     isOpen?: boolean;
     /** Optionally, manage state for the Popover yourself by passing `isOpen` and `setIsOpen` props. */
@@ -27,10 +27,12 @@ interface TriggerProps extends ComponentPropsWithoutRef<'div'> {
     onClick: () => void;
 }
 const Trigger = forwardRef<HTMLDivElement, TriggerProps>((props, ref) => (
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
-    <div className={styles.trigger} ref={ref} onClick={props.onClick}>
-        {props.children}
-    </div>
+    (
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
+        <div className={styles.trigger} ref={ref} onClick={props.onClick}>
+            {props.children}
+        </div>
+    )
 ));
 
 /**

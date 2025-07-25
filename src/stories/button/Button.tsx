@@ -1,7 +1,7 @@
 'use client';
 
 import type {
-    CSSProperties, FC, HTMLAttributeAnchorTarget, MouseEventHandler, ReactNode,
+    CSSProperties, FC, HTMLAttributeAnchorTarget, HTMLAttributes, MouseEventHandler, ReactNode,
 } from 'react';
 import { useMemo } from 'react';
 import type { ButtonProps as AriaButtonProps } from '@ariakit/react';
@@ -73,7 +73,7 @@ export type ButtonProps = {
      * A color to apply for the Button. Provide an object with `primary` and `secondary` properties to set the primary and hover colors.
      */
     colors?: {
-        /** The primary color of the Button. Primary buttons will use this as the background color, and secondary/tertiary buttons will use it for the text and border. */
+    /** The primary color of the Button. Primary buttons will use this as the background color, and secondary/tertiary buttons will use it for the text and border. */
         primary: string;
         /**
          * The secondary color of the Button, used for hover/active states.
@@ -188,7 +188,7 @@ export const Button: FC<ButtonProps> = ({
             onClick={!disabled && !href && !loading ? onClick : () => {}}
             disabled={false}
             {...href ? {
-                render: (properties) => (
+                render: (properties: HTMLAttributes<HTMLAnchorElement>) => (
                     // eslint-disable-next-line jsx-a11y/anchor-has-content
                     <a
                         {...properties}

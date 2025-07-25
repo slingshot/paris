@@ -274,9 +274,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                                                 )}
                                                 {...overrides.panelCloseButton}
                                                 data-title-hidden={hideTitle}
-                                                className={clsx(
-                                                    overrides.panelCloseButton?.className,
-                                                )}
+                                                className={clsx(overrides.panelCloseButton?.className)}
                                             >
                                                 Close dialog
                                             </Button>

@@ -97,13 +97,11 @@ export function Table<RowData extends Record<string, any>[]>({
 }: TableProps<RowData>) {
     const id = useId();
     const rowsRenderData = useMemo(() => (
-        rows.map(
-            rowRenderFn
+        rows.map(rowRenderFn
             ?? ((row) => ({
                 key: Object.values(row).join('-'),
                 cells: Object.values(row),
-            })),
-        )
+            })))
     ), [rows, rowRenderFn]);
 
     const renderedRows = useMemo(() => (

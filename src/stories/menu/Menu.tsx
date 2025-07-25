@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { FC, ElementType, ReactNode } from 'react';
 import type {
     MenuProps, MenuItemsProps, MenuItemProps, MenuButtonProps,
 } from '@headlessui/react';
@@ -27,7 +27,7 @@ import dropdownStyles from '../utility/Dropdown.module.scss';
  * </Menu>
  * ```
  */
-export const Menu: FC<MenuProps<React.ElementType>> = ({ className, children, ...props }) => (
+export const Menu: FC<MenuProps<ElementType>> = ({ className, children, ...props }) => (
     <HeadlessMenu as="div" className={clsx(styles.menu, className)} {...props}>
         {children}
     </HeadlessMenu>
@@ -38,7 +38,7 @@ export const Menu: FC<MenuProps<React.ElementType>> = ({ className, children, ..
  *
  * Should be used inside a `Menu` component to serve as the toggle for `MenuItems`.
  */
-export const MenuButton: FC<MenuButtonProps<React.ElementType>> = ({ className, children, ...props }) => (
+export const MenuButton: FC<MenuButtonProps<ElementType>> = ({ className, children, ...props }) => (
     <HMenuButton className={clsx(styles.menuButton, className)} {...props}>
         {children}
     </HMenuButton>
@@ -51,7 +51,7 @@ export const MenuButton: FC<MenuButtonProps<React.ElementType>> = ({ className, 
  *
  * @param position - Controls the positioning of the menu items ('left' or 'right').
  */
-export const MenuItems: FC<MenuItemsProps<React.ElementType> & {
+export const MenuItems: FC<MenuItemsProps<ElementType> & {
     position?: 'left' | 'right';
 }> = ({
     className, children, position = 'left', ...props
@@ -79,7 +79,7 @@ export const MenuItems: FC<MenuItemsProps<React.ElementType> & {
  *
  * @param isNew - Whether the menu items should be styled as new items.
  */
-export const MenuItem: FC<MenuItemProps<React.ElementType> & {
+export const MenuItem: FC<MenuItemProps<ElementType> & {
     isNew?: boolean;
 }> = ({
     className, children, isNew = false, ...props

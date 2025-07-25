@@ -29,7 +29,7 @@ export type TagProps = {
     /** The color level of Tag background, applies to the colored states of `positive`, `warning`, and `negative`. */
     colorLevel?: 'light' | 'medium' | 'strong';
     /** An icon to display in the shape: `square` variant of the Tag. For best results, use an SVG icon with fill set to `currentColor`. */
-    icon?: ReactElement;
+    icon?: ReactElement<any>;
     /** The contents of the Tag. */
     children: ReactNode;
 } & Omit<ComponentPropsWithoutRef<'div'>, 'children'>;

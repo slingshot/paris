@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import 'src/styles/globals.css';
 import type { AppProps } from 'next/app';
 

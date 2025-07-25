@@ -10,10 +10,8 @@ export const RemoveFromDOM = memo<PropsWithChildren<{
      * @default true
      */
     when: boolean;
-}>>(
-    ({ when, children }) => (when ? (<></>) : (
-        <>
-            {children}
-        </>
-    )),
-);
+}>>(({ when, children }) => (when ? (<></>) : (
+    <>
+        {children}
+    </>
+)));
