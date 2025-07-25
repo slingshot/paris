@@ -2,7 +2,7 @@ import { createTheme } from 'pte';
 import type { CSSColor, CSSLength, PixelSize } from '@ssh/csstypes';
 import type { Property } from 'csstype';
 import type { PartialDeep } from 'type-fest';
-import merge from 'ts-deepmerge';
+import { merge } from 'ts-deepmerge';
 import type { TokensT } from './tokens';
 import { Tokens as T } from './tokens';
 
