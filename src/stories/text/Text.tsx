@@ -1,5 +1,4 @@
-/* eslint-disable prefer-arrow-callback */
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, ReactNode, JSX } from 'react';
 import { createElement, memo } from 'react';
 import clsx from 'clsx';
 import type { CSSColor } from '@ssh/csstypes';

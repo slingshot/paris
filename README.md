@@ -55,7 +55,7 @@ Paris also relies on CSS Container Queries for responsive changes on certain ele
 <script src="https://cdn.jsdelivr.net/npm/container-query-polyfill@1/dist/container-query-polyfill.modern.js" />
 ```
 
-For example, with the Next.js 13 app directory, you can do all of this in your root `layout.tsx` file:
+For example, with the Next.js app directory, you can do all of this in your root `layout.tsx` file:
 
 ```tsx
 // app/layout.tsx

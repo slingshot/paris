@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { createElement } from 'react';
 import { TextArea } from './TextArea';
 
@@ -22,25 +22,21 @@ export const Default: Story = {
 export const WithCustomLabel: Story = {
     args: {
         placeholder: 'Mia Dolan',
-        label: createElement(
-            'span',
-            {},
-            [
-                createElement('b', null, 'Name'),
-                createElement('i', null, ' (optional)'),
-            ],
-        ),
+        label: createElement('span', {}, [
+            createElement('b', null, 'Name'),
+            createElement('i', null, ' (optional)'),
+        ]),
         'aria-label': 'Name (optional)',
-        description: createElement(
-            'span',
-            null,
-            [
-                createElement('b', {
+        description: createElement('span', null, [
+            createElement(
+                'b',
+                {
                     style: {
                         color: 'red',
                     },
-                }, 'My custom description'),
-            ],
-        ),
+                },
+                'My custom description',
+            ),
+        ]),
     },
 };

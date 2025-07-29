@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { createElement, useState } from 'react';
 import { Checkbox } from './Checkbox';
 
@@ -16,7 +16,7 @@ export const Default: Story = {
         children: 'I agree to the terms of service',
     },
     render: (args) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
+    // eslint-disable-next-line react-hooks/rules-of-hooks
         const [checked, setChecked] = useState(false);
         return createElement(Checkbox, {
             ...args,
@@ -32,7 +32,7 @@ export const Surface: Story = {
         kind: 'surface',
     },
     render: (args) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
+    // eslint-disable-next-line react-hooks/rules-of-hooks
         const [checked, setChecked] = useState(false);
         return createElement(Checkbox, {
             ...args,
@@ -64,7 +64,7 @@ export const Switch: Story = {
         kind: 'switch',
     },
     render: (args) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
+    // eslint-disable-next-line react-hooks/rules-of-hooks
         const [checked, setChecked] = useState(false);
         return createElement(Checkbox, {
             ...args,
@@ -81,7 +81,7 @@ export const HideLabel: Story = {
         hideLabel: true,
     },
     render: (args) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
+    // eslint-disable-next-line react-hooks/rules-of-hooks
         const [checked, setChecked] = useState(false);
         return createElement(Checkbox, {
             ...args,

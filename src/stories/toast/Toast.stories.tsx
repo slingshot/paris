@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { toast, Toast } from './Toast';
 import { Button } from '../button';
 import { ChevronRight, Icon } from '../icon';
@@ -18,7 +18,9 @@ export const Default: Story = {
         <>
             <Button
                 onClick={() => {
-                    toast('Like we were in Paris', { icon: <Icon size={12} icon={ChevronRight} /> });
+                    toast('Like we were in Paris', {
+                        icon: <Icon size={12} icon={ChevronRight} />,
+                    });
                 }}
             >
                 Show toast

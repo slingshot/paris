@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { useId } from 'react';
 import * as RadixCheckbox from '@radix-ui/react-checkbox';
 import clsx from 'clsx';
@@ -21,7 +21,7 @@ export type CheckboxProps = {
     hideLabel?: boolean;
     /** The contents of the Checkbox. */
     children?: ReactNode | ReactNode[];
-} & Omit<React.ComponentPropsWithoutRef<'label'>, 'onChange' | 'children'>;
+} & Omit<ComponentPropsWithoutRef<'label'>, 'onChange' | 'children'>;
 
 /**
 * A Checkbox component.

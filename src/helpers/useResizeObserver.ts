@@ -12,7 +12,7 @@ type Size = {
 };
 
 type UseResizeObserverOptions<T extends HTMLElement = HTMLElement> = {
-    ref: RefObject<T>
+    ref: RefObject<T | null>
     onResize?: (size: Size) => void
     box?: 'border-box' | 'content-box' | 'device-pixel-content-box'
 };
@@ -22,9 +22,30 @@ const initialSize: Size = {
     height: undefined,
 };
 
-export function useResizeObserver<T extends HTMLElement = HTMLElement>(
-    options: UseResizeObserverOptions<T>,
-): Size {
+type BoxSizesKey = keyof Pick<
+    ResizeObserverEntry,
+'borderBoxSize' | 'contentBoxSize' | 'devicePixelContentBoxSize'
+>;
+
+function extractSize(
+    entry: ResizeObserverEntry,
+    box: BoxSizesKey,
+    sizeType: keyof ResizeObserverSize,
+): number | undefined {
+    if (!entry[box]) {
+        if (box === 'contentBoxSize') {
+            return entry.contentRect[sizeType === 'inlineSize' ? 'width' : 'height'];
+        }
+        return undefined;
+    }
+
+    return Array.isArray(entry[box])
+        ? entry[box][0][sizeType]
+        // @ts-expect-error Support Firefox's non-standard behavior
+        : (entry[box][sizeType] as number);
+}
+
+export function useResizeObserver<T extends HTMLElement = HTMLElement>(options: UseResizeObserverOptions<T>): Size {
     const { ref, box = 'content-box' } = options;
     const [{ width, height }, setSize] = useState<Size>(initialSize);
     const isMounted = useIsMounted();
@@ -33,9 +54,9 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>(
     onResize.current = options.onResize;
 
     useEffect(() => {
-        if (!ref.current) return;
+        if (!ref.current) return () => {};
 
-        if (typeof window === 'undefined' || !('ResizeObserver' in window)) return;
+        if (typeof window === 'undefined' || !('ResizeObserver' in window)) return () => {};
 
         const observer = new ResizeObserver(([entry]) => {
             const boxProp = box === 'border-box'
@@ -71,27 +92,4 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>(
     }, [box, ref, isMounted]);
 
     return { width, height };
-}
-
-type BoxSizesKey = keyof Pick<
-ResizeObserverEntry,
-'borderBoxSize' | 'contentBoxSize' | 'devicePixelContentBoxSize'
->;
-
-function extractSize(
-    entry: ResizeObserverEntry,
-    box: BoxSizesKey,
-    sizeType: keyof ResizeObserverSize,
-): number | undefined {
-    if (!entry[box]) {
-        if (box === 'contentBoxSize') {
-            return entry.contentRect[sizeType === 'inlineSize' ? 'width' : 'height'];
-        }
-        return undefined;
-    }
-
-    return Array.isArray(entry[box])
-        ? entry[box][0][sizeType]
-        : // @ts-ignore Support Firefox's non-standard behavior
-        (entry[box][sizeType] as number);
 }

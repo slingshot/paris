@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import {
     Menu, MenuButton, MenuItems, MenuItem,
 } from './Menu';
@@ -25,17 +25,13 @@ export const Default: Story = {
                     <Button
                         kind="tertiary"
                         shape="circle"
-                        startEnhancer={(
-                            <Ellipsis size={20} />
-                        )}
+                        startEnhancer={<Ellipsis size={20} />}
                     >
                         Action menu
                     </Button>
                 </MenuButton>
                 <MenuItems>
-                    <MenuItem as="button">
-                        Dispute
-                    </MenuItem>
+                    <MenuItem as="button">Dispute</MenuItem>
                     <MenuItem as="button">
                         Transfer
                         <ChevronRight size={20} />
