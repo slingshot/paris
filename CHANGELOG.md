@@ -1,5 +1,11 @@
 # paris
 
+## 0.15.2
+
+### Patch Changes
+
+- 656978c: Checkbox: added `panel` variant
+
 ## 0.15.1
 
 ### Patch Changes
