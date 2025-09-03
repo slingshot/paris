@@ -38,6 +38,9 @@
         "prepare": "husky install"
     },
     "packageManager": "pnpm@8.15.5",
+    "engines": {
+        "node": ">=22.0.0"
+    },
     "exports": {
         "./*": "./src/stories/*",
         "./accordion": "./src/stories/accordion/index.ts",
@@ -108,7 +111,7 @@
         "@storybook/react": "^7.5.1",
         "@storybook/testing-library": "^0.2.2",
         "@storybook/theming": "^7.5.1",
-        "@types/node": "18.15.11",
+        "@types/node": "^22.0.0",
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "@typescript-eslint/eslint-plugin": "^5.13.0",
