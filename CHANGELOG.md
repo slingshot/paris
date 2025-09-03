@@ -1,5 +1,12 @@
 # paris
 
+## 0.15.3
+
+### Patch Changes
+
+- ba3cf03: fix: Controlled state for Accordion
+  feat: Add Card styles to CardButton
+
 ## 0.15.2
 
 ### Patch Changes
