@@ -57,7 +57,24 @@ export const Accordion: FC<AccordionProps> = ({
     children,
     overrides,
 }) => {
-    const [open, setOpen] = useState(isOpen ?? false);
+    const [openState, setOpenState] = useState(isOpen ?? false);
+
+    // Determine if component is controlled or uncontrolled
+    const isControlled = isOpen !== undefined;
+    const open = isControlled ? isOpen : openState;
+
+    // Unified toggle handler that works for both controlled and uncontrolled modes
+    const handleToggle = () => {
+        const newOpen = !open;
+        
+        // Update internal state only if uncontrolled
+        if (!isControlled) {
+            setOpenState(newOpen);
+        }
+        
+        // Always call the callback if provided
+        onOpenChange?.(newOpen);
+    };
 
     return (
         <div
@@ -69,29 +86,27 @@ export const Accordion: FC<AccordionProps> = ({
             )}
         >
             <div
-                onClick={() => setOpen((o) => !o)}
+                onClick={handleToggle}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        setOpen((o) => !o);
-                        onOpenChange?.(!open);
+                        handleToggle();
                     }
                 }}
                 role="button"
                 tabIndex={0}
                 {...overrides?.titleContainer}
+                data-state={open ? 'open' : 'closed'}
                 className={clsx(
+                    overrides?.titleContainer?.className,
                     styles.title,
                     styles[size],
                     open && styles.open,
-                    overrides?.titleContainer?.className,
                 )}
             >
-                <div>
-                    <TextWhenString kind="paragraphSmall" weight="medium">
-                        {title}
-                    </TextWhenString>
-                </div>
+                <TextWhenString kind="paragraphSmall" weight="medium">
+                    {title}
+                </TextWhenString>
                 {kind === 'default' && (
                     <div className={styles.plusIcon}>
                         <FontAwesomeIcon

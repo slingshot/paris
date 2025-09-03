@@ -90,6 +90,7 @@
     }
 
     .chevron {
+        padding: 2px;
         transition: transform var(--pte-animations-duration-gradual) var(--pte-animations-timing-easeInOutExpo);
         transform: rotate(90deg);
 

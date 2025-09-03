@@ -1,32 +1,15 @@
 .container {
     user-select: var(--pte-utils-defaultUserSelect);
     width: auto;
-    background: var(--pte-new-colors-surfacePrimary);
-    border-radius: var(--pte-new-borders-radius-roundedMedium);
 }
 
 .card {
+    padding: 10px 12px;
     transition: var(--pte-animations-interaction);
     width: 100%;
-
-    border: 1px solid var(--pte-new-colors-borderStrong);
-    background-color: var(--pte-new-colors-overlayWhiteSubtle);
-    border-radius: var(--pte-new-borders-radius-roundedMedium);
-
     display: flex;
     justify-content: flex-start;
     align-items: center;
-
-    &:hover {
-        background-color: var(--pte-new-colors-overlayStrong);
-        cursor: default;
-    }
-
-    &[aria-disabled=false]:active {
-        //border: 1px solid var(--pte-new-colors-borderUltrastrong);
-        background-color: var(--pte-new-colors-overlayMedium);
-        transform: scale(0.996);
-    }
 
     &[aria-disabled=true] {
         pointer-events: none;
@@ -37,7 +20,69 @@
     }
 }
 
+.raised {
+    border-radius: var(--pte-borders-radius-rounded);
+    background-color: var(--pte-new-colors-surfacePrimary);
+    box-shadow: var(--pte-new-lighting-subtlePopup);
+    border: 1px solid var(--pte-new-colors-surfacePrimary);
+
+    &:hover {
+        background-color: var(--pte-new-colors-overlayStrong);
+        cursor: default;
+    }
+
+    &[aria-disabled=false]:active {
+        background-color: var(--pte-new-colors-overlayMedium);
+        transform: scale(0.996);
+    }
+
+    &.pending {
+        border: 1px dashed var(--pte-new-colors-borderMedium);
+        background-color: var(--pte-new-colors-surfaceSecondary);
+    }
+}
+
+.surface {
+    border-radius: var(--pte-new-borders-radius-roundedMedium);
+    border: 1px solid var(--pte-new-colors-borderMedium);
+    background-color: var(--pte-new-colors-overlaySubtle);
+
+    &:hover {
+        background-color: var(--pte-new-colors-overlayStrong);
+        cursor: default;
+    }
+
+    &[aria-disabled=false]:active {
+        background-color: var(--pte-new-colors-overlayMedium);
+        transform: scale(0.996);
+    }
+
+    &.pending {
+        border: 1px dashed var(--pte-new-colors-borderMedium);
+        background-color: transparent;
+    }
+}
+
+.flat {
+    border-radius: var(--pte-new-borders-radius-roundedMedium);
+    border: 1px solid var(--pte-new-colors-borderStrong);
+    background: linear-gradient(0deg, var(--pte-new-colors-overlayWhiteSubtle) 0%, var(--pte-new-colors-overlayWhiteSubtle) 100%), var(--pte-new-colors-surfacePrimary);
+
+    &:hover {
+        background-color: var(--pte-new-colors-overlayStrong);
+        cursor: default;
+    }
+
+    &[aria-disabled=false]:active {
+        background-color: var(--pte-new-colors-overlayMedium);
+        transform: scale(0.996);
+    }
+
+    &.pending {
+        border: 1px dashed var(--pte-new-colors-borderStrong);
+    }
+}
+
 .text {
-    padding: 4px 10px;
     color: var(--pte-new-colors-contentPrimary);
 }

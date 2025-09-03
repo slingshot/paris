@@ -11,6 +11,18 @@ import { TextWhenString } from '../utility';
 
 export type CardButtonProps = {
     /**
+     * The visual variant of the CardButton. `raised` is the default variant with a drop shadow, `surface` is a variant with a border and overlay, `flat` is a variant with a border.
+     *
+     * @default "raised"
+     */
+    kind?: 'raised' | 'surface' | 'flat';
+    /**
+     * The status of the CardButton. `pending` adds a dashed border.
+     *
+     * @default "default"
+     */
+    status?: 'default' | 'pending';
+    /**
      * Disables the Button, disallowing user interaction.
      * @default false
      */
@@ -46,6 +58,8 @@ export type CardButtonProps = {
  * @constructor
  */
 export const CardButton: FC<CardButtonProps> = ({
+    kind = 'raised',
+    status = 'default',
     type = 'button',
     onClick,
     children,
@@ -58,6 +72,8 @@ export const CardButton: FC<CardButtonProps> = ({
             {...props}
             className={clsx(
                 styles.card,
+                styles[kind],
+                styles[status],
                 typeof children === 'string' && styles.text,
                 props?.className,
             )}
