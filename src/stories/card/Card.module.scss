@@ -29,7 +29,7 @@
 .flat {
     border-radius: var(--pte-new-borders-radius-roundedMedium);
     border: 1px solid var(--pte-new-colors-borderStrong);
-    background: linear-gradient(0deg, var(--pte-new-colors-overlayWhiteSubtle) 0%, var(--pte-new-colors-overlayWhiteSubtle) 100%), var(--pte-new-colors-surfacePrimary);
+    background: var(--pte-new-colors-overlayWhiteSubtle);
 
     &.pending {
         border: 1px dashed var(--pte-new-colors-borderStrong);
