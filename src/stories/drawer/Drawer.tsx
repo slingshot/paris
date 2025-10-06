@@ -2,7 +2,7 @@
 
 import type { ReactNode, ComponentPropsWithoutRef } from 'react';
 import {
-    useMemo, useState,
+    useMemo, useState, useCallback, useEffect,
 } from 'react';
 import {
     Dialog, DialogPanel, DialogTitle, Transition, TransitionChild,
@@ -16,12 +16,229 @@ import { TextWhenString } from '../utility/TextWhenString';
 import { Button } from '../button';
 import { RemoveFromDOM } from '../utility/RemoveFromDOM';
 import type { PaginationState } from '../pagination';
+import { PaginationProvider } from '../pagination/PaginationContext';
 import {
     ChevronLeft, ChevronRight, Close, Icon,
 } from '../icon';
 import { useResizeObserver } from '../../helpers/useResizeObserver';
+import { DrawerProvider } from './DrawerContext';
+import { DrawerBottomPanelProvider, useDrawerBottomPanel } from './DrawerBottomPanelContext';
+import { DrawerPageProvider } from './DrawerPageContext';
 
 export const DrawerSizePresets = ['content', 'default', 'full', 'fullWithMargin', 'fullOnMobile'] as const;
+
+/**
+ * Inner component that renders drawer content and accesses bottom panel context.
+ * Must be rendered within DrawerBottomPanelProvider.
+ * @internal
+ */
+type DrawerContentProps<T extends string[] | readonly string[] = string[]> = {
+    isPaginated: boolean;
+    pagination?: PaginationState<T>;
+    loadedPage: string | null;
+    setLoadedPage: (page: string | null) => void;
+    children: ReactNode;
+    currentPageConfig?: {
+        title?: ReactNode;
+        bottomPanel?: ReactNode;
+        additionalActions?: ReactNode;
+    };
+    bottomPanel?: ReactNode;
+    resolvedTitle: ReactNode;
+    resolvedAdditionalActions?: ReactNode;
+    hasResolvedAdditionalActions: boolean;
+    hideTitle: boolean;
+    hideCloseButton: boolean;
+    onClose: (open: false) => void;
+    overrides?: DrawerProps<T>['overrides'];
+};
+
+const DrawerContent = <T extends string[] | readonly string[] = string[]>({
+    isPaginated,
+    pagination,
+    loadedPage,
+    setLoadedPage,
+    children,
+    currentPageConfig,
+    bottomPanel,
+    resolvedTitle,
+    resolvedAdditionalActions,
+    hasResolvedAdditionalActions,
+    hideTitle,
+    hideCloseButton,
+    onClose,
+    overrides,
+}: DrawerContentProps<T>) => {
+    const { portalContent } = useDrawerBottomPanel();
+
+    // Resolve bottom panel content with priority:
+    // 1. Portal content (highest priority)
+    // 2. pageConfig bottom panel
+    // 3. bottomPanel prop (fallback)
+    const resolvedBottomPanel = useMemo(() => {
+        if (portalContent) {
+            // Portal content exists - handle based on mode
+            const baseContent = currentPageConfig?.bottomPanel ?? bottomPanel;
+
+            if (portalContent.mode === 'replace' || !baseContent) {
+                return portalContent.content;
+            }
+            if (portalContent.mode === 'prepend') {
+                return (
+                    <>
+                        {portalContent.content}
+                        {baseContent}
+                    </>
+                );
+            }
+            if (portalContent.mode === 'append') {
+                return (
+                    <>
+                        {baseContent}
+                        {portalContent.content}
+                    </>
+                );
+            }
+        }
+
+        // No portal content - use pageConfig or prop
+        return currentPageConfig?.bottomPanel ?? bottomPanel;
+    }, [portalContent, currentPageConfig, bottomPanel]);
+
+    return (
+        <>
+            {/* Dialog title bar */}
+            <div className={clsx(styles.titleBar, overrides?.titleBar?.className)}>
+                <div
+                    className={clsx(styles.titleArea, overrides?.titleArea?.className)}
+                >
+                    <RemoveFromDOM
+                        // Hide when pagination is not enabled.
+                        when={!isPaginated}
+                    >
+                        <div className={clsx(styles.paginationButtons)}>
+                            <Button
+                                className={clsx(
+                                    styles.navButton,
+                                )}
+                                size="medium"
+                                kind="tertiary"
+                                shape="circle"
+                                onClick={() => pagination?.back()}
+                                disabled={!pagination?.canGoBack()}
+                                startEnhancer={(
+                                    <Icon icon={ChevronLeft} size={16} />
+                                )}
+                            >
+                                Go to previous page in this modal
+                            </Button>
+                            <Button
+                                className={clsx(
+                                    styles.navButton,
+                                )}
+                                size="medium"
+                                kind="tertiary"
+                                shape="circle"
+                                onClick={() => pagination?.forward()}
+                                disabled={!pagination?.canGoForward()}
+                                startEnhancer={(
+                                    <Icon icon={ChevronRight} size={16} />
+                                )}
+                            >
+                                Go to next page in this modal
+                            </Button>
+                        </div>
+                    </RemoveFromDOM>
+                    <VisuallyHidden
+                        // Hide when requested, or when pagination is enabled (the title isn't relevant to any specific page).
+                        when={hideTitle}
+                    >
+                        <DialogTitle as="h2" className={styles.titleTextContainer}>
+                            <TextWhenString kind="paragraphSmall" weight="medium">
+                                {resolvedTitle}
+                            </TextWhenString>
+                        </DialogTitle>
+                    </VisuallyHidden>
+                </div>
+                <div className={clsx(styles.titleBarButtons, overrides?.titleBarButtons?.className)}>
+                    {/* Action Menu */}
+                    <RemoveFromDOM when={!hasResolvedAdditionalActions}>
+                        {resolvedAdditionalActions}
+                    </RemoveFromDOM>
+
+                    {/* Close button */}
+                    <RemoveFromDOM
+                        // Hide when requested, or when pagination is enabled (the page navigation bar will render its own close button).
+                        when={hideCloseButton}
+                    >
+                        <Button
+                            kind="tertiary"
+                            shape="circle"
+                            onClick={() => onClose(false)}
+                            startEnhancer={(
+                                <Icon icon={Close} size={20} />
+                            )}
+                            data-title-hidden={hideTitle}
+                            className={clsx(
+                                styles.closeButton,
+                            )}
+                        >
+                            Close dialog
+                        </Button>
+                    </RemoveFromDOM>
+                </div>
+            </div>
+
+            <div className={clsx(styles.content, overrides?.content?.className)}>
+                <div className={clsx(styles.contentChildren, overrides?.contentChildren?.className)}>
+                    {(isPaginated && Array.isArray(children)) ? children.map((child) => {
+                        if (!(child && typeof child === 'object' && 'key' in child)) {
+                            return null;
+                        }
+                        const isActive = child.key === pagination?.currentPage && loadedPage === child.key;
+                        return (
+                            <Transition
+                                show={isActive}
+                                key={`transition_${child.key}`}
+                                as="div"
+                                unmount={false}
+                                enter={styles.paginationEnter}
+                                enterFrom={styles.enterFromOpacity}
+                                enterTo={styles.enterToOpacity}
+                                leave={styles.paginationLeave}
+                                leaveFrom={styles.leaveFromOpacity}
+                                leaveTo={styles.leaveToOpacity}
+                                afterLeave={() => {
+                                    setLoadedPage(pagination?.currentPage || null);
+                                }}
+                                className={clsx(overrides?.contentChildrenChildren?.className)}
+                                style={{ display: isActive ? undefined : 'none' }}
+                            >
+                                <DrawerPageProvider isActive={isActive}>
+                                    {child}
+                                </DrawerPageProvider>
+                            </Transition>
+                        );
+                    }) : children}
+                </div>
+                {resolvedBottomPanel && (
+                    <>
+                        <div tabIndex={-1} aria-hidden="true" className={clsx(styles.bottomPanelSpacer, overrides?.bottomPanelSpacer?.className)}>
+                            {resolvedBottomPanel}
+                        </div>
+                        <div className={clsx(styles.bottomPanel, overrides?.bottomPanel?.className)}>
+                            <div className={styles.glassOpacity} />
+                            <div className={styles.glassBlend} />
+                            <div className={clsx(styles.bottomPanelContent, overrides?.bottomPanelContent?.className)}>
+                                {resolvedBottomPanel}
+                            </div>
+                        </div>
+                    </>
+                )}
+            </div>
+        </>
+    );
+};
 
 export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
     /**
@@ -104,6 +321,38 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
      */
     pagination?: PaginationState<T>;
     /**
+     * Per-page configuration for title, bottomPanel, and additionalActions.
+     * Only available when pagination is provided.
+     *
+     * Keys must match the pages in pagination state.
+     * Falls back to root-level props if not specified.
+     *
+     * @example
+     * ```tsx
+     * <Drawer
+     *   pagination={pagination}
+     *   pageConfig={{
+     *     step1: {
+     *       title: 'Payment Details',
+     *       bottomPanel: <Button>Next</Button>,
+     *     },
+     *     step2: {
+     *       title: 'Review',
+     *       bottomPanel: <Button>Submit</Button>,
+     *     },
+     *   }}
+     * >
+     *   <div key="step1">...</div>
+     *   <div key="step2">...</div>
+     * </Drawer>
+     * ```
+     */
+    pageConfig?: Partial<Record<T[number], {
+        title?: ReactNode;
+        bottomPanel?: ReactNode;
+        additionalActions?: ReactNode;
+    }>>;
+    /**
      * The overlay style of the Drawer, either 'grey' or 'blur'.
      *
      * @default 'grey'
@@ -152,6 +401,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
     from = 'right',
     size = 'default',
     pagination,
+    pageConfig,
     overlayStyle = 'grey',
     additionalActions,
     children,
@@ -170,6 +420,44 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
 
     const [loadedPage, setLoadedPage] = useState<string | null>(pagination?.history[0] || null);
 
+    // Update loadedPage when pagination changes
+    useEffect(() => {
+        if (pagination?.currentPage) {
+            setLoadedPage(pagination.currentPage);
+        }
+    }, [pagination?.currentPage]);
+
+    // Get current page configuration
+    const currentPageConfig = useMemo(() => {
+        if (pagination && pageConfig) {
+            return pageConfig[pagination.currentPage];
+        }
+        return undefined;
+    }, [pagination, pageConfig]);
+
+    // Resolve title based on pageConfig or fallback to prop
+    const resolvedTitle = useMemo(
+        () => currentPageConfig?.title ?? title,
+        [currentPageConfig, title],
+    );
+
+    // Resolve additionalActions based on pageConfig or fallback to prop
+    const resolvedAdditionalActions = useMemo(
+        () => currentPageConfig?.additionalActions ?? additionalActions,
+        [currentPageConfig, additionalActions],
+    );
+
+    const hasResolvedAdditionalActions = useMemo(
+        () => Boolean(resolvedAdditionalActions),
+        [resolvedAdditionalActions],
+    );
+
+    // Create drawer context value
+    const drawerContextValue = useMemo(() => ({
+        isOpen,
+        close: () => onClose(false),
+    }), [isOpen, onClose]);
+
     // const bottomPanelRef = useRef<HTMLDivElement>(null);
     // const { width = 0, height = 0 } = useResizeObserver({
     //     ref: bottomPanelRef,
@@ -180,30 +468,35 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
     //     console.log(bottomPanelRef.current);
     // }, [bottomPanelRef.current]);
 
-    // Decide what children to render.
-    const currentChild: ReactNode = useMemo(() => {
-        // If no children are provided, render nothing.
-        if (!children) {
-            return (<></>);
+    // Wrap content with providers
+    const wrappedContent = (content: ReactNode) => {
+        let wrapped = content;
+
+        // Wrap with bottom panel provider (always, even without pagination)
+        wrapped = (
+            <DrawerBottomPanelProvider>
+                {wrapped}
+            </DrawerBottomPanelProvider>
+        );
+
+        // Wrap with pagination provider if pagination is enabled
+        if (pagination) {
+            wrapped = (
+                <PaginationProvider value={pagination}>
+                    {wrapped}
+                </PaginationProvider>
+            );
         }
 
-        // If pagination is enabled, and multiple children are provided, render the currently active child by matching its key against `pagination.currentPage`.
-        if (pagination && Array.isArray(children) && children.length > 0) {
-            const found = children.find((child) => {
-                if (!(child && typeof child === 'object' && 'key' in child)) {
-                    console.warn('Drawer: Pagination is enabled, but the following child is missing a `key` prop. Pagination will likely not work as expected and this child will never be rendered.', child);
-                    return false;
-                }
-                return child.key === pagination.currentPage;
-            });
-            if (found) {
-                return found;
-            }
-        }
+        // Wrap with drawer provider (always)
+        wrapped = (
+            <DrawerProvider value={drawerContextValue}>
+                {wrapped}
+            </DrawerProvider>
+        );
 
-        // As a fallback, render all children.
-        return children;
-    }, [children, pagination]);
+        return wrapped;
+    };
 
     return (
         <Transition show={isOpen}>
@@ -270,125 +563,25 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                 overrides?.panel?.className,
                             )}
                         >
-                            {/* Dialog title bar */}
-                            <div className={clsx(styles.titleBar, overrides?.titleBar?.className)}>
-                                <div
-                                    className={clsx(styles.titleArea, overrides?.titleArea?.className)}
+                            {wrappedContent(
+                                <DrawerContent
+                                    isPaginated={isPaginated}
+                                    pagination={pagination}
+                                    loadedPage={loadedPage}
+                                    setLoadedPage={setLoadedPage}
+                                    currentPageConfig={currentPageConfig}
+                                    bottomPanel={bottomPanel}
+                                    resolvedTitle={resolvedTitle}
+                                    resolvedAdditionalActions={resolvedAdditionalActions}
+                                    hasResolvedAdditionalActions={hasResolvedAdditionalActions}
+                                    hideTitle={hideTitle}
+                                    hideCloseButton={hideCloseButton}
+                                    onClose={onClose}
+                                    overrides={overrides}
                                 >
-                                    <RemoveFromDOM
-                                        // Hide when pagination is not enabled.
-                                        when={!isPaginated}
-                                    >
-                                        <div className={clsx(styles.paginationButtons)}>
-                                            <Button
-                                                className={clsx(
-                                                    styles.navButton,
-                                                )}
-                                                size="medium"
-                                                kind="tertiary"
-                                                shape="circle"
-                                                onClick={() => pagination?.back()}
-                                                disabled={!pagination?.canGoBack()}
-                                                startEnhancer={(
-                                                    <Icon icon={ChevronLeft} size={16} />
-                                                )}
-                                            >
-                                                Go to previous page in this modal
-                                            </Button>
-                                            <Button
-                                                className={clsx(
-                                                    styles.navButton,
-                                                )}
-                                                size="medium"
-                                                kind="tertiary"
-                                                shape="circle"
-                                                onClick={() => pagination?.forward()}
-                                                disabled={!pagination?.canGoForward()}
-                                                startEnhancer={(
-                                                    <Icon icon={ChevronRight} size={16} />
-                                                )}
-                                            >
-                                                Go to next page in this modal
-                                            </Button>
-                                        </div>
-                                    </RemoveFromDOM>
-                                    <VisuallyHidden
-                                        // Hide when requested, or when pagination is enabled (the title isn't relevant to any specific page).
-                                        when={hideTitle}
-                                    >
-                                        <DialogTitle as="h2" className={styles.titleTextContainer}>
-                                            <TextWhenString kind="paragraphSmall" weight="medium">
-                                                {title}
-                                            </TextWhenString>
-                                        </DialogTitle>
-                                    </VisuallyHidden>
-                                </div>
-                                <div className={clsx(styles.titleBarButtons, overrides?.titleBarButtons?.className)}>
-                                    {/* Action Menu */}
-                                    <RemoveFromDOM when={!hasAdditionalActions}>
-                                        {additionalActions}
-                                    </RemoveFromDOM>
-
-                                    {/* Close button */}
-                                    <RemoveFromDOM
-                                        // Hide when requested, or when pagination is enabled (the page navigation bar will render its own close button).
-                                        when={hideCloseButton}
-                                    >
-                                        <Button
-                                            kind="tertiary"
-                                            shape="circle"
-                                            onClick={() => onClose(false)}
-                                            startEnhancer={(
-                                                <Icon icon={Close} size={20} />
-                                            )}
-                                            data-title-hidden={hideTitle}
-                                            className={clsx(
-                                                styles.closeButton,
-                                            )}
-                                        >
-                                            Close dialog
-                                        </Button>
-                                    </RemoveFromDOM>
-                                </div>
-                            </div>
-
-                            <div className={clsx(styles.content, overrides?.content?.className)}>
-                                <div className={clsx(styles.contentChildren, overrides?.contentChildren?.className)}>
-                                    {(isPaginated && Array.isArray(children)) ? children.map((child) => (child && typeof child === 'object' && 'key' in child) && (
-                                        <Transition
-                                            show={child.key === pagination?.currentPage && loadedPage === child.key}
-                                            key={`transition_${child.key}`}
-                                            as="div"
-                                            enter={styles.paginationEnter}
-                                            enterFrom={styles.enterFromOpacity}
-                                            enterTo={styles.enterToOpacity}
-                                            leave={styles.paginationLeave}
-                                            leaveFrom={styles.leaveFromOpacity}
-                                            leaveTo={styles.leaveToOpacity}
-                                            afterLeave={() => {
-                                                setLoadedPage(pagination?.currentPage || null);
-                                            }}
-                                            className={clsx(overrides?.contentChildrenChildren?.className)}
-                                        >
-                                            {child}
-                                        </Transition>
-                                    )) : children}
-                                </div>
-                                {bottomPanel && (
-                                    <>
-                                        <div tabIndex={-1} aria-hidden="true" className={clsx(styles.bottomPanelSpacer, overrides?.bottomPanelSpacer?.className)}>
-                                            {bottomPanel}
-                                        </div>
-                                        <div className={clsx(styles.bottomPanel, overrides?.bottomPanel?.className)}>
-                                            <div className={styles.glassOpacity} />
-                                            <div className={styles.glassBlend} />
-                                            <div className={clsx(styles.bottomPanelContent, overrides?.bottomPanelContent?.className)}>
-                                                {bottomPanel}
-                                            </div>
-                                        </div>
-                                    </>
-                                )}
-                            </div>
+                                    {children}
+                                </DrawerContent>,
+                            )}
                         </DialogPanel>
                     </TransitionChild>
                 </div>
