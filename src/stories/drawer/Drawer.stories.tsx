@@ -3,13 +3,16 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
 import { Drawer } from './Drawer';
+import { DrawerBottomPanelPortal } from './DrawerBottomPanelPortal';
+import { useDrawer } from '.';
 import { Button } from '../button';
 import { Callout } from '../callout';
 import {
     Menu, MenuButton, MenuItems, MenuItem,
 } from '../menu';
-import { usePagination } from '../pagination';
+import { usePagination, usePaginationContext } from '../pagination';
 import { ChevronRight, Ellipsis } from '../icon';
+import { Input } from '../input';
 
 const meta: Meta<typeof Drawer> = {
     title: 'Surfaces/Drawer',
@@ -273,6 +276,260 @@ export const Full: Story = {
                     onClose={setIsOpen}
                 >
                     {args.children}
+                </Drawer>
+            </>
+        );
+    },
+};
+
+/**
+ * Example using pageConfig for declarative per-page configuration.
+ * Eliminates conditional logic in the parent component.
+ */
+export const WithPageConfig: Story = {
+    args: {},
+    render: () => {
+        const [isOpen, setIsOpen] = useState(false);
+        const pages = ['details', 'edit', 'confirm'] as const;
+        const pagination = usePagination<typeof pages>('details');
+
+        return (
+            <>
+                <Button onClick={() => setIsOpen(true)}>
+                    Open Multi-Step Form
+                </Button>
+                <Drawer
+                    isOpen={isOpen}
+                    onClose={() => setIsOpen(false)}
+                    title="Multi-Step Process"
+                    pagination={pagination}
+                    pageConfig={{
+                        details: {
+                            title: 'View Details',
+                            bottomPanel: (
+                                <Button onClick={() => pagination.open('edit')}>
+                                    Edit
+                                </Button>
+                            ),
+                        },
+                        edit: {
+                            title: 'Edit Information',
+                            bottomPanel: (
+                                <Button onClick={() => pagination.open('confirm')}>
+                                    Continue to Confirm
+                                </Button>
+                            ),
+                        },
+                        confirm: {
+                            title: 'Confirm Changes',
+                            bottomPanel: (
+                                <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+                                    <Button onClick={() => setIsOpen(false)}>
+                                        Confirm
+                                    </Button>
+                                    <Button kind="secondary" onClick={() => pagination.back()}>
+                                        Go Back
+                                    </Button>
+                                </div>
+                            ),
+                        },
+                    }}
+                >
+                    <div key="details">
+                        <h3>Account Details</h3>
+                        <p>Name: John Doe</p>
+                        <p>Email: john@example.com</p>
+                    </div>
+                    <div key="edit">
+                        <h3>Edit Account</h3>
+                        <Input label="Name" defaultValue="John Doe" />
+                        <Input label="Email" defaultValue="john@example.com" />
+                    </div>
+                    <div key="confirm">
+                        <h3>Confirm Your Changes</h3>
+                        <Callout>
+                            Please review your changes before confirming.
+                        </Callout>
+                        <p>Updated Name: John Doe</p>
+                        <p>Updated Email: john@example.com</p>
+                    </div>
+                </Drawer>
+            </>
+        );
+    },
+};
+
+/**
+ * Example using DrawerBottomPanelPortal to inject bottom panel content from a child component.
+ * Child component can control its own actions without prop drilling.
+ */
+export const WithBottomPanelPortal: Story = {
+    args: {},
+    render: () => {
+        const [isOpen, setIsOpen] = useState(false);
+
+        // Child component that uses the portal
+        const FormWithActions = () => {
+            const [value, setValue] = useState('');
+            const [isSubmitting, setIsSubmitting] = useState(false);
+            const { close } = useDrawer();
+
+            const handleSubmit = async () => {
+                setIsSubmitting(true);
+                // Simulate API call
+                await new Promise((resolve) => { setTimeout(resolve, 1000); });
+                setIsSubmitting(false);
+                close();
+            };
+
+            return (
+                <>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                        <Input
+                            label="Enter your message"
+                            value={value}
+                            onChange={(e) => setValue(e.target.value)}
+                            placeholder="Type something..."
+                        />
+                        <p>
+                            Your message:
+                            {' '}
+                            {value || '(empty)'}
+                        </p>
+                    </div>
+
+                    <DrawerBottomPanelPortal mode="replace">
+                        <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+                            <Button
+                                onClick={handleSubmit}
+                                loading={isSubmitting}
+                                disabled={!value}
+                            >
+                                Submit
+                            </Button>
+                            <Button kind="secondary" onClick={close}>
+                                Cancel
+                            </Button>
+                        </div>
+                    </DrawerBottomPanelPortal>
+                </>
+            );
+        };
+
+        return (
+            <>
+                <Button onClick={() => setIsOpen(true)}>
+                    Open Form with Portal
+                </Button>
+                <Drawer
+                    isOpen={isOpen}
+                    onClose={() => setIsOpen(false)}
+                    title="Form Example"
+                >
+                    <FormWithActions />
+                </Drawer>
+            </>
+        );
+    },
+};
+
+/**
+ * Example using usePaginationContext to access pagination from nested components.
+ * Eliminates prop drilling for navigation callbacks.
+ */
+export const WithPaginationContext: Story = {
+    args: {},
+    render: () => {
+        const [isOpen, setIsOpen] = useState(false);
+        const pages = ['step1', 'step2', 'step3'] as const;
+        const pagination = usePagination<typeof pages>('step1');
+
+        // Nested component that accesses pagination directly
+        const Step1Content = () => {
+            const paginationCtx = usePaginationContext<typeof pages>();
+
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <h3>Step 1: Personal Information</h3>
+                    <Input label="Name" placeholder="Enter your name" />
+
+                    <DrawerBottomPanelPortal>
+                        <Button onClick={() => paginationCtx?.open('step2')}>
+                            Next: Contact Info
+                        </Button>
+                    </DrawerBottomPanelPortal>
+                </div>
+            );
+        };
+
+        const Step2Content = () => {
+            const paginationCtx = usePaginationContext<typeof pages>();
+
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <h3>Step 2: Contact Information</h3>
+                    <Input label="Email" placeholder="Enter your email" />
+
+                    <DrawerBottomPanelPortal>
+                        <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+                            <Button onClick={() => paginationCtx?.open('step3')}>
+                                Next: Review
+                            </Button>
+                            <Button kind="secondary" onClick={() => paginationCtx?.back()}>
+                                Back
+                            </Button>
+                        </div>
+                    </DrawerBottomPanelPortal>
+                </div>
+            );
+        };
+
+        const Step3Content = () => {
+            const { close } = useDrawer();
+
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <h3>Step 3: Review & Submit</h3>
+                    <Callout>
+                        Please review your information before submitting.
+                    </Callout>
+
+                    <DrawerBottomPanelPortal>
+                        <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+                            <Button onClick={() => {
+                                pagination.reset();
+                                close();
+                            }}>
+                                Submit
+                            </Button>
+                            <Button kind="secondary" onClick={() => pagination.back()}>
+                                Back
+                            </Button>
+                        </div>
+                    </DrawerBottomPanelPortal>
+                </div>
+            );
+        };
+
+        return (
+            <>
+                <Button onClick={() => setIsOpen(true)}>
+                    Start Wizard
+                </Button>
+                <Drawer
+                    isOpen={isOpen}
+                    onClose={() => setIsOpen(false)}
+                    title="Registration Wizard"
+                    pagination={pagination}
+                    pageConfig={{
+                        step1: { title: 'Step 1 of 3' },
+                        step2: { title: 'Step 2 of 3' },
+                        step3: { title: 'Step 3 of 3' },
+                    }}
+                >
+                    <div key="step1"><Step1Content /></div>
+                    <div key="step2"><Step2Content /></div>
+                    <div key="step3"><Step3Content /></div>
                 </Drawer>
             </>
         );
