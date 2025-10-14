@@ -1,8 +1,8 @@
-import type {  Preview } from '@storybook/react';
+import type { Decorator, Preview } from '@storybook/react';
 import { Dark, Light } from './themes';
 import { DocsContainer } from '@storybook/blocks';
-import { useDarkMode } from 'storybook-dark-mode';
-import { createElement, useEffect } from 'react';
+import { DARK_MODE_EVENT_NAME, useDarkMode } from 'storybook-dark-mode';
+import { createElement, useEffect, useState } from 'react';
 import { injectTheme, LightTheme, DarkTheme } from '../src/stories/theme';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -11,26 +11,26 @@ import '../public/fira/fira_code.css';
 import '../src/styles/globals.css';
 import '../src/stories/theme/global.scss';
 import { config } from '@fortawesome/fontawesome-svg-core';
+import { addons } from '@storybook/preview-api';
 
 config.autoAddCss = false;
 
-const Wrapper = (props: any) => {
-    const isDark = useDarkMode();
+export const decorators: Decorator[] = [
+    (renderStory) => {
+        const isDark = useDarkMode();
 
-    useEffect(() => {
-        injectTheme(!isDark ? LightTheme : DarkTheme);
-    }, [isDark]);
+        useEffect(() => {
+            injectTheme(!isDark ? LightTheme : DarkTheme);
+        }, [isDark]);
 
-    return props.children;
-}
-
-export const decorators = [
-    (renderStory) => createElement(Wrapper, {}, renderStory()),
+        return createElement('div', {}, renderStory());
+    },
 ];
+
+const channel = addons.getChannel();
 
 const preview: Preview = {
     parameters: {
-        actions: { argTypesRegex: "^on[A-Z].*" },
         backgrounds: { disable: true },
         controls: {
             matchers: {
@@ -39,19 +39,24 @@ const preview: Preview = {
             },
         },
         docs: {
-            container: (context: any) => {
-                const isDark = useDarkMode();
+            container: (props: any) => {
+                const [isDark, setDark] = useState();
 
-                const props = {
-                    ...context,
-                    theme: isDark ? Dark : Light,
-                };
+                useEffect(() => {
+                    channel.on(DARK_MODE_EVENT_NAME, setDark);
+                    return () => channel.removeListener(DARK_MODE_EVENT_NAME, setDark);
+                }, [setDark]);
 
                 useEffect(() => {
                     injectTheme(!isDark ? LightTheme : DarkTheme);
                 }, [isDark]);
 
-                return createElement(DocsContainer, props);
+                const containerProps = {
+                    ...props,
+                    theme: isDark ? Dark : Light,
+                };
+
+                return createElement(DocsContainer, containerProps);
             },
         },
         options: {

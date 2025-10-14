@@ -72,17 +72,22 @@ export const Glass: Story = {
         backgroundStyle: 'glass',
         tabs: [
             { title: 'Albums', content: 'Tab 1 content' },
-            { title: 'EPs', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus. Fusce blandit leo in lectus blandit, sed elementum enim accumsan. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque pretium erat at lacus ultricies tincidunt. Praesent non luctus magna, ac efficitur ligula. Sed a justo fermentum, feugiat mauris vel, ultrices turpis. Ut interdum malesuada lacus, ac posuere sapien feugiat et. Nulla dignissim bibendum gravida. Donec pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus.' },
+            {
+                title: 'EPs',
+                content:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus. Fusce blandit leo in lectus blandit, sed elementum enim accumsan. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque pretium erat at lacus ultricies tincidunt. Praesent non luctus magna, ac efficitur ligula. Sed a justo fermentum, feugiat mauris vel, ultrices turpis. Ut interdum malesuada lacus, ac posuere sapien feugiat et. Nulla dignissim bibendum gravida. Donec pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus.',
+            },
             {
                 title: 'Singles',
                 content: (
-                    <div style={{
-                        width: '100%', height: '300px', background: 'red',
-                    }}
+                    <div
+                        style={{
+                            width: '100%',
+                            height: '300px',
+                            background: 'red',
+                        }}
                     >
-                        <p>
-                            Hello world!
-                        </p>
+                        <p>Hello world!</p>
                     </div>
                 ),
             },

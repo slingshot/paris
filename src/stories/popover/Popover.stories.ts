@@ -14,11 +14,7 @@ type Story = StoryObj<typeof Popover>;
 
 export const Default: Story = {
     args: {
-        trigger: createElement(
-            Button,
-            {},
-            'Click me',
-        ),
+        trigger: createElement(Button, {}, 'Click me'),
         children: 'Hello world!',
     },
 };
