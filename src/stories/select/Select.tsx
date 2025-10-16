@@ -127,7 +127,7 @@ type SelectProps<T = Record<string, any>> = | (SingleSelectProps<T>)
  * ```
  * @constructor
  */
-export const Select = forwardRef(function <T = Record<string, any>>({
+export const Select = forwardRef(<T = Record<string, any>>({
     options,
     value,
     onChange,
@@ -148,7 +148,7 @@ export const Select = forwardRef(function <T = Record<string, any>>({
     multipleItemsName,
     segmentedHeight = 'compact',
     overrides,
-}: SelectProps<T>, ref: ForwardedRef<any>) {
+}: SelectProps<T>, ref: ForwardedRef<any>) => {
     const inputID = useId();
     const multiItems = multipleItemsName || 'items';
     const buttonText = () => {

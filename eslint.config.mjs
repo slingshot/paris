@@ -64,6 +64,8 @@ export default [
         files: ['!src/'],
         rules: {
             'import/no-extraneous-dependencies': 'off',
+            'no-console': 'off',
+            'global-require': 'off',
         },
     },
 ];

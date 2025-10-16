@@ -35,9 +35,5 @@ const config: StorybookConfig = {
         finalConfig.resolve!.plugins = [new TsconfigPathsPlugin()];
         return finalConfig;
     },
-
-    typescript: {
-        reactDocgen: 'react-docgen-typescript',
-    },
 };
 export default config;

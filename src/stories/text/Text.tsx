@@ -61,7 +61,7 @@ export type TextProps<T extends TextElement = TextElement> = {
  * ```
  * @constructor
  */
-export const Text = memo(function TextComponent<T extends TextElement>({
+export const Text = memo(<T extends TextElement = TextElement>({
     kind,
     as,
     weight,
@@ -69,24 +69,22 @@ export const Text = memo(function TextComponent<T extends TextElement>({
     color,
     children,
     ...props
-}: TextProps<T>): JSX.Element {
-    return createElement(
-        as || 'span',
-        {
-            ...props,
-            className: clsx(
-                styles.text,
-                typography[kind || 'paragraphMedium'],
-                weight && styles[`weight-${weight}`],
-                fontStyle && styles[`fontStyle-${fontStyle}`],
-                props?.className,
-            ),
-            ...(color ? {
-                style: {
-                    '--text-color': color,
-                },
-            } : {}),
-        },
-        children,
-    );
-});
+}: TextProps<T>): JSX.Element => createElement(
+    as || 'span',
+    {
+        ...props,
+        className: clsx(
+            styles.text,
+            typography[kind || 'paragraphMedium'],
+            weight && styles[`weight-${weight}`],
+            fontStyle && styles[`fontStyle-${fontStyle}`],
+            props?.className,
+        ),
+        ...(color ? {
+            style: {
+                '--text-color': color,
+            },
+        } : {}),
+    },
+    children,
+));
