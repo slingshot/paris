@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks,react/no-children-prop */
 import type { Meta, StoryObj } from '@storybook/react';
 import { createElement, useState } from 'react';
 import type { ComboboxProps, Option } from './Combobox';
@@ -97,7 +96,7 @@ const ComboboxArgs2: ComboboxProps<{ name: string }> = {
 
 export const Default: Story = {
     args: ComboboxArgs,
-    render: (args) => {
+    render: function Render(args) {
         const [selected, setSelected] = useState<Option<{ name: string }> | null>(
             null,
         );
@@ -135,7 +134,7 @@ export const AllowCustomValue: Story = {
         allowCustomValue: true,
         customValueString: 'Add "%v"',
     },
-    render: (args) => {
+    render: function Render(args) {
         const [selected, setSelected] = useState<Option | null>(null);
         const [inputValue, setInputValue] = useState<string>('');
         return createElement(
@@ -167,7 +166,7 @@ export const AllowCustomValue: Story = {
 
 export const HideOptionsInitially: Story = {
     args: ComboboxArgs,
-    render: (args) => {
+    render: function Render(args) {
         const [selected, setSelected] = useState<Option<{ name: string }> | null>(
             null,
         );
@@ -202,7 +201,7 @@ export const HideOptionsInitially: Story = {
 
 export const HideClearButton: Story = {
     args: ComboboxArgs2,
-    render: (args) => {
+    render: function Render(args) {
         const [selected, setSelected] = useState<Option<{ name: string }> | null>(
             null,
         );

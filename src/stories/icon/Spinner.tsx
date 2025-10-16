@@ -4,7 +4,7 @@ import type { IconDefinition } from './Icon';
 export const Spinner: IconDefinition = memo(({ size }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <style
-            // eslint-disable-next-line react/no-danger
+
             dangerouslySetInnerHTML={{
                 __html: '.spinner_ajPY{transform-origin:center;animation:spinner_AtaB .75s infinite linear}@keyframes spinner_AtaB{100%{transform:rotate(360deg)}}',
             }}

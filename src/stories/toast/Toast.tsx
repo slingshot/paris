@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import type { ToasterProps } from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import styles from './Toast.module.scss';
 import typography from '../text/Typography.module.css';
 

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
@@ -27,7 +26,7 @@ export const Default: Story = {
       'This was a transaction for $22.89 at Il Tramezzino in Beverly Hills, CA.',
         size: 'default',
     },
-    render: (args) => {
+    render: function Render(args) {
         const [isOpen, setIsOpen] = useState(false);
         return (
             <>
@@ -68,7 +67,7 @@ export const Paginated: Story = {
     args: {
         children: [],
     },
-    render: (args) => {
+    render: function Render(args) {
         const [isOpen, setIsOpen] = useState(false);
         const pages = ['step1', 'step2', 'step3'] as const;
         const pagination = usePagination<typeof pages>('step1');
@@ -203,7 +202,7 @@ export const BottomPanel: Story = {
             </div>
         ),
     },
-    render: (args) => {
+    render: function Render(args) {
         const [isOpen, setIsOpen] = useState(false);
         return (
             <>
@@ -247,7 +246,7 @@ export const Full: Story = {
       'This was a transaction for $22.89 at Il Tramezzino in Beverly Hills, CA.',
         size: 'full',
     },
-    render: (args) => {
+    render: function Render(args) {
         const [isOpen, setIsOpen] = useState(false);
         return (
             <>

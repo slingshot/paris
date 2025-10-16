@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from 'react';
 import { useId } from 'react';
 import * as RadixCheckbox from '@radix-ui/react-checkbox';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { Switch } from '@headlessui/react';
 import styles from './Checkbox.module.scss';
 import { TextWhenString, VisuallyHidden } from '../utility';

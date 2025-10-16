@@ -6,7 +6,7 @@ import type {
 import { forwardRef, useState } from 'react';
 import type { PopoverProps as RTPopoverProps } from 'react-tiny-popover';
 import { Popover as RTPopover } from 'react-tiny-popover';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import styles from './Popover.module.scss';
 import typography from '../text/Typography.module.css';
 

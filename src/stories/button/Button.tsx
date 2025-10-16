@@ -6,7 +6,7 @@ import type {
 import { useMemo } from 'react';
 import type { ButtonProps as AriaButtonProps } from '@ariakit/react';
 import { Button as AriaButton } from '@ariakit/react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import fontColorContrast from 'font-color-contrast';
 import type { CSSLength } from '@ssh/csstypes';
 import styles from './Button.module.scss';

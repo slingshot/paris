@@ -1,5 +1,3 @@
-/* eslint-disable prefer-arrow-callback,func-names */
-
 'use client';
 
 import type {
@@ -9,7 +7,7 @@ import { forwardRef, useId } from 'react';
 import {
     Listbox, ListboxButton, ListboxOptions, ListboxOption, RadioGroup, Radio, Transition,
 } from '@headlessui/react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
@@ -114,8 +112,7 @@ export type MultiSelectProps<T = Record<string, any>> = {
     onChange?: (value: Option<T>['id'][] | null) => void | Promise<void>;
 } & CommonSelectProps;
 
-type SelectProps<T = Record<string, any>> =
-    | (SingleSelectProps<T>)
+type SelectProps<T = Record<string, any>> = | (SingleSelectProps<T>)
     | (MultiSelectProps<T>);
 
 /**

@@ -1,22 +1,23 @@
-import type { StorybookConfig } from "@storybook/nextjs";
+import type { StorybookConfig } from '@storybook/nextjs';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
+
 const config: StorybookConfig = {
-  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
-  addons: ["@storybook/addon-links", "@storybook/addon-essentials", "@storybook/addon-interactions", "storybook-dark-mode", "@storybook/addon-mdx-gfm"],
+    stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+    addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions', 'storybook-dark-mode', '@storybook/addon-mdx-gfm'],
 
-  framework: {
-    name: "@storybook/nextjs",
-    options: {
-      strictMode: true,
-      fastRefresh: true,
+    framework: {
+        name: '@storybook/nextjs',
+        options: {
+            strictMode: true,
+            fastRefresh: true,
+        },
     },
-  },
 
-  docs: {},
+    docs: {},
 
-  staticDirs: ['../public'],
+    staticDirs: ['../public'],
 
-  previewHead: head => `${head}
+    previewHead: (head) => `${head}
 <style>
     body {
         color: var(--pte-new-colors-contentPrimary);
@@ -29,13 +30,14 @@ const config: StorybookConfig = {
     }
 </style>`,
 
-  webpackFinal: async config => {
-    config.resolve.plugins = [new TsconfigPathsPlugin()];
-    return config;
-  },
+    webpackFinal: async (finalConfig) => {
+        // eslint-disable-next-line no-param-reassign
+        finalConfig.resolve!.plugins = [new TsconfigPathsPlugin()];
+        return finalConfig;
+    },
 
-  typescript: {
-    reactDocgen: "react-docgen-typescript"
-  }
+    typescript: {
+        reactDocgen: 'react-docgen-typescript',
+    },
 };
 export default config;

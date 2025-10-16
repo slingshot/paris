@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Dialog } from './Dialog';
@@ -24,7 +23,7 @@ export const Default: Story = {
         isOpen: false,
         children: <Text>Are you sure? That's a lot of money.</Text>,
     },
-    render: (args) => {
+    render: function Render(args) {
         const [isOpen, setIsOpen] = useState(false);
         // const [primary, bg] = [
         //     pvar('colors.contentSecondary'),
@@ -72,7 +71,7 @@ export const Grey: Story = {
         isOpen: false,
         children: <Text>Are you sure? That's a lot of money.</Text>,
     },
-    render: (args) => {
+    render: function Render(args) {
         const [isOpen, setIsOpen] = useState(false);
         return (
             <>

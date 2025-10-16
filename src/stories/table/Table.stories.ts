@@ -52,11 +52,11 @@ export const Default: Story = {
         }),
         onRowClick: (row) => console.log('Row clicked', row),
     } satisfies TableProps<
-    {
-        id: number;
-        name: string;
-        type: string;
-        email: string;
-    }[]
+        {
+            id: number;
+            name: string;
+            type: string;
+            email: string;
+        }[]
     >,
 };

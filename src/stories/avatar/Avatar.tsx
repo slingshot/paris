@@ -3,7 +3,7 @@ import type {
 } from 'react';
 import { useMemo } from 'react';
 import type { CSSLength } from '@ssh/csstypes';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import styles from './Avatar.module.scss';
 import { pvar } from '../theme';
 

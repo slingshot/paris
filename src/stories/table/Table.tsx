@@ -2,7 +2,7 @@
 
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { useId, useMemo } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import styles from './Table.module.scss';
 import typography from '../text/Typography.module.css';
 

@@ -1,9 +1,8 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import type { Decorator, Preview } from '@storybook/react';
-import { Dark, Light } from './themes';
 import { DocsContainer } from '@storybook/blocks';
 import { DARK_MODE_EVENT_NAME, useDarkMode } from 'storybook-dark-mode';
 import { createElement, useEffect, useState } from 'react';
-import { injectTheme, LightTheme, DarkTheme } from '../src/stories/theme';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import '../public/graphik/graphik.css';
@@ -12,6 +11,8 @@ import '../src/styles/globals.css';
 import '../src/stories/theme/global.scss';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { addons } from '@storybook/preview-api';
+import { Dark, Light } from './themes';
+import { injectTheme, LightTheme, DarkTheme } from '../src/stories/theme';
 
 config.autoAddCss = false;
 
@@ -66,17 +67,17 @@ const preview: Preview = {
                     'Tokens',
                     'Inputs',
                     'Content',
-                    'Uncategorized'
+                    'Uncategorized',
                 ],
-            }
+            },
         },
         darkMode: {
             stylePreview: true,
             // Override the default dark theme
             dark: Dark,
             // Override the default light theme
-            light: Light
-        }
+            light: Light,
+        },
     },
 };
 

@@ -8,7 +8,7 @@ import type { TabGroupProps, TabPanelProps, TabProps } from '@headlessui/react';
 import {
     Tab, TabGroup, TabList, TabPanels, TabPanel,
 } from '@headlessui/react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import type { CSSLength } from '@ssh/csstypes';
 import { motion } from 'framer-motion';
 import type { TabListProps } from '@ariakit/react';

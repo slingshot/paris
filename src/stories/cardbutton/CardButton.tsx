@@ -5,7 +5,7 @@ import type {
 } from 'react';
 import type { ButtonProps as AriaButtonProps } from '@ariakit/react';
 import { Button as AriaButton } from '@ariakit/react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import styles from './CardButton.module.scss';
 import { TextWhenString } from '../utility';
 

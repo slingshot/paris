@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { useState } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import * as RadixTooltip from '@radix-ui/react-tooltip';
 import type { HTMLMotionProps } from 'framer-motion';
 import { motion, AnimatePresence } from 'framer-motion';

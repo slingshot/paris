@@ -4,7 +4,7 @@ import type {
     ComponentPropsWithoutRef, FC, ReactElement, ReactNode,
 } from 'react';
 import { useMemo } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import type { CSSLength } from '@ssh/csstypes';
 import styles from './Tag.module.scss';
 import typography from '../text/Typography.module.css';

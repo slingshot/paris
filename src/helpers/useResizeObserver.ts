@@ -7,7 +7,7 @@ import type { RefObject } from 'react';
 import { useIsMounted } from './useIsMounted';
 
 type BoxSizesKey = keyof Pick<
-ResizeObserverEntry,
+    ResizeObserverEntry,
 'borderBoxSize' | 'contentBoxSize' | 'devicePixelContentBoxSize'
 >;
 
@@ -53,7 +53,10 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>(
     const isMounted = useIsMounted();
     const previousSize = useRef<Size>({ ...initialSize });
     const onResize = useRef<((size: Size) => void) | undefined>(undefined);
-    onResize.current = options.onResize;
+
+    useEffect(() => {
+        onResize.current = options.onResize;
+    }, [options.onResize]);
 
     useEffect(() => {
         if (!ref.current) return undefined;
@@ -61,7 +64,6 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>(
         if (typeof window === 'undefined' || !('ResizeObserver' in window)) return undefined;
 
         const observer = new ResizeObserver(([entry]) => {
-            // eslint-disable-next-line no-nested-ternary
             const boxProp = box === 'border-box'
                 ? 'borderBoxSize'
                 : box === 'device-pixel-content-box'
