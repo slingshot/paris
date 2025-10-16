@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { createElement } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCancel, faCheck, faWarning } from '@fortawesome/free-solid-svg-icons';
+import {
+    faCancel,
+    faCheck,
+    faWarning,
+} from '@fortawesome/free-solid-svg-icons';
 import { Callout } from './Callout';
 
 const meta: Meta<typeof Callout> = {
@@ -23,10 +27,7 @@ export const Negative: Story = {
     args: {
         variant: 'negative',
         children: 'Please upload a receipt',
-        icon: createElement(
-            FontAwesomeIcon,
-            { icon: faCancel },
-        ),
+        icon: createElement(FontAwesomeIcon, { icon: faCancel }),
     },
 };
 
@@ -34,10 +35,7 @@ export const Warning: Story = {
     args: {
         variant: 'warning',
         children: 'Receipt does not match transaction',
-        icon: createElement(
-            FontAwesomeIcon,
-            { icon: faWarning },
-        ),
+        icon: createElement(FontAwesomeIcon, { icon: faWarning }),
     },
 };
 
@@ -45,10 +43,7 @@ export const Positive: Story = {
     args: {
         variant: 'positive',
         children: 'Receipt saved',
-        icon: createElement(
-            FontAwesomeIcon,
-            { icon: faCheck },
-        ),
+        icon: createElement(FontAwesomeIcon, { icon: faCheck }),
     },
 };
 

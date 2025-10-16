@@ -15,8 +15,7 @@ export const Default: Story = {
     args: {
         children: 'I agree to the terms of service',
     },
-    render: (args) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
+    render: function Render(args) {
         const [checked, setChecked] = useState(false);
         return createElement(Checkbox, {
             ...args,
@@ -31,8 +30,7 @@ export const Surface: Story = {
         children: 'ACH Bank Transfer',
         kind: 'surface',
     },
-    render: (args) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
+    render: function Render(args) {
         const [checked, setChecked] = useState(false);
         return createElement(Checkbox, {
             ...args,
@@ -47,8 +45,7 @@ export const Panel: Story = {
         children: 'Credit/debit card',
         kind: 'panel',
     },
-    render: (args) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
+    render: function Render(args) {
         const [checked, setChecked] = useState(false);
         return createElement(Checkbox, {
             ...args,
@@ -63,8 +60,7 @@ export const Switch: Story = {
         children: 'ACH Bank Transfer',
         kind: 'switch',
     },
-    render: (args) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
+    render: function Render(args) {
         const [checked, setChecked] = useState(false);
         return createElement(Checkbox, {
             ...args,
@@ -80,8 +76,7 @@ export const HideLabel: Story = {
         kind: 'switch',
         hideLabel: true,
     },
-    render: (args) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
+    render: function Render(args) {
         const [checked, setChecked] = useState(false);
         return createElement(Checkbox, {
             ...args,

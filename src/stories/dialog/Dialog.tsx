@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import {
     Dialog as HDialog, DialogPanel, DialogTitle, Transition, TransitionChild,
 } from '@headlessui/react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import styles from './Dialog.module.scss';
 import { Text } from '../text';
 import { Button } from '../button';
@@ -158,6 +158,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
 
     useEffect(() => {
         if (isOpen) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setDragging(false);
             setPosition({ top: 0, left: 0 });
             setStartPosition({ x: 0, y: 0 });

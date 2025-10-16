@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const path = require('path');
 const fs = require('fs');
 
 const baseDir = __dirname.split('/scripts')[0];
@@ -23,7 +21,7 @@ const run = async () => {
         .filter((directory) => !ignoreDirectories.includes(directory));
 
     // Import package.json
-    // eslint-disable-next-line global-require,import/no-dynamic-require
+    // eslint-disable-next-line import/no-dynamic-require
     const packageFile = require(`${baseDir}/package.json`);
 
     // Update exports in package.json

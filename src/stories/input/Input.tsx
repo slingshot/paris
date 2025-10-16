@@ -2,7 +2,7 @@
 
 import type { ComponentPropsWithoutRef, FC, ForwardedRef } from 'react';
 import { forwardRef, useId } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import styles from './Input.module.scss';
 import type { TextProps } from '../text';
 import type { Enhancer } from '../../types/Enhancer';

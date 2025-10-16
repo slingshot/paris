@@ -1,7 +1,7 @@
 import type {
     ComponentPropsWithoutRef, FC, ReactElement, ReactNode,
 } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import styles from './Callout.module.scss';
 import { RemoveFromDOM, TextWhenString } from '../utility';
 import { Icon, ArrowRight } from '../icon';

@@ -5,7 +5,7 @@ import type {
 import {
     Menu as HeadlessMenu, MenuButton as HMenuButton, MenuItems as HMenuItems, MenuItem as HMenuItem, Transition,
 } from '@headlessui/react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
 import styles from './Menu.module.scss';
 import dropdownStyles from '../utility/Dropdown.module.scss';

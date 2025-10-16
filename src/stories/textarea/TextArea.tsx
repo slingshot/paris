@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef, ForwardedRef } from 'react';
 import { forwardRef, useId } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import type { InputProps } from '../input';
 import styles from '../input/Input.module.scss';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';

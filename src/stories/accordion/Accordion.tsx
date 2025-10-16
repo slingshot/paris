@@ -4,7 +4,7 @@ import type { MotionProps } from 'framer-motion';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import styles from './Accordion.module.scss';
 import { TextWhenString } from '../utility';
 import { ChevronRight, Icon } from '../icon';
@@ -66,12 +66,12 @@ export const Accordion: FC<AccordionProps> = ({
     // Unified toggle handler that works for both controlled and uncontrolled modes
     const handleToggle = () => {
         const newOpen = !open;
-        
+
         // Update internal state only if uncontrolled
         if (!isControlled) {
             setOpenState(newOpen);
         }
-        
+
         // Always call the callback if provided
         onOpenChange?.(newOpen);
     };

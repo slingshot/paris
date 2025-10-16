@@ -7,7 +7,7 @@ import {
 import {
     Dialog, DialogPanel, DialogTitle, Transition, TransitionChild,
 } from '@headlessui/react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import type { CSSLength } from '@ssh/csstypes';
 import styles from './Drawer.module.scss';
 import { Text } from '../text';

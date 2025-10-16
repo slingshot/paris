@@ -7,7 +7,7 @@ import {
 import {
     Combobox as HCombobox, ComboboxInput, ComboboxOptions, ComboboxOption, Transition,
 } from '@headlessui/react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import inputStyles from '../input/Input.module.scss';

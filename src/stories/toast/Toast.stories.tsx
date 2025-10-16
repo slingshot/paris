@@ -18,7 +18,9 @@ export const Default: Story = {
         <>
             <Button
                 onClick={() => {
-                    toast('Like we were in Paris', { icon: <Icon size={12} icon={ChevronRight} /> });
+                    toast('Like we were in Paris', {
+                        icon: <Icon size={12} icon={ChevronRight} />,
+                    });
                 }}
             >
                 Show toast

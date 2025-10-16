@@ -12,23 +12,30 @@ const meta: Meta<typeof Select> = {
 export default meta;
 type Story = StoryObj<typeof Select>;
 
-const render: Story['render'] = (args) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+const render: Story['render'] = function Render(args) {
     const [selected, setSelected] = useState<string | null>(null);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+
     const [selectedMultiple, setSelectedMultiple] = useState<string[] | null>([]);
-    return createElement('div', {
-        style: { minHeight: '400px' },
-    }, createElement(Select, args.multiple ? {
-        ...args,
-        value: selectedMultiple,
-        onChange: (value: string[] | null) => setSelectedMultiple(value),
-    }
-        : {
-            ...args,
-            value: selected,
-            onChange: (value: string | null) => setSelected(value),
-        }));
+    return createElement(
+        'div',
+        {
+            style: { minHeight: '400px' },
+        },
+        createElement(
+            Select,
+            args.multiple
+                ? {
+                    ...args,
+                    value: selectedMultiple,
+                    onChange: (value: string[] | null) => setSelectedMultiple(value),
+                }
+                : {
+                    ...args,
+                    value: selected,
+                    onChange: (value: string | null) => setSelected(value),
+                },
+        ),
+    );
 };
 
 export const Default: Story = {
@@ -59,7 +66,6 @@ export const WithCustomNodes: Story = {
         options: [
             {
                 id: '1',
-                // eslint-disable-next-line react/no-children-prop
                 node: createElement(Text, {
                     as: 'span',
                     kind: 'displaySmall',
@@ -68,7 +74,6 @@ export const WithCustomNodes: Story = {
             },
             {
                 id: '2',
-                // eslint-disable-next-line react/no-children-prop
                 node: createElement(Text, {
                     as: 'span',
                     kind: 'paragraphXXSmall',
@@ -77,7 +82,6 @@ export const WithCustomNodes: Story = {
             },
             {
                 id: '3',
-                // eslint-disable-next-line react/no-children-prop
                 node: createElement(Text, {
                     as: 'span',
                     kind: 'labelXLarge',

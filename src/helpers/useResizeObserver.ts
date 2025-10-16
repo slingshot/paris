@@ -6,6 +6,29 @@ import type { RefObject } from 'react';
 
 import { useIsMounted } from './useIsMounted';
 
+type BoxSizesKey = keyof Pick<
+    ResizeObserverEntry,
+'borderBoxSize' | 'contentBoxSize' | 'devicePixelContentBoxSize'
+>;
+
+function extractSize(
+    entry: ResizeObserverEntry,
+    box: BoxSizesKey,
+    sizeType: keyof ResizeObserverSize,
+): number | undefined {
+    if (!entry[box]) {
+        if (box === 'contentBoxSize') {
+            return entry.contentRect[sizeType === 'inlineSize' ? 'width' : 'height'];
+        }
+        return undefined;
+    }
+
+    return Array.isArray(entry[box])
+        ? entry[box][0][sizeType]
+    // @ts-ignore Support Firefox's non-standard behavior
+        : (entry[box][sizeType] as number);
+}
+
 type Size = {
     width: number | undefined
     height: number | undefined
@@ -30,12 +53,15 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>(
     const isMounted = useIsMounted();
     const previousSize = useRef<Size>({ ...initialSize });
     const onResize = useRef<((size: Size) => void) | undefined>(undefined);
-    onResize.current = options.onResize;
 
     useEffect(() => {
-        if (!ref.current) return;
+        onResize.current = options.onResize;
+    }, [options.onResize]);
 
-        if (typeof window === 'undefined' || !('ResizeObserver' in window)) return;
+    useEffect(() => {
+        if (!ref.current) return undefined;
+
+        if (typeof window === 'undefined' || !('ResizeObserver' in window)) return undefined;
 
         const observer = new ResizeObserver(([entry]) => {
             const boxProp = box === 'border-box'
@@ -71,27 +97,4 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>(
     }, [box, ref, isMounted]);
 
     return { width, height };
-}
-
-type BoxSizesKey = keyof Pick<
-ResizeObserverEntry,
-'borderBoxSize' | 'contentBoxSize' | 'devicePixelContentBoxSize'
->;
-
-function extractSize(
-    entry: ResizeObserverEntry,
-    box: BoxSizesKey,
-    sizeType: keyof ResizeObserverSize,
-): number | undefined {
-    if (!entry[box]) {
-        if (box === 'contentBoxSize') {
-            return entry.contentRect[sizeType === 'inlineSize' ? 'width' : 'height'];
-        }
-        return undefined;
-    }
-
-    return Array.isArray(entry[box])
-        ? entry[box][0][sizeType]
-        : // @ts-ignore Support Firefox's non-standard behavior
-        (entry[box][sizeType] as number);
 }

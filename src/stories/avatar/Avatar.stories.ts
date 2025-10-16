@@ -14,12 +14,9 @@ type Story = StoryObj<typeof Avatar>;
 export const Default: Story = {
     args: {
         width: '128px',
-        children: createElement(
-            'img',
-            {
-                src: 'https://swift.slingshot.fm/sling/static/Billie-Eilish.jpg',
-                alt: 'Avatar',
-            },
-        ),
+        children: createElement('img', {
+            src: 'https://swift.slingshot.fm/sling/static/Billie-Eilish.jpg',
+            alt: 'Avatar',
+        }),
     },
 };

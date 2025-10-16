@@ -1,5 +1,5 @@
 import React, { type ComponentPropsWithoutRef, type FC, type PropsWithChildren } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import styles from '../input/Input.module.scss';
 import type { TextProps } from '../text';
 import { Text } from '../text';
