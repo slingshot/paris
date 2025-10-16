@@ -1,5 +1,16 @@
 # paris
 
+## 0.16.0
+
+### Minor Changes
+
+- fa73931: Upgrades NextJS to v14 and Storybook to v8
+- fa73931: chore: Update @ssh/eslint-config and migrate to ESLint v9
+
+### Patch Changes
+
+- fa73931: fix(Card): Update Card and Cardbutton styles
+
 ## 0.15.3
 
 ### Patch Changes
