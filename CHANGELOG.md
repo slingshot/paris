@@ -1,5 +1,11 @@
 # paris
 
+## 0.16.1
+
+### Patch Changes
+
+- 5b48701: Input: add iOS zoom avoidance hack by using 16px size w/ 87.5% transform
+
 ## 0.16.0
 
 ### Minor Changes
