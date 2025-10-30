@@ -63,6 +63,36 @@
         }
     }
 
+    & input[type="color"],
+    & input[type="date"],
+    & input[type="datetime"],
+    & input[type="datetime-local"],
+    & input[type="email"],
+    & input[type="month"],
+    & input[type="number"],
+    & input[type="password"],
+    & input[type="search"],
+    & input[type="tel"],
+    & input[type="text"],
+    & input[type="time"],
+    & input[type="url"],
+    & input[type="week"],
+    & select:focus,
+    & textarea {
+        // Workaround to avoid iOS Safari auto-zooming
+        font-size: 16px;
+        transform: scale(0.875);
+        transform-origin: left center;
+        width: calc(100% / 0.875);
+        flex-shrink: 0;
+
+        &[data-has-end-enhancer="true"] {
+            width: calc((100% / 0.875) - 14px - 13px);
+            margin-right: calc((-100% * (1 - 0.875) / 0.875));
+        }
+    }
+
+
     & input,
     & textarea {
         width: 100%;

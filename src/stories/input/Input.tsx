@@ -130,6 +130,8 @@ export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = forward
                     aria-disabled={disabled}
                     data-status={disabled ? 'disabled' : (status || 'default')}
                     readOnly={disabled}
+                    {...(startEnhancer ? { 'data-has-start-enhancer': 'true' } : {})}
+                    {...(endEnhancer ? { 'data-has-end-enhancer': 'true' } : {})}
                     className={clsx(
                         props.className,
                         styles.input,
