@@ -84,7 +84,7 @@ devDependencies:
     version: 8.6.14(storybook@8.6.14)
   '@storybook/nextjs':
     specifier: 8.6.14
-    version: 8.6.14(esbuild@0.19.5)(next@14.2.33)(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1)(storybook@8.6.14)(type-fest@3.10.0)(typescript@5.2.2)(webpack@5.83.0)
+    version: 8.6.14(esbuild@0.19.5)(next@14.2.35)(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1)(storybook@8.6.14)(type-fest@3.10.0)(typescript@5.2.2)(webpack@5.83.0)
   '@storybook/preview-api':
     specifier: ^8.6.14
     version: 8.6.14(storybook@8.6.14)
@@ -161,8 +161,8 @@ devDependencies:
     specifier: ^10.10.0
     version: 10.10.0
   next:
-    specifier: ^14.2.33
-    version: 14.2.33(@babel/core@7.28.4)(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1)
+    specifier: ^14.2.35
+    version: 14.2.35(@babel/core@7.28.4)(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1)
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -2691,8 +2691,8 @@ packages:
       react: 18.2.0
     dev: true
 
-  /@next/env@14.2.33:
-    resolution: {integrity: sha512-CgVHNZ1fRIlxkLhIX22flAZI/HmpDaZ8vwyJ/B0SDPTBuLZ1PJ+DWMjCHhqnExfmSQzA/PbZi8OAc7PAq2w9IA==}
+  /@next/env@14.2.35:
+    resolution: {integrity: sha512-DuhvCtj4t9Gwrx80dmz2F4t/zKQ4ktN8WrMwOuVzkJfBilwAwGr6v16M5eI8yCuZ63H9TTuEU09Iu2HqkzFPVQ==}
     dev: true
 
   /@next/swc-darwin-arm64@14.2.33:
@@ -3785,7 +3785,7 @@ packages:
       storybook: 8.6.14
     dev: true
 
-  /@storybook/nextjs@8.6.14(esbuild@0.19.5)(next@14.2.33)(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1)(storybook@8.6.14)(type-fest@3.10.0)(typescript@5.2.2)(webpack@5.83.0):
+  /@storybook/nextjs@8.6.14(esbuild@0.19.5)(next@14.2.35)(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1)(storybook@8.6.14)(type-fest@3.10.0)(typescript@5.2.2)(webpack@5.83.0):
     resolution: {integrity: sha512-HbOOpwxJxO8nIDBvEQL3Pt51GHxnSeVxQ/WApr1HCT5Ffu6KCHz8WVsX56taHdigxjonSq0NTnog+aTIP06Nkw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
@@ -3825,7 +3825,7 @@ packages:
       find-up: 5.0.0
       image-size: 1.0.2
       loader-utils: 3.2.1
-      next: 14.2.33(@babel/core@7.28.4)(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1)
+      next: 14.2.35(@babel/core@7.28.4)(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1)
       node-polyfill-webpack-plugin: 2.0.1(webpack@5.83.0)
       pnp-webpack-plugin: 1.7.0(typescript@5.2.2)
       postcss: 8.5.6
@@ -8790,12 +8790,6 @@ packages:
     hasBin: true
     dev: true
 
-  /nanoid@3.3.6:
-    resolution: {integrity: sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==}
-    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
-    hasBin: true
-    dev: true
-
   /natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
@@ -8804,8 +8798,8 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
 
-  /next@14.2.33(@babel/core@7.28.4)(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1):
-    resolution: {integrity: sha512-GiKHLsD00t4ACm1p00VgrI0rUFAC9cRDGReKyERlM57aeEZkOQGcZTpIbsGn0b562FTPJWmYfKwplfO9EaT6ng==}
+  /next@14.2.35(@babel/core@7.28.4)(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1):
+    resolution: {integrity: sha512-KhYd2Hjt/O1/1aZVX3dCwGXM1QmOV4eNM2UTacK5gipDdPN/oHHK/4oVGy7X8GMfPMsUTUEmGlsy0EY1YGAkig==}
     engines: {node: '>=18.17.0'}
     hasBin: true
     peerDependencies:
@@ -8822,7 +8816,7 @@ packages:
       sass:
         optional: true
     dependencies:
-      '@next/env': 14.2.33
+      '@next/env': 14.2.35
       '@swc/helpers': 0.5.5
       busboy: 1.6.0
       caniuse-lite: 1.0.30001750
@@ -9399,9 +9393,9 @@ packages:
     resolution: {integrity: sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==}
     engines: {node: ^10 || ^12 || >=14}
     dependencies:
-      nanoid: 3.3.6
-      picocolors: 1.0.0
-      source-map-js: 1.0.2
+      nanoid: 3.3.11
+      picocolors: 1.1.1
+      source-map-js: 1.2.1
     dev: true
 
   /postcss@8.5.6:
