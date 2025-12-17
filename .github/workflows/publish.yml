@@ -22,6 +22,11 @@ jobs:
         with:
           node-version: 22.x
 
+      - name: Upgrade npm for OIDC support
+        run: |
+          npm install -g npm@latest
+          npm config set registry https://registry.npmjs.org/
+
       - uses: pnpm/action-setup@v4
         name: Install pnpm
 
