@@ -4,11 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Paris is Slingshot's React design system. It ships as unbundled `.tsx` components with SCSS modules (not pre-compiled), designed for Next.js 14+ with React 18+ and TypeScript 5+.
+Paris is Slingshot's React design system. It ships as pre-compiled ESM JavaScript with TypeScript declarations (`.d.ts`) and compiled CSS modules, designed for React 18+ projects.
 
 ## Commands
 
 ```bash
+pnpm build               # Build library (JS + types + CSS)
 pnpm storybook           # Run Storybook dev server on port 6006
 pnpm build:storybook     # Build Storybook for production
 pnpm create:component Name  # Scaffold a new component
@@ -67,7 +68,8 @@ When making changes to this repository, update the relevant documentation files:
 ## Consumer Integration
 
 Paris requires consumers to:
-1. Add `transpilePackages: ['paris']` to next.config.js
-2. Set `moduleResolution: "bundler"` in tsconfig
-3. Import `paris/theme/global.scss` and inject theme CSS variables
-4. Add `className="paris-container"` to root element
+1. Import `paris/theme/global.css` in the root layout
+2. Inject theme CSS variables using `generateCSS(theme)` from `paris/theme`
+3. Add `className="paris-container"` to root element
+
+No special bundler configuration is needed - Paris ships pre-compiled.

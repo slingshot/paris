@@ -14,9 +14,9 @@ This document provides instructions for AI agents working with the Paris design 
 
 ### Key Characteristics
 
-- **Unbundled components:** Ships as raw `.tsx` files with SCSS modules (not pre-compiled)
-- **Framework:** Optimized for Next.js 14+ with built-in TypeScript and SCSS module support
-- **Styling:** Uses SCSS modules (no CSS-in-JS, no Tailwind for component internals)
+- **Pre-compiled ESM:** Ships as compiled JavaScript with TypeScript declarations (`.d.ts`) and CSS
+- **Framework:** Works with any React 18+ project (no special bundler configuration needed)
+- **Styling:** Uses CSS modules compiled from SCSS (no CSS-in-JS, no Tailwind for component internals)
 - **Theming:** Powered by `pte` (Paris Theme Engine) using CSS variables
 - **Accessibility:** Built on accessible primitives from Ariakit, Headless UI, and Radix UI
 - **Design inspiration:** Uber's Base Web design system
@@ -108,6 +108,9 @@ src/stories/<componentname>/
 ```bash
 # Install dependencies
 pnpm install
+
+# Build the library (JS + types + CSS)
+pnpm build
 
 # Run Storybook development server (port 6006)
 pnpm storybook
@@ -336,11 +339,9 @@ The project uses `@ssh/eslint-config` with React and TypeScript rules. Key point
 
 ## Dependencies
 
-### Core Dependencies
-- `react` ^18.x (peer)
-- `react-dom` ^18.x (peer)
-- `sass` ^1.x (peer)
-- `typescript` ^5.0 (peer)
+### Peer Dependencies
+- `react` ^18.x
+- `react-dom` ^18.x
 
 ### UI Primitives
 - `@ariakit/react` - Accessible component primitives
@@ -375,31 +376,14 @@ pnpm add paris
 npm install paris
 ```
 
-### Next.js Configuration
-
-```js
-// next.config.js
-module.exports = {
-    transpilePackages: ['paris'],
-};
-```
-
-### TypeScript Configuration
-
-```json
-{
-    "compilerOptions": {
-        "moduleResolution": "bundler" // or "nodenext" or "node16"
-    }
-}
-```
-
 ### Theme Setup
+
+No special bundler configuration is needed - Paris ships pre-compiled.
 
 ```tsx
 // app/layout.tsx
 import { generateCSS, theme } from 'paris/theme';
-import 'paris/theme/global.scss';
+import 'paris/theme/global.css';
 
 export default function RootLayout({ children }) {
     return (
@@ -493,8 +477,8 @@ These files help AI agents work effectively with this codebase. Outdated documen
 
 ## Important Notes for AI Agents
 
-1. **No bundling:** Components ship as source - consumers bundle them
-2. **SCSS modules only:** Do not use inline styles, Tailwind, or CSS-in-JS
+1. **Pre-compiled output:** Library ships as compiled ESM JS + CSS (consumers don't need special config)
+2. **SCSS modules for development:** Source uses SCSS modules, compiled to CSS for distribution
 3. **Accessibility first:** Use semantic HTML and ARIA attributes
 4. **Theme variables:** Always use `pvar()` for colors, spacing, etc.
 5. **Client directive:** Only add `'use client'` when truly needed
@@ -503,3 +487,4 @@ These files help AI agents work effectively with this codebase. Outdated documen
 8. **JSDoc comments:** Document all props with JSDoc
 9. **Node 22+:** Required for development
 10. **pnpm:** Package manager (not npm or yarn)
+11. **Build before publish:** Run `pnpm build` to generate dist/ before publishing

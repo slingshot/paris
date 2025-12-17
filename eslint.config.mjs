@@ -52,7 +52,7 @@ export default [
     },
     {
         name: 'paris_node',
-        files: ['**/*.js'],
+        files: ['**/*.js', '**/*.cjs'],
         languageOptions: {
             globals: {
                 ...globals.node,

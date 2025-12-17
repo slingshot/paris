@@ -24,12 +24,16 @@ const run = async () => {
     // eslint-disable-next-line import/no-dynamic-require
     const packageFile = require(`${baseDir}/package.json`);
 
-    // Update exports in package.json
+    // Update exports in package.json with conditional exports format
     packageFile.exports = subDirectories.reduce((acc, subDirectory) => {
-        acc[`./${subDirectory}`] = `./src/stories/${subDirectory}/index.ts`;
+        acc[`./${subDirectory}`] = {
+            types: `./dist/stories/${subDirectory}/index.d.ts`,
+            import: `./dist/stories/${subDirectory}/index.js`,
+        };
         return acc;
     }, {
-        './*': './src/stories/*',
+        // Add global CSS export
+        './theme/global.css': './dist/stories/theme/global.css',
     });
 
     // Write the package.json file

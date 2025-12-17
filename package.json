@@ -3,15 +3,21 @@
     "author": "Sanil Chawla <sanil@slingshot.fm> (https://sanil.co)",
     "description": "Paris is Slingshot's React design system. It's a collection of reusable components, design tokens, and guidelines that help us build consistent, accessible, and performant user interfaces.",
     "version": "0.16.2",
+    "type": "module",
     "homepage": "https://paris.slingshot.fm",
     "license": "MIT",
     "repository": {
         "type": "git",
         "url": "https://github.com/slingshot/paris"
     },
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "sideEffects": [
+        "**/*.css"
+    ],
     "files": [
-        "src/stories",
-        "src",
+        "dist",
         "README.md",
         "CHANGELOG.md"
     ],
@@ -27,51 +33,139 @@
         "storybook"
     ],
     "scripts": {
-        "build": "pnpm generate:exports && next build",
+        "build": "pnpm build:lib && pnpm build:types && pnpm build:global-css",
+        "build:lib": "pnpm generate:exports && vite build",
+        "build:types": "tsc -p tsconfig.build.json",
+        "build:global-css": "sass src/stories/theme/global.scss dist/stories/theme/global.css --style=compressed",
         "storybook": "storybook dev -p 6006",
         "build:storybook": "storybook build",
-        "create:component": "node ./scripts/createComponent.js",
-        "generate:exports": "node ./scripts/generateExports.js",
+        "create:component": "node ./scripts/createComponent.cjs",
+        "generate:exports": "node ./scripts/generateExports.cjs",
         "generate:theme": "pte export ./src/stories/theme/themes.ts LightTheme -o ./public/pte.css",
         "generate:text": "ts-node --esm ./scripts/text.ts",
-        "release": "pnpm generate:exports && pnpm changeset publish",
+        "release": "pnpm build && pnpm changeset publish",
         "prepare": "husky install",
-        "lint": "eslint ."
+        "lint": "eslint .",
+        "prepublishOnly": "pnpm build"
     },
     "packageManager": "pnpm@8.15.5",
     "engines": {
         "node": ">=22.0.0"
     },
     "exports": {
-        "./*": "./src/stories/*",
-        "./accordion": "./src/stories/accordion/index.ts",
-        "./avatar": "./src/stories/avatar/index.ts",
-        "./button": "./src/stories/button/index.ts",
-        "./callout": "./src/stories/callout/index.ts",
-        "./card": "./src/stories/card/index.ts",
-        "./cardbutton": "./src/stories/cardbutton/index.ts",
-        "./checkbox": "./src/stories/checkbox/index.ts",
-        "./combobox": "./src/stories/combobox/index.ts",
-        "./dialog": "./src/stories/dialog/index.ts",
-        "./drawer": "./src/stories/drawer/index.ts",
-        "./field": "./src/stories/field/index.ts",
-        "./icon": "./src/stories/icon/index.ts",
-        "./informationaltooltip": "./src/stories/informationaltooltip/index.ts",
-        "./input": "./src/stories/input/index.ts",
-        "./menu": "./src/stories/menu/index.ts",
-        "./pagination": "./src/stories/pagination/index.ts",
-        "./popover": "./src/stories/popover/index.ts",
-        "./select": "./src/stories/select/index.ts",
-        "./styledlink": "./src/stories/styledlink/index.ts",
-        "./table": "./src/stories/table/index.ts",
-        "./tabs": "./src/stories/tabs/index.ts",
-        "./tag": "./src/stories/tag/index.ts",
-        "./text": "./src/stories/text/index.ts",
-        "./textarea": "./src/stories/textarea/index.ts",
-        "./theme": "./src/stories/theme/index.ts",
-        "./tilt": "./src/stories/tilt/index.ts",
-        "./toast": "./src/stories/toast/index.ts",
-        "./utility": "./src/stories/utility/index.ts"
+        "./theme/global.css": "./dist/stories/theme/global.css",
+        "./accordion": {
+            "types": "./dist/stories/accordion/index.d.ts",
+            "import": "./dist/stories/accordion/index.js"
+        },
+        "./avatar": {
+            "types": "./dist/stories/avatar/index.d.ts",
+            "import": "./dist/stories/avatar/index.js"
+        },
+        "./button": {
+            "types": "./dist/stories/button/index.d.ts",
+            "import": "./dist/stories/button/index.js"
+        },
+        "./callout": {
+            "types": "./dist/stories/callout/index.d.ts",
+            "import": "./dist/stories/callout/index.js"
+        },
+        "./card": {
+            "types": "./dist/stories/card/index.d.ts",
+            "import": "./dist/stories/card/index.js"
+        },
+        "./cardbutton": {
+            "types": "./dist/stories/cardbutton/index.d.ts",
+            "import": "./dist/stories/cardbutton/index.js"
+        },
+        "./checkbox": {
+            "types": "./dist/stories/checkbox/index.d.ts",
+            "import": "./dist/stories/checkbox/index.js"
+        },
+        "./combobox": {
+            "types": "./dist/stories/combobox/index.d.ts",
+            "import": "./dist/stories/combobox/index.js"
+        },
+        "./dialog": {
+            "types": "./dist/stories/dialog/index.d.ts",
+            "import": "./dist/stories/dialog/index.js"
+        },
+        "./drawer": {
+            "types": "./dist/stories/drawer/index.d.ts",
+            "import": "./dist/stories/drawer/index.js"
+        },
+        "./field": {
+            "types": "./dist/stories/field/index.d.ts",
+            "import": "./dist/stories/field/index.js"
+        },
+        "./icon": {
+            "types": "./dist/stories/icon/index.d.ts",
+            "import": "./dist/stories/icon/index.js"
+        },
+        "./informationaltooltip": {
+            "types": "./dist/stories/informationaltooltip/index.d.ts",
+            "import": "./dist/stories/informationaltooltip/index.js"
+        },
+        "./input": {
+            "types": "./dist/stories/input/index.d.ts",
+            "import": "./dist/stories/input/index.js"
+        },
+        "./menu": {
+            "types": "./dist/stories/menu/index.d.ts",
+            "import": "./dist/stories/menu/index.js"
+        },
+        "./pagination": {
+            "types": "./dist/stories/pagination/index.d.ts",
+            "import": "./dist/stories/pagination/index.js"
+        },
+        "./popover": {
+            "types": "./dist/stories/popover/index.d.ts",
+            "import": "./dist/stories/popover/index.js"
+        },
+        "./select": {
+            "types": "./dist/stories/select/index.d.ts",
+            "import": "./dist/stories/select/index.js"
+        },
+        "./styledlink": {
+            "types": "./dist/stories/styledlink/index.d.ts",
+            "import": "./dist/stories/styledlink/index.js"
+        },
+        "./table": {
+            "types": "./dist/stories/table/index.d.ts",
+            "import": "./dist/stories/table/index.js"
+        },
+        "./tabs": {
+            "types": "./dist/stories/tabs/index.d.ts",
+            "import": "./dist/stories/tabs/index.js"
+        },
+        "./tag": {
+            "types": "./dist/stories/tag/index.d.ts",
+            "import": "./dist/stories/tag/index.js"
+        },
+        "./text": {
+            "types": "./dist/stories/text/index.d.ts",
+            "import": "./dist/stories/text/index.js"
+        },
+        "./textarea": {
+            "types": "./dist/stories/textarea/index.d.ts",
+            "import": "./dist/stories/textarea/index.js"
+        },
+        "./theme": {
+            "types": "./dist/stories/theme/index.d.ts",
+            "import": "./dist/stories/theme/index.js"
+        },
+        "./tilt": {
+            "types": "./dist/stories/tilt/index.d.ts",
+            "import": "./dist/stories/tilt/index.js"
+        },
+        "./toast": {
+            "types": "./dist/stories/toast/index.d.ts",
+            "import": "./dist/stories/toast/index.js"
+        },
+        "./utility": {
+            "types": "./dist/stories/utility/index.d.ts",
+            "import": "./dist/stories/utility/index.js"
+        }
     },
     "dependencies": {
         "@ariakit/react": "^0.2.3",
@@ -93,9 +187,7 @@
     },
     "peerDependencies": {
         "react": "^18.x",
-        "react-dom": "^18.x",
-        "sass": "^1.x",
-        "typescript": "^5.0"
+        "react-dom": "^18.x"
     },
     "devDependencies": {
         "@changesets/cli": "^2.26.1",
@@ -118,6 +210,7 @@
         "@types/react-dom": "^18",
         "@typescript-eslint/eslint-plugin": "^8.46.1",
         "@typescript-eslint/parser": "^8.46.1",
+        "@vitejs/plugin-react": "^5.1.2",
         "autoprefixer": "^10.4.14",
         "change-case": "^4.1.2",
         "csstype": "^3.1.2",
@@ -136,7 +229,7 @@
         "next": "^14.2.35",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "sass": "^1.62.1",
+        "sass": "^1.97.0",
         "storybook": "8.6.14",
         "storybook-dark-mode": "^4.0.2",
         "title-case": "^3.0.3",
@@ -144,6 +237,8 @@
         "tsconfig-paths-webpack-plugin": "^4.0.1",
         "tsup": "^7.2.0",
         "type-fest": "^3.10.0",
-        "typescript": "^5.2.2"
+        "typescript": "^5.2.2",
+        "vite": "^7.3.0",
+        "vite-plugin-dts": "^4.5.4"
     }
 }
