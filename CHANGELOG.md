@@ -1,5 +1,12 @@
 # paris
 
+## 0.16.2
+
+### Patch Changes
+
+- 9e882cc: Added AI agent documentation files (AGENTS.md, CLAUDE.md, public/llms.txt) to help AI assistants work effectively with this codebase
+- 6c9a661: Bump Next.js to 14.2.35
+
 ## 0.16.1
 
 ### Patch Changes
