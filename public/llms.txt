@@ -1,0 +1,266 @@
+# Paris Design System
+# https://paris.slingshot.fm
+# https://github.com/slingshot/paris
+
+> Paris is Slingshot's React design system for building consistent, accessible, and performant user interfaces. It works with both server and client components (RSC-compatible).
+
+## Quick Facts
+
+- Package: `paris` (npm)
+- Framework: React 18+ with Next.js 14+ recommended
+- Styling: SCSS modules with CSS variables (no CSS-in-JS)
+- Theming: Light and dark themes via `pte` theme engine
+- License: MIT
+
+## Installation
+
+```bash
+pnpm add paris
+# or npm install paris / yarn add paris
+```
+
+## Setup (Next.js)
+
+1. Add to next.config.js:
+```js
+module.exports = {
+    transpilePackages: ['paris'],
+};
+```
+
+2. Set tsconfig moduleResolution to "bundler", "nodenext", or "node16"
+
+3. In your root layout:
+```tsx
+import { generateCSS, theme } from 'paris/theme';
+import 'paris/theme/global.scss';
+
+<html>
+  <head>
+    <style id="pte-vars" dangerouslySetInnerHTML={{ __html: generateCSS(theme) }} />
+  </head>
+  <body className="paris-container">{children}</body>
+</html>
+```
+
+## Usage
+
+```tsx
+import { Button } from 'paris/button';
+import { Text } from 'paris/text';
+import { Input } from 'paris/input';
+
+<Text kind="headingSmall">Welcome</Text>
+<Input label="Email" type="email" />
+<Button kind="primary">Submit</Button>
+```
+
+## Components
+
+### Layout
+- Card - Content container
+- CardButton - Interactive card
+- Dialog - Modal dialog
+- Drawer - Slide-out panel
+- Popover - Floating content
+
+### Forms
+- Input - Text input (text, email, password, etc.)
+- TextArea - Multi-line text
+- Select - Dropdown/listbox/radio/segmented selection
+- Checkbox - Checkbox with switch variant
+- Combobox - Autocomplete input
+- Field - Form field wrapper with label
+
+### Navigation & Actions
+- Button - Action trigger (primary/secondary/tertiary)
+- StyledLink - Styled anchor
+- Menu - Dropdown menu (MenuButton, MenuItems, MenuItem)
+- Tabs - Tabbed navigation
+
+### Display
+- Text - Typography with theme styles
+- Table - Data table
+- Avatar - User avatar
+- Tag - Label/badge
+- Callout - Alert/notice
+- Toast - Notifications
+- Accordion - Collapsible content
+- InformationalTooltip - Info tooltip
+
+### Utilities
+- Icon - Built-in icons (Close, ChevronLeft, ChevronRight, Check, etc.)
+- Pagination - usePagination hook
+- Tilt - 3D tilt effect
+- VisuallyHidden, TextWhenString, RemoveFromDOM
+
+## Theming
+
+### Theme Variables (CSS)
+```
+--pte-new-colors-contentPrimary
+--pte-new-colors-contentSecondary
+--pte-new-colors-backgroundPrimary
+--pte-new-colors-backgroundSecondary
+--pte-new-typography-styles-paragraphMedium-fontSize
+--pte-new-borders-radius-rounded
+```
+
+### In TypeScript
+```tsx
+import { pvar, pget, theme } from 'paris/theme';
+
+pvar('new.colors.contentPrimary')  // Returns: var(--pte-new-colors-contentPrimary)
+pget('new.colors.contentPrimary')  // Returns actual value
+```
+
+### Text Kinds
+Display: displayLarge, displayMedium, display, displaySmall
+Heading: headingLarge, headingMedium, headingSmall, headingXSmall, headingXXSmall
+Label: labelXLarge, labelLarge, labelMedium, labelSmall, labelXSmall, labelXXSmall
+Paragraph: paragraphLarge, paragraphMedium, paragraphSmall, paragraphXSmall, paragraphXXSmall
+
+### Dark Theme
+```tsx
+import { DarkTheme, generateCSS } from 'paris/theme';
+generateCSS(DarkTheme)
+```
+
+## Button Props
+
+```tsx
+kind?: 'primary' | 'secondary' | 'tertiary'  // default: 'primary'
+size?: 'large' | 'medium' | 'small' | 'xs'   // default: 'large'
+shape?: 'pill' | 'circle' | 'rectangle' | 'square'  // default: 'pill'
+theme?: 'negative' | 'positive' | 'warning'
+loading?: boolean
+disabled?: boolean
+startEnhancer?: ReactNode | (({ size }) => ReactNode)
+endEnhancer?: ReactNode | (({ size }) => ReactNode)
+href?: string  // Renders as anchor
+```
+
+## Input Props
+
+```tsx
+label: ReactNode  // Required for accessibility
+status?: 'default' | 'error' | 'success'
+type?: 'text' | 'email' | 'password' | 'number' | ...
+placeholder?: string
+startEnhancer?: Enhancer
+endEnhancer?: Enhancer
+description?: ReactNode
+hideLabel?: boolean
+disabled?: boolean
+```
+
+## Select Props
+
+```tsx
+options: { id: string, node: ReactNode, disabled?: boolean, metadata?: T }[]
+value?: string | string[]
+onChange?: (value) => void
+kind?: 'listbox' | 'radio' | 'card' | 'segmented'  // default: 'listbox'
+multiple?: boolean
+label: ReactNode
+```
+
+## Dialog Props
+
+```tsx
+isOpen?: boolean
+onClose?: (value: boolean) => void
+title: ReactNode  // Required for accessibility
+hideTitle?: boolean
+hideCloseButton?: boolean
+width?: 'compact' | 'default' | 'large' | 'full'
+height?: 'content' | 'full'
+appearance?: 'simple' | 'glass'
+overlayStyle?: 'grey' | 'blur'
+```
+
+## Text Props
+
+```tsx
+kind?: keyof typography.styles  // default: 'paragraphMedium'
+as?: 'p' | 'span' | 'div' | 'h1' | 'h2' | ...  // default: 'span'
+weight?: 'thin' | 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | ...
+fontStyle?: 'normal' | 'italic'
+color?: CSSColor
+```
+
+## Pattern: Overrides
+
+Many components accept `overrides` prop for customization:
+```tsx
+<Input
+  label="Email"
+  overrides={{
+    container: { className: 'custom-container' },
+    label: { kind: 'labelSmall' },
+  }}
+/>
+```
+
+## Pattern: Enhancers
+
+For icons in buttons/inputs:
+```tsx
+import { Icon, ArrowRight } from 'paris/icon';
+
+<Button endEnhancer={<Icon icon={ArrowRight} size={12} />}>
+  Continue
+</Button>
+
+// Or with size callback
+<Button endEnhancer={({ size }) => <Icon icon={ArrowRight} size={size} />}>
+  Continue
+</Button>
+```
+
+## Development
+
+```bash
+pnpm storybook        # Run Storybook on port 6006
+pnpm create:component Name  # Create new component
+pnpm generate:exports # Update package exports
+pnpm lint            # Run ESLint
+```
+
+## Structure
+
+```
+paris/
+├── src/stories/
+│   ├── button/
+│   │   ├── Button.tsx
+│   │   ├── Button.module.scss
+│   │   ├── Button.stories.ts
+│   │   └── index.ts
+│   ├── theme/
+│   │   ├── themes.ts    # LightTheme, DarkTheme
+│   │   ├── tokens.ts    # Color tokens
+│   │   ├── global.scss  # Global styles
+│   │   └── index.ts
+│   └── ...
+└── public/
+```
+
+## Key Dependencies
+
+- @ariakit/react - Accessible primitives
+- @headlessui/react - Unstyled accessible components
+- @radix-ui/react-* - Radix primitives
+- framer-motion - Animations
+- clsx - Class name utility
+- pte - Theme engine
+
+## Links
+
+- Documentation: https://paris.slingshot.fm
+- GitHub: https://github.com/slingshot/paris
+- npm: https://www.npmjs.com/package/paris
+
+## Contact
+
+Author: Sanil Chawla <sanil@slingshot.fm>
