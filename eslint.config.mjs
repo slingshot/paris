@@ -8,7 +8,7 @@ import storybookPlugin from 'eslint-plugin-storybook';
 export default [
     {
         name: 'paris_overrides',
-        ignores: ['dist/', 'node_modules/', '.next/', '!.storybook'],
+        ignores: ['dist/', 'node_modules/', '.next/', 'storybook-static/', '!.storybook'],
     },
 
     ...storybookPlugin.configs['flat/recommended'],

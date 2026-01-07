@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, ReactElement, ReactNode } from 'react';
 import { createElement, memo } from 'react';
 import { clsx } from 'clsx';
 import type { CSSColor } from '@ssh/csstypes';
@@ -69,7 +69,7 @@ export const Text = memo(<T extends TextElement = TextElement>({
     color,
     children,
     ...props
-}: TextProps<T>): JSX.Element => createElement(
+}: TextProps<T>): ReactElement => createElement(
     as || 'span',
     {
         ...props,
