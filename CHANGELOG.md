@@ -1,5 +1,11 @@
 # paris
 
+## 0.17.0
+
+### Minor Changes
+
+- 079d8b7: chore: [Breaking] Upgrade to React v19 & NextJS 15
+
 ## 0.16.2
 
 ### Patch Changes
