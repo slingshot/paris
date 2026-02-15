@@ -8,8 +8,6 @@ import {
     Combobox as HCombobox, ComboboxInput, ComboboxOptions, ComboboxOption, Transition,
 } from '@headlessui/react';
 import { clsx } from 'clsx';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClose } from '@fortawesome/free-solid-svg-icons';
 import inputStyles from '../input/Input.module.scss';
 import dropdownStyles from '../utility/Dropdown.module.scss';
 import styles from '../select/Select.module.scss';
@@ -23,7 +21,7 @@ import { Field } from '../field';
 import type { ButtonProps } from '../button';
 import { Button } from '../button';
 import { TextWhenString } from '../utility';
-import { Check, Icon } from '../icon';
+import { Check, Close, Icon } from '../icon';
 
 export type Option<T extends Record<string, any> = Record<string, any>> = {
     id: string,
@@ -264,7 +262,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                         <Button
                             size="xs"
                             shape="circle"
-                            startEnhancer={<FontAwesomeIcon icon={faClose} fontSize="10px" />}
+                            startEnhancer={<Close size={10} />}
                             onClick={() => {
                                 if (onChange) {
                                     onChange(null);
