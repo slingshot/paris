@@ -1,5 +1,11 @@
 # paris
 
+## 0.17.1
+
+### Patch Changes
+
+- 8a01d4b: chore: Upgrade @fortawesome/react-fontawesome from ^0.2.0 to ^0.2.2
+
 ## 0.17.0
 
 ### Minor Changes
