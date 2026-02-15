@@ -151,6 +151,14 @@ export const Select = forwardRef(<T = Record<string, any>>({
 }: SelectProps<T>, ref: ForwardedRef<any>) => {
     const inputID = useId();
     const multiItems = multipleItemsName || 'items';
+
+    // TypeScript can't track discriminated union correlation through destructuring and JSX conditionals.
+    // For Listbox: supports both single and multi via overloads, needs explicit union types
+    // For RadioGroup: only supports single-select, needs narrowed types
+    const listboxValue = value as string | string[] | null | undefined;
+    const listboxOnChange = onChange as ((value: string | string[] | null) => void) | undefined;
+    const singleValue = value as string | null | undefined;
+    const singleOnChange = onChange as ((value: string | null) => void) | undefined;
     const buttonText = () => {
         if (!value || value.length === 0) {
             return placeholder || 'Select an option';
@@ -182,8 +190,8 @@ export const Select = forwardRef(<T = Record<string, any>>({
                 <Listbox
                     as="div"
                     ref={ref}
-                    value={value}
-                    onChange={onChange}
+                    value={listboxValue}
+                    onChange={listboxOnChange}
                     multiple={multiple}
                 >
                     <ListboxButton
@@ -273,7 +281,7 @@ export const Select = forwardRef(<T = Record<string, any>>({
                 </Listbox>
             )}
             {kind === 'radio' && (
-                <RadioGroup ref={ref} as="div" className={styles.radioContainer} value={value} onChange={onChange}>
+                <RadioGroup ref={ref} as="div" className={styles.radioContainer} value={singleValue} onChange={singleOnChange}>
                     {options.map((option) => (
                         <Radio
                             as="div"
@@ -294,7 +302,7 @@ export const Select = forwardRef(<T = Record<string, any>>({
                 </RadioGroup>
             )}
             {kind === 'card' && (
-                <RadioGroup ref={ref} as="div" className={styles.cardContainer} value={value} onChange={onChange}>
+                <RadioGroup ref={ref} as="div" className={styles.cardContainer} value={singleValue} onChange={singleOnChange}>
                     {options.map((option) => (
                         <Radio
                             as="div"
@@ -316,7 +324,7 @@ export const Select = forwardRef(<T = Record<string, any>>({
                 </RadioGroup>
             )}
             {kind === 'segmented' && (
-                <RadioGroup ref={ref} as="div" className={styles.segmentedContainer} value={value || options[0].id} onChange={onChange}>
+                <RadioGroup ref={ref} as="div" className={styles.segmentedContainer} value={singleValue || options[0].id} onChange={singleOnChange}>
                     {options.map((option) => (
                         <Radio
                             as="div"
