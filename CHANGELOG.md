@@ -1,5 +1,11 @@
 # paris
 
+## 0.17.3
+
+### Patch Changes
+
+- 1f67456: chore: add typecheck script and PR check CI workflow
+
 ## 0.17.1
 
 ### Patch Changes
