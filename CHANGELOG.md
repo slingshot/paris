@@ -1,5 +1,12 @@
 # paris
 
+## 0.17.4
+
+### Patch Changes
+
+- 693a687: fix(combobox): revert close icon to FontAwesomeIcon
+- 12331bd: Theme: fix dark theme color value for `overlayWhiteUltrastrong`
+
 ## 0.17.3
 
 ### Patch Changes
