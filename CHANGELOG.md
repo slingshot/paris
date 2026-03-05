@@ -1,5 +1,13 @@
 # paris
 
+## 0.17.4
+
+### Patch Changes
+
+- 693a687: fix(combobox): revert close icon to FontAwesomeIcon
+- 12331bd: Theme: fix dark theme color value for `overlayWhiteUltrastrong`
+- 9774b0e: Field's container `onClick` called `input.click()` even when the click originated from the button itself, causing a double toggle on touch devices. This broke Headless UI Select/Menu/Combobox on iOS Safari since HUI 2.2+ toggles on `onClick` for touch (unlike mouse, which toggles on `pointerDown`).
+
 ## 0.17.3
 
 ### Patch Changes
