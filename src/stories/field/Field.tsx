@@ -124,7 +124,7 @@ export const Field: FC<PropsWithChildren<FieldProps>> = ({
             onClick={(e) => {
                 if (typeof window !== 'undefined' && htmlFor) {
                     const input = document.getElementById(htmlFor);
-                    if (input && !disabled) {
+                    if (input && !disabled && !input.contains(e.target as Node)) {
                         if (input.tagName === 'BUTTON') input.click();
                         else input.focus();
                     }
