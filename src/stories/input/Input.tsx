@@ -120,23 +120,23 @@ export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = forward
                         )}
                     </div>
                 )}
-                <input
-                    {...props}
-                    id={inputID}
-                    ref={ref}
-                    type={type || 'text'}
-                    aria-label={typeof label === 'string' ? label : props['aria-label']}
-                    aria-describedby={`${inputID}-description`}
-                    aria-disabled={disabled}
-                    data-status={disabled ? 'disabled' : (status || 'default')}
-                    readOnly={disabled}
-                    {...(startEnhancer ? { 'data-has-start-enhancer': 'true' } : {})}
-                    {...(endEnhancer ? { 'data-has-end-enhancer': 'true' } : {})}
-                    className={clsx(
-                        props.className,
-                        styles.input,
-                    )}
-                />
+                <div className={styles.inputScaleWrapper}>
+                    <input
+                        {...props}
+                        id={inputID}
+                        ref={ref}
+                        type={type || 'text'}
+                        aria-label={typeof label === 'string' ? label : props['aria-label']}
+                        aria-describedby={`${inputID}-description`}
+                        aria-disabled={disabled}
+                        data-status={disabled ? 'disabled' : (status || 'default')}
+                        readOnly={disabled}
+                        className={clsx(
+                            props.className,
+                            styles.input,
+                        )}
+                    />
+                </div>
                 {!!endEnhancer && (
                     <div
                         {...overrides?.endEnhancerContainer}

@@ -84,18 +84,11 @@
         transform: scale(0.875);
         transform-origin: left center;
         width: calc(100% / 0.875);
-        flex-shrink: 0;
-
-        &[data-has-end-enhancer="true"] {
-            width: calc((100% / 0.875) - 14px - 13px);
-            margin-right: calc((-100% * (1 - 0.875) / 0.875));
-        }
     }
 
 
     & input,
     & textarea {
-        width: 100%;
         background-color: transparent;
         padding: 0;
         margin: 0;
@@ -153,6 +146,12 @@
             }
         }
     }
+}
+
+.inputScaleWrapper {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .enhancer {

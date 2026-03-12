@@ -68,21 +68,23 @@ export const TextArea = forwardRef<HTMLTextAreaElement, InputProps & ComponentPr
                         )}
                     </div>
                 )}
-                <textarea
-                    {...props}
-                    id={textareaID}
-                    ref={ref}
-                    aria-label={typeof label === 'string' ? label : props['aria-label']}
-                    aria-describedby={`${textareaID}-description`}
-                    aria-disabled={disabled}
-                    readOnly={disabled}
-                    rows={rows}
-                    data-status={disabled ? 'disabled' : (status || 'default')}
-                    className={clsx(
-                        props.className,
-                        styles.input,
-                    )}
-                />
+                <div className={styles.inputScaleWrapper}>
+                    <textarea
+                        {...props}
+                        id={textareaID}
+                        ref={ref}
+                        aria-label={typeof label === 'string' ? label : props['aria-label']}
+                        aria-describedby={`${textareaID}-description`}
+                        aria-disabled={disabled}
+                        readOnly={disabled}
+                        rows={rows}
+                        data-status={disabled ? 'disabled' : (status || 'default')}
+                        className={clsx(
+                            props.className,
+                            styles.input,
+                        )}
+                    />
+                </div>
                 {!!endEnhancer && (
                     <div
                         {...overrides?.endEnhancerContainer}
