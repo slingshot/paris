@@ -1,5 +1,11 @@
 # paris
 
+## 0.17.5
+
+### Patch Changes
+
+- 67ea6ea: Fix input field width calculation broken by iOS Safari scale trick. Wraps input/textarea in a container div so the scale trick's `width: calc(100% / 0.875)` resolves correctly, fixing width issues with enhancers and textarea not filling containers.
+
 ## 0.17.4
 
 ### Patch Changes
