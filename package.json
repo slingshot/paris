@@ -46,6 +46,7 @@
     "exports": {
         "./*": "./src/stories/*",
         "./accordion": "./src/stories/accordion/index.ts",
+        "./accordionselect": "./src/stories/accordionselect/index.ts",
         "./avatar": "./src/stories/avatar/index.ts",
         "./button": "./src/stories/button/index.ts",
         "./callout": "./src/stories/callout/index.ts",
@@ -63,6 +64,7 @@
         "./pagination": "./src/stories/pagination/index.ts",
         "./popover": "./src/stories/popover/index.ts",
         "./select": "./src/stories/select/index.ts",
+        "./selectablecard": "./src/stories/selectablecard/index.ts",
         "./styledlink": "./src/stories/styledlink/index.ts",
         "./table": "./src/stories/table/index.ts",
         "./tabs": "./src/stories/tabs/index.ts",
