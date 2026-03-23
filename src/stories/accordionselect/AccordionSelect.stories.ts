@@ -11,22 +11,22 @@ export default meta;
 type Story = StoryObj<typeof AccordionSelect>;
 
 const options = [
-    { id: 'bank-1', node: 'Chase ••4521' },
-    { id: 'bank-2', node: 'Wells Fargo ••8832' },
-    { id: 'bank-3', node: 'Bank of America ••1100' },
+    { id: 'champagne', node: 'In an alleyway, drinking champagne' },
+    { id: 'rooftop', node: 'On a rooftop, watching the sunset' },
+    { id: 'garden', node: 'In a garden, under the stars' },
 ];
 
 export const Default: Story = {
     args: {
         options,
-        value: 'bank-1',
+        value: 'champagne',
     },
 };
 
 export const NoSelection: Story = {
     args: {
         options,
-        placeholder: 'Select a bank account',
+        placeholder: 'Where were we?',
     },
 };
 
@@ -34,8 +34,8 @@ export const WithDisabledOption: Story = {
     args: {
         options: [
             ...options,
-            { id: 'bank-4', node: 'Expired Account ••0000', disabled: true },
+            { id: 'nowhere', node: 'Nowhere, it was all a dream', disabled: true },
         ],
-        value: 'bank-1',
+        value: 'champagne',
     },
 };

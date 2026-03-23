@@ -64,7 +64,6 @@
         "./pagination": "./src/stories/pagination/index.ts",
         "./popover": "./src/stories/popover/index.ts",
         "./select": "./src/stories/select/index.ts",
-        "./selectablecard": "./src/stories/selectablecard/index.ts",
         "./styledlink": "./src/stories/styledlink/index.ts",
         "./table": "./src/stories/table/index.ts",
         "./tabs": "./src/stories/tabs/index.ts",
