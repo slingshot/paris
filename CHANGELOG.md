@@ -1,5 +1,11 @@
 # paris
 
+## 0.17.6
+
+### Patch Changes
+
+- c42222a: Fix CSS variable reference
+
 ## 0.17.5
 
 ### Patch Changes
