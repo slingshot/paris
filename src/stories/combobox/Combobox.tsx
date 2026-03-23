@@ -249,6 +249,11 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                         });
                                     }
                                 }}
+                                onBlur={(e) => {
+                                    setQuery('');
+                                    if (onInputChange) onInputChange('');
+                                    if (overrides?.input?.onBlur) overrides.input.onBlur(e);
+                                }}
                                 aria-disabled={disabled}
                                 data-status={disabled ? 'disabled' : (status || 'default')}
                                 className={clsx(
