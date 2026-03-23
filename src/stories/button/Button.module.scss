@@ -45,7 +45,7 @@
     border-color: var(--pte-new-colors-buttonFill);
 
     &:hover {
-        border-color: var(-pte-new-colors-buttonFillHover);
+        border-color: var(--pte-new-colors-buttonFillHover);
     }
 
     &[aria-disabled=true] {

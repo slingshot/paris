@@ -1,2 +1,8 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
+
+# Catch invalid CSS custom property references (e.g. var(-pte-...) instead of var(--pte-...))
+if grep -rn 'var(-pte-' --include='*.scss' --include='*.css' src/; then
+  echo "ERROR: Found var(-pte-...) — CSS custom properties must start with --"
+  exit 1
+fi
