@@ -62,6 +62,12 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
      * An optional panel that will be rendered at the bottom of the Drawer. This is useful for adding a footer to the Drawer with actions.
      */
     bottomPanel?: ReactNode;
+    /**
+     * Whether the bottom panel should have default padding. Set to `false` for edge-to-edge content like dividers or multi-section layouts.
+     *
+     * @default true
+     */
+    bottomPanelPadding?: boolean;
 
     /**
      * An optional area that will be rendered at the top of the Drawer next to the title. This is useful for adding actions to the Drawer. Recommended to use {@link Menu} for an action menu.
@@ -149,6 +155,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
     hideTitle = false,
     hideCloseButton = false,
     bottomPanel,
+    bottomPanelPadding = true,
     from = 'right',
     size = 'default',
     pagination,
@@ -382,7 +389,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                         <div className={clsx(styles.bottomPanel, overrides?.bottomPanel?.className)}>
                                             <div className={styles.glassOpacity} />
                                             <div className={styles.glassBlend} />
-                                            <div className={clsx(styles.bottomPanelContent, overrides?.bottomPanelContent?.className)}>
+                                            <div className={clsx(styles.bottomPanelContent, { [styles.noPadding]: !bottomPanelPadding }, overrides?.bottomPanelContent?.className)}>
                                                 {bottomPanel}
                                             </div>
                                         </div>
