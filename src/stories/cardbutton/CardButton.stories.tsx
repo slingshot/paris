@@ -16,27 +16,6 @@ export const Default: Story = {
     },
 };
 
-export const Raised: Story = {
-    args: {
-        children: 'Hello world!',
-        kind: 'raised',
-    },
-};
-
-export const Surface: Story = {
-    args: {
-        children: 'Hello world!',
-        kind: 'surface',
-    },
-};
-
-export const Flat: Story = {
-    args: {
-        children: 'Hello world!',
-        kind: 'flat',
-    },
-};
-
 export const Disabled: Story = {
     args: {
         children: 'Hello world!',
