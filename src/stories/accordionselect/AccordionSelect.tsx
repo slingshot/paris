@@ -5,7 +5,7 @@ import {
     useCallback, useEffect, useRef, useState,
 } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { Check, ChevronRight, Icon } from '../icon';
 import { TextWhenString } from '../utility';
 import styles from './AccordionSelect.module.scss';

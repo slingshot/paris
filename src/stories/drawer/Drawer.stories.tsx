@@ -281,7 +281,7 @@ export const BottomPanelMultiSection: Story = {
             </div>
         ),
     },
-    render: (args) => {
+    render: function Render(args) {
         const [isOpen, setIsOpen] = useState(false);
         return (
             <>
