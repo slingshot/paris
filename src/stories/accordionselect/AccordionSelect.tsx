@@ -1,7 +1,9 @@
 'use client';
 
 import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import {
+    useCallback, useEffect, useRef, useState,
+} from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import clsx from 'clsx';
 import { Check, ChevronRight, Icon } from '../icon';
@@ -125,15 +127,17 @@ export const AccordionSelect: FC<AccordionSelectProps> = ({
     const open = controlledOpen ?? internalOpen;
     const rootRef = useRef<HTMLDivElement>(null);
 
-    const setOpen = (nextOpen: boolean) => {
+    const setOpen = useCallback((nextOpen: boolean) => {
         setInternalOpen(nextOpen);
         onOpenChange?.(nextOpen);
-    };
+    }, [onOpenChange]);
 
     const selectedOption = options.find((o) => o.id === value);
 
     useEffect(() => {
-        if (!closeOnClickOutside || !open) return;
+        if (!closeOnClickOutside || !open) {
+            return () => {};
+        }
 
         const handleClickOutside = (e: MouseEvent) => {
             if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
@@ -143,11 +147,14 @@ export const AccordionSelect: FC<AccordionSelectProps> = ({
 
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [closeOnClickOutside, open]);
+    }, [closeOnClickOutside, open, setOpen]);
 
-    const headerContent = selectedOption
-        ? (renderSelected ? renderSelected(selectedOption) : selectedOption.node)
-        : placeholder;
+    let headerContent: ReactNode = placeholder;
+    if (selectedOption) {
+        headerContent = renderSelected
+            ? renderSelected(selectedOption)
+            : selectedOption.node;
+    }
 
     return (
         <div
