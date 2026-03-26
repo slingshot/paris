@@ -1,5 +1,18 @@
 # paris
 
+## 0.17.7
+
+### Patch Changes
+
+- 188ed3e: AccordionSelect: new component for expandable selection groups
+  CardButton: added `kind` variants (`raised`, `surface`, `flat`) and `status` prop; removed SelectableCard
+  Drawer: added `bottomPanelPadding` prop for edge-to-edge footer layouts
+- 188ed3e: Checkbox: removed background hover from `panel` variant
+- 188ed3e: Drawer: removed padding from `bottomPanel` so footer elements can stretch edge-to-edge
+  Combobox: fixed stale options showing on re-focus by resetting query state on blur
+  Field: custom component labels now receive consistent styling with string labels
+  Dialog: `width` prop now accepts custom CSS lengths in addition to presets
+
 ## 0.17.6
 
 ### Patch Changes
