@@ -423,6 +423,11 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 
 .bottomPanelSpacer {
     padding: 20px;
+
+    &.noPadding {
+        padding: 0;
+    }
+
     opacity: 0;
     pointer-events: none;
 }

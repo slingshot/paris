@@ -150,7 +150,7 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
 */
 export const Drawer = <T extends string[] | readonly string[] = string[]>({
     isOpen = false,
-    onClose = () => {},
+    onClose = () => { },
     title,
     hideTitle = false,
     hideCloseButton = false,
@@ -383,7 +383,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                                 </div>
                                 {bottomPanel && (
                                     <>
-                                        <div tabIndex={-1} aria-hidden="true" className={clsx(styles.bottomPanelSpacer, overrides?.bottomPanelSpacer?.className)}>
+                                        <div tabIndex={-1} aria-hidden="true" className={clsx(styles.bottomPanelSpacer, { [styles.noPadding]: !bottomPanelPadding }, overrides?.bottomPanelSpacer?.className)}>
                                             {bottomPanel}
                                         </div>
                                         <div className={clsx(styles.bottomPanel, overrides?.bottomPanel?.className)}>
