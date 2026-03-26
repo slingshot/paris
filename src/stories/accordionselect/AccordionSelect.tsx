@@ -136,7 +136,7 @@ export const AccordionSelect: FC<AccordionSelectProps> = ({
 
     useEffect(() => {
         if (!closeOnClickOutside || !open) {
-            return () => {};
+            return () => { };
         }
 
         const handleClickOutside = (e: MouseEvent) => {
@@ -253,7 +253,7 @@ export const AccordionSelect: FC<AccordionSelectProps> = ({
                                                 )}
                                         </div>
                                         {isOptionSelected && (
-                                            <Icon icon={Check} size={13} />
+                                            <Icon icon={Check} size={13} className={styles.check} />
                                         )}
                                     </button>
                                 );
