@@ -1,5 +1,13 @@
 # paris
 
+## 0.17.8
+
+### Patch Changes
+
+- 0ca30b7: fix(drawer): make bottom panel spacer padding conditional on bottomPanelPadding prop
+  fix(accordionselect): add padding to check icon for better tap target
+  feat(combobox): add customValueOption override for independent styling
+
 ## 0.17.7
 
 ### Patch Changes
