@@ -113,6 +113,7 @@ export type ComboboxProps<T extends Record<string, any>> = {
         input?: ComponentPropsWithoutRef<'input'>;
         optionsContainer?: ComponentPropsWithoutRef<'ul'>;
         option?: ComponentPropsWithoutRef<'li'>;
+        customValueOption?: ComponentPropsWithoutRef<'li'>;
         label?: TextProps<'label'>;
         description?: TextProps<'p'>;
         startEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
@@ -319,10 +320,10 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                 value={query}
                                 data-selected={false}
                                 className={clsx(
-                                    overrides?.option?.className,
+                                    overrides?.customValueOption?.className,
                                     styles.option,
                                 )}
-                                {...overrides?.option}
+                                {...overrides?.customValueOption}
                             >
                                 <Text as="span" kind="paragraphSmall">
                                     {customValueString.replace('%v', query)}

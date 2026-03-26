@@ -164,6 +164,47 @@ export const AllowCustomValue: Story = {
     },
 };
 
+export const CustomValueWithDivider: Story = {
+    args: {
+        ...ComboboxArgs,
+        allowCustomValue: true,
+        customValueString: 'Add "%v"',
+    },
+    render: function Render(args) {
+        const [selected, setSelected] = useState<Option | null>(null);
+        const [inputValue, setInputValue] = useState<string>('');
+        return createElement(
+            'div',
+            {
+                style: { minHeight: '200px' },
+            },
+            createElement(Combobox<{ name: string }>, {
+                ...args,
+                value:
+          selected?.id === null
+              ? {
+                  id: null,
+                  node: inputValue,
+                  metadata: {
+                      name: inputValue,
+                  },
+              }
+              : (selected as Option<{ name: string }> | null),
+                options: (args.options as Option<{ name: string }>[]).filter((o) => ((o.metadata?.name as string) || '')
+                    .toLowerCase()
+                    .includes(inputValue.toLowerCase())),
+                onChange: (e) => setSelected(e),
+                onInputChange: (e) => setInputValue(e),
+                overrides: {
+                    customValueOption: {
+                        style: { borderBottom: '5px solid var(--pte-new-colors-borderMedium)' },
+                    },
+                },
+            }),
+        );
+    },
+};
+
 export const HideOptionsInitially: Story = {
     args: ComboboxArgs,
     render: function Render(args) {
