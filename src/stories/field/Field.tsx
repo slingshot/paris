@@ -80,7 +80,7 @@ export const Field: FC<PropsWithChildren<FieldProps>> = ({
             </Text>
         )
         : (
-            <label htmlFor={htmlFor} className={clsx({ [styles.hidden]: props.hideLabel })}>
+            <label htmlFor={htmlFor} className={clsx(styles.label, { [styles.hidden]: props.hideLabel })}>
                 {props.label}
             </label>
         );

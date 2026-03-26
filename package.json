@@ -46,6 +46,7 @@
     "exports": {
         "./*": "./src/stories/*",
         "./accordion": "./src/stories/accordion/index.ts",
+        "./accordionselect": "./src/stories/accordionselect/index.ts",
         "./avatar": "./src/stories/avatar/index.ts",
         "./button": "./src/stories/button/index.ts",
         "./callout": "./src/stories/callout/index.ts",

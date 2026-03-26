@@ -239,6 +239,67 @@ export const BottomPanel: Story = {
     },
 };
 
+export const BottomPanelMultiSection: Story = {
+    args: {
+        title: 'Order summary',
+        children: (
+            <div style={{
+                width: '100%', display: 'flex', flexDirection: 'column', gap: '12px',
+            }}
+            >
+                <p>Review your order before confirming.</p>
+            </div>
+        ),
+        bottomPanelPadding: false,
+        bottomPanel: (
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    padding: '12px 20px',
+                    borderBottom: '1px solid var(--pte-new-colors-borderMedium)',
+                    background: 'var(--pte-new-colors-overlaySubtle)',
+                }}
+                >
+                    <span>Total</span>
+                    <strong>$249.00</strong>
+                </div>
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '12px',
+                    padding: '20px',
+                }}
+                >
+                    <Button>
+                        Confirm order
+                    </Button>
+                    <Button kind="secondary" theme="negative">
+                        Cancel
+                    </Button>
+                </div>
+            </div>
+        ),
+    },
+    render: function Render(args) {
+        const [isOpen, setIsOpen] = useState(false);
+        return (
+            <>
+                <Button onClick={() => setIsOpen(true)}>
+                    Review order
+                </Button>
+                <Drawer
+                    {...args}
+                    isOpen={isOpen}
+                    onClose={setIsOpen}
+                >
+                    {args.children}
+                </Drawer>
+            </>
+        );
+    },
+};
+
 export const Full: Story = {
     args: {
         title: 'Transaction details',

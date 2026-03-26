@@ -3,7 +3,8 @@
 import type {
     ComponentPropsWithoutRef, FC, MouseEventHandler, PropsWithChildren, ReactNode,
 } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import type { CSSLength } from '@ssh/csstypes';
 import {
     Dialog as HDialog, DialogPanel, DialogTitle, Transition, TransitionChild,
 } from '@headlessui/react';
@@ -15,6 +16,8 @@ import { TextWhenString } from '../utility/TextWhenString';
 import { VisuallyHidden } from '../utility/VisuallyHidden';
 import { RemoveFromDOM } from '../utility/RemoveFromDOM';
 import { Close, Icon } from '../icon';
+
+export const DialogWidthPresets = ['compact', 'default', 'large', 'full'] as const;
 
 export type DialogProps = {
     /**
@@ -47,11 +50,12 @@ export type DialogProps = {
      */
     hideCloseButton?: boolean;
     /**
-     * The width of the dialog.
+     * The width of the dialog. Either a preset or a valid {@link CSSLength} string.
      *
+     * @see DialogWidthPresets
      * @default 'default'
      */
-    width?: 'compact' | 'default' | 'large' | 'full';
+    width?: typeof DialogWidthPresets[number] | CSSLength;
     /**
      * The height of the dialog.
      *
@@ -129,6 +133,8 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
     overlayStyle = 'blur',
     children,
 }) => {
+    const widthIsPreset = useMemo(() => (DialogWidthPresets as readonly string[]).includes(width), [width]);
+
     const [dragging, setDragging] = useState(false);
     const [position, setPosition] = useState({ top: 0, left: 0 });
     const [startPosition, setStartPosition] = useState({ x: 0, y: 0 });
@@ -228,11 +234,16 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                             className={clsx(
                                 styles.panel,
                                 styles[appearance],
-                                styles[`w-${width}`],
+                                { [styles[`w-${width}`]]: widthIsPreset },
                                 styles[`h-${height}`],
                                 overrides.panel?.className,
                             )}
-                            style={{ top: `${position.top}px`, left: `${position.left}px` }}
+                            style={{
+                                top: `${position.top}px`,
+                                left: `${position.left}px`,
+                                ...(!widthIsPreset ? { maxWidth: width } : {}),
+                                ...overrides.panel?.style,
+                            }}
                             onMouseDown={handleMouseDown}
                             onMouseUp={handleMouseUp}
                             onMouseMove={handleMouseMove}

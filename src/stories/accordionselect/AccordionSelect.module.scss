@@ -1,0 +1,103 @@
+.root {
+    color: var(--pte-new-colors-contentPrimary);
+    border: 1px solid var(--pte-new-colors-borderStrong);
+    border-radius: var(--pte-new-borders-radius-roundedMedium);
+    background: var(--pte-new-colors-surfacePrimary);
+    overflow: hidden;
+    transition: var(--pte-animations-interaction);
+
+    &.open {
+        border-color: var(--pte-new-colors-borderUltrastrong);
+    }
+}
+
+.header {
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--pte-new-colors-overlayWhiteSubtle);
+    cursor: pointer;
+    transition: var(--pte-animations-interaction);
+
+    &.open {
+        background-color: var(--pte-new-colors-overlayMedium);
+        border-bottom: 1px solid var(--pte-new-colors-borderStrong);
+    }
+
+    &:hover {
+        background-color: var(--pte-new-colors-overlayStrong);
+    }
+}
+
+.headerContent {
+    flex: 1;
+    min-width: 0;
+}
+
+.headerEnd {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.chevron {
+    transition: transform var(--pte-animations-duration-gradual) var(--pte-animations-timing-easeInOutExpo);
+    transform: rotate(90deg);
+
+    &.open {
+        transform: rotate(-90deg);
+    }
+}
+
+.dropdown {
+    overflow: hidden;
+}
+
+.dropdownContent {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    gap: 0;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border-bottom: 0.5px solid var(--pte-new-colors-borderMedium);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: background var(--pte-animations-duration-instant) var(--pte-animations-timing-easeInOutExpo);
+
+    &:last-of-type {
+        border-bottom: none;
+    }
+
+    &[data-selected='true'] {
+        background: var(--pte-new-colors-overlaySubtle);
+    }
+
+    &:hover {
+        background: var(--pte-new-colors-overlayMedium);
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+
+        &:hover {
+            background: transparent;
+        }
+    }
+}
+
+.optionContent {
+    flex: 1;
+    text-align: left;
+    min-width: 0;
+}
