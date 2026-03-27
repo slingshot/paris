@@ -360,7 +360,7 @@ The project uses `@ssh/eslint-config` with React and TypeScript rules. Key point
 
 ### Utilities
 - `react-hot-toast` - Toast notifications
-- `react-parallax-tilt` - 3D tilt effect
+- Custom `Tilt` component - 3D tilt effect (no external dependency)
 - `react-tiny-popover` - Popover positioning
 
 ---
