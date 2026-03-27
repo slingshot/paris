@@ -2,7 +2,7 @@
     "name": "paris",
     "author": "Sanil Chawla <sanil@slingshot.fm> (https://sanil.co)",
     "description": "Paris is Slingshot's React design system. It's a collection of reusable components, design tokens, and guidelines that help us build consistent, accessible, and performant user interfaces.",
-    "version": "0.17.8",
+    "version": "0.17.9",
     "homepage": "https://paris.slingshot.fm",
     "license": "MIT",
     "repository": {
@@ -90,7 +90,6 @@
         "framer-motion": "^12.24.10",
         "pte": "^0.5.0",
         "react-hot-toast": "^2.4.1",
-
         "react-tiny-popover": "^8.1.6",
         "ts-deepmerge": "^6.0.3"
     },

@@ -1,5 +1,11 @@
 # paris
 
+## 0.17.9
+
+### Patch Changes
+
+- 7d24348: fix(tilt): Replace react-parallax-tilt with a custom functional component to fix TypeError crash during React 19 concurrent rendering unmount
+
 ## 0.17.8
 
 ### Patch Changes
