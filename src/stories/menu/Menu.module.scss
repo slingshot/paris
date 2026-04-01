@@ -20,6 +20,15 @@
 
     overflow: hidden;
     z-index: 100;
+
+    transition: var(--pte-animations-interaction);
+    opacity: 1;
+    transform: translateY(0);
+
+    &[data-closed] {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
 }
 
 .leftPosition {

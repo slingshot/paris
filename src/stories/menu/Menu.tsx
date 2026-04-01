@@ -3,12 +3,11 @@ import type {
     MenuProps, MenuItemsProps, MenuItemProps, MenuButtonProps,
 } from '@headlessui/react';
 import {
-    Menu as HeadlessMenu, MenuButton as HMenuButton, MenuItems as HMenuItems, MenuItem as HMenuItem, Transition,
+    Menu as HeadlessMenu, MenuButton as HMenuButton, MenuItems as HMenuItems, MenuItem as HMenuItem,
 } from '@headlessui/react';
 import { clsx } from 'clsx';
 
 import styles from './Menu.module.scss';
-import dropdownStyles from '../utility/Dropdown.module.scss';
 
 /**
  * Wraps the `HeadlessMenu` component from `@headlessui/react` to provide a styled dropdown menu.
@@ -56,20 +55,13 @@ export const MenuItems: FC<MenuItemsProps<React.ElementType> & {
 }> = ({
     className, children, position = 'left', ...props
 }) => (
-    <Transition
-        as="div"
-        className={dropdownStyles.transitionContainer}
-        enter={dropdownStyles.transition}
-        enterFrom={dropdownStyles.enterFrom}
-        enterTo={dropdownStyles.enterTo}
-        leave={dropdownStyles.transition}
-        leaveFrom={dropdownStyles.leaveFrom}
-        leaveTo={dropdownStyles.leaveTo}
+    <HMenuItems
+        transition
+        className={clsx(styles.menuItems, position === 'left' && styles.leftPosition, position === 'right' && styles.rightPosition, className)}
+        {...props}
     >
-        <HMenuItems className={clsx(styles.menuItems, position === 'left' && styles.leftPosition, position === 'right' && styles.rightPosition, className)} {...props}>
-            {children}
-        </HMenuItems>
-    </Transition>
+        {children}
+    </HMenuItems>
 );
 
 /**
