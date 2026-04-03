@@ -1,5 +1,11 @@
 # paris
 
+## 0.17.10
+
+### Patch Changes
+
+- 24b86aa: fix(menu): Replace external Transition wrapper with built-in transition prop on MenuItems to fix TypeError crash during unmount
+
 ## 0.17.9
 
 ### Patch Changes
