@@ -1,6 +1,6 @@
 .transitionContainer {
     position: relative;
-    z-index: 10;
+    z-index: var(--pte-new-layers-dropdown);
 }
 
 .transition {

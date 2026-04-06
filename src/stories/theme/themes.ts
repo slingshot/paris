@@ -432,6 +432,14 @@ export type Theme = {
             lg: `${number}px`;
             xl: `${number}px`;
         };
+        layers: {
+            below: number;
+            sticky: number;
+            dropdown: number;
+            overlay: number;
+            popover: number;
+            menu: number;
+        };
     };
     tokens: TokensT;
     utils: {
@@ -1053,6 +1061,14 @@ export const LightTheme: Theme = {
             md: '640px',
             lg: '768px',
             xl: '1024px',
+        },
+        layers: {
+            below: -1,
+            sticky: 100,
+            dropdown: 200,
+            overlay: 300,
+            popover: 400,
+            menu: 500,
         },
     },
     tokens: T,

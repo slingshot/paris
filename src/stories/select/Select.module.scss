@@ -33,7 +33,7 @@
     top: 100%;
     left: 0;
     right: 0;
-    z-index: 10;
+    z-index: var(--pte-new-layers-dropdown);
 
     display: flex;
     flex-direction: column;
@@ -265,6 +265,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    isolation: isolate;
     transition: var(--pte-animations-interaction);
 
     &.tall {

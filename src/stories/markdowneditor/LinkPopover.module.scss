@@ -2,7 +2,7 @@
     position: absolute;
     top: calc(100% + 8px);
     left: 0;
-    z-index: 50;
+    z-index: var(--pte-new-layers-popover);
     background-color: var(--pte-new-colors-surfacePrimary, var(--pte-new-colors-backgroundPrimary));
     border: 1px solid var(--pte-new-colors-borderSubtle);
     border-radius: var(--pte-new-borders-radius-rounded, 8px);

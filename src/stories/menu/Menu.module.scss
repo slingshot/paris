@@ -19,7 +19,7 @@
     align-items: flex-start;
 
     overflow: hidden;
-    z-index: 100;
+    z-index: var(--pte-new-layers-menu);
 
     transition: var(--pte-animations-interaction);
     opacity: 1;

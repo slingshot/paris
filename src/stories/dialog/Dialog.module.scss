@@ -5,7 +5,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 
 .root {
     position: relative;
-    z-index: 10;
+    z-index: var(--pte-new-layers-overlay);
     user-select: var(--pte-utils-defaultUserSelect);
 }
 
@@ -120,7 +120,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 
 .panel {
     position: relative;
-    z-index: 10;
+    z-index: var(--pte-new-layers-overlay);
     width: 100%;
     margin: auto;
     padding: 16px;

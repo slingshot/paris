@@ -18,7 +18,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     position: fixed;
     inset: 0;
     overflow: hidden;
-    z-index: 10;
+    z-index: var(--pte-new-layers-overlay);
     user-select: var(--pte-utils-defaultUserSelect);
 }
 
@@ -85,7 +85,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 
     justify-self: flex-end;
 
-    z-index: 10;
+    z-index: var(--pte-new-layers-overlay);
 
     .enter {
         transition: $duration var(--pte-animations-timing-easeOutQuad);
