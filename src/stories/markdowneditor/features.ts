@@ -1,5 +1,4 @@
 import Image from '@tiptap/extension-image';
-import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import { Table } from '@tiptap/extension-table';
 import TableCell from '@tiptap/extension-table-cell';
@@ -51,6 +50,15 @@ export function buildExtensions(features: Set<MarkdownEditorFeature>, placeholde
             listItem: features.has('bulletList') || features.has('orderedList') ? {} : false,
             codeBlock: features.has('codeBlock') ? {} : false,
             code: features.has('code') ? {} : false,
+            link: features.has('link')
+                ? {
+                      openOnClick: false,
+                      HTMLAttributes: {
+                          rel: 'noopener noreferrer',
+                          target: '_blank',
+                      },
+                  }
+                : false,
         }),
         Markdown,
         Placeholder.configure({
@@ -69,18 +77,6 @@ export function buildExtensions(features: Set<MarkdownEditorFeature>, placeholde
         extensions.push(TableRow);
         extensions.push(TableCell);
         extensions.push(TableHeader);
-    }
-
-    if (features.has('link')) {
-        extensions.push(
-            Link.configure({
-                openOnClick: false,
-                HTMLAttributes: {
-                    rel: 'noopener noreferrer',
-                    target: '_blank',
-                },
-            }),
-        );
     }
 
     if (features.has('image')) {
