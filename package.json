@@ -35,6 +35,9 @@
         "generate:theme": "pte export ./src/stories/theme/themes.ts LightTheme -o ./public/pte.css",
         "generate:text": "ts-node --esm ./scripts/text.ts",
         "release": "bun run generate:exports && bunx changeset publish",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:coverage": "vitest run --coverage",
         "prepare": "test -n \"$CI\" || lefthook install",
         "typecheck": "tsc --noEmit",
         "lint": "biome check .",
@@ -129,13 +132,19 @@
         "@storybook/addon-docs": "10.3.4",
         "@storybook/addon-links": "10.3.4",
         "@storybook/nextjs-vite": "10.3.4",
+        "@storybook/test": "^8.6.15",
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^16.3.2",
+        "@testing-library/user-event": "^14.6.1",
         "@types/node": "^22.0.0",
         "@types/react": "^19",
         "@types/react-dom": "^19",
+        "@vitest/coverage-v8": "^4.1.2",
         "autoprefixer": "^10.4.14",
         "change-case": "^4.1.2",
         "csstype": "^3.1.2",
         "esbuild-sass-plugin": "^2.16.0",
+        "jsdom": "^29.0.1",
         "jss": "^10.10.0",
         "jss-preset-default": "^10.10.0",
         "lefthook": "^1.11.13",
@@ -150,6 +159,7 @@
         "tsup": "^7.2.0",
         "type-fest": "^3.10.0",
         "typescript": "^5.2.2",
-        "vite": "^7.0.0"
+        "vite": "^7.0.0",
+        "vitest": "^4.1.2"
     }
 }
