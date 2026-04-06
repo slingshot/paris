@@ -1,5 +1,11 @@
 # paris
 
+## 0.21.1
+
+### Patch Changes
+
+- f930ca2: Fix portaled dropdowns (Menu, Select) animating from top-left corner on first render by only transitioning opacity and transform instead of all properties.
+
 ## 0.21.0
 
 ### Minor Changes
