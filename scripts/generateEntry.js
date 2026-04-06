@@ -1,14 +1,12 @@
-const path = require('path');
-const fs = require('fs');
+const path = require('node:path');
+const fs = require('node:fs');
 
 const baseDir = path.resolve(process.cwd());
 
 const componentDirectory = `${baseDir}/src/stories`;
 
 // Directories to intentionally ignore
-const ignoreDirectories = [
-    'assets',
-];
+const ignoreDirectories = ['assets'];
 
 const run = async () => {
     // Iterate through the directory and get a list of subdirectories

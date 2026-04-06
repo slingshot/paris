@@ -1,12 +1,25 @@
+import type { CSSColor } from '@ssh/csstypes';
+import { clsx } from 'clsx';
 import type { ComponentPropsWithoutRef, ReactElement, ReactNode } from 'react';
 import { createElement, memo } from 'react';
-import { clsx } from 'clsx';
-import type { CSSColor } from '@ssh/csstypes';
-import typography from './Typography.module.css';
-import styles from './Text.module.scss';
 import type { LightTheme } from '../theme';
+import styles from './Text.module.scss';
+import typography from './Typography.module.css';
 
-export type TextElement = 'p' | 'span' | 'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label' | 'legend' | 'caption' | 'small';
+export type TextElement =
+    | 'p'
+    | 'span'
+    | 'div'
+    | 'h1'
+    | 'h2'
+    | 'h3'
+    | 'h4'
+    | 'h5'
+    | 'h6'
+    | 'label'
+    | 'legend'
+    | 'caption'
+    | 'small';
 export type GlobalCSSValues = 'inherit' | 'initial' | 'revert' | 'revert-layer' | 'unset';
 
 export type TextProps<T extends TextElement = TextElement> = {
@@ -61,30 +74,35 @@ export type TextProps<T extends TextElement = TextElement> = {
  * ```
  * @constructor
  */
-export const Text = memo(<T extends TextElement = TextElement>({
-    kind,
-    as,
-    weight,
-    fontStyle,
-    color,
-    children,
-    ...props
-}: TextProps<T>): ReactElement => createElement(
-    as || 'span',
-    {
-        ...props,
-        className: clsx(
-            styles.text,
-            typography[kind || 'paragraphMedium'],
-            weight && styles[`weight-${weight}`],
-            fontStyle && styles[`fontStyle-${fontStyle}`],
-            props?.className,
-        ),
-        ...(color ? {
-            style: {
-                '--text-color': color,
+export const Text = memo(
+    <T extends TextElement = TextElement>({
+        kind,
+        as,
+        weight,
+        fontStyle,
+        color,
+        children,
+        ...props
+    }: TextProps<T>): ReactElement =>
+        createElement(
+            as || 'span',
+            {
+                ...props,
+                className: clsx(
+                    styles.text,
+                    typography[kind || 'paragraphMedium'],
+                    weight && styles[`weight-${weight}`],
+                    fontStyle && styles[`fontStyle-${fontStyle}`],
+                    props?.className,
+                ),
+                ...(color
+                    ? {
+                          style: {
+                              '--text-color': color,
+                          },
+                      }
+                    : {}),
             },
-        } : {}),
-    },
-    children,
-));
+            children,
+        ),
+);

@@ -1,11 +1,7 @@
+import { faCancel, faCheck, faWarning } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { Meta, StoryObj } from '@storybook/react';
 import { createElement } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faCancel,
-    faCheck,
-    faWarning,
-} from '@fortawesome/free-solid-svg-icons';
 import { Callout } from './Callout';
 
 const meta: Meta<typeof Callout> = {

@@ -1,14 +1,12 @@
 'use client';
 
-import type {
-    ComponentPropsWithoutRef, FC, ReactElement, ReactNode,
-} from 'react';
+import { clsx } from 'clsx';
+import type { ComponentPropsWithoutRef, FC, ReactElement, ReactNode } from 'react';
 import { forwardRef, useState } from 'react';
 import type { PopoverProps as RTPopoverProps } from 'react-tiny-popover';
 import { Popover as RTPopover } from 'react-tiny-popover';
-import { clsx } from 'clsx';
-import styles from './Popover.module.scss';
 import typography from '../text/Typography.module.css';
+import styles from './Popover.module.scss';
 
 // TODO(URGENT): Figure out how to properly handle accessibility; the popover content should capture focus for tabbing and clicking, and `esc` should allow closing the popover. Might be better to use Radix popover instead of react-tiny-popover?
 
@@ -68,11 +66,7 @@ export const Popover: FC<PopoverProps> = ({
             padding={padding || 8}
             isOpen={typeof isOpen === 'undefined' ? open : isOpen}
             containerClassName={clsx(typography.paragraphSmall, styles.content)}
-            content={(
-                <>
-                    {children}
-                </>
-            )}
+            content={<>{children}</>}
             onClickOutside={() => {
                 setIsOpen?.(false);
                 setOpen(false);

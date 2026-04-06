@@ -4,47 +4,47 @@ export type PaginationState<T extends string[] | readonly string[] = string[]> =
     /**
      * The current page key.
      */
-    currentPage: T[number],
+    currentPage: T[number];
 
     /**
      * Open a page and add it to the history.
      * @param page - The page's unique key.
      */
-    open: (page: T[number]) => void,
+    open: (page: T[number]) => void;
 
     /**
      * Check if the current page can go back.
      */
-    canGoBack: () => boolean,
+    canGoBack: () => boolean;
 
     /**
      * Go back to the previous page.
      *
      * If the current page is the first page, nothing happens.
      */
-    back: () => void,
+    back: () => void;
 
     /**
      * Check if the current page can go forward.
      */
-    canGoForward: () => boolean,
+    canGoForward: () => boolean;
 
     /**
      * Go forward to the next page.
      *
      * If there is no next page, nothing happens.
      */
-    forward: () => void,
+    forward: () => void;
 
     /**
      * The page history.
      */
-    history: T[number][],
+    history: T[number][];
 
     /**
      * Clear the page history and reset to the initial page.
      */
-    reset: () => void,
+    reset: () => void;
 };
 
 /**

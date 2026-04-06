@@ -1,15 +1,15 @@
 'use client';
 
+import { clsx } from 'clsx';
 import type { ComponentPropsWithoutRef, FC, ForwardedRef } from 'react';
 import { forwardRef, useId } from 'react';
-import { clsx } from 'clsx';
-import styles from './Input.module.scss';
-import type { TextProps } from '../text';
-import type { Enhancer } from '../../types/Enhancer';
-import { theme } from '../theme';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
+import type { Enhancer } from '../../types/Enhancer';
 import type { FieldProps } from '../field';
 import { Field } from '../field';
+import type { TextProps } from '../text';
+import { theme } from '../theme';
+import styles from './Input.module.scss';
 
 export type InputProps = {
     /**
@@ -25,7 +25,29 @@ export type InputProps = {
      * The input type. All HTML5 input types are supported, but some may require additional props to be set for full accessibility or aesthetic.
      * @default text
      */
-    type?: 'button' | 'checkbox' | 'color' | 'date' | 'datetime-local' | 'email' | 'file' | 'hidden' | 'image' | 'month' | 'number' | 'password' | 'radio' | 'range' | 'reset' | 'search' | 'submit' | 'tel' | 'text' | 'time' | 'url' | 'week';
+    type?:
+        | 'button'
+        | 'checkbox'
+        | 'color'
+        | 'date'
+        | 'datetime-local'
+        | 'email'
+        | 'file'
+        | 'hidden'
+        | 'image'
+        | 'month'
+        | 'number'
+        | 'password'
+        | 'radio'
+        | 'range'
+        | 'reset'
+        | 'search'
+        | 'submit'
+        | 'tel'
+        | 'text'
+        | 'time'
+        | 'url'
+        | 'week';
     /**
      * The placeholder for the input.
      */
@@ -47,7 +69,7 @@ export type InputProps = {
         description?: TextProps<'p'>;
         startEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
         endEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
-    }
+    };
 } & FieldProps;
 
 /**
@@ -64,94 +86,96 @@ export type InputProps = {
  * ```
  * @constructor
  */
-export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = forwardRef(({
-    label,
-    status,
-    type,
-    hideLabel,
-    description,
-    hideDescription,
-    descriptionPosition,
-    startEnhancer,
-    endEnhancer,
-    disabled,
-    overrides,
-    ...props
-}, ref: ForwardedRef<HTMLInputElement>) => {
-    const inputID = useId();
-    return (
-        <Field
-            htmlFor={inputID}
-            label={label}
-            hideLabel={hideLabel}
-            description={description}
-            hideDescription={hideDescription}
-            disabled={disabled}
-            descriptionPosition={descriptionPosition}
-            overrides={{
-                container: {
-                    ...overrides?.container,
-                    className: clsx(
-                        // styles.fieldContainer,
-                        overrides?.container?.className,
-                    ),
-                },
-                label: overrides?.label,
-                description: overrides?.description,
-            }}
-        >
-            <div
-                className={styles.inputContainer}
-                // data-status={status}
-                // data-disabled={disabled}
-                data-status={disabled ? 'disabled' : (status || 'default')}
+export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = forwardRef(
+    (
+        {
+            label,
+            status,
+            type,
+            hideLabel,
+            description,
+            hideDescription,
+            descriptionPosition,
+            startEnhancer,
+            endEnhancer,
+            disabled,
+            overrides,
+            ...props
+        },
+        ref: ForwardedRef<HTMLInputElement>,
+    ) => {
+        const inputID = useId();
+        return (
+            <Field
+                htmlFor={inputID}
+                label={label}
+                hideLabel={hideLabel}
+                description={description}
+                hideDescription={hideDescription}
+                disabled={disabled}
+                descriptionPosition={descriptionPosition}
+                overrides={{
+                    container: {
+                        ...overrides?.container,
+                        className: clsx(
+                            // styles.fieldContainer,
+                            overrides?.container?.className,
+                        ),
+                    },
+                    label: overrides?.label,
+                    description: overrides?.description,
+                }}
             >
-                {!!startEnhancer && (
-                    <div
-                        {...overrides?.startEnhancerContainer}
-                        className={clsx(styles.enhancer, overrides?.startEnhancerContainer?.className)}
-                        data-status={disabled ? 'disabled' : (status || 'default')}
-                    >
-                        {!!startEnhancer && (
-                            <MemoizedEnhancer
-                                enhancer={startEnhancer}
-                                size={parseInt(theme.typography.styles.paragraphSmall.fontSize, 10)}
-                            />
-                        )}
+                <div
+                    className={styles.inputContainer}
+                    // data-status={status}
+                    // data-disabled={disabled}
+                    data-status={disabled ? 'disabled' : status || 'default'}
+                >
+                    {!!startEnhancer && (
+                        <div
+                            {...overrides?.startEnhancerContainer}
+                            className={clsx(styles.enhancer, overrides?.startEnhancerContainer?.className)}
+                            data-status={disabled ? 'disabled' : status || 'default'}
+                        >
+                            {!!startEnhancer && (
+                                <MemoizedEnhancer
+                                    enhancer={startEnhancer}
+                                    size={parseInt(theme.typography.styles.paragraphSmall.fontSize, 10)}
+                                />
+                            )}
+                        </div>
+                    )}
+                    <div className={styles.inputScaleWrapper}>
+                        <input
+                            {...props}
+                            id={inputID}
+                            ref={ref}
+                            type={type || 'text'}
+                            aria-label={typeof label === 'string' ? label : props['aria-label']}
+                            aria-describedby={`${inputID}-description`}
+                            aria-disabled={disabled}
+                            data-status={disabled ? 'disabled' : status || 'default'}
+                            readOnly={disabled}
+                            className={clsx(props.className, styles.input)}
+                        />
                     </div>
-                )}
-                <div className={styles.inputScaleWrapper}>
-                    <input
-                        {...props}
-                        id={inputID}
-                        ref={ref}
-                        type={type || 'text'}
-                        aria-label={typeof label === 'string' ? label : props['aria-label']}
-                        aria-describedby={`${inputID}-description`}
-                        aria-disabled={disabled}
-                        data-status={disabled ? 'disabled' : (status || 'default')}
-                        readOnly={disabled}
-                        className={clsx(
-                            props.className,
-                            styles.input,
-                        )}
-                    />
+                    {!!endEnhancer && (
+                        <div
+                            {...overrides?.endEnhancerContainer}
+                            className={clsx(styles.enhancer, overrides?.endEnhancerContainer?.className)}
+                            data-status={disabled ? 'disabled' : status || 'default'}
+                        >
+                            {!!endEnhancer && (
+                                <MemoizedEnhancer
+                                    enhancer={endEnhancer}
+                                    size={parseInt(theme.typography.styles.paragraphSmall.fontSize, 10)}
+                                />
+                            )}
+                        </div>
+                    )}
                 </div>
-                {!!endEnhancer && (
-                    <div
-                        {...overrides?.endEnhancerContainer}
-                        className={clsx(styles.enhancer, overrides?.endEnhancerContainer?.className)}
-                        data-status={disabled ? 'disabled' : (status || 'default')}
-                    >
-                        {!!endEnhancer && (
-                            <MemoizedEnhancer
-                                enhancer={endEnhancer}
-                                size={parseInt(theme.typography.styles.paragraphSmall.fontSize, 10)}
-                            />
-                        )}
-                    </div>
-                )}
-            </div>
-        </Field>
-    );
-});
+            </Field>
+        );
+    },
+);

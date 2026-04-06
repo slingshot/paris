@@ -1,3 +1,3 @@
+export { generateCSS } from 'pte';
 export * from './themes';
 export * from './tokens';
-export { generateCSS } from 'pte';

@@ -1,8 +1,6 @@
-import type {
-    ComponentPropsWithoutRef, ElementType, FC, ReactNode,
-} from 'react';
-import { createElement } from 'react';
 import { clsx } from 'clsx';
+import type { ComponentPropsWithoutRef, ElementType, FC, ReactNode } from 'react';
+import { createElement } from 'react';
 import styles from './StyledLink.module.scss';
 
 export type StyledLinkProps<T extends ElementType = 'a'> = {
@@ -24,16 +22,12 @@ export type StyledLinkProps<T extends ElementType = 'a'> = {
  * ```
  * @constructor
  */
-export const StyledLink: FC<StyledLinkProps<ElementType>> = ({
-    as = 'a',
-    children,
-    className,
-    ...props
-}) => createElement(
-    as,
-    {
-        ...props,
-        className: clsx(className, styles.link),
-    },
-    children,
-);
+export const StyledLink: FC<StyledLinkProps<ElementType>> = ({ as = 'a', children, className, ...props }) =>
+    createElement(
+        as,
+        {
+            ...props,
+            className: clsx(className, styles.link),
+        },
+        children,
+    );

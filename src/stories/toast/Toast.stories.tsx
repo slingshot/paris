@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { toast, Toast } from './Toast';
 import { Button } from '../button';
 import { ChevronRight, Icon } from '../icon';
+import { Toast, toast } from './Toast';
 
 const meta: Meta<typeof Toast> = {
     title: 'Surfaces/Toast',

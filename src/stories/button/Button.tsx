@@ -1,20 +1,18 @@
 'use client';
 
-import type {
-    CSSProperties, FC, HTMLAttributeAnchorTarget, MouseEventHandler, ReactNode,
-} from 'react';
-import { useMemo } from 'react';
 import type { ButtonProps as AriaButtonProps } from '@ariakit/react';
 import { Button as AriaButton } from '@ariakit/react';
+import type { CSSLength } from '@ssh/csstypes';
 import { clsx } from 'clsx';
 import fontColorContrast from 'font-color-contrast';
-import type { CSSLength } from '@ssh/csstypes';
-import styles from './Button.module.scss';
-import { Text } from '../text';
-import type { Enhancer } from '../../types/Enhancer';
+import type { CSSProperties, FC, HTMLAttributeAnchorTarget, MouseEventHandler, ReactNode } from 'react';
+import { useMemo } from 'react';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
+import type { Enhancer } from '../../types/Enhancer';
+import { NotificationDot, Spinner } from '../icon';
+import { Text } from '../text';
 import { pvar } from '../theme';
-import { Spinner, NotificationDot } from '../icon';
+import styles from './Button.module.scss';
 
 const EnhancerSizes = {
     large: 13,
@@ -68,7 +66,7 @@ export type ButtonProps = {
      * @see CornerPresets
      * @default rounded
      */
-    corners?: typeof CornerPresets[number] | CSSLength;
+    corners?: (typeof CornerPresets)[number] | CSSLength;
     /**
      * A color to apply for the Button. Provide an object with `primary` and `secondary` properties to set the primary and hover colors.
      */
@@ -164,16 +162,26 @@ export const Button: FC<ButtonProps> = ({
     return (
         <AriaButton
             {...props}
-            style={(theme || colors) ? {
-                '--pte-new-colors-contentInversePrimary': fontColorContrast(theme ? ButtonThemes[theme].primary : colors?.primary || pvar('new.colors.contentPrimary')), // text for primary
-                '--pte-new-colors-buttonFill': theme ? ButtonThemes[theme].primaryAlt : colors?.primary, // background for primary
-                '--pte-new-colors-buttonFillHover': theme ? ButtonThemes[theme].secondaryAlt : colors?.secondary, // hover background for primary
-                '--pte-new-colors-contentPrimary': theme ? ButtonThemes[theme].primary : colors?.primary, // text for secondary/tertiary
-                '--pte-new-colors-buttonBorder': theme ? ButtonThemes[theme].primary : colors?.primary, // border for secondary/tertiary
-                '--pte-new-colors-overlayMedium': theme ? ButtonThemes[theme].secondary : colors?.secondary, // hover background for secondary/tertiary
-                borderRadius: !cornersIsPreset ? corners : '',
-                ...style,
-            } as CSSProperties : ({ borderRadius: !cornersIsPreset ? corners : '', ...style })}
+            style={
+                theme || colors
+                    ? ({
+                          '--pte-new-colors-contentInversePrimary': fontColorContrast(
+                              theme
+                                  ? ButtonThemes[theme].primary
+                                  : colors?.primary || pvar('new.colors.contentPrimary'),
+                          ), // text for primary
+                          '--pte-new-colors-buttonFill': theme ? ButtonThemes[theme].primaryAlt : colors?.primary, // background for primary
+                          '--pte-new-colors-buttonFillHover': theme
+                              ? ButtonThemes[theme].secondaryAlt
+                              : colors?.secondary, // hover background for primary
+                          '--pte-new-colors-contentPrimary': theme ? ButtonThemes[theme].primary : colors?.primary, // text for secondary/tertiary
+                          '--pte-new-colors-buttonBorder': theme ? ButtonThemes[theme].primary : colors?.primary, // border for secondary/tertiary
+                          '--pte-new-colors-overlayMedium': theme ? ButtonThemes[theme].secondary : colors?.secondary, // hover background for secondary/tertiary
+                          borderRadius: !cornersIsPreset ? corners : '',
+                          ...style,
+                      } as CSSProperties)
+                    : { borderRadius: !cornersIsPreset ? corners : '', ...style }
+            }
             className={clsx(
                 styles.button,
                 styles[kind],
@@ -187,39 +195,27 @@ export const Button: FC<ButtonProps> = ({
             aria-details={typeof children === 'string' ? children : undefined}
             onClick={!disabled && !href && !loading ? onClick : () => {}}
             disabled={false}
-            {...href ? {
-                render: (properties) => (
-                    // eslint-disable-next-line jsx-a11y/anchor-has-content
-                    <a
-                        {...properties}
-                        href={href}
-                        target={props.hreftarget ?? '_self'}
-                        rel={props.hreftarget === '_self' ? undefined : 'noreferrer'}
-                    />
-                ),
-            } : {}}
+            {...(href
+                ? {
+                      render: (properties) => (
+                          // eslint-disable-next-line jsx-a11y/anchor-has-content
+                          <a
+                              {...properties}
+                              href={href}
+                              target={props.hreftarget ?? '_self'}
+                              rel={props.hreftarget === '_self' ? undefined : 'noreferrer'}
+                          />
+                      ),
+                  }
+                : {})}
         >
-            {!!(startEnhancer && !loading) && (
-                <MemoizedEnhancer
-                    enhancer={startEnhancer}
-                    size={EnhancerSizes[size]}
-                />
-            )}
+            {!!(startEnhancer && !loading) && <MemoizedEnhancer enhancer={startEnhancer} size={EnhancerSizes[size]} />}
             {!['circle', 'square'].includes(shape) && (
                 <Text kind="labelXSmall">
-                    {!loading ? (
-                        children || 'Button'
-                    ) : (
-                        <Spinner size={EnhancerSizes[size]} />
-                    )}
+                    {!loading ? children || 'Button' : <Spinner size={EnhancerSizes[size]} />}
                 </Text>
             )}
-            {!!(endEnhancer && !loading) && (
-                <MemoizedEnhancer
-                    enhancer={endEnhancer}
-                    size={EnhancerSizes[size]}
-                />
-            )}
+            {!!(endEnhancer && !loading) && <MemoizedEnhancer enhancer={endEnhancer} size={EnhancerSizes[size]} />}
             {!!displayNotificationDot && (
                 <div className="absolute top-0 right-0">
                     <NotificationDot size={8} />

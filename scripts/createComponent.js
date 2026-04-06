@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 
 if (!process.argv[2]) {
     console.error('❌  Please provide a component name, e.g. pnpm create:component Button');
@@ -96,13 +96,16 @@ const run = async () => {
         throw new Error(`❌  Component ${componentName} already exists.`);
     }
 
-    const success = await fs.promises.mkdir(componentDirectory)
-        .then(() => Promise.all([
-            fs.promises.writeFile(componentFile, componentCode, { encoding: 'utf8' }),
-            fs.promises.writeFile(cssModuleFile, cssModuleCode, { encoding: 'utf8' }),
-            fs.promises.writeFile(storyFile, storyCode, { encoding: 'utf8' }),
-            fs.promises.writeFile(indexFile, indexCode, { encoding: 'utf8' }),
-        ]))
+    const success = await fs.promises
+        .mkdir(componentDirectory)
+        .then(() =>
+            Promise.all([
+                fs.promises.writeFile(componentFile, componentCode, { encoding: 'utf8' }),
+                fs.promises.writeFile(cssModuleFile, cssModuleCode, { encoding: 'utf8' }),
+                fs.promises.writeFile(storyFile, storyCode, { encoding: 'utf8' }),
+                fs.promises.writeFile(indexFile, indexCode, { encoding: 'utf8' }),
+            ]),
+        )
         .then(() => `✅  Component ${componentName} created!`);
 
     return success;

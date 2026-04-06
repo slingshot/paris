@@ -22,10 +22,7 @@ export const Default: Story = {
 export const WithCustomLabel: Story = {
     args: {
         placeholder: 'Mia Dolan',
-        label: createElement('span', {}, [
-            createElement('b', null, 'Name'),
-            createElement('i', null, ' (optional)'),
-        ]),
+        label: createElement('span', {}, [createElement('b', null, 'Name'), createElement('i', null, ' (optional)')]),
         'aria-label': 'Name (optional)',
         description: createElement('span', null, [
             createElement(

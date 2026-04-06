@@ -4,15 +4,15 @@
  * @file Generates CSS modules and Storybook stories for typography classes.
  */
 
-import fs from 'fs/promises';
-import * as cp from 'child_process';
-import jss from 'jss';
-import preset from 'jss-preset-default';
+import * as cp from 'node:child_process';
+import fs from 'node:fs/promises';
 import type { StoryObj } from '@storybook/react';
 import { pascalCase } from 'change-case';
-import type { FontDefinition, Theme } from '../src/stories/theme';
-import { theme, pvar, LightTheme } from '../src/stories/theme';
+import jss from 'jss';
+import preset from 'jss-preset-default';
 import type { Text } from '../src/stories/text';
+import type { FontDefinition, Theme } from '../src/stories/theme';
+import { LightTheme, pvar, theme } from '../src/stories/theme';
 
 jss.setup({
     ...preset(),
@@ -24,8 +24,8 @@ jss.setup({
  */
 export const text = async () => {
     const styles = Object.fromEntries(
-        (Object.entries(theme.typography.styles) as Array<[keyof Theme['typography']['styles'], FontDefinition]>)
-            .map(([fontClass, value]) => [
+        (Object.entries(theme.typography.styles) as Array<[keyof Theme['typography']['styles'], FontDefinition]>).map(
+            ([fontClass, value]) => [
                 fontClass,
                 Object.fromEntries(
                     (Object.keys(value) as Array<keyof FontDefinition>).map((attr) => [
@@ -33,21 +33,25 @@ export const text = async () => {
                         pvar(`typography.styles.${fontClass}.${attr}`),
                     ]),
                 ),
-            ]),
+            ],
+        ),
     );
     // const { styles } = theme.typography;
     const css = `/* Auto-generated with \`pnpm generate:text\` on ${new Date().toString()} */\n/* Do not edit manually; instead, edit the \`generateTextClasses\` function in \`scripts/text.ts\` and run \`pnpm generate:text -c\`. */\n\n${jss.createStyleSheet(styles).toString()}`;
-    await fs.writeFile('src/stories/text/Typography.module.css', css
-        // Add a newline after each class
-        .replaceAll('}', '}\n'));
+    await fs.writeFile(
+        'src/stories/text/Typography.module.css',
+        css
+            // Add a newline after each class
+            .replaceAll('}', '}\n'),
+    );
 };
 
 /**
  * Generates Storybook stories for each typography class.
  */
 export const generateTextStories = async () => {
-    const typographyStories: Array<[string, StoryObj<typeof Text>]> = Object.keys(LightTheme.typography.styles)
-        .map((style) => ([
+    const typographyStories: Array<[string, StoryObj<typeof Text>]> = Object.keys(LightTheme.typography.styles).map(
+        (style) => [
             style,
             {
                 args: {
@@ -55,14 +59,30 @@ export const generateTextStories = async () => {
                     kind: style,
                 },
             } as StoryObj<typeof Text>,
-        ]));
+        ],
+    );
 
     const styledStories: Array<[string, StoryObj<typeof Text>]> = [
-        ['paragraphLargeBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphLarge', weight: 'medium' } }],
-        ['paragraphMediumBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphMedium', weight: 'medium' } }],
-        ['paragraphSmallBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphSmall', weight: 'medium' } }],
-        ['paragraphXSmallBold', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphXSmall', weight: 'medium' } }],
-        ['paragraphLargeItalic', { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphLarge', fontStyle: 'italic' } }],
+        [
+            'paragraphLargeBold',
+            { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphLarge', weight: 'medium' } },
+        ],
+        [
+            'paragraphMediumBold',
+            { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphMedium', weight: 'medium' } },
+        ],
+        [
+            'paragraphSmallBold',
+            { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphSmall', weight: 'medium' } },
+        ],
+        [
+            'paragraphXSmallBold',
+            { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphXSmall', weight: 'medium' } },
+        ],
+        [
+            'paragraphLargeItalic',
+            { args: { children: 'In an alleyway, drinking champagne', kind: 'paragraphLarge', fontStyle: 'italic' } },
+        ],
     ];
 
     const stories = [...typographyStories, ...styledStories];
@@ -75,21 +95,22 @@ export const generateTextStories = async () => {
     const end = currentStories.indexOf('// @auto-generated-end');
 
     // Generate the new stories
-    const out = stories.map((story) => `export const ${pascalCase(story[0] as string).replace('Xx', 'XX')}: Story = ${JSON.stringify(story[1], null, 4)};`).join('\n\n');
+    const out = stories
+        .map(
+            (story) =>
+                `export const ${pascalCase(story[0] as string).replace('Xx', 'XX')}: Story = ${JSON.stringify(story[1], null, 4)};`,
+        )
+        .join('\n\n');
 
     // If the start and end tags are found, replace the content between them
     if (start !== -1 && end !== -1) {
         const newStories = `${currentStories.slice(0, start + '// @auto-generated-start\n\n'.length)}${
             out
-        }\n\n${
-            currentStories.slice(end)}`;
+        }\n\n${currentStories.slice(end)}`;
         await fs.writeFile('src/stories/text/Text.stories.ts', newStories);
     } else {
-    // Otherwise, append the new stories to the end of the file and add the start and end tags
-        const newStories = `${currentStories
-        }\n\n// @auto-generated-start\n\n${
-            out
-        }\n\n// @auto-generated-end`;
+        // Otherwise, append the new stories to the end of the file and add the start and end tags
+        const newStories = `${currentStories}\n\n// @auto-generated-start\n\n${out}\n\n// @auto-generated-end`;
         await fs.writeFile('src/stories/text/Text.stories.ts', newStories);
     }
 
@@ -125,4 +146,4 @@ export const generateTextStories = async () => {
         process.exit(1);
     }
     process.exit(0);
-}());
+})();

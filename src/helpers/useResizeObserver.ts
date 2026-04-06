@@ -1,15 +1,11 @@
 // Copied from https://usehooks-ts.com/react-hook/use-resize-observer
 
-import { useEffect, useRef, useState } from 'react';
-
 import type { RefObject } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useIsMounted } from './useIsMounted';
 
-type BoxSizesKey = keyof Pick<
-    ResizeObserverEntry,
-'borderBoxSize' | 'contentBoxSize' | 'devicePixelContentBoxSize'
->;
+type BoxSizesKey = keyof Pick<ResizeObserverEntry, 'borderBoxSize' | 'contentBoxSize' | 'devicePixelContentBoxSize'>;
 
 function extractSize(
     entry: ResizeObserverEntry,
@@ -25,19 +21,19 @@ function extractSize(
 
     return Array.isArray(entry[box])
         ? entry[box][0][sizeType]
-    // @ts-ignore Support Firefox's non-standard behavior
-        : (entry[box][sizeType] as number);
+        : // @ts-expect-error Support Firefox's non-standard behavior
+          (entry[box][sizeType] as number);
 }
 
 type Size = {
-    width: number | undefined
-    height: number | undefined
+    width: number | undefined;
+    height: number | undefined;
 };
 
 type UseResizeObserverOptions<T extends HTMLElement = HTMLElement> = {
-    ref: RefObject<T>
-    onResize?: (size: Size) => void
-    box?: 'border-box' | 'content-box' | 'device-pixel-content-box'
+    ref: RefObject<T>;
+    onResize?: (size: Size) => void;
+    box?: 'border-box' | 'content-box' | 'device-pixel-content-box';
 };
 
 const initialSize: Size = {
@@ -45,9 +41,7 @@ const initialSize: Size = {
     height: undefined,
 };
 
-export function useResizeObserver<T extends HTMLElement = HTMLElement>(
-    options: UseResizeObserverOptions<T>,
-): Size {
+export function useResizeObserver<T extends HTMLElement = HTMLElement>(options: UseResizeObserverOptions<T>): Size {
     const { ref, box = 'content-box' } = options;
     const [{ width, height }, setSize] = useState<Size>(initialSize);
     const isMounted = useIsMounted();
@@ -64,17 +58,17 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>(
         if (typeof window === 'undefined' || !('ResizeObserver' in window)) return undefined;
 
         const observer = new ResizeObserver(([entry]) => {
-            const boxProp = box === 'border-box'
-                ? 'borderBoxSize'
-                : box === 'device-pixel-content-box'
-                    ? 'devicePixelContentBoxSize'
-                    : 'contentBoxSize';
+            const boxProp =
+                box === 'border-box'
+                    ? 'borderBoxSize'
+                    : box === 'device-pixel-content-box'
+                      ? 'devicePixelContentBoxSize'
+                      : 'contentBoxSize';
 
             const newWidth = extractSize(entry, boxProp, 'inlineSize');
             const newHeight = extractSize(entry, boxProp, 'blockSize');
 
-            const hasChanged = previousSize.current.width !== newWidth
-                || previousSize.current.height !== newHeight;
+            const hasChanged = previousSize.current.width !== newWidth || previousSize.current.height !== newHeight;
 
             if (hasChanged) {
                 const newSize: Size = { width: newWidth, height: newHeight };

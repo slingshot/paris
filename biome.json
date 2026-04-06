@@ -1,0 +1,109 @@
+{
+    "$schema": "https://biomejs.dev/schemas/2.4.10/schema.json",
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": true
+    },
+    "files": {
+        "includes": ["**", "!dist/", "!.next/", "!storybook-static/", "!pte.css"]
+    },
+    "formatter": {
+        "enabled": true,
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineWidth": 120
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true,
+            "correctness": {
+                "noUnusedVariables": "off",
+                "noUnusedImports": "warn",
+                "useExhaustiveDependencies": "warn",
+                "useHookAtTopLevel": "error"
+            },
+            "style": {
+                "noNonNullAssertion": "off",
+                "useImportType": "error",
+                "noParameterAssign": "off"
+            },
+            "suspicious": {
+                "noExplicitAny": "off",
+                "noArrayIndexKey": "warn"
+            },
+            "complexity": {
+                "noForEach": "off",
+                "noStaticOnlyClass": "off",
+                "noUselessFragments": "off"
+            },
+            "a11y": {
+                "useButtonType": "off",
+                "noAutofocus": "off",
+                "noSvgWithoutTitle": "off",
+                "noStaticElementInteractions": "off",
+                "useKeyWithClickEvents": "off",
+                "useSemanticElements": "off"
+            },
+            "security": {
+                "noDangerouslySetInnerHtml": "off"
+            }
+        },
+        "domains": {
+            "react": "recommended"
+        }
+    },
+    "assist": {
+        "enabled": true,
+        "actions": {
+            "source": {
+                "organizeImports": "on"
+            }
+        }
+    },
+    "javascript": {
+        "formatter": {
+            "quoteStyle": "single",
+            "trailingCommas": "all",
+            "semicolons": "always"
+        },
+        "jsxRuntime": "transparent"
+    },
+    "css": {
+        "formatter": {
+            "enabled": true,
+            "indentStyle": "space",
+            "indentWidth": 4,
+            "quoteStyle": "single"
+        }
+    },
+    "overrides": [
+        {
+            "includes": ["**/*.stories.ts", "**/*.stories.tsx"],
+            "linter": {
+                "rules": {
+                    "style": {
+                        "noDefaultExport": "off"
+                    },
+                    "correctness": {
+                        "noChildrenProp": "off"
+                    },
+                    "suspicious": {
+                        "noShadowRestrictedNames": "off"
+                    }
+                }
+            }
+        },
+        {
+            "includes": ["scripts/**"],
+            "linter": {
+                "rules": {
+                    "suspicious": {
+                        "noConsole": "off"
+                    }
+                }
+            }
+        }
+    ]
+}

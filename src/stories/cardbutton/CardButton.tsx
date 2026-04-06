@@ -1,13 +1,11 @@
 'use client';
 
-import type {
-    FC, HTMLAttributeAnchorTarget, MouseEventHandler, ReactNode,
-} from 'react';
 import type { ButtonProps as AriaButtonProps } from '@ariakit/react';
 import { Button as AriaButton } from '@ariakit/react';
 import { clsx } from 'clsx';
-import styles from './CardButton.module.scss';
+import type { FC, HTMLAttributeAnchorTarget, MouseEventHandler, ReactNode } from 'react';
 import { TextWhenString } from '../utility';
+import styles from './CardButton.module.scss';
 
 export type CardButtonProps = {
     /**
@@ -82,21 +80,21 @@ export const CardButton: FC<CardButtonProps> = ({
             aria-details={typeof children === 'string' ? children : undefined}
             onClick={!disabled && !href ? onClick : () => {}}
             disabled={false}
-            {...href ? {
-                render: (properties) => (
-                    // eslint-disable-next-line jsx-a11y/anchor-has-content
-                    <a
-                        {...properties}
-                        href={href}
-                        target={props.hreftarget ?? '_self'}
-                        rel={props.hreftarget === '_self' ? undefined : 'noreferrer'}
-                    />
-                ),
-            } : {}}
+            {...(href
+                ? {
+                      render: (properties) => (
+                          // eslint-disable-next-line jsx-a11y/anchor-has-content
+                          <a
+                              {...properties}
+                              href={href}
+                              target={props.hreftarget ?? '_self'}
+                              rel={props.hreftarget === '_self' ? undefined : 'noreferrer'}
+                          />
+                      ),
+                  }
+                : {})}
         >
-            <TextWhenString kind="paragraphMedium">
-                {children}
-            </TextWhenString>
+            <TextWhenString kind="paragraphMedium">{children}</TextWhenString>
         </AriaButton>
     </div>
 );

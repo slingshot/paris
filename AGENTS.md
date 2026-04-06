@@ -107,25 +107,31 @@ src/stories/<componentname>/
 
 ```bash
 # Install dependencies
-pnpm install
+bun install
 
 # Run Storybook development server (port 6006)
-pnpm storybook
+bun run storybook
 
 # Build Storybook for production
-pnpm build:storybook
+bun run build:storybook
 
 # Create a new component
-pnpm create:component ComponentName
+bun run create:component ComponentName
 
 # Generate package exports (run after adding components)
-pnpm generate:exports
+bun run generate:exports
 
-# Run ESLint
-pnpm lint
+# Lint and format check (Biome)
+bun run lint
+
+# Auto-fix lint and formatting issues
+bun run lint:fix
+
+# Format all files
+bun run format
 
 # Publish a release (uses changesets)
-pnpm release
+bun run release
 ```
 
 ---
@@ -325,20 +331,23 @@ export const Variant: Story = {
 };
 ```
 
-### ESLint
+### Biome
 
-The project uses `@ssh/eslint-config` with React and TypeScript rules. Key points:
+The project uses Biome for linting and formatting (configured in `biome.json`). Key points:
 - No unused variables (disabled for flexibility)
+- Unused imports produce warnings
 - JSX props spreading allowed
-- Strict TypeScript checks enabled
+- Import type enforcement enabled
+- Lefthook runs biome check on pre-commit (auto-fixes staged files)
+- Commitlint enforces conventional commit format on commit-msg
 
 ---
 
 ## Dependencies
 
 ### Core Dependencies
-- `react` ^18.x (peer)
-- `react-dom` ^18.x (peer)
+- `react` ^19.x (peer)
+- `react-dom` ^19.x (peer)
 - `sass` ^1.x (peer)
 - `typescript` ^5.0 (peer)
 
@@ -370,7 +379,7 @@ The project uses `@ssh/eslint-config` with React and TypeScript rules. Key point
 ### Installation
 
 ```bash
-pnpm add paris
+bun add paris
 # or
 npm install paris
 ```
@@ -452,12 +461,12 @@ The project uses [Changesets](https://github.com/changesets/changesets) for vers
 
 ### Creating a New Component
 
-1. Run `pnpm create:component ComponentName`
+1. Run `bun run create:component ComponentName`
 2. Edit the generated files in `src/stories/componentname/`
 3. Add props with JSDoc comments
 4. Implement styling in the SCSS module using theme variables
 5. Create comprehensive Storybook stories
-6. Run `pnpm generate:exports` to update package exports
+6. Run `bun run generate:exports` to update package exports
 
 ### Modifying an Existing Component
 
@@ -502,4 +511,4 @@ These files help AI agents work effectively with this codebase. Outdated documen
 7. **Overrides pattern:** Consider adding overrides for complex components
 8. **JSDoc comments:** Document all props with JSDoc
 9. **Node 22+:** Required for development
-10. **pnpm:** Package manager (not npm or yarn)
+10. **Bun:** Package manager (not npm, pnpm, or yarn)

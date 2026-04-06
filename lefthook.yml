@@ -1,0 +1,19 @@
+pre-commit:
+    parallel: true
+    commands:
+        biome-check:
+            glob: "*.{js,ts,jsx,tsx,json,css,scss}"
+            run: bunx biome check --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
+            stage_fixed: true
+        css-var-check:
+            glob: "*.{scss,css}"
+            run: |
+                if grep -rn 'var(-pte-' {staged_files}; then
+                    echo "ERROR: Found var(-pte-...) — CSS custom properties must start with --"
+                    exit 1
+                fi
+
+commit-msg:
+    commands:
+        commitlint:
+            run: bunx commitlint --edit {1}

@@ -1,9 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-    Menu, MenuButton, MenuItems, MenuItem,
-} from './Menu';
 import { Button } from '../button';
 import { ChevronRight, Ellipsis } from '../icon';
+import { Menu, MenuButton, MenuItem, MenuItems } from './Menu';
 
 const meta: Meta<typeof Menu> = {
     title: 'Surfaces/Menu',
@@ -18,15 +16,11 @@ export const Default: Story = {
     args: {
         children: 'Hello world! This is a new Menu component.',
     },
-    render: (args) => (
+    render: (_args) => (
         <div style={{ height: '150px' }}>
             <Menu as="div">
                 <MenuButton>
-                    <Button
-                        kind="tertiary"
-                        shape="circle"
-                        startEnhancer={<Ellipsis size={20} />}
-                    >
+                    <Button kind="tertiary" shape="circle" startEnhancer={<Ellipsis size={20} />}>
                         Action menu
                     </Button>
                 </MenuButton>

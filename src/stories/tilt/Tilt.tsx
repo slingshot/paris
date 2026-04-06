@@ -1,19 +1,8 @@
 'use client';
 
-import {
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
-import type {
-    CSSProperties,
-    FC,
-    MouseEvent as ReactMouseEvent,
-    ReactNode,
-    TouchEvent as ReactTouchEvent,
-} from 'react';
 import { clsx } from 'clsx';
+import type { CSSProperties, FC, MouseEvent as ReactMouseEvent, ReactNode, TouchEvent as ReactTouchEvent } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './Tilt.module.scss';
 
 type GlarePosition = 'top' | 'right' | 'bottom' | 'left' | 'all';
@@ -98,14 +87,23 @@ function computeGlareOpacity(
     const g = reverse ? -1 : 1;
     let raw = 0;
     switch (position) {
-        case 'top': raw = -xPct * g; break;
-        case 'right': raw = yPct * g; break;
-        case 'left': raw = -yPct * g; break;
-        case 'all': raw = Math.hypot(xPct, yPct); break;
-        case 'bottom':
-        default: raw = xPct * g; break;
+        case 'top':
+            raw = -xPct * g;
+            break;
+        case 'right':
+            raw = yPct * g;
+            break;
+        case 'left':
+            raw = -yPct * g;
+            break;
+        case 'all':
+            raw = Math.hypot(xPct, yPct);
+            break;
+        default:
+            raw = xPct * g;
+            break;
     }
-    return clamp(raw, 0, 100) * maxOpacity / 100;
+    return (clamp(raw, 0, 100) * maxOpacity) / 100;
 }
 
 /**
@@ -165,9 +163,12 @@ export const Tilt: FC<TiltProps> = ({
     const isManual = effectiveManualX !== null || effectiveManualY !== null;
 
     // Cancel any pending rAF on unmount
-    useEffect(() => () => {
-        if (rafID.current !== null) cancelAnimationFrame(rafID.current);
-    }, []);
+    useEffect(
+        () => () => {
+            if (rafID.current !== null) cancelAnimationFrame(rafID.current);
+        },
+        [],
+    );
 
     const flushToState = useCallback(() => {
         if (!pendingRef.current) return;
@@ -176,103 +177,137 @@ export const Tilt: FC<TiltProps> = ({
         setTilt(next);
     }, []);
 
-    const scheduleUpdate = useCallback((next: TiltState) => {
-        pendingRef.current = next;
-        if (rafID.current !== null) cancelAnimationFrame(rafID.current);
-        rafID.current = requestAnimationFrame(flushToState);
-    }, [flushToState]);
+    const scheduleUpdate = useCallback(
+        (next: TiltState) => {
+            pendingRef.current = next;
+            if (rafID.current !== null) cancelAnimationFrame(rafID.current);
+            rafID.current = requestAnimationFrame(flushToState);
+        },
+        [flushToState],
+    );
 
-    const computeTilt = useCallback((pageX: number, pageY: number): TiltState => {
-        const rect = rectRef.current;
-        if (!rect) return { ...INITIAL_STATE, currentScale: effectiveScale };
+    const computeTilt = useCallback(
+        (pageX: number, pageY: number): TiltState => {
+            const rect = rectRef.current;
+            if (!rect) return { ...INITIAL_STATE, currentScale: effectiveScale };
 
-        const xPct = clamp(((pageX - rect.left) / rect.width) * 200 - 100, -100, 100);
-        const yPct = clamp(((pageY - rect.top) / rect.height) * 200 - 100, -100, 100);
+            const xPct = clamp(((pageX - rect.left) / rect.width) * 200 - 100, -100, 100);
+            const yPct = clamp(((pageY - rect.top) / rect.height) * 200 - 100, -100, 100);
 
-        const angleX = (effectiveManualX !== null) ? effectiveManualX : (yPct * effectiveMaxX / 100);
-        const angleY = (effectiveManualY !== null) ? effectiveManualY : (xPct * effectiveMaxY / 100 * -1);
+            const angleX = effectiveManualX !== null ? effectiveManualX : (yPct * effectiveMaxX) / 100;
+            const angleY = effectiveManualY !== null ? effectiveManualY : ((xPct * effectiveMaxY) / 100) * -1;
 
-        const glareAngle = xPct ? Math.atan2(yPct, -xPct) * (180 / Math.PI) : 0;
-        const glareOpacity = effectiveGlare
-            ? computeGlareOpacity(xPct, yPct, glarePosition, glareReverse, effectiveGlareMax)
-            : 0;
+            const glareAngle = xPct ? Math.atan2(yPct, -xPct) * (180 / Math.PI) : 0;
+            const glareOpacity = effectiveGlare
+                ? computeGlareOpacity(xPct, yPct, glarePosition, glareReverse, effectiveGlareMax)
+                : 0;
 
-        return {
-            tiltAngleX: clamp(angleX, -90, 90),
-            tiltAngleY: clamp(angleY, -90, 90),
-            currentScale: effectiveScale,
-            glareAngle,
-            glareOpacity,
-            transitioning: false,
-        };
-    }, [effectiveScale, effectiveMaxX, effectiveMaxY, effectiveManualX, effectiveManualY, effectiveGlare, effectiveGlareMax, glarePosition, glareReverse]);
+            return {
+                tiltAngleX: clamp(angleX, -90, 90),
+                tiltAngleY: clamp(angleY, -90, 90),
+                currentScale: effectiveScale,
+                glareAngle,
+                glareOpacity,
+                transitioning: false,
+            };
+        },
+        [
+            effectiveScale,
+            effectiveMaxX,
+            effectiveMaxY,
+            effectiveManualX,
+            effectiveManualY,
+            effectiveGlare,
+            effectiveGlareMax,
+            glarePosition,
+            glareReverse,
+        ],
+    );
 
-    const handleMouseEnter = useCallback((e: ReactMouseEvent<HTMLDivElement>) => {
-        if (!containerRef.current) return;
-        rectRef.current = containerRef.current.getBoundingClientRect();
+    const handleMouseEnter = useCallback(
+        (e: ReactMouseEvent<HTMLDivElement>) => {
+            if (!containerRef.current) return;
+            rectRef.current = containerRef.current.getBoundingClientRect();
 
-        const next = computeTilt(e.pageX, e.pageY);
-        setTilt({ ...next, transitioning: true });
-        onEnter?.({ event: e });
-    }, [computeTilt, onEnter]);
+            const next = computeTilt(e.pageX, e.pageY);
+            setTilt({ ...next, transitioning: true });
+            onEnter?.({ event: e });
+        },
+        [computeTilt, onEnter],
+    );
 
-    const handleMouseMove = useCallback((e: ReactMouseEvent<HTMLDivElement>) => {
-        if (!containerRef.current || !rectRef.current) return;
-        if (effectiveManualX !== null || effectiveManualY !== null) return;
+    const handleMouseMove = useCallback(
+        (e: ReactMouseEvent<HTMLDivElement>) => {
+            if (!containerRef.current || !rectRef.current) return;
+            if (effectiveManualX !== null || effectiveManualY !== null) return;
 
-        const next = computeTilt(e.pageX, e.pageY);
-        scheduleUpdate(next);
+            const next = computeTilt(e.pageX, e.pageY);
+            scheduleUpdate(next);
 
-        if (onMove) {
-            onMove({
-                tiltAngleX: next.tiltAngleX,
-                tiltAngleY: next.tiltAngleY,
-                tiltAngleXPercentage: effectiveMaxX ? (next.tiltAngleX / effectiveMaxX) * 100 : 0,
-                tiltAngleYPercentage: effectiveMaxY ? (next.tiltAngleY / effectiveMaxY) * 100 : 0,
-                glareAngle: next.glareAngle,
-                glareOpacity: next.glareOpacity,
-            });
-        }
-    }, [computeTilt, scheduleUpdate, onMove, effectiveManualX, effectiveManualY, effectiveMaxX, effectiveMaxY]);
+            if (onMove) {
+                onMove({
+                    tiltAngleX: next.tiltAngleX,
+                    tiltAngleY: next.tiltAngleY,
+                    tiltAngleXPercentage: effectiveMaxX ? (next.tiltAngleX / effectiveMaxX) * 100 : 0,
+                    tiltAngleYPercentage: effectiveMaxY ? (next.tiltAngleY / effectiveMaxY) * 100 : 0,
+                    glareAngle: next.glareAngle,
+                    glareOpacity: next.glareOpacity,
+                });
+            }
+        },
+        [computeTilt, scheduleUpdate, onMove, effectiveManualX, effectiveManualY, effectiveMaxX, effectiveMaxY],
+    );
 
-    const handleMouseLeave = useCallback((e: ReactMouseEvent<HTMLDivElement>) => {
-        if (!containerRef.current) return;
-        rectRef.current = null;
+    const handleMouseLeave = useCallback(
+        (e: ReactMouseEvent<HTMLDivElement>) => {
+            if (!containerRef.current) return;
+            rectRef.current = null;
 
-        if (reset) {
-            setTilt({ ...INITIAL_STATE, transitioning: true });
-        }
-        onLeave?.({ event: e });
-    }, [reset, onLeave]);
+            if (reset) {
+                setTilt({ ...INITIAL_STATE, transitioning: true });
+            }
+            onLeave?.({ event: e });
+        },
+        [reset, onLeave],
+    );
 
-    const handleTouchStart = useCallback((e: ReactTouchEvent<HTMLDivElement>) => {
-        if (!containerRef.current || !e.touches[0]) return;
-        rectRef.current = containerRef.current.getBoundingClientRect();
+    const handleTouchStart = useCallback(
+        (e: ReactTouchEvent<HTMLDivElement>) => {
+            if (!containerRef.current || !e.touches[0]) return;
+            rectRef.current = containerRef.current.getBoundingClientRect();
 
-        const touch = e.touches[0];
-        const next = computeTilt(touch.pageX, touch.pageY);
-        setTilt({ ...next, transitioning: true });
-        onEnter?.({ event: e });
-    }, [computeTilt, onEnter]);
+            const touch = e.touches[0];
+            const next = computeTilt(touch.pageX, touch.pageY);
+            setTilt({ ...next, transitioning: true });
+            onEnter?.({ event: e });
+        },
+        [computeTilt, onEnter],
+    );
 
-    const handleTouchMove = useCallback((e: ReactTouchEvent<HTMLDivElement>) => {
-        if (!containerRef.current || !rectRef.current || !e.touches[0]) return;
-        if (effectiveManualX !== null || effectiveManualY !== null) return;
+    const handleTouchMove = useCallback(
+        (e: ReactTouchEvent<HTMLDivElement>) => {
+            if (!containerRef.current || !rectRef.current || !e.touches[0]) return;
+            if (effectiveManualX !== null || effectiveManualY !== null) return;
 
-        const touch = e.touches[0];
-        const next = computeTilt(touch.pageX, touch.pageY);
-        scheduleUpdate(next);
-    }, [computeTilt, scheduleUpdate, effectiveManualX, effectiveManualY]);
+            const touch = e.touches[0];
+            const next = computeTilt(touch.pageX, touch.pageY);
+            scheduleUpdate(next);
+        },
+        [computeTilt, scheduleUpdate, effectiveManualX, effectiveManualY],
+    );
 
-    const handleTouchEnd = useCallback((e: ReactTouchEvent<HTMLDivElement>) => {
-        if (!containerRef.current) return;
-        rectRef.current = null;
+    const handleTouchEnd = useCallback(
+        (e: ReactTouchEvent<HTMLDivElement>) => {
+            if (!containerRef.current) return;
+            rectRef.current = null;
 
-        if (reset) {
-            setTilt({ ...INITIAL_STATE, transitioning: true });
-        }
-        onLeave?.({ event: e });
-    }, [reset, onLeave]);
+            if (reset) {
+                setTilt({ ...INITIAL_STATE, transitioning: true });
+            }
+            onLeave?.({ event: e });
+        },
+        [reset, onLeave],
+    );
 
     // Compute glare element size (diagonal of container)
     const [glareSize, setGlareSize] = useState(0);
@@ -297,9 +332,8 @@ export const Tilt: FC<TiltProps> = ({
 
     const transform = `perspective(${perspective}px) rotateX(${finalAngleX}deg) rotateY(${finalAngleY}deg) scale3d(${finalScale},${finalScale},${finalScale})`;
 
-    const transition = tilt.transitioning || isManual
-        ? `transform ${transitionSpeed}ms ${transitionEasing}`
-        : undefined;
+    const transition =
+        tilt.transitioning || isManual ? `transform ${transitionSpeed}ms ${transitionEasing}` : undefined;
 
     return (
         <div
@@ -315,15 +349,15 @@ export const Tilt: FC<TiltProps> = ({
                 ...style,
                 transform,
                 transition,
-                willChange: tilt.transitioning || finalScale !== 1 || finalAngleX !== 0 || finalAngleY !== 0 ? 'transform' : undefined,
+                willChange:
+                    tilt.transitioning || finalScale !== 1 || finalAngleX !== 0 || finalAngleY !== 0
+                        ? 'transform'
+                        : undefined,
             }}
         >
             {children}
             {effectiveGlare && (
-                <div
-                    className={styles.glareWrapper}
-                    style={{ borderRadius: computedGlareBorderRadius }}
-                >
+                <div className={styles.glareWrapper} style={{ borderRadius: computedGlareBorderRadius }}>
                     <div
                         className={styles.glare}
                         style={{

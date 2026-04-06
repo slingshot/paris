@@ -32,10 +32,7 @@ export const NoSelection: Story = {
 
 export const WithDisabledOption: Story = {
     args: {
-        options: [
-            ...options,
-            { id: 'nowhere', node: 'Nowhere, it was all a dream', disabled: true },
-        ],
+        options: [...options, { id: 'nowhere', node: 'Nowhere, it was all a dream', disabled: true }],
         value: 'champagne',
     },
 };

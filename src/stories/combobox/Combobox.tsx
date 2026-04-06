@@ -1,39 +1,36 @@
 'use client';
 
-import type { ComponentPropsWithoutRef, CSSProperties, ReactNode } from 'react';
-import {
-    useMemo, useId, useState,
-} from 'react';
-import {
-    Combobox as HCombobox, ComboboxInput, ComboboxOptions, ComboboxOption, Transition,
-} from '@headlessui/react';
-import { clsx } from 'clsx';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ComboboxInput, ComboboxOption, ComboboxOptions, Combobox as HCombobox, Transition } from '@headlessui/react';
+import { clsx } from 'clsx';
+import type { ComponentPropsWithoutRef, CSSProperties, ReactNode } from 'react';
+import { useId, useMemo, useState } from 'react';
+import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
+import type { ButtonProps } from '../button';
+import { Button } from '../button';
+import type { FieldProps } from '../field';
+import { Field } from '../field';
+import type { InputProps } from '../input';
 import inputStyles from '../input/Input.module.scss';
-import dropdownStyles from '../utility/Dropdown.module.scss';
 import styles from '../select/Select.module.scss';
 import type { TextProps } from '../text';
 import { Text } from '../text';
-import type { InputProps } from '../input';
-import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 import { pget, theme } from '../theme';
-import type { FieldProps } from '../field';
-import { Field } from '../field';
-import type { ButtonProps } from '../button';
-import { Button } from '../button';
 import { TextWhenString } from '../utility';
-import { Check, Icon } from '../icon';
+import dropdownStyles from '../utility/Dropdown.module.scss';
 
-export type Option<T extends Record<string, any> = Record<string, any>> = {
-    id: string,
-    node: ReactNode,
-    metadata?: T,
-} | {
-    id: null,
-    node: string,
-    metadata?: T,
-};
+export type Option<T extends Record<string, any> = Record<string, any>> =
+    | {
+          id: string;
+          node: ReactNode;
+          metadata?: T;
+      }
+    | {
+          id: null;
+          node: string;
+          metadata?: T;
+      };
 
 export type ComboboxProps<T extends Record<string, any>> = {
     /**
@@ -119,7 +116,7 @@ export type ComboboxProps<T extends Record<string, any>> = {
         startEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
         endEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
         clearButton?: ButtonProps;
-    }
+    };
 } & Omit<InputProps, 'type' | 'overrides'>;
 
 /**
@@ -167,12 +164,10 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
     const [selectedID, setSelectedID] = useState<string | null>(value?.id || null);
     const [query, setQuery] = useState('');
 
-    const optionsWithCustomValue = useMemo(() => ([
-        ...((allowCustomValue && customValueToOption) ? [
-            customValueToOption(query),
-        ] : []),
-        ...options,
-    ]), [allowCustomValue, customValueToOption, options, query]);
+    const optionsWithCustomValue = useMemo(
+        () => [...(allowCustomValue && customValueToOption ? [customValueToOption(query)] : []), ...options],
+        [allowCustomValue, customValueToOption, options, query],
+    );
 
     return (
         <Field
@@ -210,29 +205,32 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                 }}
             >
                 <div
-                    data-status={disabled ? 'disabled' : (status || 'default')}
+                    data-status={disabled ? 'disabled' : status || 'default'}
                     {...overrides?.inputContainer}
-                    className={clsx(
-                        overrides?.inputContainer?.className,
-                        inputStyles.inputContainer,
-                    )}
+                    className={clsx(overrides?.inputContainer?.className, inputStyles.inputContainer)}
                 >
                     {!!startEnhancer && (
                         <div
                             {...overrides?.startEnhancerContainer}
                             className={clsx(inputStyles.enhancer, overrides?.startEnhancerContainer?.className)}
-                            data-status={disabled ? 'disabled' : (status || 'default')}
+                            data-status={disabled ? 'disabled' : status || 'default'}
                         >
                             {!!startEnhancer && (
                                 <MemoizedEnhancer
                                     enhancer={startEnhancer}
-                                    size={parseInt(pget('typography.styles.paragraphSmall.fontSize') || theme.typography.styles.paragraphSmall.fontSize, 10)}
+                                    size={parseInt(
+                                        pget('typography.styles.paragraphSmall.fontSize') ||
+                                            theme.typography.styles.paragraphSmall.fontSize,
+                                        10,
+                                    )}
                                 />
                             )}
                         </div>
                     )}
                     <div className={styles.content}>
-                        {(value?.node && typeof value.node !== 'string') ? value.node : (
+                        {value?.node && typeof value.node !== 'string' ? (
+                            value.node
+                        ) : (
                             <ComboboxInput
                                 id={inputID}
                                 {...overrides?.input}
@@ -244,24 +242,22 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                     if (onInputChange) onInputChange(e.target.value);
                                     if (overrides?.input?.onChange) overrides.input.onChange(e);
                                     if (allowCustomValue && e.target.value) {
-                                        onChange?.(customValueToOption?.(e.target.value) || {
-                                            id: null,
-                                            node: e.target.value,
-                                        });
+                                        onChange?.(
+                                            customValueToOption?.(e.target.value) || {
+                                                id: null,
+                                                node: e.target.value,
+                                            },
+                                        );
                                     }
                                 }}
                                 aria-disabled={disabled}
-                                data-status={disabled ? 'disabled' : (status || 'default')}
-                                className={clsx(
-                                    overrides?.input?.className,
-                                    inputStyles.input,
-                                    styles.field,
-                                )}
+                                data-status={disabled ? 'disabled' : status || 'default'}
+                                className={clsx(overrides?.input?.className, inputStyles.input, styles.field)}
                             />
                         )}
                     </div>
 
-                    {(!!value && (!hideClearButton || typeof value.node !== 'string')) && (
+                    {!!value && (!hideClearButton || typeof value.node !== 'string') && (
                         <Button
                             size="xs"
                             shape="circle"
@@ -281,12 +277,16 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                         <div
                             {...overrides?.endEnhancerContainer}
                             className={clsx(inputStyles.enhancer, overrides?.endEnhancerContainer?.className)}
-                            data-status={disabled ? 'disabled' : (status || 'default')}
+                            data-status={disabled ? 'disabled' : status || 'default'}
                         >
                             {!!endEnhancer && (
                                 <MemoizedEnhancer
                                     enhancer={endEnhancer}
-                                    size={parseInt(pget('typography.styles.paragraphSmall.fontSize') || theme.typography.styles.paragraphSmall.fontSize, 10)}
+                                    size={parseInt(
+                                        pget('typography.styles.paragraphSmall.fontSize') ||
+                                            theme.typography.styles.paragraphSmall.fontSize,
+                                        10,
+                                    )}
                                 />
                             )}
                         </div>
@@ -305,24 +305,20 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                     <ComboboxOptions
                         as="ul"
                         {...overrides?.optionsContainer}
-                        className={clsx(
-                            overrides?.optionsContainer?.className,
-                            styles.options,
-                        )}
-                        style={{
-                            '--options-maxHeight': `${maxHeight}px`,
-                            ...overrides?.optionsContainer?.style,
-                        } as CSSProperties}
+                        className={clsx(overrides?.optionsContainer?.className, styles.options)}
+                        style={
+                            {
+                                '--options-maxHeight': `${maxHeight}px`,
+                                ...overrides?.optionsContainer?.style,
+                            } as CSSProperties
+                        }
                     >
-                        {(allowCustomValue && showCustomValueOption && !customValueToOption && query.length > 0) && (
+                        {allowCustomValue && showCustomValueOption && !customValueToOption && query.length > 0 && (
                             <ComboboxOption
                                 as="li"
                                 value={query}
                                 data-selected={false}
-                                className={clsx(
-                                    overrides?.customValueOption?.className,
-                                    styles.option,
-                                )}
+                                className={clsx(overrides?.customValueOption?.className, styles.option)}
                                 {...overrides?.customValueOption}
                             >
                                 <Text as="span" kind="paragraphSmall">
@@ -330,28 +326,23 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                 </Text>
                             </ComboboxOption>
                         )}
-                        {
-                            (
-                                optionsWithCustomValue || []
-                            )
-                                .map((option) => (
-                                    <ComboboxOption
-                                        as="li"
-                                        key={option.id}
-                                        value={option.id}
-                                        {...overrides?.option}
-                                        className={clsx(
-                                            overrides?.option?.className,
-                                            styles.option,
-                                            hasOptionBorder && styles.optionBorder,
-                                        )}
-                                    >
-                                        <TextWhenString as="span" kind="paragraphSmall">
-                                            {option.node}
-                                        </TextWhenString>
-                                    </ComboboxOption>
-                                ))
-                        }
+                        {(optionsWithCustomValue || []).map((option) => (
+                            <ComboboxOption
+                                as="li"
+                                key={option.id}
+                                value={option.id}
+                                {...overrides?.option}
+                                className={clsx(
+                                    overrides?.option?.className,
+                                    styles.option,
+                                    hasOptionBorder && styles.optionBorder,
+                                )}
+                            >
+                                <TextWhenString as="span" kind="paragraphSmall">
+                                    {option.node}
+                                </TextWhenString>
+                            </ComboboxOption>
+                        ))}
                     </ComboboxOptions>
                 </Transition>
             </HCombobox>

@@ -1,9 +1,9 @@
+import { clsx } from 'clsx';
 import type { FC } from 'react';
 import type { ToasterProps } from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
-import { clsx } from 'clsx';
-import styles from './Toast.module.scss';
 import typography from '../text/Typography.module.css';
+import styles from './Toast.module.scss';
 
 export type ToastProps = ToasterProps;
 
@@ -34,10 +34,7 @@ export type ToastProps = ToasterProps;
  * ```
  * @constructor
  */
-export const Toast: FC<ToastProps> = ({
-    toastOptions,
-    ...props
-}) => (
+export const Toast: FC<ToastProps> = ({ toastOptions, ...props }) => (
     <Toaster
         {...props}
         toastOptions={{

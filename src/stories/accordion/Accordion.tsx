@@ -1,13 +1,13 @@
-import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
-import { useState } from 'react';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { clsx } from 'clsx';
 import type { MotionProps } from 'framer-motion';
 import { AnimatePresence, motion } from 'framer-motion';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { clsx } from 'clsx';
-import styles from './Accordion.module.scss';
-import { TextWhenString } from '../utility';
+import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
+import { useState } from 'react';
 import { ChevronRight, Icon } from '../icon';
+import { TextWhenString } from '../utility';
+import styles from './Accordion.module.scss';
 
 export type AccordionProps = {
     /** The title of the Accordion. */
@@ -33,7 +33,7 @@ export type AccordionProps = {
         titleContainer?: ComponentPropsWithoutRef<'div'>;
         dropdownContainer?: ComponentPropsWithoutRef<'div'> & MotionProps;
         dropdownContent?: ComponentPropsWithoutRef<'div'>;
-    }
+    };
 };
 
 /**
@@ -79,11 +79,7 @@ export const Accordion: FC<AccordionProps> = ({
     return (
         <div
             {...overrides?.container}
-            className={clsx(
-                styles[kind],
-                open && styles.open,
-                overrides?.container?.className,
-            )}
+            className={clsx(styles[kind], open && styles.open, overrides?.container?.className)}
         >
             <div
                 onClick={handleToggle}
@@ -97,30 +93,18 @@ export const Accordion: FC<AccordionProps> = ({
                 tabIndex={0}
                 {...overrides?.titleContainer}
                 data-state={open ? 'open' : 'closed'}
-                className={clsx(
-                    overrides?.titleContainer?.className,
-                    styles.title,
-                    styles[size],
-                    open && styles.open,
-                )}
+                className={clsx(overrides?.titleContainer?.className, styles.title, styles[size], open && styles.open)}
             >
                 <TextWhenString kind="paragraphSmall" weight="medium">
                     {title}
                 </TextWhenString>
                 {kind === 'default' && (
                     <div className={styles.plusIcon}>
-                        <FontAwesomeIcon
-                            icon={faPlus}
-                            className={clsx(open && styles.open)}
-                        />
+                        <FontAwesomeIcon icon={faPlus} className={clsx(open && styles.open)} />
                     </div>
                 )}
                 {kind === 'card' && (
-                    <Icon
-                        icon={ChevronRight}
-                        size={16}
-                        className={clsx(styles.chevron, open && styles.open)}
-                    />
+                    <Icon icon={ChevronRight} size={16} className={clsx(styles.chevron, open && styles.open)} />
                 )}
             </div>
             <AnimatePresence>
@@ -139,10 +123,7 @@ export const Accordion: FC<AccordionProps> = ({
                             ease: [0.87, 0, 0.13, 1],
                         }}
                         {...overrides?.dropdownContainer}
-                        className={clsx(
-                            styles.dropdown,
-                            overrides?.dropdownContainer?.className,
-                        )}
+                        className={clsx(styles.dropdown, overrides?.dropdownContainer?.className)}
                     >
                         <div
                             {...overrides?.dropdownContent}
@@ -152,9 +133,7 @@ export const Accordion: FC<AccordionProps> = ({
                                 overrides?.dropdownContent?.className,
                             )}
                         >
-                            <TextWhenString kind="paragraphXSmall">
-                                {children}
-                            </TextWhenString>
+                            <TextWhenString kind="paragraphXSmall">{children}</TextWhenString>
                         </div>
                     </motion.div>
                 )}

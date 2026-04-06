@@ -1,18 +1,18 @@
-import { createTheme } from 'pte';
 import type { CSSColor, CSSLength, PixelSize } from '@ssh/csstypes';
 import type { Property } from 'csstype';
-import type { PartialDeep } from 'type-fest';
+import { createTheme } from 'pte';
 import merge from 'ts-deepmerge';
+import type { PartialDeep } from 'type-fest';
 import type { TokensT } from './tokens';
 import { Tokens as T } from './tokens';
 
 export type FontDefinition = {
-    fontSize: CSSLength,
-    fontWeight: number | 'normal',
-    lineHeight: CSSLength,
-    fontStyle: 'normal' | 'italic',
-    letterSpacing: CSSLength | 'normal',
-    textTransform: Property.TextTransform,
+    fontSize: CSSLength;
+    fontWeight: number | 'normal';
+    lineHeight: CSSLength;
+    fontStyle: 'normal' | 'italic';
+    letterSpacing: CSSLength | 'normal';
+    textTransform: Property.TextTransform;
 };
 
 export type FontClassDefinition = Omit<FontDefinition, 'fontSize' | 'lineHeight'>;
@@ -20,15 +20,15 @@ export type FontClassDefinition = Omit<FontDefinition, 'fontSize' | 'lineHeight'
 export type ShadowDefinition = `${PixelSize} ${PixelSize} ${PixelSize} ${PixelSize} ${CSSColor}` | 'none';
 
 export type ShadowsType = {
-    shallowAbove: ShadowDefinition,
-    deepAbove: ShadowDefinition,
-    shallowBelow: ShadowDefinition,
-    deepBelow: ShadowDefinition,
-    shallowLeft: ShadowDefinition,
-    shallowRight: ShadowDefinition,
-    subtlePopup: ShadowDefinition,
-    shallowPopup: ShadowDefinition,
-    deepPopup: ShadowDefinition,
+    shallowAbove: ShadowDefinition;
+    deepAbove: ShadowDefinition;
+    shallowBelow: ShadowDefinition;
+    deepBelow: ShadowDefinition;
+    shallowLeft: ShadowDefinition;
+    shallowRight: ShadowDefinition;
+    subtlePopup: ShadowDefinition;
+    shallowPopup: ShadowDefinition;
+    deepPopup: ShadowDefinition;
 };
 
 const Shadows: ShadowsType = {
@@ -52,12 +52,12 @@ const ShadowsDark: ShadowsType = {
 };
 
 export type GlowsType = {
-    glowSubtle1: ShadowDefinition,
-    glowSubtle2: ShadowDefinition,
-    glowSubtle3: ShadowDefinition,
-    glowDeep1: ShadowDefinition,
-    glowDeep2: ShadowDefinition,
-    glowDeep3: ShadowDefinition,
+    glowSubtle1: ShadowDefinition;
+    glowSubtle2: ShadowDefinition;
+    glowSubtle3: ShadowDefinition;
+    glowDeep1: ShadowDefinition;
+    glowDeep2: ShadowDefinition;
+    glowDeep3: ShadowDefinition;
 };
 
 const Glows: GlowsType = {
@@ -78,7 +78,13 @@ const GlowsDark: GlowsType = {
     glowDeep3: '0px 0px 12px 0px rgba(29, 238, 205, 0.1)',
 };
 
-export type TimingFunction = `cubic-bezier(${number}, ${number}, ${number}, ${number})` | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear';
+export type TimingFunction =
+    | `cubic-bezier(${number}, ${number}, ${number}, ${number})`
+    | 'ease'
+    | 'ease-in'
+    | 'ease-out'
+    | 'ease-in-out'
+    | 'linear';
 export type Duration = `${number}ms` | `${number}s`;
 
 const TimingFunctions: Omit<Theme['animations']['timing'], 'default'> = {
@@ -92,538 +98,538 @@ const TimingFunctions: Omit<Theme['animations']['timing'], 'default'> = {
 
 export type Theme = {
     new: {
-        tokens: TokensT['new'],
+        tokens: TokensT['new'];
         utils: {
-            defaultUserSelect: Property.UserSelect,
-        }
+            defaultUserSelect: Property.UserSelect;
+        };
         colors: {
             // Content
-            contentPrimary: CSSColor,
-            contentSecondary: CSSColor,
-            contentTertiary: CSSColor,
-            contentDisabled: CSSColor,
-            contentAccent: CSSColor,
-            contentNegative: CSSColor,
-            contentWarning: CSSColor,
-            contentPositive: CSSColor,
-            contentLink: CSSColor,
+            contentPrimary: CSSColor;
+            contentSecondary: CSSColor;
+            contentTertiary: CSSColor;
+            contentDisabled: CSSColor;
+            contentAccent: CSSColor;
+            contentNegative: CSSColor;
+            contentWarning: CSSColor;
+            contentPositive: CSSColor;
+            contentLink: CSSColor;
 
             // Content Inverse
-            contentInversePrimary: CSSColor,
-            contentInverseSecondary: CSSColor,
-            contentInverseTertiary: CSSColor,
-            contentInverseDisabled: CSSColor,
+            contentInversePrimary: CSSColor;
+            contentInverseSecondary: CSSColor;
+            contentInverseTertiary: CSSColor;
+            contentInverseDisabled: CSSColor;
 
             // Background
-            backgroundPrimary: CSSColor,
-            backgroundSecondary: CSSColor,
-            backgroundMobilePrimary: CSSColor,
-            backgroundMobileSecondary: CSSColor,
-            backgroundNegative: CSSColor,
-            backgroundNegativeMedium: CSSColor,
-            backgroundNegativeStrong: CSSColor,
-            backgroundWarning: CSSColor,
-            backgroundWarningMedium: CSSColor,
-            backgroundWarningStrong: CSSColor,
-            backgroundPositive: CSSColor,
-            backgroundPositiveMedium: CSSColor,
-            backgroundPositiveStrong: CSSColor,
-            backgroundAccent: CSSColor,
-            backgroundAccentMedium: CSSColor,
-            backgroundAccentStrong: CSSColor,
+            backgroundPrimary: CSSColor;
+            backgroundSecondary: CSSColor;
+            backgroundMobilePrimary: CSSColor;
+            backgroundMobileSecondary: CSSColor;
+            backgroundNegative: CSSColor;
+            backgroundNegativeMedium: CSSColor;
+            backgroundNegativeStrong: CSSColor;
+            backgroundWarning: CSSColor;
+            backgroundWarningMedium: CSSColor;
+            backgroundWarningStrong: CSSColor;
+            backgroundPositive: CSSColor;
+            backgroundPositiveMedium: CSSColor;
+            backgroundPositiveStrong: CSSColor;
+            backgroundAccent: CSSColor;
+            backgroundAccentMedium: CSSColor;
+            backgroundAccentStrong: CSSColor;
 
             // Surface
-            surfacePrimary: CSSColor,
-            surfaceSecondary: CSSColor,
-            surfaceTertiary: CSSColor,
-            surfaceQuaternary: CSSColor,
+            surfacePrimary: CSSColor;
+            surfaceSecondary: CSSColor;
+            surfaceTertiary: CSSColor;
+            surfaceQuaternary: CSSColor;
 
             // Border
-            borderSubtle: CSSColor,
-            borderMedium: CSSColor,
-            borderStrong: CSSColor,
-            borderUltrastrong: CSSColor,
+            borderSubtle: CSSColor;
+            borderMedium: CSSColor;
+            borderStrong: CSSColor;
+            borderUltrastrong: CSSColor;
 
             // Button
-            buttonFill: CSSColor,
-            buttonFillHover: CSSColor,
-            buttonFillDisabled: CSSColor,
-            buttonFillHoverAlt: CSSColor,
-            buttonFillHoverNegative: CSSColor,
-            buttonBorder: CSSColor,
-            buttonBorderDisabled: CSSColor,
-            buttonBorderNegative: CSSColor,
+            buttonFill: CSSColor;
+            buttonFillHover: CSSColor;
+            buttonFillDisabled: CSSColor;
+            buttonFillHoverAlt: CSSColor;
+            buttonFillHoverNegative: CSSColor;
+            buttonBorder: CSSColor;
+            buttonBorderDisabled: CSSColor;
+            buttonBorderNegative: CSSColor;
 
             // Input
-            inputFill: CSSColor,
-            inputFillFocus: CSSColor,
-            inputFillNegative: CSSColor,
-            inputFillDisabled: CSSColor,
-            inputBorderFocus: CSSColor,
-            inputBorderNegative: CSSColor,
+            inputFill: CSSColor;
+            inputFillFocus: CSSColor;
+            inputFillNegative: CSSColor;
+            inputFillDisabled: CSSColor;
+            inputBorderFocus: CSSColor;
+            inputBorderNegative: CSSColor;
 
             // Overlay
-            overlaySubtle: CSSColor,
-            overlayMedium: CSSColor,
-            overlayStrong: CSSColor,
-            overlayInverseSubtle: CSSColor,
-            overlayInverseMedium: CSSColor,
-            overlayWhiteSubtle: CSSColor,
-            overlayWhiteMedium: CSSColor,
-            overlayWhiteStrong: CSSColor,
-            overlayWhiteUltrastrong: CSSColor,
-            overlayBlackSubtle: CSSColor,
-            overlayBlackMedium: CSSColor,
-            overlayBlackStrong: CSSColor,
-            overlayPageBackground: CSSColor,
-            overlayRed: CSSColor,
-            overlayTeal: CSSColor,
-        },
+            overlaySubtle: CSSColor;
+            overlayMedium: CSSColor;
+            overlayStrong: CSSColor;
+            overlayInverseSubtle: CSSColor;
+            overlayInverseMedium: CSSColor;
+            overlayWhiteSubtle: CSSColor;
+            overlayWhiteMedium: CSSColor;
+            overlayWhiteStrong: CSSColor;
+            overlayWhiteUltrastrong: CSSColor;
+            overlayBlackSubtle: CSSColor;
+            overlayBlackMedium: CSSColor;
+            overlayBlackStrong: CSSColor;
+            overlayPageBackground: CSSColor;
+            overlayRed: CSSColor;
+            overlayTeal: CSSColor;
+        };
         blurs: {
-            strong: string,
-            ultrastrong: string,
-        },
+            strong: string;
+            ultrastrong: string;
+        };
         typography: {
-            fontFamily: string,
-            italicLetterSpacing: CSSLength,
+            fontFamily: string;
+            italicLetterSpacing: CSSLength;
             verticalMetricsAdjust: CSSLength;
 
             fontWeights: {
-                thin: number,
-                extralight: number,
-                light: number,
-                normal: number,
-                medium: number,
-                semibold: number,
-                bold: number,
-                extrabold: number,
-                black: number,
-                extrablack: number,
-            },
+                thin: number;
+                extralight: number;
+                light: number;
+                normal: number;
+                medium: number;
+                semibold: number;
+                bold: number;
+                extrabold: number;
+                black: number;
+                extrablack: number;
+            };
 
             fontStyles: {
-                normal: string,
-                italic: string,
-            }
+                normal: string;
+                italic: string;
+            };
 
             styles: {
                 // Display
 
-                displayLarge: FontDefinition,
-                displayMedium: FontDefinition,
-                display: FontDefinition,
-                displaySmall: FontDefinition,
+                displayLarge: FontDefinition;
+                displayMedium: FontDefinition;
+                display: FontDefinition;
+                displaySmall: FontDefinition;
 
                 // Heading
 
-                headingLarge: FontDefinition,
-                headingMedium: FontDefinition,
-                headingSmall: FontDefinition,
-                headingXSmall: FontDefinition,
-                headingXXSmall: FontDefinition,
+                headingLarge: FontDefinition;
+                headingMedium: FontDefinition;
+                headingSmall: FontDefinition;
+                headingXSmall: FontDefinition;
+                headingXXSmall: FontDefinition;
 
                 // Label
 
-                labelXLarge: FontDefinition,
-                labelLarge: FontDefinition,
-                labelMedium: FontDefinition,
-                labelSmall: FontDefinition,
-                labelXSmall: FontDefinition,
-                labelXXSmall: FontDefinition,
+                labelXLarge: FontDefinition;
+                labelLarge: FontDefinition;
+                labelMedium: FontDefinition;
+                labelSmall: FontDefinition;
+                labelXSmall: FontDefinition;
+                labelXXSmall: FontDefinition;
 
                 // Paragraph
 
-                paragraphLarge: FontDefinition,
-                paragraphMedium: FontDefinition,
-                paragraphSmall: FontDefinition,
-                paragraphXSmall: FontDefinition,
-                paragraphXXSmall: FontDefinition,
-            }
-        },
+                paragraphLarge: FontDefinition;
+                paragraphMedium: FontDefinition;
+                paragraphSmall: FontDefinition;
+                paragraphXSmall: FontDefinition;
+                paragraphXXSmall: FontDefinition;
+            };
+        };
         lighting: {
-            shallowBelow: ShadowDefinition,
-            deepBelow: ShadowDefinition,
-            shallowAbove: ShadowDefinition,
-            deepAbove: ShadowDefinition,
-            shallowPopup: ShadowDefinition,
-            deepPopup: ShadowDefinition,
-            subtlePopup: ShadowDefinition,
-            shallowLeft: ShadowDefinition,
-            shallowRight: ShadowDefinition,
-            glowSubtle1: ShadowDefinition,
-            glowSubtle2: ShadowDefinition,
-            glowSubtle3: ShadowDefinition,
-            glowDeep1: ShadowDefinition,
-            glowDeep2: ShadowDefinition,
-            glowDeep3: ShadowDefinition,
-        },
+            shallowBelow: ShadowDefinition;
+            deepBelow: ShadowDefinition;
+            shallowAbove: ShadowDefinition;
+            deepAbove: ShadowDefinition;
+            shallowPopup: ShadowDefinition;
+            deepPopup: ShadowDefinition;
+            subtlePopup: ShadowDefinition;
+            shallowLeft: ShadowDefinition;
+            shallowRight: ShadowDefinition;
+            glowSubtle1: ShadowDefinition;
+            glowSubtle2: ShadowDefinition;
+            glowSubtle3: ShadowDefinition;
+            glowDeep1: ShadowDefinition;
+            glowDeep2: ShadowDefinition;
+            glowDeep3: ShadowDefinition;
+        };
         materials: {
             // Simple Materials
             whiteThin: {
-                background: CSSColor,
-            },
+                background: CSSColor;
+            };
             whiteRegular: {
-                background: CSSColor,
-            },
+                background: CSSColor;
+            };
             whiteThick: {
-                background: CSSColor,
-            },
+                background: CSSColor;
+            };
             blackThin: {
-                background: CSSColor,
-            },
+                background: CSSColor;
+            };
             blackRegular: {
-                background: CSSColor,
-            },
+                background: CSSColor;
+            };
             blackThick: {
-                background: CSSColor,
-            },
+                background: CSSColor;
+            };
 
             // Multi-part Materials
             lightGreyUltrathin: {
-                background: CSSColor,
-                backgroundBlend: CSSColor
-                mixBlendMode: Property.MixBlendMode,
-            },
+                background: CSSColor;
+                backgroundBlend: CSSColor;
+                mixBlendMode: Property.MixBlendMode;
+            };
             lightGreyThin: {
-                background: CSSColor,
-                backgroundBlend: CSSColor
-                mixBlendMode: Property.MixBlendMode,
-            },
+                background: CSSColor;
+                backgroundBlend: CSSColor;
+                mixBlendMode: Property.MixBlendMode;
+            };
             lightGreyRegular: {
-                background: CSSColor,
-                backgroundBlend: CSSColor
-                mixBlendMode: Property.MixBlendMode,
-            },
+                background: CSSColor;
+                backgroundBlend: CSSColor;
+                mixBlendMode: Property.MixBlendMode;
+            };
             lightGreyThick: {
-                background: CSSColor,
-                backgroundBlend: CSSColor
-                mixBlendMode: Property.MixBlendMode,
-            },
+                background: CSSColor;
+                backgroundBlend: CSSColor;
+                mixBlendMode: Property.MixBlendMode;
+            };
             darkGreyUltrathin: {
-                background: CSSColor,
-                backgroundBlend: CSSColor
-                mixBlendMode: Property.MixBlendMode,
-            },
+                background: CSSColor;
+                backgroundBlend: CSSColor;
+                mixBlendMode: Property.MixBlendMode;
+            };
             darkGreyThin: {
-                background: CSSColor,
-                backgroundBlend: CSSColor
-                mixBlendMode: Property.MixBlendMode,
-            },
+                background: CSSColor;
+                backgroundBlend: CSSColor;
+                mixBlendMode: Property.MixBlendMode;
+            };
             darkGreyRegular: {
-                background: CSSColor,
-                backgroundBlend: CSSColor
-                mixBlendMode: Property.MixBlendMode,
-            },
+                background: CSSColor;
+                backgroundBlend: CSSColor;
+                mixBlendMode: Property.MixBlendMode;
+            };
             darkGreyThick: {
-                background: CSSColor,
-                backgroundBlend: CSSColor
-                mixBlendMode: Property.MixBlendMode,
-            },
+                background: CSSColor;
+                backgroundBlend: CSSColor;
+                mixBlendMode: Property.MixBlendMode;
+            };
             greyUltrathin: {
-                background: CSSColor,
-                backgroundBlend: CSSColor
-                mixBlendMode: Property.MixBlendMode,
-            },
+                background: CSSColor;
+                backgroundBlend: CSSColor;
+                mixBlendMode: Property.MixBlendMode;
+            };
             greyThin: {
-                background: CSSColor,
-                backgroundBlend: CSSColor
-                mixBlendMode: Property.MixBlendMode,
-            },
+                background: CSSColor;
+                backgroundBlend: CSSColor;
+                mixBlendMode: Property.MixBlendMode;
+            };
             greyRegular: {
-                background: CSSColor,
-                backgroundBlend: CSSColor
-                mixBlendMode: Property.MixBlendMode,
-            },
+                background: CSSColor;
+                backgroundBlend: CSSColor;
+                mixBlendMode: Property.MixBlendMode;
+            };
             greyThick: {
-                background: CSSColor,
-                backgroundBlend: CSSColor
-                mixBlendMode: Property.MixBlendMode,
-            },
+                background: CSSColor;
+                backgroundBlend: CSSColor;
+                mixBlendMode: Property.MixBlendMode;
+            };
 
             // Material Variables
             primaryThin: {
-                background: CSSColor,
-            },
+                background: CSSColor;
+            };
             primaryRegular: {
-                background: CSSColor,
-            },
+                background: CSSColor;
+            };
             primaryThick: {
-                background: CSSColor,
-            },
+                background: CSSColor;
+            };
             secondaryUltrathin: {
-                background: CSSColor,
-                backgroundBlend: CSSColor
-                mixBlendMode: Property.MixBlendMode,
-            },
+                background: CSSColor;
+                backgroundBlend: CSSColor;
+                mixBlendMode: Property.MixBlendMode;
+            };
             secondaryThin: {
-                background: CSSColor,
-                backgroundBlend: CSSColor
-                mixBlendMode: Property.MixBlendMode,
-            },
+                background: CSSColor;
+                backgroundBlend: CSSColor;
+                mixBlendMode: Property.MixBlendMode;
+            };
             secondaryRegular: {
-                background: CSSColor,
-                backgroundBlend: CSSColor
-                mixBlendMode: Property.MixBlendMode,
-            },
+                background: CSSColor;
+                backgroundBlend: CSSColor;
+                mixBlendMode: Property.MixBlendMode;
+            };
             secondaryThick: {
-                background: CSSColor,
-                backgroundBlend: CSSColor
-                mixBlendMode: Property.MixBlendMode,
-            },
-        },
+                background: CSSColor;
+                backgroundBlend: CSSColor;
+                mixBlendMode: Property.MixBlendMode;
+            };
+        };
         borders: {
             // Border Radius
             radius: {
-                pill: CSSLength,
-                circle: CSSLength,
-                rectangle: CSSLength,
-                rounded: CSSLength,
-                roundedSmall: CSSLength,
-                roundedMedium: CSSLength,
-                roundedLarge: CSSLength,
-                roundedXL: CSSLength,
-            },
+                pill: CSSLength;
+                circle: CSSLength;
+                rectangle: CSSLength;
+                rounded: CSSLength;
+                roundedSmall: CSSLength;
+                roundedMedium: CSSLength;
+                roundedLarge: CSSLength;
+                roundedXL: CSSLength;
+            };
 
             // Dropdowns (Select, Menu, Popovers, etc.)
 
             dropdown: {
-                color: CSSColor,
-                shadow: ShadowDefinition,
-                border: `${number}px ${string} ${CSSColor}` | 'none',
-            },
-        },
+                color: CSSColor;
+                shadow: ShadowDefinition;
+                border: `${number}px ${string} ${CSSColor}` | 'none';
+            };
+        };
         surfaces: {
             dialog: {
-                border: `${number}px ${string} ${CSSColor}`,
-                outline: `${number}px ${string} ${CSSColor}`,
-                background: CSSColor,
-                backdropFilter: string,
-            },
-        },
+                border: `${number}px ${string} ${CSSColor}`;
+                outline: `${number}px ${string} ${CSSColor}`;
+                background: CSSColor;
+                backdropFilter: string;
+            };
+        };
         animations: {
-            interaction: string,
+            interaction: string;
             timing: {
-                easeInOut: TimingFunction,
-                easeOut: TimingFunction,
-                easeIn: TimingFunction,
-                easeOutQuad: TimingFunction,
-                easeInQuad: TimingFunction,
-                easeInOutExpo: TimingFunction,
-                default: TimingFunction,
-            },
+                easeInOut: TimingFunction;
+                easeOut: TimingFunction;
+                easeIn: TimingFunction;
+                easeOutQuad: TimingFunction;
+                easeInQuad: TimingFunction;
+                easeInOutExpo: TimingFunction;
+                default: TimingFunction;
+            };
             duration: {
-                rapid: Duration,
-                fast: Duration,
-                normal: Duration,
-                relaxed: Duration,
-                slow: Duration,
-                gradual: Duration,
-            },
-        },
+                rapid: Duration;
+                fast: Duration;
+                normal: Duration;
+                relaxed: Duration;
+                slow: Duration;
+                gradual: Duration;
+            };
+        };
         breakpoints: {
-            sm: `${number}px`,
-            md: `${number}px`,
-            lg: `${number}px`,
-            xl: `${number}px`,
-        }
-    },
-    tokens: TokensT,
+            sm: `${number}px`;
+            md: `${number}px`;
+            lg: `${number}px`;
+            xl: `${number}px`;
+        };
+    };
+    tokens: TokensT;
     utils: {
-        defaultUserSelect: Property.UserSelect,
-    }
+        defaultUserSelect: Property.UserSelect;
+    };
     colors: {
         // Primary
 
-        black: CSSColor,
-        white: CSSColor,
-        accent: CSSColor,
-        negative: CSSColor,
-        warning: CSSColor,
-        positive: CSSColor,
+        black: CSSColor;
+        white: CSSColor;
+        accent: CSSColor;
+        negative: CSSColor;
+        warning: CSSColor;
+        positive: CSSColor;
 
         // Content
 
-        contentPrimary: CSSColor,
-        contentSecondary: CSSColor,
-        contentTertiary: CSSColor,
-        contentDisabled: CSSColor,
-        contentAccent: CSSColor,
-        contentNegative: CSSColor,
-        contentWarning: CSSColor,
-        contentPositive: CSSColor,
+        contentPrimary: CSSColor;
+        contentSecondary: CSSColor;
+        contentTertiary: CSSColor;
+        contentDisabled: CSSColor;
+        contentAccent: CSSColor;
+        contentNegative: CSSColor;
+        contentWarning: CSSColor;
+        contentPositive: CSSColor;
 
         // Content Inverse
 
-        contentInversePrimary: CSSColor,
-        contentInverseSecondary: CSSColor,
-        contentInverseTertiary: CSSColor,
-        contentInverseDisabled: CSSColor,
+        contentInversePrimary: CSSColor;
+        contentInverseSecondary: CSSColor;
+        contentInverseTertiary: CSSColor;
+        contentInverseDisabled: CSSColor;
 
         // Background
 
-        backgroundSidebar: CSSColor,
-        backgroundPrimary: CSSColor,
-        backgroundSecondary: CSSColor,
-        backgroundTertiary: CSSColor,
-        backgroundAccent: CSSColor,
-        backgroundNegative: CSSColor,
-        backgroundWarning: CSSColor,
-        backgroundPositive: CSSColor,
+        backgroundSidebar: CSSColor;
+        backgroundPrimary: CSSColor;
+        backgroundSecondary: CSSColor;
+        backgroundTertiary: CSSColor;
+        backgroundAccent: CSSColor;
+        backgroundNegative: CSSColor;
+        backgroundWarning: CSSColor;
+        backgroundPositive: CSSColor;
 
         // Background Inverse
 
-        backgroundInverseSidebar: CSSColor,
-        backgroundInversePrimary: CSSColor,
-        backgroundInverseSecondary: CSSColor,
-        backgroundInverseTertiary: CSSColor,
-        backgroundInverseNegative: CSSColor,
-        backgroundInverseWarning: CSSColor,
-        backgroundInversePositive: CSSColor,
+        backgroundInverseSidebar: CSSColor;
+        backgroundInversePrimary: CSSColor;
+        backgroundInverseSecondary: CSSColor;
+        backgroundInverseTertiary: CSSColor;
+        backgroundInverseNegative: CSSColor;
+        backgroundInverseWarning: CSSColor;
+        backgroundInversePositive: CSSColor;
 
         // Background Overlays
 
-        backgroundOverlayLight: CSSColor,
-        backgroundOverlayXLight: CSSColor,
-        backgroundOverlayGrey: CSSColor,
-        backgroundOverlayDark: CSSColor,
-        backgroundOverlayTeal: CSSColor,
+        backgroundOverlayLight: CSSColor;
+        backgroundOverlayXLight: CSSColor;
+        backgroundOverlayGrey: CSSColor;
+        backgroundOverlayDark: CSSColor;
+        backgroundOverlayTeal: CSSColor;
 
         // Border
 
-        borderOpaque: CSSColor,
-        borderSelected: CSSColor,
-        borderAccent: CSSColor,
-        borderNegative: CSSColor,
-        borderWarning: CSSColor,
-        borderPositive: CSSColor,
+        borderOpaque: CSSColor;
+        borderSelected: CSSColor;
+        borderAccent: CSSColor;
+        borderNegative: CSSColor;
+        borderWarning: CSSColor;
+        borderPositive: CSSColor;
 
         // Border Inverse
 
-        borderInverseOpaque: CSSColor,
-        borderInverseSelected: CSSColor,
-    },
+        borderInverseOpaque: CSSColor;
+        borderInverseSelected: CSSColor;
+    };
     typography: {
-        fontFamily: string,
-        italicLetterSpacing: CSSLength,
+        fontFamily: string;
+        italicLetterSpacing: CSSLength;
         verticalMetricsAdjust: CSSLength;
 
         fontWeights: {
-            thin: number,
-            extralight: number,
-            light: number,
-            normal: number,
-            medium: number,
-            semibold: number,
-            bold: number,
-            extrabold: number,
-            black: number,
-            extrablack: number,
-        },
+            thin: number;
+            extralight: number;
+            light: number;
+            normal: number;
+            medium: number;
+            semibold: number;
+            bold: number;
+            extrabold: number;
+            black: number;
+            extrablack: number;
+        };
 
         fontStyles: {
-            normal: string,
-            italic: string,
-        }
+            normal: string;
+            italic: string;
+        };
 
         styles: {
             // Display
 
-            displayLarge: FontDefinition,
-            displayMedium: FontDefinition,
-            display: FontDefinition,
-            displaySmall: FontDefinition,
+            displayLarge: FontDefinition;
+            displayMedium: FontDefinition;
+            display: FontDefinition;
+            displaySmall: FontDefinition;
 
             // Heading
 
-            headingLarge: FontDefinition,
-            headingMedium: FontDefinition,
-            headingSmall: FontDefinition,
-            headingXSmall: FontDefinition,
-            headingXXSmall: FontDefinition,
+            headingLarge: FontDefinition;
+            headingMedium: FontDefinition;
+            headingSmall: FontDefinition;
+            headingXSmall: FontDefinition;
+            headingXXSmall: FontDefinition;
 
             // Label
 
-            labelXLarge: FontDefinition,
-            labelLarge: FontDefinition,
-            labelMedium: FontDefinition,
-            labelSmall: FontDefinition,
-            labelXSmall: FontDefinition,
-            labelXXSmall: FontDefinition,
+            labelXLarge: FontDefinition;
+            labelLarge: FontDefinition;
+            labelMedium: FontDefinition;
+            labelSmall: FontDefinition;
+            labelXSmall: FontDefinition;
+            labelXXSmall: FontDefinition;
 
             // Paragraph
 
-            paragraphLarge: FontDefinition,
-            paragraphMedium: FontDefinition,
-            paragraphSmall: FontDefinition,
-            paragraphXSmall: FontDefinition,
-            paragraphXXSmall: FontDefinition,
-        }
-    },
+            paragraphLarge: FontDefinition;
+            paragraphMedium: FontDefinition;
+            paragraphSmall: FontDefinition;
+            paragraphXSmall: FontDefinition;
+            paragraphXXSmall: FontDefinition;
+        };
+    };
     lighting: {
-        shallowBelow: ShadowDefinition,
-        deepBelow: ShadowDefinition,
-        shallowAbove: ShadowDefinition,
-        deepAbove: ShadowDefinition,
-        shallowPopup: ShadowDefinition,
-        deepPopup: ShadowDefinition,
-        subtlePopup: ShadowDefinition,
-        shallowLeft: ShadowDefinition,
-        shallowRight: ShadowDefinition,
-    },
+        shallowBelow: ShadowDefinition;
+        deepBelow: ShadowDefinition;
+        shallowAbove: ShadowDefinition;
+        deepAbove: ShadowDefinition;
+        shallowPopup: ShadowDefinition;
+        deepPopup: ShadowDefinition;
+        subtlePopup: ShadowDefinition;
+        shallowLeft: ShadowDefinition;
+        shallowRight: ShadowDefinition;
+    };
     borders: {
         // Border Radius
         radius: {
-            pill: CSSLength,
-            circle: CSSLength,
-            rectangle: CSSLength,
-            rounded: CSSLength,
-            roundedSmall: CSSLength,
-            roundedLarge: CSSLength,
-            roundedXL: CSSLength,
-        },
+            pill: CSSLength;
+            circle: CSSLength;
+            rectangle: CSSLength;
+            rounded: CSSLength;
+            roundedSmall: CSSLength;
+            roundedLarge: CSSLength;
+            roundedXL: CSSLength;
+        };
 
         // Dropdowns (Select, Menu, Popovers, etc.)
 
         dropdown: {
-            color: CSSColor,
-            shadow: ShadowDefinition,
-            border: `${number}px ${string} ${CSSColor}` | 'none',
-        },
-    },
+            color: CSSColor;
+            shadow: ShadowDefinition;
+            border: `${number}px ${string} ${CSSColor}` | 'none';
+        };
+    };
     surfaces: {
         dialog: {
-            border: `${number}px ${string} ${CSSColor}`,
-            outline: `${number}px ${string} ${CSSColor}`,
-            background: CSSColor,
-            backdropFilter: string,
-        },
-    },
+            border: `${number}px ${string} ${CSSColor}`;
+            outline: `${number}px ${string} ${CSSColor}`;
+            background: CSSColor;
+            backdropFilter: string;
+        };
+    };
     animations: {
-        interaction: string,
+        interaction: string;
         timing: {
-            easeInOut: TimingFunction,
-            easeOut: TimingFunction,
-            easeIn: TimingFunction,
-            easeOutQuad: TimingFunction,
-            easeInQuad: TimingFunction,
-            easeInOutExpo: TimingFunction,
-            default: TimingFunction,
-        },
+            easeInOut: TimingFunction;
+            easeOut: TimingFunction;
+            easeIn: TimingFunction;
+            easeOutQuad: TimingFunction;
+            easeInQuad: TimingFunction;
+            easeInOutExpo: TimingFunction;
+            default: TimingFunction;
+        };
         duration: {
-            rapid: Duration,
-            fast: Duration,
-            normal: Duration,
-            relaxed: Duration,
-            slow: Duration,
-            gradual: Duration,
-        },
-    },
+            rapid: Duration;
+            fast: Duration;
+            normal: Duration;
+            relaxed: Duration;
+            slow: Duration;
+            gradual: Duration;
+        };
+    };
     breakpoints: {
-        sm: `${number}px`,
-        md: `${number}px`,
-        lg: `${number}px`,
-        xl: `${number}px`,
-    }
+        sm: `${number}px`;
+        md: `${number}px`;
+        lg: `${number}px`;
+        xl: `${number}px`;
+    };
 };
 
 export type ThemeOverrides = PartialDeep<Theme>;
@@ -1484,11 +1490,4 @@ export const DarkTheme: Theme = merge(LightTheme, {
     },
 } as PartialDeep<Theme>) as Theme;
 
-export const {
-    theme,
-    pvar,
-    pget,
-    updateTheme,
-    injectTheme,
-    generateThemeInjection,
-} = createTheme<Theme>(LightTheme);
+export const { theme, pvar, pget, updateTheme, injectTheme, generateThemeInjection } = createTheme<Theme>(LightTheme);

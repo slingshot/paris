@@ -1,21 +1,17 @@
 'use client';
 
-import type {
-    ComponentPropsWithoutRef, FC, MouseEventHandler, PropsWithChildren, ReactNode,
-} from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { DialogPanel, DialogTitle, Dialog as HDialog, Transition, TransitionChild } from '@headlessui/react';
 import type { CSSLength } from '@ssh/csstypes';
-import {
-    Dialog as HDialog, DialogPanel, DialogTitle, Transition, TransitionChild,
-} from '@headlessui/react';
 import { clsx } from 'clsx';
-import styles from './Dialog.module.scss';
-import { Text } from '../text';
+import type { ComponentPropsWithoutRef, FC, MouseEventHandler, PropsWithChildren, ReactNode } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button } from '../button';
+import { Close, Icon } from '../icon';
+import { Text } from '../text';
+import { RemoveFromDOM } from '../utility/RemoveFromDOM';
 import { TextWhenString } from '../utility/TextWhenString';
 import { VisuallyHidden } from '../utility/VisuallyHidden';
-import { RemoveFromDOM } from '../utility/RemoveFromDOM';
-import { Close, Icon } from '../icon';
+import styles from './Dialog.module.scss';
 
 export const DialogWidthPresets = ['compact', 'default', 'large', 'full'] as const;
 
@@ -55,7 +51,7 @@ export type DialogProps = {
      * @see DialogWidthPresets
      * @default 'default'
      */
-    width?: typeof DialogWidthPresets[number] | CSSLength;
+    width?: (typeof DialogWidthPresets)[number] | CSSLength;
     /**
      * The height of the dialog.
      *
@@ -87,38 +83,38 @@ export type DialogProps = {
      */
     overrides?: {
         /** The root element containing all elements */
-        root?: ComponentPropsWithoutRef<'div'>,
+        root?: ComponentPropsWithoutRef<'div'>;
         /** The container for the backdrop overlay */
-        overlayContainer?: ComponentPropsWithoutRef<'div'>,
+        overlayContainer?: ComponentPropsWithoutRef<'div'>;
         /** The backdrop overlay */
-        overlay?: ComponentPropsWithoutRef<'div'>,
+        overlay?: ComponentPropsWithoutRef<'div'>;
         /** The container for the dialog panel */
-        panelContainer?: ComponentPropsWithoutRef<'div'>,
+        panelContainer?: ComponentPropsWithoutRef<'div'>;
         /** The dialog panel */
-        panel?: ComponentPropsWithoutRef<'div'>,
+        panel?: ComponentPropsWithoutRef<'div'>;
         /** The header of the dialog panel, which contains the title and close button */
-        panelHeader?: ComponentPropsWithoutRef<'div'>,
+        panelHeader?: ComponentPropsWithoutRef<'div'>;
         /** The title within the dialog panel */
-        panelTitle?: ComponentPropsWithoutRef<'h1'>,
+        panelTitle?: ComponentPropsWithoutRef<'h1'>;
         /** The close button within the dialog panel */
-        panelCloseButton?: ComponentPropsWithoutRef<'button'>,
-    }
+        panelCloseButton?: ComponentPropsWithoutRef<'button'>;
+    };
 };
 
 /**
-* Dialogs are modal components that appear on top of the main content and require user interaction to dismiss.
-*
-* They render to a Portal, so they can be used anywhere in the DOM.
-*
-* <hr />
-*
-* To use this component, import it as follows:
-*
-* ```js
-* import { Dialog } from 'paris/dialog';
-* ```
-* @constructor
-*/
+ * Dialogs are modal components that appear on top of the main content and require user interaction to dismiss.
+ *
+ * They render to a Portal, so they can be used anywhere in the DOM.
+ *
+ * <hr />
+ *
+ * To use this component, import it as follows:
+ *
+ * ```js
+ * import { Dialog } from 'paris/dialog';
+ * ```
+ * @constructor
+ */
 export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
     isOpen = false,
     onClose = () => {},
@@ -172,18 +168,12 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
     }, [isOpen]);
 
     return (
-        <Transition
-            appear
-            show={isOpen}
-        >
+        <Transition appear show={isOpen}>
             <HDialog
                 as="div"
                 onClose={onClose}
                 {...overrides.root}
-                className={clsx(
-                    styles.root,
-                    overrides.root?.className,
-                )}
+                className={clsx(styles.root, overrides.root?.className)}
                 role="dialog"
             >
                 <div
@@ -216,10 +206,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
 
                 <div
                     {...overrides.panelContainer}
-                    className={clsx(
-                        styles.panelContainer,
-                        overrides.panelContainer?.className,
-                    )}
+                    className={clsx(styles.panelContainer, overrides.panelContainer?.className)}
                 >
                     <TransitionChild
                         enter={styles.enter}
@@ -251,28 +238,22 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                             <VisuallyHidden when={hideTitle && hideCloseButton}>
                                 <div
                                     {...overrides.panelHeader}
-                                    className={clsx(
-                                        styles.header,
-                                        overrides.panelHeader?.className,
-                                    )}
-                                    style={(hideTitle && !hideCloseButton) || (!hideTitle && hideCloseButton) ? {
-                                        marginBottom: '-16px',
-                                    } : {}}
+                                    className={clsx(styles.header, overrides.panelHeader?.className)}
+                                    style={
+                                        (hideTitle && !hideCloseButton) || (!hideTitle && hideCloseButton)
+                                            ? {
+                                                  marginBottom: '-16px',
+                                              }
+                                            : {}
+                                    }
                                 >
                                     <VisuallyHidden when={hideTitle}>
                                         <DialogTitle
                                             {...overrides.panelTitle}
                                             as="h1"
-                                            className={clsx(
-                                                styles.title,
-                                                overrides.panelTitle?.className,
-                                            )}
+                                            className={clsx(styles.title, overrides.panelTitle?.className)}
                                         >
-                                            <TextWhenString
-                                                kind="headingXSmall"
-                                            >
-                                                {title}
-                                            </TextWhenString>
+                                            <TextWhenString kind="headingXSmall">{title}</TextWhenString>
                                         </DialogTitle>
                                     </VisuallyHidden>
                                     <RemoveFromDOM when={hideCloseButton}>
@@ -281,14 +262,10 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                                                 kind="tertiary"
                                                 shape="circle"
                                                 onClick={() => onClose(false)}
-                                                startEnhancer={(
-                                                    <Icon size={20} icon={Close} />
-                                                )}
+                                                startEnhancer={<Icon size={20} icon={Close} />}
                                                 {...overrides.panelCloseButton}
                                                 data-title-hidden={hideTitle}
-                                                className={clsx(
-                                                    overrides.panelCloseButton?.className,
-                                                )}
+                                                className={clsx(overrides.panelCloseButton?.className)}
                                             >
                                                 Close dialog
                                             </Button>

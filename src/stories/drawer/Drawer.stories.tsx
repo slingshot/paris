@@ -1,14 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-
-import { Drawer } from './Drawer';
 import { Button } from '../button';
 import { Callout } from '../callout';
-import {
-    Menu, MenuButton, MenuItems, MenuItem,
-} from '../menu';
-import { usePagination } from '../pagination';
 import { ChevronRight, Ellipsis } from '../icon';
+import { Menu, MenuButton, MenuItem, MenuItems } from '../menu';
+import { usePagination } from '../pagination';
+import { Drawer } from './Drawer';
 
 const meta: Meta<typeof Drawer> = {
     title: 'Surfaces/Drawer',
@@ -22,8 +19,7 @@ type Story = StoryObj<typeof Drawer>;
 export const Default: Story = {
     args: {
         title: 'Transaction details',
-        children:
-      'This was a transaction for $22.89 at Il Tramezzino in Beverly Hills, CA.',
+        children: 'This was a transaction for $22.89 at Il Tramezzino in Beverly Hills, CA.',
         size: 'default',
     },
     render: function Render(args) {
@@ -35,14 +31,10 @@ export const Default: Story = {
                     {...args}
                     isOpen={isOpen}
                     onClose={setIsOpen}
-                    additionalActions={(
+                    additionalActions={
                         <Menu as="div">
                             <MenuButton>
-                                <Button
-                                    kind="tertiary"
-                                    shape="circle"
-                                    startEnhancer={<Ellipsis size={20} />}
-                                >
+                                <Button kind="tertiary" shape="circle" startEnhancer={<Ellipsis size={20} />}>
                                     Action menu
                                 </Button>
                             </MenuButton>
@@ -54,7 +46,7 @@ export const Default: Story = {
                                 </MenuItem>
                             </MenuItems>
                         </Menu>
-                    )}
+                    }
                 >
                     {args.children}
                 </Drawer>
@@ -87,14 +79,10 @@ export const Paginated: Story = {
                     onClose={setIsOpen}
                     pagination={pagination}
                     title={currentPageTitle}
-                    additionalActions={(
+                    additionalActions={
                         <Menu as="div">
                             <MenuButton>
-                                <Button
-                                    kind="tertiary"
-                                    shape="circle"
-                                    startEnhancer={<Ellipsis size={20} />}
-                                >
+                                <Button kind="tertiary" shape="circle" startEnhancer={<Ellipsis size={20} />}>
                                     Action menu
                                 </Button>
                             </MenuButton>
@@ -106,33 +94,18 @@ export const Paginated: Story = {
                                 </MenuItem>
                             </MenuItems>
                         </Menu>
-                    )}
+                    }
                 >
-                    <div
-                        key="step1"
-                        style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
-                    >
+                    <div key="step1" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         Step 1: Enter your name
-                        <Button onClick={() => pagination.open('step2')}>
-                            Go to step 2
-                        </Button>
-                        <Button onClick={() => pagination.open('step3')}>
-                            Go to step 3
-                        </Button>
+                        <Button onClick={() => pagination.open('step2')}>Go to step 2</Button>
+                        <Button onClick={() => pagination.open('step3')}>Go to step 3</Button>
                     </div>
-                    <div
-                        key="step2"
-                        style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
-                    >
+                    <div key="step2" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         Step 2: Enter your address
-                        <Button onClick={() => pagination.open('step3')}>
-                            Go to step 3
-                        </Button>
+                        <Button onClick={() => pagination.open('step3')}>Go to step 3</Button>
                     </div>
-                    <div
-                        key="step3"
-                        style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
-                    >
+                    <div key="step3" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         Step 3: Enter your credit card information
                     </div>
                 </Drawer>
@@ -156,30 +129,24 @@ export const BottomPanel: Story = {
                 <h1>Transfer Policies:</h1>
                 <Button kind="secondary">Read more...</Button>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                    dignissim bibendum gravida. Donec pharetra, erat et semper luctus,
-                    dolor enim elementum est, eget cursus nisi libero sit amet purus.
-                    Fusce blandit leo in lectus blandit, sed elementum enim accumsan.
-                    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-                    posuere cubilia curae; Pellentesque pretium erat at lacus ultricies
-                    tincidunt. Praesent non luctus magna, ac efficitur ligula. Sed a justo
-                    fermentum, feugiat mauris vel, ultrices turpis. Ut interdum malesuada
-                    lacus, ac posuere sapien feugiat et. Nulla dignissim bibendum gravida.
-                    Donec pharetra, erat et semper luctus, dolor enim elementum est, eget
-                    cursus nisi libero sit amet purus.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec
+                    pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus.
+                    Fusce blandit leo in lectus blandit, sed elementum enim accumsan. Vestibulum ante ipsum primis in
+                    faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque pretium erat at lacus ultricies
+                    tincidunt. Praesent non luctus magna, ac efficitur ligula. Sed a justo fermentum, feugiat mauris
+                    vel, ultrices turpis. Ut interdum malesuada lacus, ac posuere sapien feugiat et. Nulla dignissim
+                    bibendum gravida. Donec pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi
+                    libero sit amet purus.
                 </p>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                    dignissim bibendum gravida. Donec pharetra, erat et semper luctus,
-                    dolor enim elementum est, eget cursus nisi libero sit amet purus.
-                    Fusce blandit leo in lectus blandit, sed elementum enim accumsan.
-                    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-                    posuere cubilia curae; Pellentesque pretium erat at lacus ultricies
-                    tincidunt. Praesent non luctus magna, ac efficitur ligula. Sed a justo
-                    fermentum, feugiat mauris vel, ultrices turpis. Ut interdum malesuada
-                    lacus, ac posuere sapien feugiat et. Nulla dignissim bibendum gravida.
-                    Donec pharetra, erat et semper luctus, dolor enim elementum est, eget
-                    cursus nisi libero sit amet purus.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec
+                    pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus.
+                    Fusce blandit leo in lectus blandit, sed elementum enim accumsan. Vestibulum ante ipsum primis in
+                    faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque pretium erat at lacus ultricies
+                    tincidunt. Praesent non luctus magna, ac efficitur ligula. Sed a justo fermentum, feugiat mauris
+                    vel, ultrices turpis. Ut interdum malesuada lacus, ac posuere sapien feugiat et. Nulla dignissim
+                    bibendum gravida. Donec pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi
+                    libero sit amet purus.
                 </p>
             </div>
         ),
@@ -192,9 +159,7 @@ export const BottomPanel: Story = {
                     gap: '12px',
                 }}
             >
-                <Callout>
-                    Transfer should arrive in your account within 2-3 business days.
-                </Callout>
+                <Callout>Transfer should arrive in your account within 2-3 business days.</Callout>
                 <Button>Initiate</Button>
                 <Button kind="secondary" theme="negative">
                     Cancel
@@ -211,14 +176,10 @@ export const BottomPanel: Story = {
                     {...args}
                     isOpen={isOpen}
                     onClose={setIsOpen}
-                    additionalActions={(
+                    additionalActions={
                         <Menu as="div">
                             <MenuButton>
-                                <Button
-                                    kind="tertiary"
-                                    shape="circle"
-                                    startEnhancer={<Ellipsis size={20} />}
-                                >
+                                <Button kind="tertiary" shape="circle" startEnhancer={<Ellipsis size={20} />}>
                                     Action menu
                                 </Button>
                             </MenuButton>
@@ -230,7 +191,7 @@ export const BottomPanel: Story = {
                                 </MenuItem>
                             </MenuItems>
                         </Menu>
-                    )}
+                    }
                 >
                     {args.children}
                 </Drawer>
@@ -243,9 +204,13 @@ export const BottomPanelMultiSection: Story = {
     args: {
         title: 'Order summary',
         children: (
-            <div style={{
-                width: '100%', display: 'flex', flexDirection: 'column', gap: '12px',
-            }}
+            <div
+                style={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '12px',
+                }}
             >
                 <p>Review your order before confirming.</p>
             </div>
@@ -253,27 +218,27 @@ export const BottomPanelMultiSection: Story = {
         bottomPanelPadding: false,
         bottomPanel: (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    padding: '12px 20px',
-                    borderBottom: '1px solid var(--pte-new-colors-borderMedium)',
-                    background: 'var(--pte-new-colors-overlaySubtle)',
-                }}
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        padding: '12px 20px',
+                        borderBottom: '1px solid var(--pte-new-colors-borderMedium)',
+                        background: 'var(--pte-new-colors-overlaySubtle)',
+                    }}
                 >
                     <span>Total</span>
                     <strong>$249.00</strong>
                 </div>
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '12px',
-                    padding: '20px',
-                }}
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '12px',
+                        padding: '20px',
+                    }}
                 >
-                    <Button>
-                        Confirm order
-                    </Button>
+                    <Button>Confirm order</Button>
                     <Button kind="secondary" theme="negative">
                         Cancel
                     </Button>
@@ -285,14 +250,8 @@ export const BottomPanelMultiSection: Story = {
         const [isOpen, setIsOpen] = useState(false);
         return (
             <>
-                <Button onClick={() => setIsOpen(true)}>
-                    Review order
-                </Button>
-                <Drawer
-                    {...args}
-                    isOpen={isOpen}
-                    onClose={setIsOpen}
-                >
+                <Button onClick={() => setIsOpen(true)}>Review order</Button>
+                <Drawer {...args} isOpen={isOpen} onClose={setIsOpen}>
                     {args.children}
                 </Drawer>
             </>
@@ -303,8 +262,7 @@ export const BottomPanelMultiSection: Story = {
 export const Full: Story = {
     args: {
         title: 'Transaction details',
-        children:
-      'This was a transaction for $22.89 at Il Tramezzino in Beverly Hills, CA.',
+        children: 'This was a transaction for $22.89 at Il Tramezzino in Beverly Hills, CA.',
         size: 'full',
     },
     render: function Render(args) {

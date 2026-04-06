@@ -1,11 +1,9 @@
 'use client';
 
-import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
-import {
-    useCallback, useEffect, useRef, useState,
-} from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
 import { clsx } from 'clsx';
+import { AnimatePresence, motion } from 'framer-motion';
+import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Check, ChevronRight, Icon } from '../icon';
 import { TextWhenString } from '../utility';
 import styles from './AccordionSelect.module.scss';
@@ -127,16 +125,19 @@ export const AccordionSelect: FC<AccordionSelectProps> = ({
     const open = controlledOpen ?? internalOpen;
     const rootRef = useRef<HTMLDivElement>(null);
 
-    const setOpen = useCallback((nextOpen: boolean) => {
-        setInternalOpen(nextOpen);
-        onOpenChange?.(nextOpen);
-    }, [onOpenChange]);
+    const setOpen = useCallback(
+        (nextOpen: boolean) => {
+            setInternalOpen(nextOpen);
+            onOpenChange?.(nextOpen);
+        },
+        [onOpenChange],
+    );
 
     const selectedOption = options.find((o) => o.id === value);
 
     useEffect(() => {
         if (!closeOnClickOutside || !open) {
-            return () => { };
+            return () => {};
         }
 
         const handleClickOutside = (e: MouseEvent) => {
@@ -151,28 +152,18 @@ export const AccordionSelect: FC<AccordionSelectProps> = ({
 
     let headerContent: ReactNode = placeholder;
     if (selectedOption) {
-        headerContent = renderSelected
-            ? renderSelected(selectedOption)
-            : selectedOption.node;
+        headerContent = renderSelected ? renderSelected(selectedOption) : selectedOption.node;
     }
 
     return (
         <div
             ref={rootRef}
             {...overrides?.root}
-            className={clsx(
-                styles.root,
-                open && styles.open,
-                overrides?.root?.className,
-            )}
+            className={clsx(styles.root, open && styles.open, overrides?.root?.className)}
         >
             <div
                 {...overrides?.header}
-                className={clsx(
-                    styles.header,
-                    open && styles.open,
-                    overrides?.header?.className,
-                )}
+                className={clsx(styles.header, open && styles.open, overrides?.header?.className)}
                 onClick={() => setOpen(!open)}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -190,11 +181,7 @@ export const AccordionSelect: FC<AccordionSelectProps> = ({
                 </div>
                 <div className={styles.headerEnd}>
                     {label}
-                    <Icon
-                        icon={ChevronRight}
-                        size={16}
-                        className={clsx(styles.chevron, open && styles.open)}
-                    />
+                    <Icon icon={ChevronRight} size={16} className={clsx(styles.chevron, open && styles.open)} />
                 </div>
             </div>
 
@@ -213,17 +200,11 @@ export const AccordionSelect: FC<AccordionSelectProps> = ({
                             duration: 0.8,
                             ease: [0.87, 0, 0.13, 1],
                         }}
-                        className={clsx(
-                            styles.dropdown,
-                            overrides?.dropdown?.className,
-                        )}
+                        className={clsx(styles.dropdown, overrides?.dropdown?.className)}
                     >
                         <div
                             {...overrides?.dropdownContent}
-                            className={clsx(
-                                styles.dropdownContent,
-                                overrides?.dropdownContent?.className,
-                            )}
+                            className={clsx(styles.dropdownContent, overrides?.dropdownContent?.className)}
                         >
                             {options.map((option) => {
                                 const isOptionSelected = option.id === value;
@@ -234,27 +215,22 @@ export const AccordionSelect: FC<AccordionSelectProps> = ({
                                         disabled={option.disabled}
                                         data-selected={isOptionSelected}
                                         {...overrides?.option}
-                                        className={clsx(
-                                            styles.option,
-                                            overrides?.option?.className,
-                                        )}
+                                        className={clsx(styles.option, overrides?.option?.className)}
                                         onClick={() => {
                                             onChange?.(option);
                                             if (closeOnSelect) setOpen(false);
                                         }}
                                     >
                                         <div className={styles.optionContent}>
-                                            {renderOption
-                                                ? renderOption(option, isOptionSelected)
-                                                : (
-                                                    <TextWhenString kind="paragraphXSmall" weight="medium">
-                                                        {option.node}
-                                                    </TextWhenString>
-                                                )}
+                                            {renderOption ? (
+                                                renderOption(option, isOptionSelected)
+                                            ) : (
+                                                <TextWhenString kind="paragraphXSmall" weight="medium">
+                                                    {option.node}
+                                                </TextWhenString>
+                                            )}
                                         </div>
-                                        {isOptionSelected && (
-                                            <Icon icon={Check} size={13} className={styles.check} />
-                                        )}
+                                        {isOptionSelected && <Icon icon={Check} size={13} className={styles.check} />}
                                     </button>
                                 );
                             })}

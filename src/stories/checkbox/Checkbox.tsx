@@ -1,11 +1,11 @@
-import type { FC, ReactNode } from 'react';
-import { useId } from 'react';
+import { Switch } from '@headlessui/react';
 import * as RadixCheckbox from '@radix-ui/react-checkbox';
 import { clsx } from 'clsx';
-import { Switch } from '@headlessui/react';
-import styles from './Checkbox.module.scss';
-import { TextWhenString, VisuallyHidden } from '../utility';
+import type { FC, ReactNode } from 'react';
+import { useId } from 'react';
 import { Check, Icon } from '../icon';
+import { TextWhenString, VisuallyHidden } from '../utility';
+import styles from './Checkbox.module.scss';
 
 export type CheckboxProps = {
     /** The visual style of the Checkbox. `default` is a standard checkbox with a label next to it, `surface` is a clickable card that displays a check when selected, `panel` is a clickable card with the checkbox aligned right, `switch` is a switch toggle.  */
@@ -24,17 +24,17 @@ export type CheckboxProps = {
 } & Omit<React.ComponentPropsWithoutRef<'label'>, 'onChange' | 'children'>;
 
 /**
-* A Checkbox component.
-*
-* <hr />
-*
-* To use this component, import it as follows:
-*
-* ```js
-* import { Checkbox } from 'paris/checkbox';
-* ```
-* @constructor
-*/
+ * A Checkbox component.
+ *
+ * <hr />
+ *
+ * To use this component, import it as follows:
+ *
+ * ```js
+ * import { Checkbox } from 'paris/checkbox';
+ * ```
+ * @constructor
+ */
 export const Checkbox: FC<CheckboxProps> = ({
     kind = 'default',
     checked,
@@ -62,14 +62,18 @@ export const Checkbox: FC<CheckboxProps> = ({
                     aria-details={typeof children === 'string' ? children : undefined}
                 >
                     {(kind === 'surface' || kind === 'panel') && (
-                        <TextWhenString kind="paragraphXSmall">
-                            {children}
-                        </TextWhenString>
+                        <TextWhenString kind="paragraphXSmall">{children}</TextWhenString>
                     )}
                     {kind === 'panel' && <div className={styles.box} />}
                     <RadixCheckbox.Indicator className={styles.indicator}>
                         {(kind === 'default' || kind === 'panel') && (
-                            <svg width={14} height={14} viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg
+                                width={14}
+                                height={14}
+                                viewBox="0 0 14 14"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
                                 <path
                                     className={styles.checkSvg}
                                     data-disabled={disabled}
@@ -78,43 +82,27 @@ export const Checkbox: FC<CheckboxProps> = ({
                             </svg>
                         )}
                         {kind === 'surface' && (
-                            <Icon
-                                icon={Check}
-                                size={12.8}
-                                data-disabled={disabled}
-                                className={styles.checkIcon}
-                            />
+                            <Icon icon={Check} size={12.8} data-disabled={disabled} className={styles.checkIcon} />
                         )}
                     </RadixCheckbox.Indicator>
                 </RadixCheckbox.Root>
             )}
             {kind === 'switch' && (
-                <>
-                    <Switch
-                        checked={checked}
-                        onChange={onChange}
-                        className={styles.switchContainer}
-                        data-disabled={disabled}
-                        id={inputID}
-                        aria-details={typeof children === 'string' ? children : undefined}
-                    >
-                        <span
-                            aria-hidden="true"
-                            className={clsx(styles.knob, checked && styles.knobChecked)}
-                        />
-                    </Switch>
-                </>
+                <Switch
+                    checked={checked}
+                    onChange={onChange}
+                    className={styles.switchContainer}
+                    data-disabled={disabled}
+                    id={inputID}
+                    aria-details={typeof children === 'string' ? children : undefined}
+                >
+                    <span aria-hidden="true" className={clsx(styles.knob, checked && styles.knobChecked)} />
+                </Switch>
             )}
             {(kind === 'default' || kind === 'switch') && !hideLabel && (
-                <TextWhenString kind="paragraphXSmall">
-                    {children}
-                </TextWhenString>
+                <TextWhenString kind="paragraphXSmall">{children}</TextWhenString>
             )}
-            {hideLabel && (
-                <VisuallyHidden>
-                    {children}
-                </VisuallyHidden>
-            )}
+            {hideLabel && <VisuallyHidden>{children}</VisuallyHidden>}
         </label>
     );
 };

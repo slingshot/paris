@@ -1,11 +1,12 @@
-import type { FC } from 'react';
-import type {
-    MenuProps, MenuItemsProps, MenuItemProps, MenuButtonProps,
-} from '@headlessui/react';
+import type { MenuButtonProps, MenuItemProps, MenuItemsProps, MenuProps } from '@headlessui/react';
 import {
-    Menu as HeadlessMenu, MenuButton as HMenuButton, MenuItems as HMenuItems, MenuItem as HMenuItem,
+    Menu as HeadlessMenu,
+    MenuButton as HMenuButton,
+    MenuItem as HMenuItem,
+    MenuItems as HMenuItems,
 } from '@headlessui/react';
 import { clsx } from 'clsx';
+import type { FC } from 'react';
 
 import styles from './Menu.module.scss';
 
@@ -50,14 +51,19 @@ export const MenuButton: FC<MenuButtonProps<React.ElementType>> = ({ className, 
  *
  * @param position - Controls the positioning of the menu items ('left' or 'right').
  */
-export const MenuItems: FC<MenuItemsProps<React.ElementType> & {
-    position?: 'left' | 'right';
-}> = ({
-    className, children, position = 'left', ...props
-}) => (
+export const MenuItems: FC<
+    MenuItemsProps<React.ElementType> & {
+        position?: 'left' | 'right';
+    }
+> = ({ className, children, position = 'left', ...props }) => (
     <HMenuItems
         transition
-        className={clsx(styles.menuItems, position === 'left' && styles.leftPosition, position === 'right' && styles.rightPosition, className)}
+        className={clsx(
+            styles.menuItems,
+            position === 'left' && styles.leftPosition,
+            position === 'right' && styles.rightPosition,
+            className,
+        )}
         {...props}
     >
         {children}
@@ -71,11 +77,11 @@ export const MenuItems: FC<MenuItemsProps<React.ElementType> & {
  *
  * @param isNew - Whether the menu items should be styled as new items.
  */
-export const MenuItem: FC<MenuItemProps<React.ElementType> & {
-    isNew?: boolean;
-}> = ({
-    className, children, isNew = false, ...props
-}) => (
+export const MenuItem: FC<
+    MenuItemProps<React.ElementType> & {
+        isNew?: boolean;
+    }
+> = ({ className, children, isNew = false, ...props }) => (
     <HMenuItem className={clsx(styles.menuItem, isNew && styles.newItem, className)} {...props}>
         {children}
     </HMenuItem>

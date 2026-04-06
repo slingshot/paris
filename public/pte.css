@@ -62,10 +62,16 @@
     --pte-new-tokens-colors-teal800: #002620;
     --pte-new-tokens-colors-blue400: #7a96fc;
     --pte-new-tokens-colors-blue500: #3760f5;
-    --pte-new-tokens-colors-gradientTeal: linear-gradient(95.14deg, #26EDED 0%, #14EFAC 100%);
-    --pte-new-tokens-colors-gradientOrange: linear-gradient(95.14deg, #FF814A 0%, #FFA800 100%);
-    --pte-new-tokens-colors-gradientPink: linear-gradient(90deg, #FF4BED 0%, #F6418D 100%);
-    --pte-new-tokens-colors-gradientRainbow: linear-gradient(90deg, #1DEECD 0%, #26EDED 12.5%, #FFA8F1 71.35%, #FFD7A8 100%);
+    --pte-new-tokens-colors-gradientTeal: linear-gradient(95.14deg, #26eded 0%, #14efac 100%);
+    --pte-new-tokens-colors-gradientOrange: linear-gradient(95.14deg, #ff814a 0%, #ffa800 100%);
+    --pte-new-tokens-colors-gradientPink: linear-gradient(90deg, #ff4bed 0%, #f6418d 100%);
+    --pte-new-tokens-colors-gradientRainbow: linear-gradient(
+        90deg,
+        #1deecd 0%,
+        #26eded 12.5%,
+        #ffa8f1 71.35%,
+        #ffd7a8 100%
+    );
     --pte-new-utils-defaultUserSelect: none;
     --pte-new-colors-contentPrimary: #121212;
     --pte-new-colors-contentSecondary: #4f4f4f;
@@ -135,7 +141,7 @@
     --pte-new-colors-overlayTeal: rgba(29, 238, 205, 0.1);
     --pte-new-blurs-strong: blur(17.5px);
     --pte-new-blurs-ultrastrong: blur(37.5px);
-    --pte-new-typography-fontFamily: "Graphik Web", -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+    --pte-new-typography-fontFamily: 'Graphik Web', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
     --pte-new-typography-italicLetterSpacing: -0.01em;
     --pte-new-typography-verticalMetricsAdjust: 1px;
     --pte-new-typography-fontWeights-thin: 100;
@@ -294,38 +300,38 @@
     --pte-new-materials-lightGreyUltrathin-background: rgba(191, 191, 191, 0.44);
     --pte-new-materials-lightGreyUltrathin-backgroundBlend: #303030;
     --pte-new-materials-lightGreyUltrathin-mixBlendMode: color-dodge;
-    --pte-new-materials-lightGreyThin-background: rgba(166, 166, 166, 0.70);
-    --pte-new-materials-lightGreyThin-backgroundBlend: #3D3D3D;
+    --pte-new-materials-lightGreyThin-background: rgba(166, 166, 166, 0.7);
+    --pte-new-materials-lightGreyThin-backgroundBlend: #3d3d3d;
     --pte-new-materials-lightGreyThin-mixBlendMode: color-dodge;
     --pte-new-materials-lightGreyRegular-background: rgba(179, 179, 179, 0.82);
     --pte-new-materials-lightGreyRegular-backgroundBlend: #434343;
     --pte-new-materials-lightGreyRegular-mixBlendMode: color-dodge;
     --pte-new-materials-lightGreyThick-background: rgba(153, 153, 153, 0.97);
-    --pte-new-materials-lightGreyThick-backgroundBlend: #5F5F5F;
+    --pte-new-materials-lightGreyThick-backgroundBlend: #5f5f5f;
     --pte-new-materials-lightGreyThick-mixBlendMode: color-dodge;
     --pte-new-materials-darkGreyUltrathin-background: rgba(37, 37, 37, 0.55);
-    --pte-new-materials-darkGreyUltrathin-backgroundBlend: #9C9C9C;
+    --pte-new-materials-darkGreyUltrathin-backgroundBlend: #9c9c9c;
     --pte-new-materials-darkGreyUltrathin-mixBlendMode: overlay;
-    --pte-new-materials-darkGreyThin-background: rgba(37, 37, 37, 0.70);
-    --pte-new-materials-darkGreyThin-backgroundBlend: #9C9C9C;
+    --pte-new-materials-darkGreyThin-background: rgba(37, 37, 37, 0.7);
+    --pte-new-materials-darkGreyThin-backgroundBlend: #9c9c9c;
     --pte-new-materials-darkGreyThin-mixBlendMode: overlay;
     --pte-new-materials-darkGreyRegular-background: rgba(37, 37, 37, 0.82);
-    --pte-new-materials-darkGreyRegular-backgroundBlend: #8C8C8C;
+    --pte-new-materials-darkGreyRegular-backgroundBlend: #8c8c8c;
     --pte-new-materials-darkGreyRegular-mixBlendMode: overlay;
-    --pte-new-materials-darkGreyThick-background: rgba(37, 37, 37, 0.90);
-    --pte-new-materials-darkGreyThick-backgroundBlend: #7C7C7C;
+    --pte-new-materials-darkGreyThick-background: rgba(37, 37, 37, 0.9);
+    --pte-new-materials-darkGreyThick-backgroundBlend: #7c7c7c;
     --pte-new-materials-darkGreyThick-mixBlendMode: overlay;
     --pte-new-materials-greyUltrathin-background: rgba(37, 37, 37, 0.55);
-    --pte-new-materials-greyUltrathin-backgroundBlend: #D2D2D2;
+    --pte-new-materials-greyUltrathin-backgroundBlend: #d2d2d2;
     --pte-new-materials-greyUltrathin-mixBlendMode: overlay;
-    --pte-new-materials-greyThin-background: rgba(37, 37, 37, 0.70);
-    --pte-new-materials-greyThin-backgroundBlend: #CFCFCF;
+    --pte-new-materials-greyThin-background: rgba(37, 37, 37, 0.7);
+    --pte-new-materials-greyThin-backgroundBlend: #cfcfcf;
     --pte-new-materials-greyThin-mixBlendMode: overlay;
     --pte-new-materials-greyRegular-background: rgba(37, 37, 37, 0.82);
-    --pte-new-materials-greyRegular-backgroundBlend: #BCBCBC;
+    --pte-new-materials-greyRegular-backgroundBlend: #bcbcbc;
     --pte-new-materials-greyRegular-mixBlendMode: overlay;
-    --pte-new-materials-greyThick-background: rgba(37, 37, 37, 0.90);
-    --pte-new-materials-greyThick-backgroundBlend: #B6B6B6;
+    --pte-new-materials-greyThick-background: rgba(37, 37, 37, 0.9);
+    --pte-new-materials-greyThick-backgroundBlend: #b6b6b6;
     --pte-new-materials-greyThick-mixBlendMode: overlay;
     --pte-new-materials-primaryThin-background: rgba(255, 255, 255, 0.5);
     --pte-new-materials-primaryRegular-background: rgba(255, 255, 255, 0.85);
@@ -333,14 +339,14 @@
     --pte-new-materials-secondaryUltrathin-background: rgba(191, 191, 191, 0.44);
     --pte-new-materials-secondaryUltrathin-backgroundBlend: #303030;
     --pte-new-materials-secondaryUltrathin-mixBlendMode: color-dodge;
-    --pte-new-materials-secondaryThin-background: rgba(166, 166, 166, 0.70);
-    --pte-new-materials-secondaryThin-backgroundBlend: #3D3D3D;
+    --pte-new-materials-secondaryThin-background: rgba(166, 166, 166, 0.7);
+    --pte-new-materials-secondaryThin-backgroundBlend: #3d3d3d;
     --pte-new-materials-secondaryThin-mixBlendMode: color-dodge;
     --pte-new-materials-secondaryRegular-background: rgba(179, 179, 179, 0.82);
     --pte-new-materials-secondaryRegular-backgroundBlend: #434343;
     --pte-new-materials-secondaryRegular-mixBlendMode: color-dodge;
     --pte-new-materials-secondaryThick-background: rgba(153, 153, 153, 0.97);
-    --pte-new-materials-secondaryThick-backgroundBlend: #5F5F5F;
+    --pte-new-materials-secondaryThick-backgroundBlend: #5f5f5f;
     --pte-new-materials-secondaryThick-mixBlendMode: color-dodge;
     --pte-new-borders-radius-pill: 1000px;
     --pte-new-borders-radius-circle: 100%;
@@ -358,13 +364,13 @@
     --pte-new-surfaces-dialog-background: rgba(255, 255, 255, 0.9);
     --pte-new-surfaces-dialog-backdropFilter: blur(6px);
     --pte-new-animations-interaction: 200ms cubic-bezier(0.5, 1, 0.89, 1);
-    --pte-new-animations-timing-easeInOut: cubic-bezier(0.42, 0.0, 0.58, 1.0);
-    --pte-new-animations-timing-easeOut: cubic-bezier(0.0, 0.0, 0.58, 1.0);
-    --pte-new-animations-timing-easeIn: cubic-bezier(0.42, 0.0, 1.0, 1.0);
+    --pte-new-animations-timing-easeInOut: cubic-bezier(0.42, 0, 0.58, 1);
+    --pte-new-animations-timing-easeOut: cubic-bezier(0, 0, 0.58, 1);
+    --pte-new-animations-timing-easeIn: cubic-bezier(0.42, 0, 1, 1);
     --pte-new-animations-timing-easeOutQuad: cubic-bezier(0.5, 1, 0.89, 1);
     --pte-new-animations-timing-easeInQuad: cubic-bezier(0.11, 0, 0.5, 0);
     --pte-new-animations-timing-easeInOutExpo: cubic-bezier(0.87, 0, 0.13, 1);
-    --pte-new-animations-timing-default: cubic-bezier(0.0, 0.0, 0.58, 1.0);
+    --pte-new-animations-timing-default: cubic-bezier(0, 0, 0.58, 1);
     --pte-new-animations-duration-rapid: 50ms;
     --pte-new-animations-duration-fast: 100ms;
     --pte-new-animations-duration-normal: 200ms;
@@ -425,9 +431,9 @@
     --pte-tokens-colors-green300: #8febb0;
     --pte-tokens-colors-green200: #daf8e5;
     --pte-tokens-colors-green100: #edfcf2;
-    --pte-tokens-colors-gradientTeal: linear-gradient(95.14deg, #26EDED 0%, #14EFAC 100%);
-    --pte-tokens-colors-gradientOrange: linear-gradient(95.14deg, #FF814A 0%, #FFA800 100%);
-    --pte-tokens-colors-gradientPink: linear-gradient(90deg, #FF4BED 0%, #F7418D 100%);
+    --pte-tokens-colors-gradientTeal: linear-gradient(95.14deg, #26eded 0%, #14efac 100%);
+    --pte-tokens-colors-gradientOrange: linear-gradient(95.14deg, #ff814a 0%, #ffa800 100%);
+    --pte-tokens-colors-gradientPink: linear-gradient(90deg, #ff4bed 0%, #f7418d 100%);
     --pte-tokens-new-colors-white: #ffffff;
     --pte-tokens-new-colors-black: #000000;
     --pte-tokens-new-colors-grey100: #fcfcfc;
@@ -488,10 +494,16 @@
     --pte-tokens-new-colors-teal800: #002620;
     --pte-tokens-new-colors-blue400: #7a96fc;
     --pte-tokens-new-colors-blue500: #3760f5;
-    --pte-tokens-new-colors-gradientTeal: linear-gradient(95.14deg, #26EDED 0%, #14EFAC 100%);
-    --pte-tokens-new-colors-gradientOrange: linear-gradient(95.14deg, #FF814A 0%, #FFA800 100%);
-    --pte-tokens-new-colors-gradientPink: linear-gradient(90deg, #FF4BED 0%, #F6418D 100%);
-    --pte-tokens-new-colors-gradientRainbow: linear-gradient(90deg, #1DEECD 0%, #26EDED 12.5%, #FFA8F1 71.35%, #FFD7A8 100%);
+    --pte-tokens-new-colors-gradientTeal: linear-gradient(95.14deg, #26eded 0%, #14efac 100%);
+    --pte-tokens-new-colors-gradientOrange: linear-gradient(95.14deg, #ff814a 0%, #ffa800 100%);
+    --pte-tokens-new-colors-gradientPink: linear-gradient(90deg, #ff4bed 0%, #f6418d 100%);
+    --pte-tokens-new-colors-gradientRainbow: linear-gradient(
+        90deg,
+        #1deecd 0%,
+        #26eded 12.5%,
+        #ffa8f1 71.35%,
+        #ffd7a8 100%
+    );
     --pte-utils-defaultUserSelect: none;
     --pte-colors-black: #060606;
     --pte-colors-white: #ffffff;
@@ -539,7 +551,7 @@
     --pte-colors-borderPositive: #08c94e;
     --pte-colors-borderInverseOpaque: #3c3c3c;
     --pte-colors-borderInverseSelected: #e2e2e2;
-    --pte-typography-fontFamily: "Graphik Web", -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+    --pte-typography-fontFamily: 'Graphik Web', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
     --pte-typography-italicLetterSpacing: -0.01em;
     --pte-typography-verticalMetricsAdjust: 1px;
     --pte-typography-fontWeights-thin: 100;
@@ -698,13 +710,13 @@
     --pte-surfaces-dialog-background: rgba(255, 255, 255, 0.9);
     --pte-surfaces-dialog-backdropFilter: blur(6px);
     --pte-animations-interaction: 200ms cubic-bezier(0.5, 1, 0.89, 1);
-    --pte-animations-timing-easeInOut: cubic-bezier(0.42, 0.0, 0.58, 1.0);
-    --pte-animations-timing-easeOut: cubic-bezier(0.0, 0.0, 0.58, 1.0);
-    --pte-animations-timing-easeIn: cubic-bezier(0.42, 0.0, 1.0, 1.0);
+    --pte-animations-timing-easeInOut: cubic-bezier(0.42, 0, 0.58, 1);
+    --pte-animations-timing-easeOut: cubic-bezier(0, 0, 0.58, 1);
+    --pte-animations-timing-easeIn: cubic-bezier(0.42, 0, 1, 1);
     --pte-animations-timing-easeOutQuad: cubic-bezier(0.5, 1, 0.89, 1);
     --pte-animations-timing-easeInQuad: cubic-bezier(0.11, 0, 0.5, 0);
     --pte-animations-timing-easeInOutExpo: cubic-bezier(0.87, 0, 0.13, 1);
-    --pte-animations-timing-default: cubic-bezier(0.0, 0.0, 0.58, 1.0);
+    --pte-animations-timing-default: cubic-bezier(0, 0, 0.58, 1);
     --pte-animations-duration-rapid: 50ms;
     --pte-animations-duration-fast: 100ms;
     --pte-animations-duration-normal: 200ms;

@@ -1,15 +1,15 @@
 'use client';
 
+import { clsx } from 'clsx';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { useId, useMemo } from 'react';
-import { clsx } from 'clsx';
-import styles from './Table.module.scss';
 import typography from '../text/Typography.module.css';
+import styles from './Table.module.scss';
 
 export type TableLineData = [NonNullable<ReactNode>, ...ReactNode[]];
 export type RowRenderData = {
-    key: string,
-    cells: TableLineData,
+    key: string;
+    cells: TableLineData;
 };
 /**
  * The data for a column in a table.
@@ -71,7 +71,7 @@ export type TableProps<
         th?: ComponentPropsWithoutRef<'th'>;
         trBody?: ComponentPropsWithoutRef<'tr'>;
         td?: ComponentPropsWithoutRef<'td'>;
-    }
+    };
 };
 
 /**
@@ -96,68 +96,60 @@ export function Table<RowData extends Record<string, any>[]>({
     overrides,
 }: TableProps<RowData>) {
     const id = useId();
-    const rowsRenderData = useMemo(() => (
-        rows.map(
-            rowRenderFn
-            ?? ((row) => ({
-                key: Object.values(row).join('-'),
-                cells: Object.values(row),
-            })),
-        )
-    ), [rows, rowRenderFn]);
+    const rowsRenderData = useMemo(
+        () =>
+            rows.map(
+                rowRenderFn ??
+                    ((row) => ({
+                        key: Object.values(row).join('-'),
+                        cells: Object.values(row),
+                    })),
+            ),
+        [rows, rowRenderFn],
+    );
 
-    const renderedRows = useMemo(() => (
-        rowsRenderData.map(({ key, cells }, index) => (
-            <tr
-                key={`${id}-row-${key}`}
-                onClick={() => {
-                    if (clickableRows) onRowClick?.(rows[index]);
-                }}
-                onKeyDown={(e) => {
-                    if (clickableRows && (e.key === 'Enter' || e.key === ' ')) onRowClick?.(rows[index]);
-                }}
-                tabIndex={clickableRows ? 0 : undefined}
-                {...overrides?.trBody}
-                className={clsx(
-                    clickableRows && styles.clickable,
-                    overrides?.trBody?.className,
-                )}
-            >
-                {cells.map((cell, i) => (
-                    <td
-                        key={`${id}-cell-${key}-${columns[i].title}`}
-                        {...overrides?.td}
-                        className={clsx(
-                            typography.paragraphXSmall,
-                            styles[columns[i].hideBelow ?? ''],
-                            overrides?.td?.className,
-                        )}
-                    >
-                        {cell}
-                    </td>
-                ))}
-            </tr>
-        ))
-    ), [clickableRows, columns, id, onRowClick, overrides?.td, overrides?.trBody, rows, rowsRenderData]);
+    const renderedRows = useMemo(
+        () =>
+            rowsRenderData.map(({ key, cells }, index) => (
+                <tr
+                    key={`${id}-row-${key}`}
+                    onClick={() => {
+                        if (clickableRows) onRowClick?.(rows[index]);
+                    }}
+                    onKeyDown={(e) => {
+                        if (clickableRows && (e.key === 'Enter' || e.key === ' ')) onRowClick?.(rows[index]);
+                    }}
+                    tabIndex={clickableRows ? 0 : undefined}
+                    {...overrides?.trBody}
+                    className={clsx(clickableRows && styles.clickable, overrides?.trBody?.className)}
+                >
+                    {cells.map((cell, i) => (
+                        <td
+                            key={`${id}-cell-${key}-${columns[i].title}`}
+                            {...overrides?.td}
+                            className={clsx(
+                                typography.paragraphXSmall,
+                                styles[columns[i].hideBelow ?? ''],
+                                overrides?.td?.className,
+                            )}
+                        >
+                            {cell}
+                        </td>
+                    ))}
+                </tr>
+            )),
+        [clickableRows, columns, id, onRowClick, overrides?.td, overrides?.trBody, rows, rowsRenderData],
+    );
 
     return (
         <table
             {...{
                 ...overrides?.table,
-                className: clsx(
-                    styles.table,
-                    overrides?.table?.className,
-                ),
+                className: clsx(styles.table, overrides?.table?.className),
             }}
         >
             <thead {...overrides?.thead}>
-                <tr
-                    {...overrides?.trHead}
-                    className={clsx(
-                        styles.tableHeader,
-                        overrides?.trHead?.className,
-                    )}
-                >
+                <tr {...overrides?.trHead} className={clsx(styles.tableHeader, overrides?.trHead?.className)}>
                     {columns.map((column) => (
                         <th
                             {...{
@@ -177,13 +169,11 @@ export function Table<RowData extends Record<string, any>[]>({
             </thead>
             <tbody {...overrides?.tbody}>
                 {renderedRows.length === 0 && emptyState && (
-                    <>
-                        <tr className={styles.empty}>
-                            <td colSpan={columns.length} className={styles.emptyState}>
-                                {emptyState}
-                            </td>
-                        </tr>
-                    </>
+                    <tr className={styles.empty}>
+                        <td colSpan={columns.length} className={styles.emptyState}>
+                            {emptyState}
+                        </td>
+                    </tr>
                 )}
                 {renderedRows}
             </tbody>

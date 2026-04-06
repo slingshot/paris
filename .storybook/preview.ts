@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import type { Decorator, Preview } from '@storybook/react';
+
 import { DocsContainer } from '@storybook/blocks';
-import { DARK_MODE_EVENT_NAME, useDarkMode } from 'storybook-dark-mode';
+import type { Decorator, Preview } from '@storybook/react';
 import { createElement, useEffect, useState } from 'react';
+import { DARK_MODE_EVENT_NAME, useDarkMode } from 'storybook-dark-mode';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import '../public/graphik/graphik.css';
@@ -11,8 +12,8 @@ import '../src/styles/globals.css';
 import '../src/stories/theme/global.scss';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { addons } from '@storybook/preview-api';
+import { DarkTheme, injectTheme, LightTheme } from '../src/stories/theme';
 import { Dark, Light } from './themes';
-import { injectTheme, LightTheme, DarkTheme } from '../src/stories/theme';
 
 config.autoAddCss = false;
 
@@ -46,7 +47,7 @@ const preview: Preview = {
                 useEffect(() => {
                     channel.on(DARK_MODE_EVENT_NAME, setDark);
                     return () => channel.removeListener(DARK_MODE_EVENT_NAME, setDark);
-                }, [setDark]);
+                }, []);
 
                 useEffect(() => {
                     injectTheme(!isDark ? LightTheme : DarkTheme);
@@ -62,13 +63,7 @@ const preview: Preview = {
         },
         options: {
             storySort: {
-                order: [
-                    'Welcome',
-                    'Tokens',
-                    'Inputs',
-                    'Content',
-                    'Uncategorized',
-                ],
+                order: ['Welcome', 'Tokens', 'Inputs', 'Content', 'Uncategorized'],
             },
         },
         darkMode: {

@@ -1,5 +1,6 @@
-import React, { type ComponentPropsWithoutRef, type FC, type PropsWithChildren } from 'react';
 import { clsx } from 'clsx';
+import type React from 'react';
+import type { ComponentPropsWithoutRef, FC, PropsWithChildren } from 'react';
 import styles from '../input/Input.module.scss';
 import type { TextProps } from '../text';
 import { Text } from '../text';
@@ -41,21 +42,21 @@ export type FieldProps = {
         label?: TextProps<'label'>;
         description?: TextProps<'p'>;
         labelContainer?: ComponentPropsWithoutRef<'div'>;
-    }
+    };
 };
 
 /**
-* A Field component wraps a form input component with an accessible label and description.
-*
-* <hr />
-*
-* To use this component, import it as follows:
-*
-* ```js
-* import { Field } from 'paris/field';
-* ```
-* @constructor
-*/
+ * A Field component wraps a form input component with an accessible label and description.
+ *
+ * <hr />
+ *
+ * To use this component, import it as follows:
+ *
+ * ```js
+ * import { Field } from 'paris/field';
+ * ```
+ * @constructor
+ */
 export const Field: FC<PropsWithChildren<FieldProps>> = ({
     htmlFor,
     disabled,
@@ -64,29 +65,25 @@ export const Field: FC<PropsWithChildren<FieldProps>> = ({
     // className,
     ...props
 }) => {
-    const label = typeof props.label === 'string'
-        ? (
+    const label =
+        typeof props.label === 'string' ? (
             <Text
                 {...props.overrides?.label}
                 as="label"
                 kind="paragraphSmall"
                 htmlFor={htmlFor}
-                className={clsx(
-                    styles.label,
-                    { [styles.hidden]: props.hideLabel },
-                )}
+                className={clsx(styles.label, { [styles.hidden]: props.hideLabel })}
             >
                 {props.label}
             </Text>
-        )
-        : (
+        ) : (
             <label htmlFor={htmlFor} className={clsx(styles.label, { [styles.hidden]: props.hideLabel })}>
                 {props.label}
             </label>
         );
 
-    const description = typeof props.description === 'string'
-        ? (
+    const description =
+        typeof props.description === 'string' ? (
             <Text
                 id={`${htmlFor}-description`}
                 {...props.overrides?.description}
@@ -100,8 +97,7 @@ export const Field: FC<PropsWithChildren<FieldProps>> = ({
             >
                 {props.description}
             </Text>
-        )
-        : (
+        ) : (
             <div
                 id={`${htmlFor}-description`}
                 className={clsx({ [styles.hidden]: !props.description || props.hideDescription })}
@@ -134,15 +130,14 @@ export const Field: FC<PropsWithChildren<FieldProps>> = ({
             {descriptionPosition === 'top' ? (
                 <div
                     {...props.overrides?.labelContainer}
-                    className={clsx(
-                        styles.labelContainer,
-                        props.overrides?.labelContainer?.className,
-                    )}
+                    className={clsx(styles.labelContainer, props.overrides?.labelContainer?.className)}
                 >
                     {label}
                     {description}
                 </div>
-            ) : label}
+            ) : (
+                label
+            )}
             {children}
             {descriptionPosition === 'bottom' ? description : <></>}
         </div>

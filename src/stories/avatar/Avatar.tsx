@@ -1,11 +1,9 @@
-import type {
-    ComponentPropsWithoutRef, CSSProperties, FC, ReactNode,
-} from 'react';
-import { useMemo } from 'react';
 import type { CSSLength } from '@ssh/csstypes';
 import { clsx } from 'clsx';
-import styles from './Avatar.module.scss';
+import type { ComponentPropsWithoutRef, CSSProperties, FC, ReactNode } from 'react';
+import { useMemo } from 'react';
 import { pvar } from '../theme';
+import styles from './Avatar.module.scss';
 
 export type AvatarProps = {
     frameColor?: string;
@@ -35,17 +33,20 @@ export const Avatar: FC<AvatarProps> = ({
     style,
     ...props
 }) => {
-    const widthMemoized = useMemo(() => (
-        typeof width === 'number' ? `${width}px` : width
-    ) as CSSProperties['width'], [width]);
+    const widthMemoized = useMemo(
+        () => (typeof width === 'number' ? `${width}px` : width) as CSSProperties['width'],
+        [width],
+    );
     return (
         <div
             {...props}
-            style={{
-                width: widthMemoized,
-                '--frame-color': frameColor,
-                ...style,
-            } as CSSProperties}
+            style={
+                {
+                    width: widthMemoized,
+                    '--frame-color': frameColor,
+                    ...style,
+                } as CSSProperties
+            }
             className={clsx(styles.content, className)}
         >
             {children}

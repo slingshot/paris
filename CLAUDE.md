@@ -9,12 +9,22 @@ Paris is Slingshot's React design system. It ships as unbundled `.tsx` component
 ## Commands
 
 ```bash
-pnpm storybook           # Run Storybook dev server on port 6006
-pnpm build:storybook     # Build Storybook for production
-pnpm create:component Name  # Scaffold a new component
-pnpm generate:exports    # Regenerate package.json exports after adding components
-pnpm lint                # Run ESLint
+bun run storybook           # Run Storybook dev server on port 6006
+bun run build:storybook     # Build Storybook for production
+bun run create:component Name  # Scaffold a new component
+bun run generate:exports    # Regenerate package.json exports after adding components
+bun run lint                # Run Biome (lint + format check)
+bun run lint:fix            # Auto-fix lint and formatting issues
+bun run format              # Format all files
+bun run typecheck           # Run TypeScript type checking
 ```
+
+## Tooling
+
+- **Package manager**: Bun
+- **Linting & formatting**: Biome (configured in `biome.json`)
+- **Git hooks**: Lefthook (configured in `lefthook.yml`) — runs biome check and CSS var validation on pre-commit, commitlint on commit-msg
+- **Commit conventions**: Commitlint with `@commitlint/config-conventional` — all commits must follow conventional commit format
 
 ## Architecture
 

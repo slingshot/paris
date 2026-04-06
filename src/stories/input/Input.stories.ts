@@ -1,7 +1,7 @@
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { Meta, StoryObj } from '@storybook/react';
 import { createElement } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Input } from './Input';
 
 const meta: Meta<typeof Input> = {
@@ -69,10 +69,11 @@ export const WithEnhancer: Story = {
         placeholder: 'Mia Dolan',
         label: 'Name',
         description: 'Type your full name here.',
-        startEnhancer: ({ size }) => createElement(FontAwesomeIcon, {
-            icon: faSearch,
-            width: `${size}px`,
-        }),
+        startEnhancer: ({ size }) =>
+            createElement(FontAwesomeIcon, {
+                icon: faSearch,
+                width: `${size}px`,
+            }),
     },
 };
 
@@ -81,20 +82,18 @@ export const WithEndEnhancer: Story = {
         placeholder: 'Mia Dolan',
         label: 'Name',
         description: 'Type your full name here.',
-        endEnhancer: ({ size }) => createElement(FontAwesomeIcon, {
-            icon: faSearch,
-            width: `${size}px`,
-        }),
+        endEnhancer: ({ size }) =>
+            createElement(FontAwesomeIcon, {
+                icon: faSearch,
+                width: `${size}px`,
+            }),
     },
 };
 
 export const WithCustomLabel: Story = {
     args: {
         placeholder: 'Mia Dolan',
-        label: createElement('span', null, [
-            createElement('b', null, 'Name'),
-            createElement('i', null, ' (optional)'),
-        ]),
+        label: createElement('span', null, [createElement('b', null, 'Name'), createElement('i', null, ' (optional)')]),
         'aria-label': 'Name (optional)',
         description: createElement('span', null, [
             createElement(

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { pvar } from '../theme';
 import type { IconDefinition } from './Icon';
 import { Icon } from './Icon';
 import * as Icons from './index';
-import { pvar } from '../theme';
 
 const meta: Meta<typeof Icon> = {
     title: 'Content/Icon',

@@ -1,7 +1,7 @@
-import type { FC, HTMLAttributes, ReactNode } from 'react';
 import { clsx } from 'clsx';
-import styles from './Card.module.scss';
+import type { FC, HTMLAttributes, ReactNode } from 'react';
 import { TextWhenString } from '../utility';
+import styles from './Card.module.scss';
 
 export type CardProps = {
     /**
@@ -38,12 +38,7 @@ export type CardProps = {
  * ```
  * @constructor
  */
-export const Card: FC<CardProps> = ({
-    kind = 'raised',
-    status = 'default',
-    children,
-    ...props
-}) => (
+export const Card: FC<CardProps> = ({ kind = 'raised', status = 'default', children, ...props }) => (
     <div
         {...props}
         className={clsx(
@@ -54,8 +49,6 @@ export const Card: FC<CardProps> = ({
             props?.className,
         )}
     >
-        <TextWhenString kind="paragraphMedium">
-            {children}
-        </TextWhenString>
+        <TextWhenString kind="paragraphMedium">{children}</TextWhenString>
     </div>
 );

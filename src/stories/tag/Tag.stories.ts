@@ -1,7 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createElement } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Tag } from './Tag';
 
 const meta: Meta<typeof Tag> = {

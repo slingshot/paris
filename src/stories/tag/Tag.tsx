@@ -1,15 +1,13 @@
 'use client';
 
-import type {
-    ComponentPropsWithoutRef, FC, ReactElement, ReactNode,
-} from 'react';
-import { useMemo } from 'react';
-import { clsx } from 'clsx';
 import type { CSSLength } from '@ssh/csstypes';
-import styles from './Tag.module.scss';
+import { clsx } from 'clsx';
+import type { ComponentPropsWithoutRef, FC, ReactElement, ReactNode } from 'react';
+import { useMemo } from 'react';
+import { Check, Icon } from '../icon';
 import typography from '../text/Typography.module.css';
-import { Icon, Check } from '../icon';
 import { VisuallyHidden } from '../utility';
+import styles from './Tag.module.scss';
 
 export const CornerPresets = ['sharp', 'rounded', 'roundedXL'] as const;
 
@@ -23,7 +21,7 @@ export type TagProps = {
      * `sharp` will have no rounding, `rounded` will have a slight rounding, and `roundedXL` will have a large rounding.
      * @see CornerPresets
      */
-    corners?: typeof CornerPresets[number] | CSSLength;
+    corners?: (typeof CornerPresets)[number] | CSSLength;
     /** The kind of Tag. */
     kind?: 'default' | 'secondary' | 'positive' | 'warning' | 'negative' | 'new' | 'void' | 'draft';
     /** The color level of Tag background, applies to the colored states of `positive`, `warning`, and `negative`. */
@@ -72,19 +70,13 @@ export const Tag: FC<TagProps> = ({
                 className,
             )}
             data-status={colorLevel}
-            style={(corners && !cornersIsPreset) ? { borderRadius: corners } : {}}
+            style={corners && !cornersIsPreset ? { borderRadius: corners } : {}}
         >
-            {shape !== 'square' && (
-                <div>
-                    {children}
-                </div>
-            )}
+            {shape !== 'square' && <div>{children}</div>}
             {shape === 'square' && (
                 <div className={styles.icon}>
                     {icon}
-                    <VisuallyHidden>
-                        {children}
-                    </VisuallyHidden>
+                    <VisuallyHidden>{children}</VisuallyHidden>
                 </div>
             )}
         </div>

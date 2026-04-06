@@ -14,8 +14,7 @@ export const renderEnhancer = (enhancer: Enhancer, size: number): ReactNode => {
     return enhancer;
 };
 
-export const MemoizedEnhancer = memo<{ enhancer: Enhancer, size: number }>(({ enhancer, size }) => (
-    <>
-        { renderEnhancer(enhancer, size)}
-    </>
-), (prev, next) => prev.enhancer === next.enhancer && prev.size === next.size);
+export const MemoizedEnhancer = memo<{ enhancer: Enhancer; size: number }>(
+    ({ enhancer, size }) => <>{renderEnhancer(enhancer, size)}</>,
+    (prev, next) => prev.enhancer === next.enhancer && prev.size === next.size,
+);

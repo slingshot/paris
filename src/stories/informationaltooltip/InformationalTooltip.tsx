@@ -1,13 +1,13 @@
+import * as RadixTooltip from '@radix-ui/react-tooltip';
+import { clsx } from 'clsx';
+import type { HTMLMotionProps } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { useState } from 'react';
-import { clsx } from 'clsx';
-import * as RadixTooltip from '@radix-ui/react-tooltip';
-import type { HTMLMotionProps } from 'framer-motion';
-import { motion, AnimatePresence } from 'framer-motion';
-import styles from './InformationalTooltip.module.scss';
-import { TextWhenString } from '../utility';
 import { Icon, Info } from '../icon';
-import { pvar, pget } from '../theme';
+import { pget, pvar } from '../theme';
+import { TextWhenString } from '../utility';
+import styles from './InformationalTooltip.module.scss';
 
 export type InformationalTooltipProps = {
     /**
@@ -57,10 +57,10 @@ export type InformationalTooltipProps = {
      */
     overrides?: {
         /** The main tooltip element  */
-        tooltip?: HTMLMotionProps<'div'>,
+        tooltip?: HTMLMotionProps<'div'>;
         /** The heading element */
-        heading?: ComponentPropsWithoutRef<'div'>,
-    }
+        heading?: ComponentPropsWithoutRef<'div'>;
+    };
 };
 
 /**
@@ -112,13 +112,8 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
     };
 
     return (
-        <RadixTooltip.Provider
-            delayDuration={parseCSSTime(pget('new.animations.duration.normal'))}
-        >
-            <RadixTooltip.Root
-                open={isOpen}
-                onOpenChange={setOpen}
-            >
+        <RadixTooltip.Provider delayDuration={parseCSSTime(pget('new.animations.duration.normal'))}>
+            <RadixTooltip.Root open={isOpen} onOpenChange={setOpen}>
                 <RadixTooltip.Trigger
                     onClick={() => {
                         if (!disableClick) {
@@ -127,27 +122,27 @@ export const InformationalTooltip: FC<InformationalTooltipProps> = ({
                     }}
                 >
                     {!trigger ? (
-                        <Icon icon={Info} size={14} className={styles.icon} style={{ color: pvar('new.colors.contentSecondary') }} />
+                        <Icon
+                            icon={Info}
+                            size={14}
+                            className={styles.icon}
+                            style={{ color: pvar('new.colors.contentSecondary') }}
+                        />
                     ) : (
-                        <>
-                            {trigger}
-                        </>
+                        trigger
                     )}
                 </RadixTooltip.Trigger>
                 <AnimatePresence>
                     {isOpen && (
                         <RadixTooltip.Portal forceMount>
-                            <RadixTooltip.Content
-                                side={side}
-                                sideOffset={sideOffset}
-                                align={align}
-                                asChild
-                            >
+                            <RadixTooltip.Content side={side} sideOffset={sideOffset} align={align} asChild>
                                 <motion.div
                                     initial={{ opacity: 0, y: 3 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: 3 }}
-                                    transition={{ duration: parseCSSTime(pget('new.animations.duration.normal')) / 1000 }}
+                                    transition={{
+                                        duration: parseCSSTime(pget('new.animations.duration.normal')) / 1000,
+                                    }}
                                     {...overrides?.tooltip}
                                     className={clsx(styles.tooltip, styles[size], overrides?.tooltip?.className)}
                                 >

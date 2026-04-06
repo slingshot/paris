@@ -15,7 +15,7 @@
     border-width: 0; /* 2 */
     border-style: solid; /* 2 */
     border-color: var(--pte-new-colors-borderMedium); /* 2 */
-    
+
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -109,7 +109,8 @@ code,
 kbd,
 samp,
 pre {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+    font-family:
+        ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; /* 1 */
     font-size: 1em; /* 2 */
 }
 
@@ -326,7 +327,7 @@ Set the default cursor for buttons.
 */
 
 button,
-[role="button"] {
+[role='button'] {
     cursor: default;
 }
 

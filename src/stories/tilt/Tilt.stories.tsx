@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import type { CSSProperties } from 'react';
-import { Tilt } from './Tilt';
 import { Text } from '../text';
 import { pvar } from '../theme';
+import { Tilt } from './Tilt';
 
 const meta: Meta<typeof Tilt> = {
     title: 'Surfaces/Tilt',
@@ -34,10 +34,7 @@ export const Default: Story = {
         } as CSSProperties;
 
         return (
-            <Tilt
-                {...args}
-                style={tiltStyle}
-            >
+            <Tilt {...args} style={tiltStyle}>
                 {children}
             </Tilt>
         );

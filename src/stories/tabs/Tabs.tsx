@@ -1,20 +1,16 @@
 'use client';
 
-import type {
-    ComponentPropsWithoutRef, CSSProperties, FC, ReactNode,
-} from 'react';
-import { useId, useState } from 'react';
-import type { TabGroupProps, TabPanelProps, TabProps } from '@headlessui/react';
-import {
-    Tab, TabGroup, TabList, TabPanels, TabPanel,
-} from '@headlessui/react';
-import { clsx } from 'clsx';
-import type { CSSLength } from '@ssh/csstypes';
-import { motion } from 'framer-motion';
 import type { TabListProps } from '@ariakit/react';
-import styles from './Tabs.module.scss';
+import type { TabGroupProps, TabPanelProps, TabProps } from '@headlessui/react';
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
+import type { CSSLength } from '@ssh/csstypes';
+import { clsx } from 'clsx';
+import { motion } from 'framer-motion';
+import type { ComponentPropsWithoutRef, CSSProperties, FC, ReactNode } from 'react';
+import { useId, useState } from 'react';
 import typography from '../text/Typography.module.css';
 import { easeInOutExpo } from '../utility';
+import styles from './Tabs.module.scss';
 
 export type TabsProps = {
     /**
@@ -71,7 +67,7 @@ export type TabsProps = {
         tabListBorder?: ComponentPropsWithoutRef<'div'>;
         tabBackground?: ComponentPropsWithoutRef<'div'>;
         tab?: TabProps<'div'>;
-    }
+    };
 };
 
 /**
@@ -125,11 +121,13 @@ export const Tabs: FC<TabsProps> = ({
                 )}
                 <TabList
                     {...overrides?.tabList}
-                    style={{
-                        '--tab-width': tabWidth,
-                        '--tab-index': `${index ?? selectedIndex}`,
-                        ...(overrides?.tabList?.style || {}),
-                    } as CSSProperties}
+                    style={
+                        {
+                            '--tab-width': tabWidth,
+                            '--tab-index': `${index ?? selectedIndex}`,
+                            ...(overrides?.tabList?.style || {}),
+                        } as CSSProperties
+                    }
                     className={clsx(
                         styles.tabList,
                         styles[barStyle],
@@ -141,11 +139,7 @@ export const Tabs: FC<TabsProps> = ({
                         <Tab
                             key={`${id}-tab-${title}`}
                             {...overrides?.tab}
-                            className={clsx(
-                                typography.paragraphXSmall,
-                                styles.tab,
-                                styles[kind],
-                            )}
+                            className={clsx(typography.paragraphXSmall, styles.tab, styles[kind])}
                         >
                             {title}
                             {i === (index ?? selectedIndex) && (

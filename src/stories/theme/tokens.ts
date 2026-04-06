@@ -135,10 +135,10 @@ export const ColorsNew = {
 } as const;
 
 export type TokensT = {
-    colors: typeof Colors,
+    colors: typeof Colors;
     new: {
-        colors: typeof ColorsNew,
-    },
+        colors: typeof ColorsNew;
+    };
 };
 
 export const Tokens: TokensT = {

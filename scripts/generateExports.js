@@ -1,13 +1,11 @@
-const fs = require('fs');
+const fs = require('node:fs');
 
 const baseDir = __dirname.split('/scripts')[0];
 
 const componentDirectory = `${baseDir}/src/stories`;
 
 // Directories to intentionally ignore
-const ignoreDirectories = [
-    'assets',
-];
+const ignoreDirectories = ['assets'];
 
 const run = async () => {
     // Record start time
@@ -25,12 +23,15 @@ const run = async () => {
     const packageFile = require(`${baseDir}/package.json`);
 
     // Update exports in package.json
-    packageFile.exports = subDirectories.reduce((acc, subDirectory) => {
-        acc[`./${subDirectory}`] = `./src/stories/${subDirectory}/index.ts`;
-        return acc;
-    }, {
-        './*': './src/stories/*',
-    });
+    packageFile.exports = subDirectories.reduce(
+        (acc, subDirectory) => {
+            acc[`./${subDirectory}`] = `./src/stories/${subDirectory}/index.ts`;
+            return acc;
+        },
+        {
+            './*': './src/stories/*',
+        },
+    );
 
     // Write the package.json file
     await fs.promises.writeFile(`${baseDir}/package.json`, JSON.stringify(packageFile, null, 4), { encoding: 'utf8' });

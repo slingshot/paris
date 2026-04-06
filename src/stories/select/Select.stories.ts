@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { createElement, useState } from 'react';
-import { Select } from './Select';
 import { Text } from '../text';
+import { Select } from './Select';
 
 const meta: Meta<typeof Select> = {
     title: 'Inputs/Select',
@@ -25,15 +25,15 @@ const render: Story['render'] = function Render(args) {
             Select,
             args.multiple
                 ? {
-                    ...args,
-                    value: selectedMultiple,
-                    onChange: (value: string[] | null) => setSelectedMultiple(value),
-                }
+                      ...args,
+                      value: selectedMultiple,
+                      onChange: (value: string[] | null) => setSelectedMultiple(value),
+                  }
                 : {
-                    ...args,
-                    value: selected,
-                    onChange: (value: string | null) => setSelected(value),
-                },
+                      ...args,
+                      value: selected,
+                      onChange: (value: string | null) => setSelected(value),
+                  },
         ),
     );
 };
