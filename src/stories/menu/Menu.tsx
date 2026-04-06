@@ -58,12 +58,8 @@ export const MenuItems: FC<
 > = ({ className, children, position = 'left', ...props }) => (
     <HMenuItems
         transition
-        className={clsx(
-            styles.menuItems,
-            position === 'left' && styles.leftPosition,
-            position === 'right' && styles.rightPosition,
-            className,
-        )}
+        anchor={position === 'left' ? 'bottom start' : 'bottom end'}
+        className={clsx(styles.menuItems, className)}
         {...props}
     >
         {children}

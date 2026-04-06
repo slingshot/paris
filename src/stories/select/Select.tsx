@@ -2,15 +2,7 @@
 
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    Listbox,
-    ListboxButton,
-    ListboxOption,
-    ListboxOptions,
-    Radio,
-    RadioGroup,
-    Transition,
-} from '@headlessui/react';
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions, Radio, RadioGroup } from '@headlessui/react';
 import { clsx } from 'clsx';
 import { motion } from 'framer-motion';
 import type { ComponentPropsWithoutRef, CSSProperties, ForwardedRef, ReactNode } from 'react';
@@ -24,7 +16,6 @@ import type { TextProps } from '../text';
 import { Text } from '../text';
 import { pget, theme } from '../theme';
 import { TextWhenString } from '../utility';
-import dropdownStyles from '../utility/Dropdown.module.scss';
 import styles from './Select.module.scss';
 
 export type Option<T = Record<string, any>> = {
@@ -255,47 +246,38 @@ export const Select = forwardRef(
                                 />
                             )}
                         </ListboxButton>
-                        <Transition
-                            as="div"
-                            className={dropdownStyles.transitionContainer}
-                            enter={dropdownStyles.transition}
-                            enterFrom={dropdownStyles.enterFrom}
-                            enterTo={dropdownStyles.enterTo}
-                            leave={dropdownStyles.transition}
-                            leaveFrom={dropdownStyles.leaveFrom}
-                            leaveTo={dropdownStyles.leaveTo}
+                        <ListboxOptions
+                            anchor="bottom start"
+                            transition
+                            className={clsx(overrides?.optionsContainer, styles.options)}
+                            style={
+                                {
+                                    '--options-maxHeight': `${maxHeight}px`,
+                                } as CSSProperties
+                            }
                         >
-                            <ListboxOptions
-                                className={clsx(overrides?.optionsContainer, styles.options)}
-                                style={
-                                    {
-                                        '--options-maxHeight': `${maxHeight}px`,
-                                    } as CSSProperties
-                                }
-                            >
-                                {(options || []).map((option) => (
-                                    <ListboxOption
-                                        key={option.id}
-                                        value={option.id}
-                                        className={clsx(
-                                            overrides?.option,
-                                            styles.option,
-                                            hasOptionBorder && styles.optionBorder,
-                                        )}
-                                        disabled={option.disabled || false}
-                                    >
-                                        {typeof option.node === 'string' ? (
-                                            <Text as="span" kind="paragraphSmall">
-                                                {option.node}
-                                            </Text>
-                                        ) : (
-                                            option.node
-                                        )}
-                                        <Icon icon={Check} size={12} className={styles.check} />
-                                    </ListboxOption>
-                                ))}
-                            </ListboxOptions>
-                        </Transition>
+                            {(options || []).map((option) => (
+                                <ListboxOption
+                                    key={option.id}
+                                    value={option.id}
+                                    className={clsx(
+                                        overrides?.option,
+                                        styles.option,
+                                        hasOptionBorder && styles.optionBorder,
+                                    )}
+                                    disabled={option.disabled || false}
+                                >
+                                    {typeof option.node === 'string' ? (
+                                        <Text as="span" kind="paragraphSmall">
+                                            {option.node}
+                                        </Text>
+                                    ) : (
+                                        option.node
+                                    )}
+                                    <Icon icon={Check} size={12} className={styles.check} />
+                                </ListboxOption>
+                            ))}
+                        </ListboxOptions>
                     </Listbox>
                 )}
                 {kind === 'radio' && (

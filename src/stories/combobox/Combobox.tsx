@@ -2,7 +2,7 @@
 
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ComboboxInput, ComboboxOption, ComboboxOptions, Combobox as HCombobox, Transition } from '@headlessui/react';
+import { ComboboxInput, ComboboxOption, ComboboxOptions, Combobox as HCombobox } from '@headlessui/react';
 import { clsx } from 'clsx';
 import type { ComponentPropsWithoutRef, CSSProperties, ReactNode } from 'react';
 import { useId, useMemo, useState } from 'react';
@@ -18,7 +18,6 @@ import type { TextProps } from '../text';
 import { Text } from '../text';
 import { pget, theme } from '../theme';
 import { TextWhenString } from '../utility';
-import dropdownStyles from '../utility/Dropdown.module.scss';
 
 export type Option<T extends Record<string, any> = Record<string, any>> =
     | {
@@ -292,59 +291,50 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                         </div>
                     )}
                 </div>
-                <Transition
-                    as="div"
-                    className={dropdownStyles.transitionContainer}
-                    enter={dropdownStyles.transition}
-                    enterFrom={dropdownStyles.enterFrom}
-                    enterTo={dropdownStyles.enterTo}
-                    leave={dropdownStyles.transition}
-                    leaveFrom={dropdownStyles.leaveFrom}
-                    leaveTo={dropdownStyles.leaveTo}
+                <ComboboxOptions
+                    as="ul"
+                    anchor="bottom start"
+                    transition
+                    {...overrides?.optionsContainer}
+                    className={clsx(overrides?.optionsContainer?.className, styles.options)}
+                    style={
+                        {
+                            '--options-maxHeight': `${maxHeight}px`,
+                            ...overrides?.optionsContainer?.style,
+                        } as CSSProperties
+                    }
                 >
-                    <ComboboxOptions
-                        as="ul"
-                        {...overrides?.optionsContainer}
-                        className={clsx(overrides?.optionsContainer?.className, styles.options)}
-                        style={
-                            {
-                                '--options-maxHeight': `${maxHeight}px`,
-                                ...overrides?.optionsContainer?.style,
-                            } as CSSProperties
-                        }
-                    >
-                        {allowCustomValue && showCustomValueOption && !customValueToOption && query.length > 0 && (
-                            <ComboboxOption
-                                as="li"
-                                value={query}
-                                data-selected={false}
-                                className={clsx(overrides?.customValueOption?.className, styles.option)}
-                                {...overrides?.customValueOption}
-                            >
-                                <Text as="span" kind="paragraphSmall">
-                                    {customValueString.replace('%v', query)}
-                                </Text>
-                            </ComboboxOption>
-                        )}
-                        {(optionsWithCustomValue || []).map((option) => (
-                            <ComboboxOption
-                                as="li"
-                                key={option.id}
-                                value={option.id}
-                                {...overrides?.option}
-                                className={clsx(
-                                    overrides?.option?.className,
-                                    styles.option,
-                                    hasOptionBorder && styles.optionBorder,
-                                )}
-                            >
-                                <TextWhenString as="span" kind="paragraphSmall">
-                                    {option.node}
-                                </TextWhenString>
-                            </ComboboxOption>
-                        ))}
-                    </ComboboxOptions>
-                </Transition>
+                    {allowCustomValue && showCustomValueOption && !customValueToOption && query.length > 0 && (
+                        <ComboboxOption
+                            as="li"
+                            value={query}
+                            data-selected={false}
+                            className={clsx(overrides?.customValueOption?.className, styles.option)}
+                            {...overrides?.customValueOption}
+                        >
+                            <Text as="span" kind="paragraphSmall">
+                                {customValueString.replace('%v', query)}
+                            </Text>
+                        </ComboboxOption>
+                    )}
+                    {(optionsWithCustomValue || []).map((option) => (
+                        <ComboboxOption
+                            as="li"
+                            key={option.id}
+                            value={option.id}
+                            {...overrides?.option}
+                            className={clsx(
+                                overrides?.option?.className,
+                                styles.option,
+                                hasOptionBorder && styles.optionBorder,
+                            )}
+                        >
+                            <TextWhenString as="span" kind="paragraphSmall">
+                                {option.node}
+                            </TextWhenString>
+                        </ComboboxOption>
+                    ))}
+                </ComboboxOptions>
             </HCombobox>
         </Field>
     );

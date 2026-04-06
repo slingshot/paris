@@ -3,10 +3,7 @@
 }
 
 .menuItems {
-    position: absolute;
-    right: 0;
-
-    margin-top: 6px;
+    --anchor-gap: 6px;
 
     border-radius: 8px;
     background: var(--pte-new-colors-surfacePrimary);
@@ -29,16 +26,6 @@
         opacity: 0;
         transform: translateY(-8px);
     }
-}
-
-.leftPosition {
-    right: auto;
-    left: 0;
-}
-
-.rightPosition {
-    right: 0;
-    left: auto;
 }
 
 .menuItem {

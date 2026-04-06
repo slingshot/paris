@@ -25,14 +25,11 @@
 }
 
 .options {
+    width: var(--anchor-width);
     max-height: var(--options-maxHeight, auto);
     overflow-y: auto;
     overflow-x: hidden;
 
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
     z-index: var(--pte-new-layers-dropdown);
 
     display: flex;
@@ -45,6 +42,11 @@
     box-shadow: var(--pte-new-lighting-deepBelow);
 
     transition: var(--pte-animations-interaction);
+
+    &[data-closed] {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
 
     &:focus-within {
         outline: none;
