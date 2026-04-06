@@ -10,11 +10,11 @@
         --pte-new-shadows-shallowPopup,
         0 4px 12px rgba(0, 0, 0, 0.15)
     );
-    padding: 12px;
-    width: 300px;
+    padding: 8px 10px;
+    width: 280px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .label {
@@ -34,10 +34,10 @@
     flex: 1;
     background-color: var(--pte-new-colors-inputFill);
     border: 1px solid var(--pte-new-colors-borderSubtle);
-    border-radius: 6px;
-    padding: 6px 10px;
+    border-radius: 4px;
+    padding: 4px 8px;
     color: var(--pte-new-colors-contentPrimary);
-    font-size: 13px;
+    font-size: 11px;
     font-family: inherit;
     outline: none;
     transition: border-color var(--pte-new-animations-interaction, 150ms) ease;
@@ -54,10 +54,10 @@
 .applyButton {
     background-color: var(--pte-new-colors-buttonFill);
     border: none;
-    border-radius: 6px;
-    padding: 6px 12px;
+    border-radius: 4px;
+    padding: 4px 10px;
     color: var(--pte-new-colors-contentInversePrimary, #fff);
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     font-family: inherit;
     cursor: pointer;
