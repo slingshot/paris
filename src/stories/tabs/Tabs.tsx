@@ -112,6 +112,15 @@ export const Tabs: FC<TabsProps> = ({
             <div
                 {...overrides?.tabBackground}
                 className={clsx(styles.tabBackground, styles[backgroundStyle], overrides?.tabBackground?.className)}
+                style={{
+                    ...(backgroundStyle === 'glass'
+                        ? {
+                              backdropFilter: 'var(--pte-new-blurs-strong)',
+                              WebkitBackdropFilter: 'var(--pte-new-blurs-strong)',
+                          }
+                        : {}),
+                    ...overrides?.tabBackground?.style,
+                }}
             >
                 <TabList
                     {...overrides?.tabList}
