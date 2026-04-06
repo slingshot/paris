@@ -61,11 +61,15 @@ The theme engine (`pte`) generates CSS variables from TypeScript theme definitio
 - Use data attributes for state variants: `[data-status="error"]`
 - Container queries supported via `paris-container` class on root
 
+**Compound Component Pattern**: `MarkdownEditor` uses React context to share editor state with composable toolbar children (`FixedToolbar`, `FloatingToolbar`). Features are gated via the `features` prop.
+
 ### Dependencies for UI Primitives
 
 - `@ariakit/react` - Button, other primitives
 - `@headlessui/react` - Dialog, Listbox, Menu, RadioGroup, Tabs, Transition
 - `@radix-ui/react-checkbox`, `@radix-ui/react-tooltip` - Checkbox, Tooltip
+- `@tiptap/react`, `@tiptap/starter-kit`, `@tiptap/markdown` - MarkdownEditor
+- `lucide-react` - MarkdownEditor toolbar icons
 
 ## Maintaining Documentation
 

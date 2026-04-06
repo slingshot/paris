@@ -78,8 +78,10 @@ import { Input } from 'paris/input';
 - Menu - Dropdown menu (MenuButton, MenuItems, MenuItem)
 - Tabs - Tabbed navigation
 
-### Display
+### Content
 - Text - Typography with theme styles
+- Markdown - Renders markdown with Paris styling (read-only)
+- MarkdownEditor - WYSIWYG markdown editor (Tiptap-based, outputs markdown)
 - Table - Data table
 - Avatar - User avatar
 - Tag - Label/badge
@@ -246,11 +248,46 @@ paris/
 └── public/
 ```
 
+## MarkdownEditor Props
+
+```tsx
+import { MarkdownEditor, FixedToolbar, FloatingToolbar } from 'paris/markdowneditor';
+
+// Full editor with both toolbars
+<MarkdownEditor value={md} onChange={setMd} placeholder="Start writing...">
+  <FixedToolbar />
+  <FloatingToolbar />
+</MarkdownEditor>
+
+// Minimal — only bold, italic, links
+<MarkdownEditor value={md} onChange={setMd} features={['bold', 'italic', 'link']}>
+  <FloatingToolbar />
+</MarkdownEditor>
+
+// Read-only
+<MarkdownEditor value={md} editable={false} />
+```
+
+```tsx
+value: string                                    // Controlled markdown string
+onChange?: (value: string) => void               // Fires with markdown on edit
+features?: MarkdownEditorFeature[]               // Whitelist (default: all)
+// Available: 'bold' | 'italic' | 'strikethrough' | 'heading' | 'blockquote' |
+// 'horizontalRule' | 'bulletList' | 'orderedList' | 'taskList' | 'codeBlock' |
+// 'code' | 'link' | 'image' | 'table'
+placeholder?: string
+size?: MarkdownSize                              // Body text size
+editable?: boolean                               // default: true
+status?: 'default' | 'error' | 'success'
+```
+
 ## Key Dependencies
 
 - @ariakit/react - Accessible primitives
 - @headlessui/react - Unstyled accessible components
 - @radix-ui/react-* - Radix primitives
+- @tiptap/react - Rich text editor (MarkdownEditor)
+- lucide-react - Icons (MarkdownEditor toolbar)
 - framer-motion - Animations
 - clsx - Class name utility
 - pte - Theme engine

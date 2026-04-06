@@ -79,8 +79,10 @@ src/stories/<componentname>/
 - **Menu** - Dropdown menu
 - **Tabs** - Tabbed navigation
 
-### Data Display
+### Content & Data Display
 - **Text** - Typography component with theme styles
+- **Markdown** - Renders markdown strings with Paris-styled elements (read-only)
+- **MarkdownEditor** - WYSIWYG rich text editor (Tiptap-based) that outputs markdown. Compound component with composable `FixedToolbar` and `FloatingToolbar` children. Supports feature gating via `features` prop.
 - **Table** - Data table
 - **Avatar** - User/entity avatar
 - **Tag** - Label/badge component
@@ -366,6 +368,12 @@ The project uses Biome for linting and formatting (configured in `biome.json`). 
 
 ### Icons
 - `@fortawesome/react-fontawesome` - FontAwesome icons
+- `lucide-react` - Lucide icons (used in MarkdownEditor toolbar)
+
+### Rich Text Editing
+- `@tiptap/react` - Tiptap editor framework (used by MarkdownEditor)
+- `@tiptap/starter-kit` - Core editor extensions
+- `@tiptap/markdown` - Markdown serialization
 
 ### Utilities
 - `react-hot-toast` - Toast notifications
