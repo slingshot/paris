@@ -6,7 +6,7 @@
         "useIgnoreFile": true
     },
     "files": {
-        "includes": ["**", "!dist/", "!.next/", "!storybook-static/", "!pte.css"]
+        "includes": ["**", "!dist/", "!.next/", "!storybook-static/", "!pte.css", "!.claude/worktrees/"]
     },
     "formatter": {
         "enabled": true,
