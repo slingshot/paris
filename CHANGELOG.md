@@ -1,5 +1,15 @@
 # paris
 
+## 0.20.0
+
+### Minor Changes
+
+- f40892e: Add semantic z-index layer tokens (`Theme.new.layers`) with six named layers: below, sticky, dropdown, overlay, popover, menu. Migrate all hardcoded z-index values to use CSS variable tokens. Fix stacking conflict where SegmentedControl labels bled through GlassTabs sticky bar.
+
+### Patch Changes
+
+- 680364a: MarkdownEditor: fix task list checkbox alignment, fix duplicate link extension, fix link popover not appearing, add handleImageUpload prop for file-based image insertion, match checkbox styling to Paris Checkbox component, use Lucide icons for toolbar, and update documentation.
+
 ## 0.19.0
 
 ### Minor Changes
