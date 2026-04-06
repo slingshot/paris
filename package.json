@@ -35,7 +35,7 @@
         "generate:theme": "pte export ./src/stories/theme/themes.ts LightTheme -o ./public/pte.css",
         "generate:text": "ts-node --esm ./scripts/text.ts",
         "release": "bun run generate:exports && bunx changeset publish",
-        "prepare": "lefthook install",
+        "prepare": "test -n \"$CI\" || lefthook install",
         "typecheck": "tsc --noEmit",
         "lint": "biome check .",
         "lint:fix": "biome check --write .",
