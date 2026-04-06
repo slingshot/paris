@@ -142,8 +142,8 @@
             top: 2px;
 
             &:checked {
-                background-color: var(--pte-new-colors-contentAccent);
-                border-color: var(--pte-new-colors-contentAccent);
+                background-color: var(--pte-new-colors-contentPrimary);
+                border-color: var(--pte-new-colors-contentPrimary);
 
                 &::after {
                     content: '✓';
