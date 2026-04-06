@@ -1,5 +1,5 @@
-import type { ThemeVars } from '@storybook/theming';
-import { create } from '@storybook/theming';
+import type { ThemeVars } from 'storybook/theming';
+import { create } from 'storybook/theming';
 import { DarkTheme, LightTheme } from '../src/stories/theme';
 
 /**

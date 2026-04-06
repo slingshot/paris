@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Button } from '../button';
 import { ChevronRight, Ellipsis } from '../icon';
 import { Menu, MenuButton, MenuItem, MenuItems } from './Menu';

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { DocsContainer } from '@storybook/blocks';
-import type { Decorator, Preview } from '@storybook/react';
+import { DocsContainer } from '@storybook/addon-docs/blocks';
+import type { Decorator, Preview } from '@storybook/nextjs-vite';
 import { createElement, useEffect, useState } from 'react';
 import { DARK_MODE_EVENT_NAME, useDarkMode } from 'storybook-dark-mode';
 
@@ -11,7 +11,7 @@ import '../public/fira/fira_code.css';
 import '../src/styles/globals.css';
 import '../src/stories/theme/global.scss';
 import { config } from '@fortawesome/fontawesome-svg-core';
-import { addons } from '@storybook/preview-api';
+import { addons } from 'storybook/preview-api';
 import { DarkTheme, injectTheme, LightTheme } from '../src/stories/theme';
 import { Dark, Light } from './themes';
 
@@ -33,7 +33,7 @@ const channel = addons.getChannel();
 
 const preview: Preview = {
     parameters: {
-        backgrounds: { disable: true },
+        backgrounds: { disabled: true },
         controls: {
             matchers: {
                 color: /(background|color)$/i,

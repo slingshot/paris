@@ -1,6 +1,6 @@
 import { faCancel, faCheck, faWarning } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { createElement } from 'react';
 import { Callout } from './Callout';
 
