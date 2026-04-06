@@ -254,52 +254,52 @@
         }
     }
 
-    // ── Task lists (Tiptap uses data-type attributes) ────
+    // ── Task lists (Tiptap v3 uses data-checked on li) ────
     ul[data-type='taskList'] {
         list-style: none;
         padding-left: 0;
+    }
 
-        li[data-type='taskItem'] {
-            display: flex;
-            flex-direction: row;
-            align-items: baseline;
-            gap: 8px;
+    li[data-checked] {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        gap: 8px;
 
-            > label {
-                flex-shrink: 0;
+        > label {
+            flex-shrink: 0;
 
-                input[type='checkbox'] {
-                    appearance: none;
-                    width: 16px;
-                    height: 16px;
-                    border: 1.5px solid var(--pte-new-colors-borderStrong);
-                    border-radius: 4px;
-                    background: transparent;
-                    cursor: pointer;
-                    position: relative;
-                    top: 2px;
+            input[type='checkbox'] {
+                appearance: none;
+                width: 16px;
+                height: 16px;
+                border: 1.5px solid var(--pte-new-colors-borderStrong);
+                border-radius: 4px;
+                background: transparent;
+                cursor: pointer;
+                position: relative;
+                top: 2px;
 
-                    &:checked {
-                        background-color: var(--pte-new-colors-contentPrimary);
-                        border-color: var(--pte-new-colors-contentPrimary);
+                &:checked {
+                    background-color: var(--pte-new-colors-contentPrimary);
+                    border-color: var(--pte-new-colors-contentPrimary);
 
-                        &::after {
-                            content: '✓';
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            font-size: 11px;
-                            font-weight: 700;
-                            color: white;
-                        }
+                    &::after {
+                        content: '✓';
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        font-size: 11px;
+                        font-weight: 700;
+                        color: white;
                     }
                 }
             }
+        }
 
-            > div {
-                flex: 1;
-            }
+        > div {
+            flex: 1;
         }
     }
 
