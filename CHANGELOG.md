@@ -1,5 +1,15 @@
 # paris
 
+## 0.18.0
+
+### Minor Changes
+
+- 0c3b686: Add Markdown component that renders markdown strings using Paris design system components. Supports GFM (tables, task lists, strikethrough, footnotes), HTML passthrough (kbd, mark, details/summary, definition lists), and a configurable `size` prop for base text sizing.
+
+### Patch Changes
+
+- 12fb9a7: Migrate tooling from pnpm/ESLint/Husky to Bun/Biome/Lefthook/Commitlint
+
 ## 0.17.10
 
 ### Patch Changes
