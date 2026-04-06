@@ -15,7 +15,8 @@
         "jsx": "preserve",
         "baseUrl": ".",
         "paths": {},
-        "incremental": true
+        "incremental": true,
+        "types": ["vitest/globals"]
     },
     "ts-node": {
         "compilerOptions": {
