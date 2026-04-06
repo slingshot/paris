@@ -40,8 +40,14 @@ export const LinkPopover: FC<LinkPopoverProps> = ({ onClose }) => {
                 onClose();
             }
         };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
+        // Use requestAnimationFrame to skip the current event that triggered the popover
+        const raf = requestAnimationFrame(() => {
+            document.addEventListener('mousedown', handleClickOutside);
+        });
+        return () => {
+            cancelAnimationFrame(raf);
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, [onClose]);
 
     // Close on Escape

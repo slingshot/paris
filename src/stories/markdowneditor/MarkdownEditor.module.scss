@@ -18,7 +18,6 @@
     background-color: var(--pte-new-colors-inputFill);
     border: 1px solid var(--pte-new-colors-inputFill);
     transition: var(--pte-animations-interaction);
-    overflow: hidden;
 
     &:focus-within {
         outline: none;
