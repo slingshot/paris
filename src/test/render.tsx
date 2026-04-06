@@ -10,3 +10,11 @@ export function render(ui: ReactElement, options?: RenderOptions) {
 }
 
 export { act, screen, waitFor, within } from '@testing-library/react';
+
+/**
+ * Queries the close button rendered by the Paris Button component with shape="circle".
+ * Circle-shaped buttons render children as `aria-details` instead of visible text.
+ */
+export function getCloseButton() {
+    return document.querySelector('[aria-details="Close dialog"]');
+}
