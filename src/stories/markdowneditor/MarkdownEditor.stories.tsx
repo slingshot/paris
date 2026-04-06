@@ -53,12 +53,15 @@ That's it! The editor outputs **markdown** on every change.`;
  * Default editor with both FixedToolbar and FloatingToolbar.
  * All features enabled.
  */
+// Mock upload handler — creates a local object URL for demo purposes
+const mockImageUpload = async (file: File) => URL.createObjectURL(file);
+
 export const Default: Story = {
     render: (args) => {
         const [value, setValue] = useState(sampleMarkdown);
         return (
             <div style={{ maxWidth: 700 }}>
-                <MarkdownEditor {...args} value={value} onChange={setValue}>
+                <MarkdownEditor {...args} value={value} onChange={setValue} handleImageUpload={mockImageUpload}>
                     <FixedToolbar />
                     <FloatingToolbar />
                 </MarkdownEditor>

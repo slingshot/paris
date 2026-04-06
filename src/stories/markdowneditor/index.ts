@@ -6,6 +6,7 @@ export type { MarkdownEditorFeature } from './features';
 export { ALL_FEATURES, FEATURES } from './features';
 export type { MarkdownEditorProps } from './MarkdownEditor';
 export { MarkdownEditor } from './MarkdownEditor';
+export type { ImageUploadHandler } from './MarkdownEditorContext';
 export { useMarkdownEditorContext } from './MarkdownEditorContext';
 export type { ToolbarButtonProps } from './ToolbarButton';
 export { ToolbarButton } from './ToolbarButton';

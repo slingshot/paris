@@ -8,6 +8,7 @@ import type { MarkdownSize } from '../markdown';
 import type { MarkdownEditorFeature } from './features';
 import { ALL_FEATURES } from './features';
 import styles from './MarkdownEditor.module.scss';
+import type { ImageUploadHandler } from './MarkdownEditorContext';
 import { MarkdownEditorContext } from './MarkdownEditorContext';
 import { useMarkdownEditor } from './useMarkdownEditor';
 
@@ -31,6 +32,11 @@ export type MarkdownEditorProps = {
     autofocus?: boolean;
     /** An optional CSS class name for the root wrapper. */
     className?: string;
+    /**
+     * Handler for image uploads. Receives a File, should return a Promise
+     * resolving to the image URL. If not provided, the image button is hidden.
+     */
+    handleImageUpload?: ImageUploadHandler;
     /** Visual status for the editor container (follows Input pattern). */
     status?: 'default' | 'error' | 'success';
     /** Prop overrides for sub-elements. */
@@ -80,6 +86,7 @@ export const MarkdownEditor: FC<MarkdownEditorProps> = ({
     size = 'paragraphSmall',
     editable = true,
     autofocus = false,
+    handleImageUpload,
     className,
     status = 'default',
     overrides,
@@ -94,7 +101,10 @@ export const MarkdownEditor: FC<MarkdownEditorProps> = ({
         autofocus,
     });
 
-    const contextValue = useMemo(() => ({ editor, features: featureSet }), [editor, featureSet]);
+    const contextValue = useMemo(
+        () => ({ editor, features: featureSet, handleImageUpload }),
+        [editor, featureSet, handleImageUpload],
+    );
 
     return (
         <MarkdownEditorContext.Provider value={contextValue}>

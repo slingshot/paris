@@ -20,7 +20,7 @@ import {
     Table,
 } from 'lucide-react';
 import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
-import { Fragment, useCallback, useState } from 'react';
+import { Fragment, useCallback, useRef, useState } from 'react';
 import styles from './FixedToolbar.module.scss';
 import type { MarkdownEditorFeature } from './features';
 import { LinkPopover } from './LinkPopover';
@@ -56,12 +56,33 @@ const ICON_SIZE = 14;
  * Groups with no enabled features are hidden.
  */
 export const FixedToolbar: FC<FixedToolbarProps> = ({ className, overrides }) => {
-    const { editor, features } = useMarkdownEditorContext();
+    const { editor, features, handleImageUpload } = useMarkdownEditorContext();
     const [showLinkPopover, setShowLinkPopover] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleLinkClick = useCallback(() => {
         setShowLinkPopover((prev) => !prev);
     }, []);
+
+    const handleImageClick = useCallback(() => {
+        fileInputRef.current?.click();
+    }, []);
+
+    const handleFileChange = useCallback(
+        async (e: React.ChangeEvent<HTMLInputElement>) => {
+            const file = e.target.files?.[0];
+            if (!file || !editor || !handleImageUpload) return;
+            try {
+                const url = await handleImageUpload(file);
+                editor.chain().focus().setImage({ src: url }).run();
+            } catch {
+                // Upload failed — consumer's handler should surface errors
+            }
+            // Reset so the same file can be re-selected
+            e.target.value = '';
+        },
+        [editor, handleImageUpload],
+    );
 
     if (!editor) return null;
 
@@ -166,18 +187,17 @@ export const FixedToolbar: FC<FixedToolbarProps> = ({ className, overrides }) =>
             action: handleLinkClick,
             isActive: () => editor.isActive('link'),
         },
-        {
-            feature: 'image',
-            label: <Image size={ICON_SIZE} />,
-            tooltip: 'Image',
-            action: () => {
-                const url = window.prompt('Image URL');
-                if (url) {
-                    editor.chain().focus().setImage({ src: url }).run();
-                }
-            },
-            isActive: () => false,
-        },
+        ...(handleImageUpload
+            ? [
+                  {
+                      feature: 'image' as const,
+                      label: <Image size={ICON_SIZE} />,
+                      tooltip: 'Image',
+                      action: handleImageClick,
+                      isActive: () => false,
+                  },
+              ]
+            : []),
         {
             feature: 'table',
             label: <Table size={ICON_SIZE} />,
@@ -239,6 +259,16 @@ export const FixedToolbar: FC<FixedToolbarProps> = ({ className, overrides }) =>
                 </Fragment>
             ))}
             {showLinkPopover && features.has('link') && <LinkPopover onClose={() => setShowLinkPopover(false)} />}
+            {handleImageUpload && (
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
+                    tabIndex={-1}
+                />
+            )}
         </div>
     );
 };
