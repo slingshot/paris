@@ -1,0 +1,103 @@
+.popover {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 50;
+    background-color: var(--pte-new-colors-surfacePrimary, var(--pte-new-colors-backgroundPrimary));
+    border: 1px solid var(--pte-new-colors-borderSubtle);
+    border-radius: var(--pte-new-borders-radius-rounded, 8px);
+    box-shadow: var(
+        --pte-new-shadows-shallowPopup,
+        0 4px 12px rgba(0, 0, 0, 0.15)
+    );
+    padding: 12px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.label {
+    font-size: var(--pte-new-typography-styles-labelXSmall-fontSize, 11px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--pte-new-colors-contentTertiary);
+}
+
+.inputRow {
+    display: flex;
+    gap: 6px;
+}
+
+.input {
+    flex: 1;
+    background-color: var(--pte-new-colors-inputFill);
+    border: 1px solid var(--pte-new-colors-borderSubtle);
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: var(--pte-new-colors-contentPrimary);
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color var(--pte-new-animations-interaction, 150ms) ease;
+
+    &:focus {
+        border-color: var(--pte-new-colors-inputBorderFocus);
+    }
+
+    &::placeholder {
+        color: var(--pte-new-colors-contentTertiary);
+    }
+}
+
+.applyButton {
+    background-color: var(--pte-new-colors-buttonFill);
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    color: var(--pte-new-colors-contentInversePrimary, #fff);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color var(--pte-new-animations-interaction, 150ms) ease;
+    flex-shrink: 0;
+
+    &:hover {
+        background-color: var(--pte-new-colors-buttonFillHover);
+    }
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--pte-new-colors-contentTertiary);
+    cursor: pointer;
+
+    input[type='checkbox'] {
+        accent-color: var(--pte-new-colors-contentAccent);
+    }
+}
+
+.removeButton {
+    background: none;
+    border: none;
+    color: var(--pte-new-colors-contentNegative);
+    font-size: 11px;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 0;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}

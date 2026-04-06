@@ -1,0 +1,23 @@
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--pte-new-colors-borderSubtle);
+    background-color: var(--pte-new-colors-backgroundPrimary);
+    flex-wrap: wrap;
+}
+
+.group {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.separator {
+    width: 1px;
+    height: 18px;
+    background-color: var(--pte-new-colors-borderSubtle);
+    margin: 0 4px;
+    flex-shrink: 0;
+}

@@ -1,0 +1,408 @@
+/* ── MarkdownEditor styles ────────────────────────────────────
+ * Uses Paris design tokens (--pte-*) for consistent theming.
+ * Editor content styles mirror Markdown.module.scss but target
+ * native HTML elements rendered by Tiptap (not CSS module classes).
+ * ──────────────────────────────────────────────────────────── */
+
+.root {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+// ── Editor container (input-like wrapper) ─────────────────
+.editorContainer {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--pte-borders-radius-rectangle);
+    background-color: var(--pte-new-colors-inputFill);
+    border: 1px solid var(--pte-new-colors-inputFill);
+    transition: var(--pte-animations-interaction);
+    overflow: hidden;
+
+    &:focus-within {
+        outline: none;
+        border-color: var(--pte-new-colors-inputBorderFocus);
+        background-color: var(--pte-new-colors-inputFillFocus);
+    }
+
+    &[data-status='error'] {
+        border-color: var(--pte-new-colors-inputBorderNegative);
+        background-color: var(--pte-new-colors-inputFillNegative);
+        color: var(--pte-new-colors-contentNegative);
+
+        &:focus-within {
+            color: var(--pte-new-colors-contentPrimary);
+        }
+    }
+
+    &[data-status='success'] {
+        border-color: var(--pte-new-colors-backgroundPositive);
+    }
+
+    &[data-disabled='true'] {
+        background-color: var(--pte-new-colors-inputFillDisabled);
+        border-color: var(--pte-new-colors-inputFillDisabled);
+        color: var(--pte-new-colors-contentDisabled);
+        pointer-events: none;
+        cursor: default;
+
+        &:focus-within {
+            border-color: var(--pte-new-colors-inputFillDisabled) !important;
+        }
+    }
+}
+
+// ── Editor content area ───────────────────────────────────
+// Targets native HTML elements rendered by Tiptap (not CSS module classes).
+// Mirrors the visual output of the read-only Markdown component.
+.editorContent {
+    padding: 12px 16px;
+    min-height: 120px;
+    outline: none;
+    line-height: 1.7;
+    color: var(--pte-new-colors-contentPrimary);
+    font-size: var(--markdown-base-font-size, 14px);
+
+    // Tiptap root element
+    :global(.tiptap) {
+        outline: none;
+        min-height: inherit;
+
+        > *:first-child {
+            margin-top: 0;
+        }
+
+        > *:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    // ── Placeholder ──────────────────────────────────────
+    :global(.tiptap p.is-editor-empty:first-child::before) {
+        content: attr(data-placeholder);
+        color: var(--pte-new-colors-contentTertiary);
+        pointer-events: none;
+        float: left;
+        height: 0;
+    }
+
+    // ── Headings ─────────────────────────────────────────
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin-top: 1.5em;
+        margin-bottom: 0.6em;
+        color: var(--pte-new-colors-contentPrimary);
+        line-height: 1.3;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    h1 {
+        font-size: var(--pte-new-typography-styles-headingLarge-fontSize, 32px);
+        font-weight: var(--pte-new-typography-styles-headingLarge-fontWeight, 700);
+    }
+
+    h2 {
+        font-size: var(--pte-new-typography-styles-headingMedium-fontSize, 24px);
+        font-weight: var(--pte-new-typography-styles-headingMedium-fontWeight, 700);
+    }
+
+    h3 {
+        font-size: var(--pte-new-typography-styles-headingSmall-fontSize, 20px);
+        font-weight: var(--pte-new-typography-styles-headingSmall-fontWeight, 700);
+    }
+
+    h4 {
+        font-size: var(--pte-new-typography-styles-headingXSmall-fontSize, 18px);
+        font-weight: var(--pte-new-typography-styles-headingXSmall-fontWeight, 600);
+    }
+
+    h5 {
+        font-size: var(--pte-new-typography-styles-headingXXSmall-fontSize, 16px);
+        font-weight: var(--pte-new-typography-styles-headingXXSmall-fontWeight, 600);
+    }
+
+    h6 {
+        font-size: var(--pte-new-typography-styles-labelMedium-fontSize, 14px);
+        font-weight: var(--pte-new-typography-styles-labelMedium-fontWeight, 600);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    // ── Paragraphs ───────────────────────────────────────
+    p {
+        margin-bottom: 1em;
+        line-height: 1.7;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    // ── Inline marks ─────────────────────────────────────
+    strong {
+        font-weight: 600;
+    }
+
+    em {
+        font-style: italic;
+    }
+
+    s {
+        text-decoration: line-through;
+        text-decoration-color: var(--pte-new-colors-contentTertiary);
+    }
+
+    // ── Links ────────────────────────────────────────────
+    a {
+        color: var(--pte-new-colors-contentAccent);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration-color: var(--pte-new-colors-contentAccent);
+        }
+    }
+
+    // ── Images ───────────────────────────────────────────
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--pte-new-borders-radius-rounded);
+        border: 1px solid var(--pte-new-colors-borderSubtle);
+        margin: 1em 0;
+        display: block;
+    }
+
+    // ── Blockquotes ──────────────────────────────────────
+    blockquote {
+        border-left: 3px solid var(--pte-new-colors-borderMedium);
+        padding: 8px 16px;
+        margin: 1em 0;
+        background-color: var(--pte-new-colors-backgroundSecondary);
+        border-radius: 0 var(--pte-new-borders-radius-rounded, 8px)
+            var(--pte-new-borders-radius-rounded, 8px) 0;
+        color: var(--pte-new-colors-contentSecondary);
+
+        blockquote {
+            margin: 0.5em 0;
+        }
+
+        p {
+            margin-bottom: 0.5em;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    // ── Horizontal rules ─────────────────────────────────
+    hr {
+        border: none;
+        border-top: 1px solid var(--pte-new-colors-borderMedium);
+        margin: 1.5em 0;
+    }
+
+    // ── Lists ────────────────────────────────────────────
+    ul,
+    ol {
+        margin: 0.5em 0 1em;
+        padding-left: 1.5em;
+    }
+
+    ul {
+        list-style-type: disc;
+
+        ul {
+            list-style-type: circle;
+            margin: 0.25em 0;
+
+            ul {
+                list-style-type: square;
+            }
+        }
+    }
+
+    ol {
+        list-style-type: decimal;
+
+        ol {
+            list-style-type: lower-alpha;
+            margin: 0.25em 0;
+
+            ol {
+                list-style-type: lower-roman;
+            }
+        }
+    }
+
+    li {
+        margin-bottom: 0.25em;
+        line-height: 1.7;
+
+        p {
+            margin-bottom: 0.25em;
+        }
+    }
+
+    // ── Task lists (Tiptap uses data-type attributes) ────
+    ul[data-type='taskList'] {
+        list-style: none;
+        padding-left: 0;
+
+        li[data-type='taskItem'] {
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+            gap: 8px;
+
+            > label {
+                flex-shrink: 0;
+
+                input[type='checkbox'] {
+                    appearance: none;
+                    width: 16px;
+                    height: 16px;
+                    border: 1.5px solid var(--pte-new-colors-borderStrong);
+                    border-radius: 4px;
+                    background: transparent;
+                    cursor: pointer;
+                    position: relative;
+                    top: 2px;
+
+                    &:checked {
+                        background-color: var(--pte-new-colors-contentPrimary);
+                        border-color: var(--pte-new-colors-contentPrimary);
+
+                        &::after {
+                            content: '✓';
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            font-size: 11px;
+                            font-weight: 700;
+                            color: white;
+                        }
+                    }
+                }
+            }
+
+            > div {
+                flex: 1;
+            }
+        }
+    }
+
+    // ── Inline code ──────────────────────────────────────
+    code {
+        font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 0.875em;
+        padding: 2px 6px;
+        border-radius: 6px;
+        background-color: var(--pte-new-colors-backgroundSecondary);
+        border: 1px solid var(--pte-new-colors-borderSubtle);
+        color: var(--pte-new-colors-contentPrimary);
+        word-break: break-word;
+    }
+
+    // ── Code blocks ──────────────────────────────────────
+    pre {
+        margin: 1em 0;
+        padding: 0;
+        background: transparent;
+        overflow: visible;
+
+        code {
+            display: block;
+            padding: 16px;
+            overflow-x: auto;
+            font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', ui-monospace, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            tab-size: 4;
+            white-space: pre;
+            border-radius: var(--pte-new-borders-radius-rounded, 8px);
+            background-color: var(--pte-new-colors-backgroundSecondary);
+            border: 1px solid var(--pte-new-colors-borderSubtle);
+            color: var(--pte-new-colors-contentPrimary);
+
+            &::-webkit-scrollbar {
+                height: 6px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: var(--pte-new-colors-borderMedium);
+                border-radius: 3px;
+            }
+        }
+    }
+
+    // ── Tables ───────────────────────────────────────────
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1em 0;
+        font-size: var(--pte-new-typography-paragraphSmall-fontSize, 13px);
+        border-radius: var(--pte-new-borders-radius-rounded, 8px);
+        border: 1px solid var(--pte-new-colors-borderSubtle);
+        overflow: hidden;
+    }
+
+    thead {
+        background-color: var(--pte-new-colors-backgroundSecondary);
+    }
+
+    th {
+        padding: 10px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--pte-new-colors-borderMedium);
+        white-space: nowrap;
+        color: var(--pte-new-colors-contentSecondary);
+        font-size: var(--pte-new-typography-styles-labelXSmall-fontSize, 11px);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    td {
+        padding: 10px 16px;
+        border-bottom: 1px solid var(--pte-new-colors-borderSubtle);
+        color: var(--pte-new-colors-contentPrimary);
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr {
+        transition: background-color 0.15s ease;
+
+        &:hover {
+            background-color: var(--pte-new-colors-backgroundSecondary);
+        }
+    }
+
+    // ── Tiptap table selection states ────────────────────
+    :global(.selectedCell) {
+        background-color: var(--pte-new-colors-backgroundAccentSubtle, rgba(99, 102, 241, 0.1));
+    }
+
+    // ── Selection highlight ──────────────────────────────
+    ::selection {
+        background-color: var(--pte-new-colors-backgroundAccentSubtle, rgba(99, 102, 241, 0.2));
+    }
+}

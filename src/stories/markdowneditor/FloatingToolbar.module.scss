@@ -1,0 +1,21 @@
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 6px;
+    background-color: var(--pte-new-colors-surfacePrimary, var(--pte-new-colors-backgroundPrimary));
+    border: 1px solid var(--pte-new-colors-borderSubtle);
+    border-radius: var(--pte-new-borders-radius-rounded, 8px);
+    box-shadow: var(
+        --pte-new-shadows-shallowPopup,
+        0 4px 12px rgba(0, 0, 0, 0.15)
+    );
+}
+
+.separator {
+    width: 1px;
+    height: 18px;
+    background-color: var(--pte-new-colors-borderSubtle);
+    margin: 0 2px;
+    flex-shrink: 0;
+}
