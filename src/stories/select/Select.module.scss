@@ -41,7 +41,7 @@
     border-radius: var(--pte-borders-radius-rectangle);
     box-shadow: var(--pte-new-lighting-deepBelow);
 
-    transition: var(--pte-animations-interaction);
+    transition: opacity var(--pte-animations-interaction), transform var(--pte-animations-interaction);
 
     &[data-closed] {
         opacity: 0;

@@ -18,7 +18,7 @@
     overflow: hidden;
     z-index: var(--pte-new-layers-menu);
 
-    transition: var(--pte-animations-interaction);
+    transition: opacity var(--pte-animations-interaction), transform var(--pte-animations-interaction);
     opacity: 1;
     transform: translateY(0);
 
