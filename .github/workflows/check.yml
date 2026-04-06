@@ -31,7 +31,7 @@ jobs:
       - name: Typecheck
         run: bun run typecheck
 
-  # ─── Unit tests ─────────────────────────────────────────────────
+  # ─── Unit tests (jsdom, fast) ───────────────────────────────────
   test:
     name: Unit Tests
     runs-on: namespace-profile-default
@@ -60,19 +60,12 @@ jobs:
           echo "$OUTPUT"
 
           # Parse Vitest summary output
-          # "Test Files  30 passed (30)" or "Test Files  2 failed | 28 passed (30)"
           TOTAL_FILES=$(echo "$OUTPUT" | grep -oP 'Test Files.*\((\d+)\)' | grep -oP '\(\d+\)' | tr -d '()')
-          FILES_PASS=$(echo "$OUTPUT" | grep 'Test Files' | grep -oP '\d+ passed' | grep -oP '\d+' || echo "0")
-          FILES_FAIL=$(echo "$OUTPUT" | grep 'Test Files' | grep -oP '\d+ failed' | grep -oP '\d+' || echo "0")
-
-          # "Tests  536 passed (536)" or "Tests  5 failed | 531 passed (536)"
           TOTAL_PASS=$(echo "$OUTPUT" | grep -P '^\s+Tests' | grep -oP '\d+ passed' | grep -oP '\d+' || echo "0")
           TOTAL_FAIL=$(echo "$OUTPUT" | grep -P '^\s+Tests' | grep -oP '\d+ failed' | grep -oP '\d+' || echo "0")
-
-          # "Duration  4.77s (...)"
           DURATION=$(echo "$OUTPUT" | grep -oP 'Duration\s+\K[\d.]+s' || echo "0s")
 
-          # Parse per-file results from Vitest output
+          # Parse per-file results
           FILE_JSON="["
           FIRST=true
           while IFS= read -r line; do
@@ -99,11 +92,53 @@ jobs:
 
           exit $EXIT_CODE
 
+  # ─── Story tests (Chromium via Playwright) ──────────────────────
+  test-storybook:
+    name: Story Tests
+    runs-on: namespace-profile-default
+    outputs:
+      total-pass: ${{ steps.run-stories.outputs.total-pass }}
+      total-fail: ${{ steps.run-stories.outputs.total-fail }}
+      total-files: ${{ steps.run-stories.outputs.total-files }}
+      duration: ${{ steps.run-stories.outputs.duration }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: bunx playwright install chromium --with-deps
+
+      - name: Run story tests
+        id: run-stories
+        run: |
+          set +e
+          OUTPUT=$(bun run test:storybook 2>&1)
+          EXIT_CODE=$?
+          echo "$OUTPUT"
+
+          TOTAL_FILES=$(echo "$OUTPUT" | grep -oP 'Test Files.*\((\d+)\)' | grep -oP '\(\d+\)' | tr -d '()')
+          TOTAL_PASS=$(echo "$OUTPUT" | grep -P '^\s+Tests' | grep -oP '\d+ passed' | grep -oP '\d+' || echo "0")
+          TOTAL_FAIL=$(echo "$OUTPUT" | grep -P '^\s+Tests' | grep -oP '\d+ failed' | grep -oP '\d+' || echo "0")
+          DURATION=$(echo "$OUTPUT" | grep -oP 'Duration\s+\K[\d.]+s' || echo "0s")
+
+          echo "total-pass=${TOTAL_PASS}" >> "$GITHUB_OUTPUT"
+          echo "total-fail=${TOTAL_FAIL}" >> "$GITHUB_OUTPUT"
+          echo "total-files=${TOTAL_FILES}" >> "$GITHUB_OUTPUT"
+          echo "duration=${DURATION}" >> "$GITHUB_OUTPUT"
+
+          exit $EXIT_CODE
+
   # ─── PR comment with rich results ───────────────────────────────
   comment:
     name: Report
     runs-on: namespace-profile-default
-    needs: [quality, test]
+    needs: [quality, test, test-storybook]
     if: github.event_name == 'pull_request' && always()
     permissions:
       pull-requests: write
@@ -112,11 +147,16 @@ jobs:
         env:
           QUALITY_RESULT: ${{ needs.quality.result }}
           TEST_RESULT: ${{ needs.test.result }}
+          STORY_RESULT: ${{ needs.test-storybook.result }}
           TOTAL_PASS: ${{ needs.test.outputs.total-pass }}
           TOTAL_FAIL: ${{ needs.test.outputs.total-fail }}
           TOTAL_FILES: ${{ needs.test.outputs.total-files }}
           DURATION: ${{ needs.test.outputs.duration }}
           FILE_RESULTS: ${{ needs.test.outputs.file-results }}
+          STORY_PASS: ${{ needs.test-storybook.outputs.total-pass }}
+          STORY_FAIL: ${{ needs.test-storybook.outputs.total-fail }}
+          STORY_FILES: ${{ needs.test-storybook.outputs.total-files }}
+          STORY_DURATION: ${{ needs.test-storybook.outputs.duration }}
           RUN_ID: ${{ github.run_id }}
           REPO_FULL: ${{ github.repository }}
           SERVER_URL: ${{ github.server_url }}
@@ -124,10 +164,15 @@ jobs:
           script: |
             const quality = process.env.QUALITY_RESULT;
             const test = process.env.TEST_RESULT;
+            const story = process.env.STORY_RESULT;
             const totalPass = parseInt(process.env.TOTAL_PASS || '0');
             const totalFail = parseInt(process.env.TOTAL_FAIL || '0');
             const totalFiles = parseInt(process.env.TOTAL_FILES || '0');
             const duration = process.env.DURATION || '0s';
+            const storyPass = parseInt(process.env.STORY_PASS || '0');
+            const storyFail = parseInt(process.env.STORY_FAIL || '0');
+            const storyFiles = parseInt(process.env.STORY_FILES || '0');
+            const storyDuration = process.env.STORY_DURATION || '0s';
             const runId = process.env.RUN_ID;
             const repo = process.env.REPO_FULL;
             const server = process.env.SERVER_URL;
@@ -136,26 +181,24 @@ jobs:
             let fileResults = [];
             try { if (process.env.FILE_RESULTS) fileResults = JSON.parse(process.env.FILE_RESULTS); } catch {}
 
-            const allGreen = quality === 'success' && test === 'success';
+            const allGreen = quality === 'success' && test === 'success' && story === 'success';
             const statusIcon = (r) => r === 'success' ? '✅' : r === 'skipped' ? '⏭️' : '❌';
-            const totalTests = totalPass + totalFail;
+            const allPass = totalPass + storyPass;
+            const allFail = totalFail + storyFail;
 
-            // ── Build comment ────────────────────────────────────
             let body = '';
 
             if (allGreen) {
-              body += `## ✅ CI — All checks passed · ${totalPass} tests\n\n`;
+              body += `## ✅ CI — All checks passed · ${allPass} tests\n\n`;
             } else {
-              body += `## ❌ CI — ${totalFail > 0 ? `${totalFail} test${totalFail === 1 ? '' : 's'} failed` : 'Some checks failed'}\n\n`;
+              body += `## ❌ CI — ${allFail > 0 ? `${allFail} test${allFail === 1 ? '' : 's'} failed` : 'Some checks failed'}\n\n`;
             }
 
             body += `[View workflow run](${runUrl})`;
-            if (totalTests > 0) body += ` · ${totalPass} passed`;
-            if (totalFail > 0) body += ` · ${totalFail} failed`;
-            if (duration !== '0s') body += ` · ${duration}`;
+            if (allPass > 0) body += ` · ${allPass} passed`;
+            if (allFail > 0) body += ` · ${allFail} failed`;
             body += '\n\n';
 
-            // ── Summary table ────────────────────────────────────
             body += '| Check | Status | Details |\n';
             body += '|:------|:------:|:--------|\n';
 
@@ -164,21 +207,31 @@ jobs:
             body += ' |\n';
 
             body += `| **Unit Tests** | ${statusIcon(test)} | `;
-            if (totalTests > 0) {
+            if (totalPass + totalFail > 0) {
               body += `${totalPass} passed`;
               if (totalFail > 0) body += `, ${totalFail} failed`;
               body += ` across ${totalFiles} files in ${duration}`;
             } else {
               body += `[View logs](${runUrl})`;
             }
+            body += ' |\n';
+
+            body += `| **Story Tests** | ${statusIcon(story)} | `;
+            if (storyPass + storyFail > 0) {
+              body += `${storyPass} passed`;
+              if (storyFail > 0) body += `, ${storyFail} failed`;
+              body += ` across ${storyFiles} stories in ${storyDuration} · Chromium`;
+            } else if (story === 'success') {
+              body += 'All stories rendered';
+            } else {
+              body += `[View logs](${runUrl})`;
+            }
             body += ' |\n\n';
 
-            // ── Test file breakdown (collapsible) ────────────────
             if (fileResults.length > 0) {
               const failedFiles = fileResults.filter(f => f.status === 'fail');
               const passedFiles = fileResults.filter(f => f.status === 'pass');
 
-              // Show failures prominently if any
               if (failedFiles.length > 0) {
                 body += '### Failed tests\n\n';
                 body += '| Component | File | Tests | Failed | Time |\n';
@@ -189,7 +242,7 @@ jobs:
                 body += '\n';
               }
 
-              body += '<details><summary><strong>All test files</strong></summary>\n\n';
+              body += '<details><summary><strong>Unit test breakdown</strong></summary>\n\n';
               body += '| Component | Tests | Time | Status |\n';
               body += '|:----------|------:|-----:|:------:|\n';
               for (const f of [...failedFiles, ...passedFiles]) {
@@ -199,11 +252,9 @@ jobs:
               body += '\n</details>\n\n';
             }
 
-            // ── Footer ──────────────────────────────────────────
             body += '---\n';
-            body += `<sub>Vitest · ${totalFiles} test files · [View full run](${runUrl})</sub>\n`;
+            body += `<sub>Vitest · ${totalFiles + storyFiles} test files · [View full run](${runUrl})</sub>\n`;
 
-            // ── Upsert comment ───────────────────────────────────
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
