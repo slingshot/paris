@@ -54,6 +54,23 @@ The theme engine (`pte`) generates CSS variables from TypeScript theme definitio
 
 **Field Wrapper**: Form inputs (Input, Select, Combobox, TextArea) use the `Field` component for consistent label/description handling.
 
+### Z-Index Layering
+
+Global z-index values use semantic layer tokens defined in `Theme.new.layers`:
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `below` | -1 | Decorative pseudo-elements behind content |
+| `sticky` | 100 | Sticky headers/bars (e.g. GlassTabs) |
+| `dropdown` | 200 | Floating dropdowns, select menus |
+| `overlay` | 300 | Full-page overlays (Dialog, Drawer) |
+| `popover` | 400 | Popovers above overlays |
+| `menu` | 500 | Context menus, always topmost |
+
+In SCSS: `z-index: var(--pte-new-layers-overlay);`
+
+**Local vs global**: When a z-index only controls stacking within a single component (e.g. text above background in SegmentedControl), use a hardcoded `z-index: 1` and add `isolation: isolate` to the parent to prevent it from leaking into the global stacking order. Only use layer tokens for elements that participate in page-level stacking.
+
 ### Styling
 
 - Use SCSS modules exclusively (no inline styles, no Tailwind)

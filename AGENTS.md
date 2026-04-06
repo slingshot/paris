@@ -271,6 +271,7 @@ theme.new.borders      // Border radii and dropdown styling
 theme.new.animations   // Timing functions and durations
 theme.new.breakpoints  // Responsive breakpoints
 theme.new.materials    // Glassmorphic material definitions
+theme.new.layers       // Z-index layer scale (below, sticky, dropdown, overlay, popover, menu)
 ```
 
 ### Using Theme Values
@@ -514,9 +515,10 @@ These files help AI agents work effectively with this codebase. Outdated documen
 2. **SCSS modules only:** Do not use inline styles, Tailwind, or CSS-in-JS
 3. **Accessibility first:** Use semantic HTML and ARIA attributes
 4. **Theme variables:** Always use `pvar()` for colors, spacing, etc.
-5. **Client directive:** Only add `'use client'` when truly needed
-6. **Props spreading:** Support `...props` for flexibility
-7. **Overrides pattern:** Consider adding overrides for complex components
-8. **JSDoc comments:** Document all props with JSDoc
-9. **Node 22+:** Required for development
-10. **Bun:** Package manager (not npm, pnpm, or yarn)
+5. **Z-index:** Use layer tokens (`var(--pte-new-layers-overlay)`) for global stacking. For local stacking within a component, use hardcoded values with `isolation: isolate` on the parent.
+6. **Client directive:** Only add `'use client'` when truly needed
+7. **Props spreading:** Support `...props` for flexibility
+8. **Overrides pattern:** Consider adding overrides for complex components
+9. **JSDoc comments:** Document all props with JSDoc
+10. **Node 22+:** Required for development
+11. **Bun:** Package manager (not npm, pnpm, or yarn)
