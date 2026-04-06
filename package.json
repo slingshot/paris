@@ -134,7 +134,6 @@
         "@storybook/addon-docs": "10.3.4",
         "@storybook/addon-links": "10.3.4",
         "@storybook/nextjs-vite": "10.3.4",
-        "@storybook/test": "^8.6.15",
         "@storybook/test-runner": "^0.24.3",
         "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/react": "^16.3.2",
