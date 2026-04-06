@@ -32,8 +32,13 @@
 
 .tabBackground {
     &.glass {
-        position: absolute;
+        position: sticky;
+        top: 0;
         width: 100%;
+        z-index: 1;
+        backdrop-filter: var(--pte-new-blurs-strong);
+        -webkit-backdrop-filter: var(--pte-new-blurs-strong);
+        background: var(--pte-new-materials-primaryThin-background);
     }
 }
 
@@ -44,32 +49,11 @@
 
     &.glass {
         position: relative;
-        overflow: hidden;
-        display: flex;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 }
 
-.glassContainer {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
-
-.glassBlend {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: var(--pte-new-materials-secondaryRegular-backgroundBlend);
-    mix-blend-mode: var(--pte-new-materials-secondaryRegular-mixBlendMode);
-}
-
-.glassOpacity {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: var(--pte-new-materials-secondaryRegular-background);
-    backdrop-filter: var(--pte-new-blurs-strong);
-}
 
 .tabListBorder {
     width: 100%;
@@ -197,49 +181,7 @@
     width: 100%;
 
     &.glass {
-        &.full {
-            &.thick {
-                padding-top: 64px;
-            }
-            &.thin {
-                padding-top: 61px;
-            }
-        }
-        &.fixed {
-            &.thick {
-                padding-top: 56px;
-            }
-            &.thin {
-                padding-top: 53px;
-            }
-        }
-        &.compact {
-            &.thick {
-                padding-top: 48px;
-            }
-            &.thin {
-                padding-top: 45px;
-            }
-        }
-        @container (min-width: 641px) {
-            &.auto {
-                &.thick {
-                    padding-top: 56px;
-                }
-                &.thin {
-                    padding-top: 53px;
-                }
-            }
-        }
-        @container (max-width: 640px) {
-            &.auto {
-                &.thick {
-                    padding-top: 48px;
-                }
-                &.thin {
-                    padding-top: 45px;
-                }
-            }
-        }
+        overflow-y: visible;
+        height: auto;
     }
 }

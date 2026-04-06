@@ -71,7 +71,86 @@ export const Glass: Story = {
         barStyle: 'thin',
         backgroundStyle: 'glass',
         tabs: [
-            { title: 'Albums', content: 'Tab 1 content' },
+            {
+                title: 'Albums',
+                content: (
+                    <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <p>Scroll down to see the glass blur effect on the tab bar.</p>
+                        <div
+                            style={{
+                                padding: '12px',
+                                background: 'var(--pte-new-colors-overlayMedium)',
+                                borderRadius: '8px',
+                            }}
+                        >
+                            Item 1
+                        </div>
+                        <div
+                            style={{
+                                padding: '12px',
+                                background: 'var(--pte-new-colors-overlayMedium)',
+                                borderRadius: '8px',
+                            }}
+                        >
+                            Item 2
+                        </div>
+                        <div
+                            style={{
+                                padding: '12px',
+                                background: 'var(--pte-new-colors-overlayMedium)',
+                                borderRadius: '8px',
+                            }}
+                        >
+                            Item 3
+                        </div>
+                        <div
+                            style={{
+                                padding: '12px',
+                                background: 'var(--pte-new-colors-overlayMedium)',
+                                borderRadius: '8px',
+                            }}
+                        >
+                            Item 4
+                        </div>
+                        <div
+                            style={{
+                                padding: '12px',
+                                background: 'var(--pte-new-colors-overlayMedium)',
+                                borderRadius: '8px',
+                            }}
+                        >
+                            Item 5
+                        </div>
+                        <div
+                            style={{
+                                padding: '12px',
+                                background: 'var(--pte-new-colors-overlayMedium)',
+                                borderRadius: '8px',
+                            }}
+                        >
+                            Item 6
+                        </div>
+                        <div
+                            style={{
+                                padding: '12px',
+                                background: 'var(--pte-new-colors-overlayMedium)',
+                                borderRadius: '8px',
+                            }}
+                        >
+                            Item 7
+                        </div>
+                        <div
+                            style={{
+                                padding: '12px',
+                                background: 'var(--pte-new-colors-overlayMedium)',
+                                borderRadius: '8px',
+                            }}
+                        >
+                            Item 8
+                        </div>
+                    </div>
+                ),
+            },
             {
                 title: 'EPs',
                 content:
@@ -101,7 +180,7 @@ export const Glass: Story = {
     },
     render: (args) => (
         <div style={{ background: 'var(--pte-new-colors-backgroundPrimary)' }}>
-            <div style={{ height: '120px' }}>
+            <div style={{ height: '300px' }}>
                 <Tabs {...args} />
             </div>
         </div>

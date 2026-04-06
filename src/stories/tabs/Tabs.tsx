@@ -113,12 +113,6 @@ export const Tabs: FC<TabsProps> = ({
                 {...overrides?.tabBackground}
                 className={clsx(styles.tabBackground, styles[backgroundStyle], overrides?.tabBackground?.className)}
             >
-                {backgroundStyle === 'glass' && (
-                    <div className={styles.glassContainer}>
-                        <div className={styles.glassOpacity} />
-                        <div className={styles.glassBlend} />
-                    </div>
-                )}
                 <TabList
                     {...overrides?.tabList}
                     style={
