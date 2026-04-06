@@ -2,7 +2,7 @@ import type { StorybookConfig } from '@storybook/nextjs-vite';
 
 const config: StorybookConfig = {
     stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
-    addons: ['@storybook/addon-links', 'storybook-dark-mode', '@storybook/addon-docs'],
+    addons: ['@storybook/addon-links', 'storybook-dark-mode', '@storybook/addon-docs', '@storybook/addon-vitest'],
 
     framework: '@storybook/nextjs-vite',
 
