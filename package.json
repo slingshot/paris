@@ -41,6 +41,7 @@
         "test:coverage": "vitest run --project unit --coverage",
         "test:storybook": "vitest run --project storybook",
         "test:all": "vitest run",
+        "test:coverage-check": "node scripts/checkTestCoverage.js",
         "typecheck": "tsc --noEmit",
         "lint": "biome check .",
         "lint:fix": "biome check --write .",
