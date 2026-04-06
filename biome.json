@@ -99,6 +99,19 @@
             }
         },
         {
+            "includes": ["**/*.test.ts", "**/*.test.tsx"],
+            "linter": {
+                "rules": {
+                    "style": {
+                        "noDefaultExport": "off"
+                    },
+                    "correctness": {
+                        "noChildrenProp": "off"
+                    }
+                }
+            }
+        },
+        {
             "includes": ["scripts/**"],
             "linter": {
                 "rules": {
