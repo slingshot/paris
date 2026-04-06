@@ -33,6 +33,9 @@
                 "noExplicitAny": "off",
                 "noArrayIndexKey": "warn"
             },
+            "performance": {
+                "noImgElement": "off"
+            },
             "complexity": {
                 "noForEach": "off",
                 "noStaticOnlyClass": "off",

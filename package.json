@@ -61,6 +61,7 @@
         "./icon": "./src/stories/icon/index.ts",
         "./informationaltooltip": "./src/stories/informationaltooltip/index.ts",
         "./input": "./src/stories/input/index.ts",
+        "./markdown": "./src/stories/markdown/index.ts",
         "./menu": "./src/stories/menu/index.ts",
         "./pagination": "./src/stories/pagination/index.ts",
         "./popover": "./src/stories/popover/index.ts",
@@ -91,7 +92,10 @@
         "framer-motion": "^12.24.10",
         "pte": "^0.5.0",
         "react-hot-toast": "^2.4.1",
+        "react-markdown": "^10.1.0",
         "react-tiny-popover": "^8.1.6",
+        "rehype-raw": "^7.0.0",
+        "remark-gfm": "^4.0.1",
         "ts-deepmerge": "^6.0.3"
     },
     "peerDependencies": {
