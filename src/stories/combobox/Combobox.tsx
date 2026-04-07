@@ -11,7 +11,7 @@ import {
 } from '@headlessui/react';
 import { clsx } from 'clsx';
 import type { ComponentPropsWithoutRef, CSSProperties, MouseEvent, ReactNode } from 'react';
-import { useId, useMemo, useState } from 'react';
+import { useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 import type { ButtonProps } from '../button';
 import { Button } from '../button';
@@ -168,6 +168,25 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
     const inputID = useId();
     const [selectedID, setSelectedID] = useState<string | null>(value?.id || null);
     const [query, setQuery] = useState('');
+    const containerElRef = useRef<HTMLElement | null>(null);
+    const inputElRef = useRef<HTMLElement | null>(null);
+    const [anchorOffset, setAnchorOffset] = useState(0);
+
+    const containerRef = useCallback((node: HTMLButtonElement | null) => {
+        containerElRef.current = node;
+    }, []);
+
+    const inputRef = useCallback((node: HTMLInputElement | null) => {
+        inputElRef.current = node;
+    }, []);
+
+    useLayoutEffect(() => {
+        if (containerElRef.current && inputElRef.current) {
+            const containerLeft = containerElRef.current.getBoundingClientRect().left;
+            const inputLeft = inputElRef.current.getBoundingClientRect().left;
+            setAnchorOffset(containerLeft - inputLeft);
+        }
+    }, [startEnhancer, value]);
 
     const optionsWithCustomValue = useMemo(
         () => [...(allowCustomValue && customValueToOption ? [customValueToOption(query)] : []), ...options],
@@ -211,6 +230,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
             >
                 <ComboboxButton
                     as="div"
+                    ref={containerRef}
                     tabIndex={-1}
                     data-status={disabled ? 'disabled' : status || 'default'}
                     {...overrides?.inputContainer}
@@ -239,6 +259,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                             value.node
                         ) : (
                             <ComboboxInput
+                                ref={inputRef}
                                 id={inputID}
                                 {...overrides?.input}
                                 placeholder={placeholder}
@@ -313,7 +334,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                     anchor={{
                         to: 'bottom start',
                         gap: 9,
-                        offset: 'calc((var(--input-width, 0px) - var(--button-width, 0px)) / 2)',
+                        offset: anchorOffset,
                     }}
                     transition
                     {...overrides?.optionsContainer}

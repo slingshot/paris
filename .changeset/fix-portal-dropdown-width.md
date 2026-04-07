@@ -2,6 +2,8 @@
 "paris": patch
 ---
 
-fix(select,combobox): use correct CSS variables for portaled dropdown width
+fix(combobox): fix portaled dropdown width and alignment
 
-Headless UI v2.2.x sets `--button-width` and `--input-width` on portaled options, not `--anchor-width`. This caused dropdowns to be content-sized (~110px) instead of matching their trigger element.
+- Use correct CSS variables (`--button-width`, `--input-width`) for portaled dropdown width since Headless UI v2.2.x no longer sets `--anchor-width`
+- Measure actual pixel offset between container and input to align dropdown with the input container, not the input element
+- Prevent `ComboboxButton` wrapper from intercepting keyboard events (e.g. space key) meant for the input
