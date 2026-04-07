@@ -308,6 +308,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                     as="ul"
                     anchor={{
                         to: 'bottom start',
+                        gap: 9,
                         offset: 'calc((var(--input-width, 0px) - var(--button-width, 0px)) / 2)',
                     }}
                     transition
