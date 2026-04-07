@@ -248,6 +248,10 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                     e.stopPropagation();
                                     overrides?.input?.onClick?.(e);
                                 }}
+                                onKeyDown={(e) => {
+                                    e.stopPropagation();
+                                    overrides?.input?.onKeyDown?.(e);
+                                }}
                                 onChange={(e) => {
                                     setQuery(e.target.value);
                                     if (onInputChange) onInputChange(e.target.value);
