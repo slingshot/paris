@@ -1,5 +1,11 @@
 # paris
 
+## 0.21.2
+
+### Patch Changes
+
+- 61edbc8: Fix portaled dropdowns (Select, Menu, Combobox) not appearing inside Drawers and Dialogs by moving the dropdown z-index layer (350) above the overlay layer (300).
+
 ## 0.21.1
 
 ### Patch Changes
