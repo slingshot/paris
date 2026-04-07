@@ -2,9 +2,15 @@
 
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ComboboxInput, ComboboxOption, ComboboxOptions, Combobox as HCombobox } from '@headlessui/react';
+import {
+    ComboboxButton,
+    ComboboxInput,
+    ComboboxOption,
+    ComboboxOptions,
+    Combobox as HCombobox,
+} from '@headlessui/react';
 import { clsx } from 'clsx';
-import type { ComponentPropsWithoutRef, CSSProperties, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, CSSProperties, MouseEvent, ReactNode } from 'react';
 import { useId, useMemo, useState } from 'react';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 import type { ButtonProps } from '../button';
@@ -203,7 +209,9 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                     }
                 }}
             >
-                <div
+                <ComboboxButton
+                    as="div"
+                    tabIndex={-1}
                     data-status={disabled ? 'disabled' : status || 'default'}
                     {...overrides?.inputContainer}
                     className={clsx(overrides?.inputContainer?.className, inputStyles.inputContainer)}
@@ -236,6 +244,10 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                 placeholder={placeholder}
                                 // value={query}
                                 displayValue={() => value?.node as string}
+                                onClick={(e: MouseEvent<HTMLInputElement>) => {
+                                    e.stopPropagation();
+                                    overrides?.input?.onClick?.(e);
+                                }}
                                 onChange={(e) => {
                                     setQuery(e.target.value);
                                     if (onInputChange) onInputChange(e.target.value);
@@ -261,7 +273,8 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                             size="xs"
                             shape="circle"
                             startEnhancer={<FontAwesomeIcon icon={faClose} fontSize="10px" />}
-                            onClick={() => {
+                            onClick={(e) => {
+                                e.stopPropagation();
                                 if (onChange) {
                                     onChange(null);
                                 }
@@ -290,10 +303,13 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                             )}
                         </div>
                     )}
-                </div>
+                </ComboboxButton>
                 <ComboboxOptions
                     as="ul"
-                    anchor="bottom start"
+                    anchor={{
+                        to: 'bottom start',
+                        offset: 'calc((var(--input-width, 0px) - var(--button-width, 0px)) / 2)',
+                    }}
                     transition
                     {...overrides?.optionsContainer}
                     className={clsx(overrides?.optionsContainer?.className, styles.options)}
