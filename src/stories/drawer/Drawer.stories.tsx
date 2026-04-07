@@ -5,6 +5,7 @@ import { Callout } from '../callout';
 import { ChevronRight, Ellipsis } from '../icon';
 import { Menu, MenuButton, MenuItem, MenuItems } from '../menu';
 import { usePagination } from '../pagination';
+import { Select } from '../select';
 import { Drawer } from './Drawer';
 
 const meta: Meta<typeof Drawer> = {
@@ -253,6 +254,42 @@ export const BottomPanelMultiSection: Story = {
                 <Button onClick={() => setIsOpen(true)}>Review order</Button>
                 <Drawer {...args} isOpen={isOpen} onClose={setIsOpen}>
                     {args.children}
+                </Drawer>
+            </>
+        );
+    },
+};
+
+export const WithSelectDropdown: Story = {
+    args: {
+        title: 'Settings',
+        size: 'default',
+    },
+    render: function Render(args) {
+        const [isOpen, setIsOpen] = useState(false);
+        const [selected, setSelected] = useState<string | null>(null);
+        return (
+            <>
+                <Button onClick={() => setIsOpen(true)}>Open drawer</Button>
+                <Drawer {...args} isOpen={isOpen} onClose={setIsOpen}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                        <p>Try opening the Select dropdown below — it should appear above the Drawer.</p>
+                        <Select
+                            label="Country"
+                            placeholder="Select a country"
+                            value={selected}
+                            onChange={setSelected}
+                            options={[
+                                { id: 'us', node: 'United States' },
+                                { id: 'uk', node: 'United Kingdom' },
+                                { id: 'ca', node: 'Canada' },
+                                { id: 'au', node: 'Australia' },
+                                { id: 'de', node: 'Germany' },
+                                { id: 'fr', node: 'France' },
+                                { id: 'jp', node: 'Japan' },
+                            ]}
+                        />
+                    </div>
                 </Drawer>
             </>
         );

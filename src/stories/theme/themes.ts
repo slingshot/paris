@@ -435,8 +435,8 @@ export type Theme = {
         layers: {
             below: number;
             sticky: number;
-            dropdown: number;
             overlay: number;
+            dropdown: number;
             popover: number;
             menu: number;
         };
@@ -1065,8 +1065,8 @@ export const LightTheme: Theme = {
         layers: {
             below: -1,
             sticky: 100,
-            dropdown: 200,
             overlay: 300,
+            dropdown: 350,
             popover: 400,
             menu: 500,
         },
