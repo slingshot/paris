@@ -4,6 +4,7 @@ import { getCloseButton, render, screen, waitFor } from '../../test/render';
 import { usePagination } from '../pagination';
 import { Drawer } from './Drawer';
 import { DrawerActions } from './DrawerActions';
+import { DrawerBottomPanel } from './DrawerBottomPanel';
 import { useDrawer } from './DrawerContext';
 import { DrawerPage } from './DrawerPage';
 import { DrawerPageProvider, useIsPageActive } from './DrawerPageContext';
@@ -535,6 +536,109 @@ describe('Drawer', () => {
             await waitFor(() => {
                 expect(screen.getByTestId('lazy-content')).toBeInTheDocument();
             });
+        });
+    });
+
+    describe('DrawerBottomPanel', () => {
+        it('renders bottom panel content via slot component (replace mode)', async () => {
+            render(
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()} bottomPanel={<span>Fallback Panel</span>}>
+                    <DrawerBottomPanel>
+                        <button type="button">Slot Panel</button>
+                    </DrawerBottomPanel>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByText('Slot Panel')).toBeInTheDocument();
+            });
+
+            // Fallback should not render when replace slot is active
+            expect(screen.queryByText('Fallback Panel')).not.toBeInTheDocument();
+        });
+
+        it('falls back to bottomPanel prop when no slot', async () => {
+            render(
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()} bottomPanel={<span>Fallback Panel</span>}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getAllByText('Fallback Panel').length).toBeGreaterThan(0);
+            });
+        });
+
+        it('appends content after base bottomPanel in append mode', async () => {
+            render(
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()} bottomPanel={<span>Base Panel</span>}>
+                    <DrawerBottomPanel mode="append">
+                        <span>Appended Content</span>
+                    </DrawerBottomPanel>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                // Base should still render (append doesn't replace)
+                expect(screen.getAllByText('Base Panel').length).toBeGreaterThan(0);
+                expect(screen.getByText('Appended Content')).toBeInTheDocument();
+            });
+        });
+
+        it('orders multiple append slots by priority', async () => {
+            render(
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()} bottomPanel={<span>Base</span>}>
+                    <DrawerBottomPanel mode="append" priority={20}>
+                        <span data-testid="p20">Priority 20</span>
+                    </DrawerBottomPanel>
+                    <DrawerBottomPanel mode="append" priority={10}>
+                        <span data-testid="p10">Priority 10</span>
+                    </DrawerBottomPanel>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                const p10 = screen.getByTestId('p10');
+                const p20 = screen.getByTestId('p20');
+                // CSS order controls visual ordering — lower priority = visually higher
+                const p10Order = Number((p10.parentElement as HTMLElement).style.order);
+                const p20Order = Number((p20.parentElement as HTMLElement).style.order);
+                expect(p10Order).toBeLessThan(p20Order);
+            });
+        });
+
+        it('only shows active page bottom panel in paginated drawer', async () => {
+            const Wrapper = () => {
+                const pages = ['a', 'b'] as const;
+                const pagination = usePagination<typeof pages>('a');
+                return (
+                    <Drawer isOpen={true} title="Test" onClose={vi.fn()} pagination={pagination}>
+                        <DrawerPage id="a">
+                            <DrawerBottomPanel>
+                                <span>Panel A</span>
+                            </DrawerBottomPanel>
+                            Page A
+                        </DrawerPage>
+                        <DrawerPage id="b">
+                            <DrawerBottomPanel>
+                                <span>Panel B</span>
+                            </DrawerBottomPanel>
+                            Page B
+                        </DrawerPage>
+                    </Drawer>
+                );
+            };
+
+            render(<Wrapper />);
+
+            await waitFor(() => {
+                expect(screen.getByText('Panel A')).toBeInTheDocument();
+            });
+
+            expect(screen.queryByText('Panel B')).not.toBeInTheDocument();
         });
     });
 });

@@ -1,5 +1,6 @@
 export * from './Drawer';
 export { DrawerActions, type DrawerActionsProps } from './DrawerActions';
+export { DrawerBottomPanel, type DrawerBottomPanelProps } from './DrawerBottomPanel';
 export type { DrawerContextValue } from './DrawerContext';
 export { useDrawer } from './DrawerContext';
 export { useDrawerPagination } from './DrawerPaginationContext';

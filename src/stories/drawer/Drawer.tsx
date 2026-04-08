@@ -194,9 +194,8 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
     const isPaginated = useMemo(() => Boolean(pagination), [pagination]);
     const hasAdditionalActions = useMemo(() => Boolean(additionalActions), [additionalActions]);
 
-    const showBottomPanel = bottomPanel || slotContext?.hasAnyBottomPanelSlot;
-    const showFallbackBottomPanel =
-        bottomPanel && !(slotContext?.hasBottomPanelReplace || slotContext?.hasAnyBottomPanelSlot);
+    const showBottomPanel = Boolean(bottomPanel) || (slotContext?.hasAnyBottomPanelSlot ?? false);
+    const showBaseBottomPanel = Boolean(bottomPanel) && !slotContext?.hasBottomPanelReplace;
 
     const paginatedChildren = useMemo(() => {
         if (!isPaginated || !pagination || !children) {
@@ -387,7 +386,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                             overrides?.bottomPanelSpacer?.className,
                                         )}
                                     >
-                                        {showFallbackBottomPanel && bottomPanel}
+                                        {showBaseBottomPanel && bottomPanel}
                                     </div>
                                     <div className={clsx(styles.bottomPanel, overrides?.bottomPanel?.className)}>
                                         <div className={styles.glassOpacity} />
@@ -399,8 +398,13 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                                 overrides?.bottomPanelContent?.className,
                                             )}
                                         >
-                                            {slotContext && <div ref={slotContext.bottomPanelRef} />}
-                                            {showFallbackBottomPanel && bottomPanel}
+                                            {slotContext && (
+                                                <div
+                                                    ref={slotContext.bottomPanelCallbackRef}
+                                                    style={{ display: 'flex', flexDirection: 'column' }}
+                                                />
+                                            )}
+                                            {showBaseBottomPanel && bottomPanel}
                                         </div>
                                     </div>
                                 </>

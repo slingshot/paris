@@ -21,6 +21,10 @@ export type DrawerSlotContextValue = {
     titleRef: RefObject<HTMLDivElement | null>;
     actionsRef: RefObject<HTMLDivElement | null>;
     bottomPanelRef: RefObject<HTMLDivElement | null>;
+    /** Callback ref for the bottom panel portal target — triggers re-render when assigned */
+    bottomPanelCallbackRef: (node: HTMLDivElement | null) => void;
+    /** Whether the bottom panel portal target is mounted in the DOM */
+    isBottomPanelMounted: boolean;
 
     hasTitleSlot: boolean;
     hasActionsSlot: boolean;
@@ -47,6 +51,12 @@ export function DrawerSlotProvider({ children }: { children: ReactNode }) {
     const titleRef = useRef<HTMLDivElement | null>(null);
     const actionsRef = useRef<HTMLDivElement | null>(null);
     const bottomPanelRef = useRef<HTMLDivElement | null>(null);
+    const [isBottomPanelMounted, setIsBottomPanelMounted] = useState(false);
+
+    const bottomPanelCallbackRef = useCallback((node: HTMLDivElement | null) => {
+        bottomPanelRef.current = node;
+        setIsBottomPanelMounted(node !== null);
+    }, []);
 
     const [titleSlotCount, setTitleSlotCount] = useState(0);
     const [actionsSlotCount, setActionsSlotCount] = useState(0);
@@ -113,6 +123,8 @@ export function DrawerSlotProvider({ children }: { children: ReactNode }) {
             titleRef,
             actionsRef,
             bottomPanelRef,
+            bottomPanelCallbackRef,
+            isBottomPanelMounted,
             hasTitleSlot,
             hasActionsSlot,
             hasBottomPanelReplace,
@@ -123,6 +135,8 @@ export function DrawerSlotProvider({ children }: { children: ReactNode }) {
             registerBottomPanel,
         }),
         [
+            bottomPanelCallbackRef,
+            isBottomPanelMounted,
             hasTitleSlot,
             hasActionsSlot,
             hasBottomPanelReplace,
