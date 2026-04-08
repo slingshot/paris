@@ -249,4 +249,51 @@ describe('AccordionSelect', () => {
         expect(screen.getByText('On a rooftop, watching the sunset')).toBeInTheDocument();
         expect(screen.getByText('In a garden, under the stars')).toBeInTheDocument();
     });
+
+    describe('uncontrolled selection', () => {
+        it('renders with defaultValue', () => {
+            render(<AccordionSelect options={options} defaultValue="champagne" />);
+            expect(screen.getByText('In an alleyway, drinking champagne')).toBeInTheDocument();
+        });
+
+        it('renders with placeholder when no defaultValue', () => {
+            render(<AccordionSelect options={options} placeholder="Where were we?" />);
+            expect(screen.getByText('Where were we?')).toBeInTheDocument();
+        });
+
+        it('updates selection without external state', async () => {
+            const { user, container } = render(<AccordionSelect options={options} defaultValue="champagne" />);
+
+            const header = container.querySelector('[role="button"][tabindex="0"]') as HTMLElement;
+            await user.click(header);
+
+            await waitFor(() => {
+                expect(screen.getByText('On a rooftop, watching the sunset')).toBeInTheDocument();
+            });
+
+            await user.click(screen.getByText('On a rooftop, watching the sunset'));
+
+            await waitFor(() => {
+                expect(header).toHaveTextContent('On a rooftop, watching the sunset');
+            });
+        });
+
+        it('calls onChange in uncontrolled mode', async () => {
+            const handleChange = vi.fn();
+            const { user, container } = render(
+                <AccordionSelect options={options} defaultValue="champagne" onChange={handleChange} />,
+            );
+
+            const header = container.querySelector('[role="button"][tabindex="0"]') as HTMLElement;
+            await user.click(header);
+
+            await waitFor(() => {
+                expect(screen.getByText('On a rooftop, watching the sunset')).toBeInTheDocument();
+            });
+
+            await user.click(screen.getByText('On a rooftop, watching the sunset'));
+
+            expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: 'rooftop' }));
+        });
+    });
 });

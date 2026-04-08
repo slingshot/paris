@@ -3,7 +3,8 @@
 import { clsx } from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
+import { useControllableState } from '../../helpers/useControllableState';
 import { Check, ChevronRight, Icon } from '../icon';
 import { TextWhenString } from '../utility';
 import styles from './AccordionSelect.module.scss';
@@ -37,6 +38,10 @@ export type AccordionSelectProps<T = Record<string, unknown>> = {
      * The currently selected option ID.
      */
     value?: string | null;
+    /**
+     * The initial selected option ID for uncontrolled mode. If `value` is provided, this is ignored.
+     */
+    defaultValue?: string | null;
     /**
      * Called when the user selects an option.
      */
@@ -109,6 +114,7 @@ export type AccordionSelectProps<T = Record<string, unknown>> = {
 export const AccordionSelect: FC<AccordionSelectProps> = ({
     options,
     value,
+    defaultValue,
     onChange,
     renderSelected,
     renderOption,
@@ -121,19 +127,23 @@ export const AccordionSelect: FC<AccordionSelectProps> = ({
     label,
     overrides,
 }) => {
-    const [internalOpen, setInternalOpen] = useState(false);
-    const open = controlledOpen ?? internalOpen;
+    const [open, setOpen] = useControllableState({
+        value: controlledOpen,
+        defaultValue: false,
+        onChange: onOpenChange,
+    });
     const rootRef = useRef<HTMLDivElement>(null);
 
-    const setOpen = useCallback(
-        (nextOpen: boolean) => {
-            setInternalOpen(nextOpen);
-            onOpenChange?.(nextOpen);
+    const [resolvedValue, setResolvedValue] = useControllableState<string | null>({
+        value,
+        defaultValue: defaultValue,
+        onChange: (id) => {
+            const option = options.find((o) => o.id === id);
+            if (option) onChange?.(option);
         },
-        [onOpenChange],
-    );
+    });
 
-    const selectedOption = options.find((o) => o.id === value);
+    const selectedOption = options.find((o) => o.id === resolvedValue);
 
     useEffect(() => {
         if (!closeOnClickOutside || !open) {
@@ -207,7 +217,7 @@ export const AccordionSelect: FC<AccordionSelectProps> = ({
                             className={clsx(styles.dropdownContent, overrides?.dropdownContent?.className)}
                         >
                             {options.map((option) => {
-                                const isOptionSelected = option.id === value;
+                                const isOptionSelected = option.id === resolvedValue;
                                 return (
                                     <button
                                         key={option.id}
@@ -217,7 +227,7 @@ export const AccordionSelect: FC<AccordionSelectProps> = ({
                                         {...overrides?.option}
                                         className={clsx(styles.option, overrides?.option?.className)}
                                         onClick={() => {
-                                            onChange?.(option);
+                                            setResolvedValue(option.id);
                                             if (closeOnSelect) setOpen(false);
                                         }}
                                     >
