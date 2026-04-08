@@ -239,4 +239,37 @@ describe('Combobox', () => {
             expect(screen.getByTestId('custom-node')).toBeInTheDocument();
         });
     });
+
+    describe('onOpenChange', () => {
+        it('calls onOpenChange when the dropdown opens', async () => {
+            const handleOpenChange = vi.fn();
+            const { user } = render(
+                <Combobox options={options} onOpenChange={handleOpenChange} placeholder="Search..." />,
+            );
+
+            await user.click(screen.getByPlaceholderText('Search...'));
+
+            await waitFor(() => {
+                expect(handleOpenChange).toHaveBeenCalledWith(true);
+            });
+        });
+
+        it('calls onOpenChange when the dropdown closes after selection', async () => {
+            const handleOpenChange = vi.fn();
+            const { user } = render(<ControlledCombobox onOpenChange={handleOpenChange} />);
+
+            const input = screen.getByPlaceholderText('Search...');
+            await user.click(input);
+
+            await waitFor(() => {
+                expect(screen.getByText('Amy Brandt')).toBeInTheDocument();
+            });
+
+            await user.click(screen.getByText('Amy Brandt'));
+
+            await waitFor(() => {
+                expect(handleOpenChange).toHaveBeenCalledWith(false);
+            });
+        });
+    });
 });

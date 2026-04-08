@@ -208,4 +208,47 @@ describe('Menu', () => {
         const archiveItem = screen.getByText('Archive');
         expect(archiveItem.closest('[data-disabled]')).toBeInTheDocument();
     });
+
+    describe('onOpenChange', () => {
+        it('calls onOpenChange when the menu opens', async () => {
+            const handleOpenChange = vi.fn();
+            const { user } = render(
+                <Menu onOpenChange={handleOpenChange}>
+                    <MenuButton>Options</MenuButton>
+                    <MenuItems>
+                        <MenuItem as="button">Edit</MenuItem>
+                    </MenuItems>
+                </Menu>,
+            );
+
+            await user.click(screen.getByText('Options'));
+
+            await waitFor(() => {
+                expect(handleOpenChange).toHaveBeenCalledWith(true);
+            });
+        });
+
+        it('calls onOpenChange when the menu closes', async () => {
+            const handleOpenChange = vi.fn();
+            const { user } = render(
+                <Menu onOpenChange={handleOpenChange}>
+                    <MenuButton>Options</MenuButton>
+                    <MenuItems>
+                        <MenuItem as="button">Edit</MenuItem>
+                    </MenuItems>
+                </Menu>,
+            );
+
+            await user.click(screen.getByText('Options'));
+            await waitFor(() => {
+                expect(screen.getByText('Edit')).toBeInTheDocument();
+            });
+
+            await user.click(screen.getByText('Edit'));
+
+            await waitFor(() => {
+                expect(handleOpenChange).toHaveBeenCalledWith(false);
+            });
+        });
+    });
 });

@@ -12,6 +12,7 @@ import {
 import { clsx } from 'clsx';
 import type { ComponentPropsWithoutRef, CSSProperties, MouseEvent, ReactNode } from 'react';
 import { useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { OpenChangeEffect } from '../../helpers/OpenChangeEffect';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 import { useControllableState } from '../../helpers/useControllableState';
 import type { ButtonProps } from '../button';
@@ -93,6 +94,10 @@ export type ComboboxProps<T extends Record<string, any>> = {
      */
     customValueToOption?: (value: string) => Option<T>;
     /**
+     * Called when the combobox dropdown opens or closes.
+     */
+    onOpenChange?: (open: boolean) => void;
+    /**
      * Whether to hide the clear button when a value is selected. This will never be hidden if the selected option's node is not a strong, because there is no other way to clear the value as of now.
      */
     hideClearButton?: boolean;
@@ -165,6 +170,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
     showCustomValueOption = true,
     customValueString = 'Create "%v"',
     customValueToOption,
+    onOpenChange,
     hideClearButton = false,
     maxHeight = 320,
     hasOptionBorder = false,
@@ -232,153 +238,158 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                     }
                 }}
             >
-                <ComboboxButton
-                    as="div"
-                    ref={containerRef}
-                    tabIndex={-1}
-                    data-status={disabled ? 'disabled' : status || 'default'}
-                    {...overrides?.inputContainer}
-                    className={clsx(overrides?.inputContainer?.className, inputStyles.inputContainer)}
-                >
-                    {!!startEnhancer && (
-                        <div
-                            {...overrides?.startEnhancerContainer}
-                            className={clsx(inputStyles.enhancer, overrides?.startEnhancerContainer?.className)}
+                {({ open }) => (
+                    <>
+                        <OpenChangeEffect open={open} onOpenChange={onOpenChange} />
+                        <ComboboxButton
+                            as="div"
+                            ref={containerRef}
+                            tabIndex={-1}
                             data-status={disabled ? 'disabled' : status || 'default'}
+                            {...overrides?.inputContainer}
+                            className={clsx(overrides?.inputContainer?.className, inputStyles.inputContainer)}
                         >
                             {!!startEnhancer && (
-                                <MemoizedEnhancer
-                                    enhancer={startEnhancer}
-                                    size={parseInt(
-                                        pget('typography.styles.paragraphSmall.fontSize') ||
-                                            theme.typography.styles.paragraphSmall.fontSize,
-                                        10,
+                                <div
+                                    {...overrides?.startEnhancerContainer}
+                                    className={clsx(inputStyles.enhancer, overrides?.startEnhancerContainer?.className)}
+                                    data-status={disabled ? 'disabled' : status || 'default'}
+                                >
+                                    {!!startEnhancer && (
+                                        <MemoizedEnhancer
+                                            enhancer={startEnhancer}
+                                            size={parseInt(
+                                                pget('typography.styles.paragraphSmall.fontSize') ||
+                                                    theme.typography.styles.paragraphSmall.fontSize,
+                                                10,
+                                            )}
+                                        />
                                     )}
-                                />
+                                </div>
                             )}
-                        </div>
-                    )}
-                    <div className={styles.content}>
-                        {resolvedValue?.node && typeof resolvedValue.node !== 'string' ? (
-                            resolvedValue.node
-                        ) : (
-                            <ComboboxInput
-                                ref={inputRef}
-                                id={inputID}
-                                {...overrides?.input}
-                                placeholder={placeholder}
-                                // value={query}
-                                displayValue={() => resolvedValue?.node as string}
-                                onClick={(e: MouseEvent<HTMLInputElement>) => {
-                                    e.stopPropagation();
-                                    overrides?.input?.onClick?.(e);
-                                }}
-                                onKeyDown={(e) => {
-                                    e.stopPropagation();
-                                    overrides?.input?.onKeyDown?.(e);
-                                }}
-                                onChange={(e) => {
-                                    setQuery(e.target.value);
-                                    if (onInputChange) onInputChange(e.target.value);
-                                    if (overrides?.input?.onChange) overrides.input.onChange(e);
-                                    if (allowCustomValue && e.target.value) {
-                                        setResolvedValue(
-                                            customValueToOption?.(e.target.value) ||
-                                                ({
-                                                    id: null,
-                                                    node: e.target.value,
-                                                } as Option<T>),
-                                        );
-                                    }
-                                }}
-                                aria-disabled={disabled}
-                                data-status={disabled ? 'disabled' : status || 'default'}
-                                className={clsx(overrides?.input?.className, inputStyles.input, styles.field)}
-                            />
-                        )}
-                    </div>
+                            <div className={styles.content}>
+                                {resolvedValue?.node && typeof resolvedValue.node !== 'string' ? (
+                                    resolvedValue.node
+                                ) : (
+                                    <ComboboxInput
+                                        ref={inputRef}
+                                        id={inputID}
+                                        {...overrides?.input}
+                                        placeholder={placeholder}
+                                        // value={query}
+                                        displayValue={() => resolvedValue?.node as string}
+                                        onClick={(e: MouseEvent<HTMLInputElement>) => {
+                                            e.stopPropagation();
+                                            overrides?.input?.onClick?.(e);
+                                        }}
+                                        onKeyDown={(e) => {
+                                            e.stopPropagation();
+                                            overrides?.input?.onKeyDown?.(e);
+                                        }}
+                                        onChange={(e) => {
+                                            setQuery(e.target.value);
+                                            if (onInputChange) onInputChange(e.target.value);
+                                            if (overrides?.input?.onChange) overrides.input.onChange(e);
+                                            if (allowCustomValue && e.target.value) {
+                                                setResolvedValue(
+                                                    customValueToOption?.(e.target.value) ||
+                                                        ({
+                                                            id: null,
+                                                            node: e.target.value,
+                                                        } as Option<T>),
+                                                );
+                                            }
+                                        }}
+                                        aria-disabled={disabled}
+                                        data-status={disabled ? 'disabled' : status || 'default'}
+                                        className={clsx(overrides?.input?.className, inputStyles.input, styles.field)}
+                                    />
+                                )}
+                            </div>
 
-                    {!!resolvedValue && (!hideClearButton || typeof resolvedValue.node !== 'string') && (
-                        <Button
-                            size="xs"
-                            shape="circle"
-                            startEnhancer={<FontAwesomeIcon icon={faClose} fontSize="10px" />}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setResolvedValue(null);
-                            }}
-                            {...overrides?.clearButton}
-                        >
-                            Clear
-                        </Button>
-                    )}
-                    {!!endEnhancer && (
-                        <div
-                            {...overrides?.endEnhancerContainer}
-                            className={clsx(inputStyles.enhancer, overrides?.endEnhancerContainer?.className)}
-                            data-status={disabled ? 'disabled' : status || 'default'}
-                        >
+                            {!!resolvedValue && (!hideClearButton || typeof resolvedValue.node !== 'string') && (
+                                <Button
+                                    size="xs"
+                                    shape="circle"
+                                    startEnhancer={<FontAwesomeIcon icon={faClose} fontSize="10px" />}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setResolvedValue(null);
+                                    }}
+                                    {...overrides?.clearButton}
+                                >
+                                    Clear
+                                </Button>
+                            )}
                             {!!endEnhancer && (
-                                <MemoizedEnhancer
-                                    enhancer={endEnhancer}
-                                    size={parseInt(
-                                        pget('typography.styles.paragraphSmall.fontSize') ||
-                                            theme.typography.styles.paragraphSmall.fontSize,
-                                        10,
+                                <div
+                                    {...overrides?.endEnhancerContainer}
+                                    className={clsx(inputStyles.enhancer, overrides?.endEnhancerContainer?.className)}
+                                    data-status={disabled ? 'disabled' : status || 'default'}
+                                >
+                                    {!!endEnhancer && (
+                                        <MemoizedEnhancer
+                                            enhancer={endEnhancer}
+                                            size={parseInt(
+                                                pget('typography.styles.paragraphSmall.fontSize') ||
+                                                    theme.typography.styles.paragraphSmall.fontSize,
+                                                10,
+                                            )}
+                                        />
                                     )}
-                                />
+                                </div>
                             )}
-                        </div>
-                    )}
-                </ComboboxButton>
-                <ComboboxOptions
-                    as="ul"
-                    anchor={{
-                        to: 'bottom start',
-                        gap: 9,
-                        offset: anchorOffset,
-                    }}
-                    transition
-                    {...overrides?.optionsContainer}
-                    className={clsx(overrides?.optionsContainer?.className, styles.options)}
-                    style={
-                        {
-                            '--options-maxHeight': `${maxHeight}px`,
-                            ...overrides?.optionsContainer?.style,
-                        } as CSSProperties
-                    }
-                >
-                    {allowCustomValue && showCustomValueOption && !customValueToOption && query.length > 0 && (
-                        <ComboboxOption
-                            as="li"
-                            value={query}
-                            data-selected={false}
-                            className={clsx(overrides?.customValueOption?.className, styles.option)}
-                            {...overrides?.customValueOption}
+                        </ComboboxButton>
+                        <ComboboxOptions
+                            as="ul"
+                            anchor={{
+                                to: 'bottom start',
+                                gap: 9,
+                                offset: anchorOffset,
+                            }}
+                            transition
+                            {...overrides?.optionsContainer}
+                            className={clsx(overrides?.optionsContainer?.className, styles.options)}
+                            style={
+                                {
+                                    '--options-maxHeight': `${maxHeight}px`,
+                                    ...overrides?.optionsContainer?.style,
+                                } as CSSProperties
+                            }
                         >
-                            <Text as="span" kind="paragraphSmall">
-                                {customValueString.replace('%v', query)}
-                            </Text>
-                        </ComboboxOption>
-                    )}
-                    {(optionsWithCustomValue || []).map((option) => (
-                        <ComboboxOption
-                            as="li"
-                            key={option.id}
-                            value={option.id}
-                            {...overrides?.option}
-                            className={clsx(
-                                overrides?.option?.className,
-                                styles.option,
-                                hasOptionBorder && styles.optionBorder,
+                            {allowCustomValue && showCustomValueOption && !customValueToOption && query.length > 0 && (
+                                <ComboboxOption
+                                    as="li"
+                                    value={query}
+                                    data-selected={false}
+                                    className={clsx(overrides?.customValueOption?.className, styles.option)}
+                                    {...overrides?.customValueOption}
+                                >
+                                    <Text as="span" kind="paragraphSmall">
+                                        {customValueString.replace('%v', query)}
+                                    </Text>
+                                </ComboboxOption>
                             )}
-                        >
-                            <TextWhenString as="span" kind="paragraphSmall">
-                                {option.node}
-                            </TextWhenString>
-                        </ComboboxOption>
-                    ))}
-                </ComboboxOptions>
+                            {(optionsWithCustomValue || []).map((option) => (
+                                <ComboboxOption
+                                    as="li"
+                                    key={option.id}
+                                    value={option.id}
+                                    {...overrides?.option}
+                                    className={clsx(
+                                        overrides?.option?.className,
+                                        styles.option,
+                                        hasOptionBorder && styles.optionBorder,
+                                    )}
+                                >
+                                    <TextWhenString as="span" kind="paragraphSmall">
+                                        {option.node}
+                                    </TextWhenString>
+                                </ComboboxOption>
+                            ))}
+                        </ComboboxOptions>
+                    </>
+                )}
             </HCombobox>
         </Field>
     );

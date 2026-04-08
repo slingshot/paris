@@ -307,4 +307,35 @@ describe('Select', () => {
             });
         });
     });
+
+    describe('onOpenChange', () => {
+        it('calls onOpenChange when the listbox opens', async () => {
+            const handleOpenChange = vi.fn();
+            const { user } = render(
+                <Select options={options} onOpenChange={handleOpenChange} placeholder="Pick one" />,
+            );
+
+            await user.click(screen.getByText('Pick one'));
+
+            await waitFor(() => {
+                expect(handleOpenChange).toHaveBeenCalledWith(true);
+            });
+        });
+
+        it('calls onOpenChange when the listbox closes', async () => {
+            const handleOpenChange = vi.fn();
+            const { user } = render(<ControlledSelect onOpenChange={handleOpenChange} />);
+
+            await user.click(screen.getByText('Select an option'));
+            await waitFor(() => {
+                expect(screen.getByText('EP')).toBeInTheDocument();
+            });
+
+            await user.click(screen.getByText('EP'));
+
+            await waitFor(() => {
+                expect(handleOpenChange).toHaveBeenCalledWith(false);
+            });
+        });
+    });
 });
