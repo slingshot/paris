@@ -2,9 +2,10 @@
 
 import { clsx } from 'clsx';
 import type { ComponentPropsWithoutRef, FC, ReactElement, ReactNode } from 'react';
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
 import type { PopoverProps as RTPopoverProps } from 'react-tiny-popover';
 import { Popover as RTPopover } from 'react-tiny-popover';
+import { useControllableState } from '../../helpers/useControllableState';
 import typography from '../text/Typography.module.css';
 import styles from './Popover.module.scss';
 
@@ -57,25 +58,27 @@ export const Popover: FC<PopoverProps> = ({
     setIsOpen,
     ...props
 }) => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useControllableState({
+        value: isOpen,
+        defaultValue: false,
+        onChange: setIsOpen,
+    });
 
     return (
         <RTPopover
             positions={positions || ['bottom', 'top', 'left', 'right']}
             align={align || 'start'}
             padding={padding || 8}
-            isOpen={typeof isOpen === 'undefined' ? open : isOpen}
+            isOpen={open}
             containerClassName={clsx(typography.paragraphSmall, styles.content)}
             content={<>{children}</>}
             onClickOutside={() => {
-                setIsOpen?.(false);
                 setOpen(false);
             }}
             {...props}
         >
             <Trigger
                 onClick={() => {
-                    setIsOpen?.(!isOpen);
                     setOpen((cur) => !cur);
                 }}
             >
