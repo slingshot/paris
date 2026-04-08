@@ -280,5 +280,31 @@ describe('Select', () => {
                 expect(radio).toHaveAttribute('aria-checked', 'true');
             });
         });
+
+        it('updates selection without external state (card)', async () => {
+            const { user } = render(<Select options={options} kind="card" defaultValue={null} />);
+
+            await user.click(screen.getByText('EP'));
+
+            await waitFor(() => {
+                const radio = screen.getByRole('radio', { name: 'EP' });
+                expect(radio).toHaveAttribute('aria-checked', 'true');
+            });
+        });
+
+        it('updates selection without external state (segmented)', async () => {
+            const { user } = render(<Select options={options} kind="segmented" defaultValue={null} />);
+
+            // Segmented defaults to first option when no value
+            const firstRadio = screen.getByRole('radio', { name: 'Single' });
+            expect(firstRadio).toHaveAttribute('aria-checked', 'true');
+
+            await user.click(screen.getByText('EP'));
+
+            await waitFor(() => {
+                const radio = screen.getByRole('radio', { name: 'EP' });
+                expect(radio).toHaveAttribute('aria-checked', 'true');
+            });
+        });
     });
 });

@@ -295,5 +295,30 @@ describe('AccordionSelect', () => {
 
             expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: 'rooftop' }));
         });
+
+        it('renders disabled option as selected when defaultValue points to it', async () => {
+            const disabledOptions = [
+                ...options,
+                { id: 'nowhere', node: 'Nowhere, it was all a dream', disabled: true },
+            ];
+            const { user, container } = render(<AccordionSelect options={disabledOptions} defaultValue="nowhere" />);
+
+            // Header shows the disabled option's text
+            const allMatches = screen.getAllByText('Nowhere, it was all a dream');
+            expect(allMatches.length).toBeGreaterThanOrEqual(1);
+
+            // Open and verify the option button is disabled
+            const header = container.querySelector('[role="button"][tabindex="0"]') as HTMLElement;
+            await user.click(header);
+
+            await waitFor(() => {
+                // Find the option button (not the header text)
+                const optionButtons = container.querySelectorAll('button[data-selected]');
+                const disabledButton = Array.from(optionButtons).find((btn) => btn.textContent?.includes('Nowhere'));
+                expect(disabledButton).toBeTruthy();
+                expect(disabledButton).toBeDisabled();
+                expect(disabledButton).toHaveAttribute('data-selected', 'true');
+            });
+        });
     });
 });

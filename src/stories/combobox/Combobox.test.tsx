@@ -206,5 +206,37 @@ describe('Combobox', () => {
             await user.click(screen.getByText('Amy Brandt'));
             expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: '3', node: 'Amy Brandt' }));
         });
+
+        it('clears selection in uncontrolled mode', async () => {
+            const { user, container } = render(
+                <Combobox options={options} defaultValue={{ id: '1', node: 'Mia Dolan' }} placeholder="Search..." />,
+            );
+
+            expect(screen.getByDisplayValue('Mia Dolan')).toBeInTheDocument();
+
+            const clearButton = container.querySelector('button[aria-details="Clear"]');
+            expect(clearButton).toBeInTheDocument();
+            await user.click(clearButton!);
+
+            await waitFor(() => {
+                expect(screen.getByPlaceholderText('Search...')).toBeInTheDocument();
+                expect(screen.queryByDisplayValue('Mia Dolan')).not.toBeInTheDocument();
+            });
+        });
+
+        it('renders with defaultValue using non-string node', () => {
+            const optionsWithNode = [
+                { id: '1', node: <span data-testid="custom-node">Custom Mia</span> },
+                { id: '2', node: 'Sebastian Wilder' },
+            ];
+            render(
+                <Combobox
+                    options={optionsWithNode}
+                    defaultValue={{ id: '1', node: <span data-testid="custom-node">Custom Mia</span> }}
+                    placeholder="Search..."
+                />,
+            );
+            expect(screen.getByTestId('custom-node')).toBeInTheDocument();
+        });
     });
 });
