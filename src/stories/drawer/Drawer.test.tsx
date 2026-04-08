@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { getCloseButton, render, screen, waitFor } from '../../test/render';
 import { Drawer } from './Drawer';
+import { useDrawer } from './DrawerContext';
 
 describe('Drawer', () => {
     it('renders when isOpen is true', async () => {
@@ -254,6 +255,56 @@ describe('Drawer', () => {
 
         await waitFor(() => {
             expect(screen.getByTestId('custom-title')).toBeInTheDocument();
+        });
+    });
+
+    describe('useDrawer', () => {
+        function DrawerConsumer() {
+            const { close, isOpen } = useDrawer();
+            return (
+                <div>
+                    <span data-testid="is-open">{String(isOpen)}</span>
+                    <button type="button" onClick={close}>
+                        Close via context
+                    </button>
+                </div>
+            );
+        }
+
+        it('provides isOpen and close to children', async () => {
+            render(
+                <Drawer isOpen={true} title="Context Drawer" onClose={vi.fn()}>
+                    <DrawerConsumer />
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByTestId('is-open')).toHaveTextContent('true');
+            });
+        });
+
+        it('calls onClose(false) when close is invoked from context', async () => {
+            const onClose = vi.fn();
+            const { user } = render(
+                <Drawer isOpen={true} title="Context Drawer" onClose={onClose}>
+                    <DrawerConsumer />
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByText('Close via context')).toBeInTheDocument();
+            });
+
+            await user.click(screen.getByText('Close via context'));
+
+            expect(onClose).toHaveBeenCalledWith(false);
+        });
+
+        it('throws when useDrawer is used outside of a Drawer', () => {
+            // Suppress React error boundary console output
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+            expect(() => render(<DrawerConsumer />)).toThrow('useDrawer must be used within a Drawer component');
+            consoleSpy.mockRestore();
         });
     });
 });

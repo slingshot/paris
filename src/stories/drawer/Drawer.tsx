@@ -4,7 +4,7 @@ import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@
 import type { CSSLength } from '@ssh/csstypes';
 import { clsx } from 'clsx';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Button } from '../button';
 import { ChevronLeft, ChevronRight, Close, Icon } from '../icon';
 import type { PaginationState } from '../pagination';
@@ -13,6 +13,7 @@ import { RemoveFromDOM } from '../utility/RemoveFromDOM';
 import { TextWhenString } from '../utility/TextWhenString';
 import { VisuallyHidden } from '../utility/VisuallyHidden';
 import styles from './Drawer.module.scss';
+import { DrawerProvider } from './DrawerContext';
 
 export const DrawerSizePresets = ['content', 'default', 'full', 'fullWithMargin', 'fullOnMobile'] as const;
 
@@ -170,6 +171,8 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
 
     const [loadedPage, setLoadedPage] = useState<string | null>(pagination?.history[0] || null);
 
+    const handleClose = useCallback(() => onClose(false), [onClose]);
+
     // const bottomPanelRef = useRef<HTMLDivElement>(null);
     // const { width = 0, height = 0 } = useResizeObserver({
     //     ref: bottomPanelRef,
@@ -217,191 +220,199 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>({
                 {...overrides?.dialog}
                 role="dialog"
             >
-                <div
-                    className={clsx(
-                        overlayStyle === 'blur' && styles.overlayBlurContainer,
-                        overlayStyle === 'grey' && styles.overlayGreyContainer,
-                        overrides?.overlay?.className,
-                    )}
-                >
-                    <TransitionChild
-                        enter={styles.enter}
-                        enterFrom={styles.enterFrom}
-                        enterTo={styles.enterTo}
-                        leave={styles.leave}
-                        leaveFrom={styles.leaveFrom}
-                        leaveTo={styles.leaveTo}
+                <DrawerProvider close={handleClose} isOpen={isOpen}>
+                    <div
+                        className={clsx(
+                            overlayStyle === 'blur' && styles.overlayBlurContainer,
+                            overlayStyle === 'grey' && styles.overlayGreyContainer,
+                            overrides?.overlay?.className,
+                        )}
                     >
-                        <div
-                            className={clsx(
-                                styles.overlay,
-                                overlayStyle === 'blur' && styles.overlayBlur,
-                                overlayStyle === 'grey' && styles.overlayGrey,
-                            )}
-                        />
-                    </TransitionChild>
-                </div>
-
-                <div
-                    className={clsx(
-                        styles.panelContainer,
-                        styles[`from-${from}`],
-                        { [styles[`size-${size}`]]: sizeIsPreset },
-                        overrides?.panelContainer?.className,
-                    )}
-                    style={
-                        !sizeIsPreset
-                            ? {
-                                  [xAxisDrawer ? 'width' : 'height']: size,
-                                  ...overrides?.panelContainer?.style,
-                              }
-                            : overrides?.panelContainer?.style
-                    }
-                    {...overrides?.panelContainer}
-                >
-                    <TransitionChild
-                        enter={styles.enter}
-                        enterFrom={styles.enterFrom}
-                        enterTo={styles.enterTo}
-                        leave={styles.leave}
-                        leaveFrom={styles.leaveFrom}
-                        leaveTo={styles.leaveTo}
-                    >
-                        <DialogPanel
-                            className={clsx(styles.panel, styles[`from-${from}`], overrides?.panel?.className)}
+                        <TransitionChild
+                            enter={styles.enter}
+                            enterFrom={styles.enterFrom}
+                            enterTo={styles.enterTo}
+                            leave={styles.leave}
+                            leaveFrom={styles.leaveFrom}
+                            leaveTo={styles.leaveTo}
                         >
-                            {/* Dialog title bar */}
-                            <div className={clsx(styles.titleBar, overrides?.titleBar?.className)}>
-                                <div className={clsx(styles.titleArea, overrides?.titleArea?.className)}>
-                                    <RemoveFromDOM
-                                        // Hide when pagination is not enabled.
-                                        when={!isPaginated}
+                            <div
+                                className={clsx(
+                                    styles.overlay,
+                                    overlayStyle === 'blur' && styles.overlayBlur,
+                                    overlayStyle === 'grey' && styles.overlayGrey,
+                                )}
+                            />
+                        </TransitionChild>
+                    </div>
+
+                    <div
+                        className={clsx(
+                            styles.panelContainer,
+                            styles[`from-${from}`],
+                            { [styles[`size-${size}`]]: sizeIsPreset },
+                            overrides?.panelContainer?.className,
+                        )}
+                        style={
+                            !sizeIsPreset
+                                ? {
+                                      [xAxisDrawer ? 'width' : 'height']: size,
+                                      ...overrides?.panelContainer?.style,
+                                  }
+                                : overrides?.panelContainer?.style
+                        }
+                        {...overrides?.panelContainer}
+                    >
+                        <TransitionChild
+                            enter={styles.enter}
+                            enterFrom={styles.enterFrom}
+                            enterTo={styles.enterTo}
+                            leave={styles.leave}
+                            leaveFrom={styles.leaveFrom}
+                            leaveTo={styles.leaveTo}
+                        >
+                            <DialogPanel
+                                className={clsx(styles.panel, styles[`from-${from}`], overrides?.panel?.className)}
+                            >
+                                {/* Dialog title bar */}
+                                <div className={clsx(styles.titleBar, overrides?.titleBar?.className)}>
+                                    <div className={clsx(styles.titleArea, overrides?.titleArea?.className)}>
+                                        <RemoveFromDOM
+                                            // Hide when pagination is not enabled.
+                                            when={!isPaginated}
+                                        >
+                                            <div className={clsx(styles.paginationButtons)}>
+                                                <Button
+                                                    className={clsx(styles.navButton)}
+                                                    size="medium"
+                                                    kind="tertiary"
+                                                    shape="circle"
+                                                    onClick={() => pagination?.back()}
+                                                    disabled={!pagination?.canGoBack()}
+                                                    startEnhancer={<Icon icon={ChevronLeft} size={16} />}
+                                                >
+                                                    Go to previous page in this modal
+                                                </Button>
+                                                <Button
+                                                    className={clsx(styles.navButton)}
+                                                    size="medium"
+                                                    kind="tertiary"
+                                                    shape="circle"
+                                                    onClick={() => pagination?.forward()}
+                                                    disabled={!pagination?.canGoForward()}
+                                                    startEnhancer={<Icon icon={ChevronRight} size={16} />}
+                                                >
+                                                    Go to next page in this modal
+                                                </Button>
+                                            </div>
+                                        </RemoveFromDOM>
+                                        <VisuallyHidden
+                                            // Hide when requested, or when pagination is enabled (the title isn't relevant to any specific page).
+                                            when={hideTitle}
+                                        >
+                                            <DialogTitle as="h2" className={styles.titleTextContainer}>
+                                                <TextWhenString kind="paragraphSmall" weight="medium">
+                                                    {title}
+                                                </TextWhenString>
+                                            </DialogTitle>
+                                        </VisuallyHidden>
+                                    </div>
+                                    <div
+                                        className={clsx(styles.titleBarButtons, overrides?.titleBarButtons?.className)}
                                     >
-                                        <div className={clsx(styles.paginationButtons)}>
+                                        {/* Action Menu */}
+                                        <RemoveFromDOM when={!hasAdditionalActions}>{additionalActions}</RemoveFromDOM>
+
+                                        {/* Close button */}
+                                        <RemoveFromDOM
+                                            // Hide when requested, or when pagination is enabled (the page navigation bar will render its own close button).
+                                            when={hideCloseButton}
+                                        >
                                             <Button
-                                                className={clsx(styles.navButton)}
-                                                size="medium"
                                                 kind="tertiary"
                                                 shape="circle"
-                                                onClick={() => pagination?.back()}
-                                                disabled={!pagination?.canGoBack()}
-                                                startEnhancer={<Icon icon={ChevronLeft} size={16} />}
+                                                onClick={() => onClose(false)}
+                                                startEnhancer={<Icon icon={Close} size={20} />}
+                                                data-title-hidden={hideTitle}
+                                                className={clsx(styles.closeButton)}
                                             >
-                                                Go to previous page in this modal
+                                                Close dialog
                                             </Button>
-                                            <Button
-                                                className={clsx(styles.navButton)}
-                                                size="medium"
-                                                kind="tertiary"
-                                                shape="circle"
-                                                onClick={() => pagination?.forward()}
-                                                disabled={!pagination?.canGoForward()}
-                                                startEnhancer={<Icon icon={ChevronRight} size={16} />}
-                                            >
-                                                Go to next page in this modal
-                                            </Button>
-                                        </div>
-                                    </RemoveFromDOM>
-                                    <VisuallyHidden
-                                        // Hide when requested, or when pagination is enabled (the title isn't relevant to any specific page).
-                                        when={hideTitle}
-                                    >
-                                        <DialogTitle as="h2" className={styles.titleTextContainer}>
-                                            <TextWhenString kind="paragraphSmall" weight="medium">
-                                                {title}
-                                            </TextWhenString>
-                                        </DialogTitle>
-                                    </VisuallyHidden>
+                                        </RemoveFromDOM>
+                                    </div>
                                 </div>
-                                <div className={clsx(styles.titleBarButtons, overrides?.titleBarButtons?.className)}>
-                                    {/* Action Menu */}
-                                    <RemoveFromDOM when={!hasAdditionalActions}>{additionalActions}</RemoveFromDOM>
 
-                                    {/* Close button */}
-                                    <RemoveFromDOM
-                                        // Hide when requested, or when pagination is enabled (the page navigation bar will render its own close button).
-                                        when={hideCloseButton}
+                                <div className={clsx(styles.content, overrides?.content?.className)}>
+                                    <div
+                                        className={clsx(styles.contentChildren, overrides?.contentChildren?.className)}
                                     >
-                                        <Button
-                                            kind="tertiary"
-                                            shape="circle"
-                                            onClick={() => onClose(false)}
-                                            startEnhancer={<Icon icon={Close} size={20} />}
-                                            data-title-hidden={hideTitle}
-                                            className={clsx(styles.closeButton)}
-                                        >
-                                            Close dialog
-                                        </Button>
-                                    </RemoveFromDOM>
-                                </div>
-                            </div>
-
-                            <div className={clsx(styles.content, overrides?.content?.className)}>
-                                <div className={clsx(styles.contentChildren, overrides?.contentChildren?.className)}>
-                                    {isPaginated && Array.isArray(children)
-                                        ? children.map(
-                                              (child) =>
-                                                  child &&
-                                                  typeof child === 'object' &&
-                                                  'key' in child && (
-                                                      <Transition
-                                                          show={
-                                                              child.key === pagination?.currentPage &&
-                                                              loadedPage === child.key
-                                                          }
-                                                          key={`transition_${child.key}`}
-                                                          as="div"
-                                                          enter={styles.paginationEnter}
-                                                          enterFrom={styles.enterFromOpacity}
-                                                          enterTo={styles.enterToOpacity}
-                                                          leave={styles.paginationLeave}
-                                                          leaveFrom={styles.leaveFromOpacity}
-                                                          leaveTo={styles.leaveToOpacity}
-                                                          afterLeave={() => {
-                                                              setLoadedPage(pagination?.currentPage || null);
-                                                          }}
-                                                          className={clsx(
-                                                              overrides?.contentChildrenChildren?.className,
-                                                          )}
-                                                      >
-                                                          {child}
-                                                      </Transition>
-                                                  ),
-                                          )
-                                        : children}
-                                </div>
-                                {bottomPanel && (
-                                    <>
-                                        <div
-                                            tabIndex={-1}
-                                            aria-hidden="true"
-                                            className={clsx(
-                                                styles.bottomPanelSpacer,
-                                                { [styles.noPadding]: !bottomPanelPadding },
-                                                overrides?.bottomPanelSpacer?.className,
-                                            )}
-                                        >
-                                            {bottomPanel}
-                                        </div>
-                                        <div className={clsx(styles.bottomPanel, overrides?.bottomPanel?.className)}>
-                                            <div className={styles.glassOpacity} />
-                                            <div className={styles.glassBlend} />
+                                        {isPaginated && Array.isArray(children)
+                                            ? children.map(
+                                                  (child) =>
+                                                      child &&
+                                                      typeof child === 'object' &&
+                                                      'key' in child && (
+                                                          <Transition
+                                                              show={
+                                                                  child.key === pagination?.currentPage &&
+                                                                  loadedPage === child.key
+                                                              }
+                                                              key={`transition_${child.key}`}
+                                                              as="div"
+                                                              enter={styles.paginationEnter}
+                                                              enterFrom={styles.enterFromOpacity}
+                                                              enterTo={styles.enterToOpacity}
+                                                              leave={styles.paginationLeave}
+                                                              leaveFrom={styles.leaveFromOpacity}
+                                                              leaveTo={styles.leaveToOpacity}
+                                                              afterLeave={() => {
+                                                                  setLoadedPage(pagination?.currentPage || null);
+                                                              }}
+                                                              className={clsx(
+                                                                  overrides?.contentChildrenChildren?.className,
+                                                              )}
+                                                          >
+                                                              {child}
+                                                          </Transition>
+                                                      ),
+                                              )
+                                            : children}
+                                    </div>
+                                    {bottomPanel && (
+                                        <>
                                             <div
+                                                tabIndex={-1}
+                                                aria-hidden="true"
                                                 className={clsx(
-                                                    styles.bottomPanelContent,
+                                                    styles.bottomPanelSpacer,
                                                     { [styles.noPadding]: !bottomPanelPadding },
-                                                    overrides?.bottomPanelContent?.className,
+                                                    overrides?.bottomPanelSpacer?.className,
                                                 )}
                                             >
                                                 {bottomPanel}
                                             </div>
-                                        </div>
-                                    </>
-                                )}
-                            </div>
-                        </DialogPanel>
-                    </TransitionChild>
-                </div>
+                                            <div
+                                                className={clsx(styles.bottomPanel, overrides?.bottomPanel?.className)}
+                                            >
+                                                <div className={styles.glassOpacity} />
+                                                <div className={styles.glassBlend} />
+                                                <div
+                                                    className={clsx(
+                                                        styles.bottomPanelContent,
+                                                        { [styles.noPadding]: !bottomPanelPadding },
+                                                        overrides?.bottomPanelContent?.className,
+                                                    )}
+                                                >
+                                                    {bottomPanel}
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            </DialogPanel>
+                        </TransitionChild>
+                    </div>
+                </DrawerProvider>
             </Dialog>
         </Transition>
     );
