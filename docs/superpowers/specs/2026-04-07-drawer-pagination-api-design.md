@@ -22,7 +22,9 @@ A compound component API with slot components, context hooks, and `DrawerPage` w
 ### Components
 
 #### `<Drawer<T>>`
-Accepts an optional generic `T` (same type as `usePagination<T>`) that flows type safety to `DrawerPage` children. All existing props remain unchanged.
+Accepts an optional generic `T` (same type as `usePagination<T>`) that flows type safety to `DrawerPage` children. All existing props remain unchanged, plus:
+
+- `onAfterClose?: () => void` — fires after the exit animation completes. Use this to reset forms, clear state, and clean up without visual glitches during the close animation. Wired to HeadlessUI `Transition`'s `afterLeave` callback.
 
 #### `<DrawerPage id={T[number]} lazy?: boolean>`
 Replaces `<div key="pageName">`. Wraps page content and provides page-level context. The `id` prop is type-checked against the pagination's page list when a generic is provided.
@@ -39,8 +41,12 @@ Slot component. Renders into the additional actions area next to the close butto
 
 Uses `createPortal` to a ref on the Drawer's actions container, preserving the React tree.
 
-#### `<DrawerBottomPanel padding?: boolean>`
-Slot component. Renders into the bottom panel area. Works at any nesting depth — a deeply nested form component can control the bottom panel without prop drilling. Accepts `padding` prop (default `true`) to control panel padding. Falls back to Drawer's `bottomPanel` prop.
+#### `<DrawerBottomPanel padding?: boolean, mode?: 'replace' | 'append'>`
+Slot component. Renders into the bottom panel area. Works at any nesting depth — a deeply nested form component can control the bottom panel without prop drilling.
+
+Props:
+- `padding` (default `true`) — controls panel padding.
+- `mode` (default `'replace'`) — `'replace'` fully replaces the Drawer's base `bottomPanel` prop. `'append'` renders the Drawer's base `bottomPanel` first, then appends the slot content below it. This is useful when multiple pages share a common bottom panel structure (e.g., totals bar, callouts) and each page only adds its own primary action.
 
 Uses `createPortal` to a ref on the Drawer's bottom panel container, preserving the React tree. This is critical: it keeps slot content as a DOM descendant of any wrapping `<form>`, so `react-hook-form` context, native form submission, and `type="submit"` buttons all work correctly.
 
@@ -100,6 +106,58 @@ const EditForm = () => {
     </>
   );
 };
+```
+
+### Append Mode Example
+
+```tsx
+// Shared totals bar as base, each page appends its own action
+<Drawer<typeof pages>
+  pagination={pagination}
+  bottomPanel={
+    <div className={styles.PaymentTotals}>
+      <RecipientRow recipient={recipient} />
+      <TotalsRow amount={amount} lineItems={lineItems} />
+    </div>
+  }
+  bottomPanelPadding={false}
+>
+  <DrawerPage id="details">
+    <PaymentDetailsStep />
+    <DrawerBottomPanel mode="append" padding={false}>
+      <div className="px-5 py-5">
+        <Button onClick={() => pagination.open('paymentMethod')}>Payment Method</Button>
+      </div>
+    </DrawerBottomPanel>
+  </DrawerPage>
+
+  <DrawerPage id="paymentMethod">
+    <PaymentMethodStep />
+    <DrawerBottomPanel mode="append" padding={false}>
+      <div className="px-5 py-5">
+        <Button onClick={handleSubmit}>Send Payment</Button>
+      </div>
+    </DrawerBottomPanel>
+  </DrawerPage>
+</Drawer>
+```
+
+### onAfterClose Example
+
+```tsx
+// Reset form state after close animation finishes — no visual glitch
+<Drawer
+  isOpen={isOpen}
+  onClose={setIsOpen}
+  onAfterClose={() => {
+    form.reset(defaultValues);
+    pagination.reset();
+    setInitialData(null);
+  }}
+  title="New Payment"
+>
+  ...
+</Drawer>
 ```
 
 ### Lazy Page Example
@@ -189,8 +247,8 @@ useEffect(() => {
 When multiple `<DrawerBottomPanel>` components exist in the same active page (e.g., one at page level and one inside a deeply nested child):
 
 - **Last one wins** — the most recently registered slot component takes precedence. This matches the common pattern where a child component overrides the page-level default.
-- **Dev warning** — in development, `console.warn` when two slot components of the same type are simultaneously active on the same page. This catches accidental conflicts without breaking anything.
-- **Append mode** — intentionally deferred. No current use case. Easy to add later as a `mode="append"` prop if needed.
+- **Dev warning** — in development, `console.warn` when two slot components of the same type are simultaneously active on the same page (both using `mode="replace"`). This catches accidental conflicts without breaking anything.
+- **Append mode** — `<DrawerBottomPanel mode="append">` renders the Drawer's base `bottomPanel` prop first, then appends the slot content. Multiple `mode="append"` slots on the same page stack in mount order. A `mode="replace"` slot takes full control and ignores the base.
 
 ### Slot Priority (highest to lowest)
 
@@ -272,6 +330,6 @@ export { useIsPageActive } from './DrawerPageContext';
 
 ## Modified Files
 
-- `src/stories/drawer/Drawer.tsx` — wrap children in context providers, add slot ref containers, render `DrawerPage` children with page context
+- `src/stories/drawer/Drawer.tsx` — wrap children in context providers, add slot ref containers, render `DrawerPage` children with page context, add `onAfterClose` prop wired to `Transition afterLeave`
 - `src/stories/drawer/Drawer.stories.tsx` — add stories demonstrating new API
 - `src/stories/drawer/index.ts` — add new exports
