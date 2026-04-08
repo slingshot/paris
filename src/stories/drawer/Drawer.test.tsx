@@ -3,10 +3,12 @@ import { describe, expect, it, vi } from 'vitest';
 import { getCloseButton, render, screen, waitFor } from '../../test/render';
 import { usePagination } from '../pagination';
 import { Drawer } from './Drawer';
+import { DrawerActions } from './DrawerActions';
 import { useDrawer } from './DrawerContext';
 import { DrawerPage } from './DrawerPage';
 import { DrawerPageProvider, useIsPageActive } from './DrawerPageContext';
 import { useDrawerPagination } from './DrawerPaginationContext';
+import { DrawerTitle } from './DrawerTitle';
 
 describe('Drawer', () => {
     it('renders when isOpen is true', async () => {
@@ -388,6 +390,95 @@ describe('Drawer', () => {
             const { result } = renderHook(() => useIsPageActive());
 
             expect(result.current).toBe(true);
+        });
+    });
+
+    describe('DrawerTitle', () => {
+        it('overrides the drawer title prop', async () => {
+            render(
+                <Drawer isOpen={true} title="Fallback Title" onClose={vi.fn()}>
+                    <DrawerTitle>Custom Title</DrawerTitle>
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByText('Custom Title')).toBeInTheDocument();
+            });
+
+            expect(screen.queryByText('Fallback Title')).not.toBeInTheDocument();
+        });
+
+        it('shows fallback title when no DrawerTitle is used', async () => {
+            render(
+                <Drawer isOpen={true} title="Fallback Title" onClose={vi.fn()}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByText('Fallback Title')).toBeInTheDocument();
+            });
+        });
+
+        it('only shows active page DrawerTitle in paginated drawer', async () => {
+            const Wrapper = () => {
+                const pages = ['a', 'b'] as const;
+                const pagination = usePagination<typeof pages>('a');
+                return (
+                    <Drawer isOpen={true} title="Fallback" onClose={vi.fn()} pagination={pagination}>
+                        <DrawerPage id="a">
+                            <DrawerTitle>Title A</DrawerTitle>
+                            Page A
+                        </DrawerPage>
+                        <DrawerPage id="b">
+                            <DrawerTitle>Title B</DrawerTitle>
+                            Page B
+                        </DrawerPage>
+                    </Drawer>
+                );
+            };
+
+            render(<Wrapper />);
+
+            await waitFor(() => {
+                expect(screen.getByText('Title A')).toBeInTheDocument();
+            });
+
+            expect(screen.queryByText('Title B')).not.toBeInTheDocument();
+        });
+    });
+
+    describe('DrawerActions', () => {
+        it('renders actions via slot component', async () => {
+            render(
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()}>
+                    <DrawerActions>
+                        <button type="button">Slot Action</button>
+                    </DrawerActions>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByText('Slot Action')).toBeInTheDocument();
+            });
+        });
+
+        it('falls back to additionalActions prop when no DrawerActions slot', async () => {
+            render(
+                <Drawer
+                    isOpen={true}
+                    title="Test"
+                    onClose={vi.fn()}
+                    additionalActions={<button type="button">Prop Action</button>}
+                >
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByText('Prop Action')).toBeInTheDocument();
+            });
         });
     });
 
