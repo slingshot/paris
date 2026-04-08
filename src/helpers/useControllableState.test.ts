@@ -4,33 +4,25 @@ import { useControllableState } from './useControllableState';
 describe('useControllableState', () => {
     describe('uncontrolled mode', () => {
         it('initializes to defaultValue when value is undefined', () => {
-            const { result } = renderHook(() =>
-                useControllableState({ defaultValue: 'hello' }),
-            );
+            const { result } = renderHook(() => useControllableState({ defaultValue: 'hello' }));
             expect(result.current[0]).toBe('hello');
         });
 
         it('updates internal state via setter', () => {
-            const { result } = renderHook(() =>
-                useControllableState({ defaultValue: 'a' }),
-            );
+            const { result } = renderHook(() => useControllableState({ defaultValue: 'a' }));
             act(() => result.current[1]('b'));
             expect(result.current[0]).toBe('b');
         });
 
         it('supports functional updates', () => {
-            const { result } = renderHook(() =>
-                useControllableState({ defaultValue: 1 }),
-            );
+            const { result } = renderHook(() => useControllableState({ defaultValue: 1 }));
             act(() => result.current[1]((prev) => prev + 1));
             expect(result.current[0]).toBe(2);
         });
 
         it('calls onChange when setter is invoked', () => {
             const onChange = vi.fn();
-            const { result } = renderHook(() =>
-                useControllableState({ defaultValue: 'a', onChange }),
-            );
+            const { result } = renderHook(() => useControllableState({ defaultValue: 'a', onChange }));
             act(() => result.current[1]('b'));
             expect(onChange).toHaveBeenCalledWith('b');
         });
@@ -38,9 +30,7 @@ describe('useControllableState', () => {
 
     describe('controlled mode', () => {
         it('uses the provided value', () => {
-            const { result } = renderHook(() =>
-                useControllableState({ value: 'controlled', defaultValue: 'default' }),
-            );
+            const { result } = renderHook(() => useControllableState({ value: 'controlled', defaultValue: 'default' }));
             expect(result.current[0]).toBe('controlled');
         });
 
@@ -76,29 +66,21 @@ describe('useControllableState', () => {
     describe('dev warning', () => {
         it('warns when both value and defaultValue are provided', () => {
             const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-            renderHook(() =>
-                useControllableState({ value: 'a', defaultValue: 'b' }),
-            );
-            expect(spy).toHaveBeenCalledWith(
-                expect.stringContaining('received both `value` and `defaultValue`'),
-            );
+            renderHook(() => useControllableState({ value: 'a', defaultValue: 'b' }));
+            expect(spy).toHaveBeenCalledWith(expect.stringContaining('received both `value` and `defaultValue`'));
             spy.mockRestore();
         });
 
         it('does not warn when only value is provided', () => {
             const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-            renderHook(() =>
-                useControllableState({ value: 'a', defaultValue: undefined as unknown as string }),
-            );
+            renderHook(() => useControllableState({ value: 'a' }));
             expect(spy).not.toHaveBeenCalled();
             spy.mockRestore();
         });
 
         it('does not warn when only defaultValue is provided', () => {
             const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-            renderHook(() =>
-                useControllableState({ defaultValue: 'a' }),
-            );
+            renderHook(() => useControllableState({ defaultValue: 'a' }));
             expect(spy).not.toHaveBeenCalled();
             spy.mockRestore();
         });
