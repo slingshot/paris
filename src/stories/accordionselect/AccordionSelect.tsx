@@ -136,7 +136,7 @@ export const AccordionSelect: FC<AccordionSelectProps> = ({
 
     const [resolvedValue, setResolvedValue] = useControllableState<string | null>({
         value,
-        defaultValue: defaultValue,
+        defaultValue,
         onChange: (id) => {
             const option = options.find((o) => o.id === id);
             if (option) onChange?.(option);
