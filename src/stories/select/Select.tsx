@@ -156,10 +156,10 @@ export const Select = forwardRef(
         const inputID = useId();
         const multiItems = multipleItemsName || 'items';
 
-        const [resolvedValue, setResolvedValue] = useControllableState({
-            value,
-            defaultValue: defaultValue ?? (multiple ? [] : null),
-            onChange,
+        const [resolvedValue, setResolvedValue] = useControllableState<string | string[] | null>({
+            value: value as string | string[] | null | undefined,
+            defaultValue: defaultValue ?? (multiple ? ([] as string[]) : null),
+            onChange: onChange as ((value: string | string[] | null) => void) | undefined,
         });
 
         // TypeScript can't track discriminated union correlation through destructuring and JSX conditionals.
