@@ -7,6 +7,12 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '../menu';
 import { usePagination } from '../pagination';
 import { Select } from '../select';
 import { Drawer } from './Drawer';
+import { DrawerActions } from './DrawerActions';
+import { DrawerBottomPanel } from './DrawerBottomPanel';
+import { useDrawer } from './DrawerContext';
+import { DrawerPage } from './DrawerPage';
+import { useDrawerPagination } from './DrawerPaginationContext';
+import { DrawerTitle } from './DrawerTitle';
 
 const meta: Meta<typeof Drawer> = {
     title: 'Surfaces/Drawer',
@@ -309,6 +315,137 @@ export const Full: Story = {
                 <Button onClick={() => setIsOpen(true)}>View details</Button>
                 <Drawer {...args} isOpen={isOpen} onClose={setIsOpen}>
                     {args.children}
+                </Drawer>
+            </>
+        );
+    },
+};
+
+export const CompoundAPI: Story = {
+    args: {},
+    render: function Render() {
+        const [isOpen, setIsOpen] = useState(false);
+        const pages = ['details', 'edit'] as const;
+        const pagination = usePagination<typeof pages>('details');
+
+        return (
+            <>
+                <Button onClick={() => setIsOpen(true)}>Open compound drawer</Button>
+                <Drawer
+                    isOpen={isOpen}
+                    onClose={setIsOpen}
+                    title="Fallback Title"
+                    pagination={pagination}
+                    onAfterClose={() => pagination.reset()}
+                >
+                    <DrawerPage id="details">
+                        <DrawerTitle>Transaction Details</DrawerTitle>
+                        <DrawerActions>
+                            <Menu as="div">
+                                <MenuButton>
+                                    <Button kind="tertiary" shape="circle" startEnhancer={<Ellipsis size={20} />}>
+                                        Action menu
+                                    </Button>
+                                </MenuButton>
+                                <MenuItems position="right">
+                                    <MenuItem as="button">Dispute</MenuItem>
+                                </MenuItems>
+                            </Menu>
+                        </DrawerActions>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            <p>This is the details page with its own title and actions.</p>
+                            <Button onClick={() => pagination.open('edit')}>Go to Edit</Button>
+                        </div>
+                        <DrawerBottomPanel>
+                            <Button onClick={() => pagination.open('edit')}>Edit Transaction</Button>
+                        </DrawerBottomPanel>
+                    </DrawerPage>
+
+                    <DrawerPage id="edit">
+                        <DrawerTitle>Edit Transaction</DrawerTitle>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            <p>This is the edit page. The title bar changed!</p>
+                            <NestedFormExample />
+                        </div>
+                    </DrawerPage>
+                </Drawer>
+            </>
+        );
+    },
+};
+
+const NestedFormExample = () => {
+    const { close } = useDrawer();
+    const pagination = useDrawerPagination();
+    const [saving, setSaving] = useState(false);
+
+    return (
+        <>
+            <p>This form component uses useDrawer() and renders its own bottom panel.</p>
+            <DrawerBottomPanel>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <Button
+                        loading={saving}
+                        onClick={() => {
+                            setSaving(true);
+                            setTimeout(() => {
+                                setSaving(false);
+                                close();
+                            }, 1000);
+                        }}
+                    >
+                        Save Changes
+                    </Button>
+                    <Button kind="secondary" onClick={() => pagination?.back()}>
+                        Back
+                    </Button>
+                </div>
+            </DrawerBottomPanel>
+        </>
+    );
+};
+
+export const AppendModeBottomPanel: Story = {
+    args: {},
+    render: function Render() {
+        const [isOpen, setIsOpen] = useState(false);
+
+        return (
+            <>
+                <Button onClick={() => setIsOpen(true)}>Open append mode drawer</Button>
+                <Drawer
+                    isOpen={isOpen}
+                    onClose={setIsOpen}
+                    title="Append Mode Demo"
+                    bottomPanel={
+                        <div
+                            style={{
+                                padding: '12px 20px',
+                                borderBottom: '1px solid var(--pte-new-colors-borderMedium)',
+                            }}
+                        >
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span>Total</span>
+                                <strong>$249.00</strong>
+                            </div>
+                        </div>
+                    }
+                    bottomPanelPadding={false}
+                >
+                    <p>
+                        The bottom panel has a base totals bar from the Drawer prop, and appended content from
+                        DrawerBottomPanel components.
+                    </p>
+                    <DrawerBottomPanel mode="append" priority={10} padding={false}>
+                        <div style={{ padding: '8px 20px' }}>
+                            <Callout>Free shipping on orders over $200</Callout>
+                        </div>
+                    </DrawerBottomPanel>
+                    <DrawerBottomPanel mode="append" priority={20} padding={false}>
+                        <div style={{ padding: '12px 20px' }}>
+                            <Button style={{ width: '100%' }}>Confirm Order</Button>
+                        </div>
+                    </DrawerBottomPanel>
                 </Drawer>
             </>
         );
