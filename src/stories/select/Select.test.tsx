@@ -230,4 +230,55 @@ describe('Select', () => {
             expect(handleChange).toHaveBeenCalledWith('2');
         });
     });
+
+    describe('uncontrolled mode', () => {
+        it('renders with defaultValue', () => {
+            render(<Select options={options} defaultValue="2" />);
+            expect(screen.getByText('EP')).toBeInTheDocument();
+        });
+
+        it('renders with placeholder when no defaultValue', () => {
+            render(<Select options={options} placeholder="Pick one" />);
+            expect(screen.getByText('Pick one')).toBeInTheDocument();
+        });
+
+        it('updates selection without external state (listbox)', async () => {
+            const { user } = render(<Select options={options} defaultValue={null} />);
+
+            await user.click(screen.getByText('Select an option'));
+            await waitFor(() => {
+                expect(screen.getByText('EP')).toBeInTheDocument();
+            });
+            await user.click(screen.getByText('EP'));
+
+            await waitFor(() => {
+                const button = screen.getByRole('button', { expanded: false });
+                expect(button).toHaveTextContent('EP');
+            });
+        });
+
+        it('calls onChange in uncontrolled mode', async () => {
+            const handleChange = vi.fn();
+            const { user } = render(<Select options={options} defaultValue={null} onChange={handleChange} />);
+
+            await user.click(screen.getByText('Select an option'));
+            await waitFor(() => {
+                expect(screen.getByText('EP')).toBeInTheDocument();
+            });
+            await user.click(screen.getByText('EP'));
+
+            expect(handleChange).toHaveBeenCalledWith('2');
+        });
+
+        it('updates selection without external state (radio)', async () => {
+            const { user } = render(<Select options={options} kind="radio" defaultValue={null} />);
+
+            await user.click(screen.getByText('EP'));
+
+            await waitFor(() => {
+                const radio = screen.getByRole('radio', { name: 'EP' });
+                expect(radio).toHaveAttribute('aria-checked', 'true');
+            });
+        });
+    });
 });

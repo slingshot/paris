@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import type { ComponentPropsWithoutRef, CSSProperties, ForwardedRef, ReactNode } from 'react';
 import { forwardRef, useId } from 'react';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
+import { useControllableState } from '../../helpers/useControllableState';
 import { Field } from '../field';
 import { Check, Icon } from '../icon';
 import type { InputProps } from '../input';
@@ -69,6 +70,8 @@ export type SingleSelectProps<T = Record<string, any>> = {
      * This should exactly match the option IDs passed in the `options` prop. If `null`, no option will be selected.
      */
     value?: Option<T>['id'] | null;
+    /** The initial value for uncontrolled mode. If `value` is provided, this is ignored. */
+    defaultValue?: Option<T>['id'] | null;
     /**
      * The interaction handler for the Select.
      */
@@ -101,6 +104,8 @@ export type MultiSelectProps<T = Record<string, any>> = {
      * For multiselect, should be a string[] that matches the option IDs passed in the `options` prop. If `null`, no option will be selected.
      */
     value?: Option<T>['id'][] | null;
+    /** The initial value for uncontrolled multi-select. If `value` is provided, this is ignored. */
+    defaultValue?: Option<T>['id'][] | null;
     /**
      * The interaction handler for the Select.
      */
@@ -126,6 +131,7 @@ export const Select = forwardRef(
         {
             options,
             value,
+            defaultValue,
             onChange,
             label,
             status,
@@ -150,27 +156,33 @@ export const Select = forwardRef(
         const inputID = useId();
         const multiItems = multipleItemsName || 'items';
 
+        const [resolvedValue, setResolvedValue] = useControllableState({
+            value,
+            defaultValue: defaultValue ?? (multiple ? [] : null),
+            onChange,
+        });
+
         // TypeScript can't track discriminated union correlation through destructuring and JSX conditionals.
         // For Listbox: supports both single and multi via overloads, needs explicit union types
         // For RadioGroup: only supports single-select, needs narrowed types
-        const listboxValue = value as string | string[] | null | undefined;
-        const listboxOnChange = onChange as ((value: string | string[] | null) => void) | undefined;
-        const singleValue = value as string | null | undefined;
-        const singleOnChange = onChange as ((value: string | null) => void) | undefined;
+        const listboxValue = resolvedValue as string | string[] | null | undefined;
+        const listboxOnChange = setResolvedValue as (value: string | string[] | null) => void;
+        const singleValue = resolvedValue as string | null | undefined;
+        const singleOnChange = setResolvedValue as (value: string | null) => void;
         const buttonText = () => {
-            if (!value || value.length === 0) {
+            if (!resolvedValue || (resolvedValue as string | string[]).length === 0) {
                 return placeholder || 'Select an option';
             }
             if (!multiple) {
-                return options?.find((o) => o.id === value)?.node;
+                return options?.find((o) => o.id === resolvedValue)?.node;
             }
-            if (value && value.length === 1) {
-                return options?.find((o) => o.id === value[0])?.node;
+            if (resolvedValue && (resolvedValue as string[]).length === 1) {
+                return options?.find((o) => o.id === (resolvedValue as string[])[0])?.node;
             }
-            if (value.length === options.length) {
+            if ((resolvedValue as string[]).length === options.length) {
                 return `All ${multiItems}`;
             }
-            return `${value.length} ${multiItems}`;
+            return `${(resolvedValue as string[]).length} ${multiItems}`;
         };
         return (
             <Field
@@ -334,7 +346,7 @@ export const Select = forwardRef(
                         ref={ref}
                         as="div"
                         className={styles.segmentedContainer}
-                        value={singleValue || options[0].id}
+                        value={singleValue ?? options[0].id}
                         onChange={singleOnChange}
                     >
                         {options.map((option) => (
@@ -346,7 +358,7 @@ export const Select = forwardRef(
                                 disabled={option.disabled || false}
                                 data-status={disabled ? 'disabled' : status || 'default'}
                             >
-                                {(option.id === value || (!value && option.id === options[0].id)) && (
+                                {(option.id === resolvedValue || (!resolvedValue && option.id === options[0].id)) && (
                                     <motion.div
                                         className={styles.segmentedBackground}
                                         layoutId={`${inputID}-segmented-selected`}
