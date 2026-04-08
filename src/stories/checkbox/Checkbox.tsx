@@ -53,7 +53,7 @@ export const Checkbox: FC<CheckboxProps> = ({
     const inputID = useId();
     const [resolvedChecked, setResolvedChecked] = useControllableState({
         value: checked,
-        defaultValue: defaultChecked ?? false,
+        defaultValue: defaultChecked,
         onChange: onChange as ((value: boolean) => void) | undefined,
     });
     return (
