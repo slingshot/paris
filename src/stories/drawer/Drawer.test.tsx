@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { getCloseButton, render, screen, waitFor } from '../../test/render';
 import { Drawer } from './Drawer';
 import { useDrawer } from './DrawerContext';
+import { useDrawerPagination } from './DrawerPaginationContext';
 
 describe('Drawer', () => {
     it('renders when isOpen is true', async () => {
@@ -305,6 +306,52 @@ describe('Drawer', () => {
             const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
             expect(() => render(<DrawerConsumer />)).toThrow('useDrawer must be used within a Drawer component');
             consoleSpy.mockRestore();
+        });
+    });
+
+    describe('useDrawerPagination', () => {
+        function PaginationConsumer() {
+            const pagination = useDrawerPagination();
+            return (
+                <div>
+                    <span data-testid="pagination-value">{pagination ? pagination.currentPage : 'null'}</span>
+                </div>
+            );
+        }
+
+        it('provides pagination state to children in a paginated drawer', async () => {
+            const paginationState = {
+                currentPage: 'step1',
+                open: vi.fn(),
+                canGoBack: () => false,
+                back: vi.fn(),
+                canGoForward: () => true,
+                forward: vi.fn(),
+                history: ['step1'],
+                reset: vi.fn(),
+            };
+
+            render(
+                <Drawer isOpen={true} title="Paginated Drawer" onClose={vi.fn()} pagination={paginationState}>
+                    <PaginationConsumer key="step1" />
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByTestId('pagination-value')).toHaveTextContent('step1');
+            });
+        });
+
+        it('returns null when no pagination is provided', async () => {
+            render(
+                <Drawer isOpen={true} title="Non-paginated Drawer" onClose={vi.fn()}>
+                    <PaginationConsumer />
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByTestId('pagination-value')).toHaveTextContent('null');
+            });
         });
     });
 });
