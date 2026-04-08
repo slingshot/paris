@@ -174,7 +174,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
     const inputID = useId();
     const [resolvedValue, setResolvedValue] = useControllableState<Option<T> | null>({
         value,
-        defaultValue: defaultValue,
+        defaultValue,
         onChange,
     });
     const [query, setQuery] = useState('');
