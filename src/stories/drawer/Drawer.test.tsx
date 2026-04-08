@@ -539,6 +539,45 @@ describe('Drawer', () => {
         });
     });
 
+    describe('onAfterClose', () => {
+        it('calls onAfterClose after the drawer close animation completes', async () => {
+            const onAfterClose = vi.fn();
+            const onClose = vi.fn();
+
+            const { rerender } = render(
+                <Drawer isOpen={true} title="Test" onClose={onClose} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument();
+            });
+
+            rerender(
+                <Drawer isOpen={false} title="Test" onClose={onClose} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(onAfterClose).toHaveBeenCalledTimes(1);
+            });
+        });
+
+        it('does not call onAfterClose on initial render when closed', () => {
+            const onAfterClose = vi.fn();
+
+            render(
+                <Drawer isOpen={false} title="Test" onClose={vi.fn()} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+
+            expect(onAfterClose).not.toHaveBeenCalled();
+        });
+    });
+
     describe('DrawerBottomPanel', () => {
         it('renders bottom panel content via slot component (replace mode)', async () => {
             render(

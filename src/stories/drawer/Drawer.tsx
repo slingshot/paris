@@ -3,7 +3,15 @@
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import type { CSSLength } from '@ssh/csstypes';
 import { clsx } from 'clsx';
-import { Children, type ComponentPropsWithoutRef, type ReactNode, useCallback, useMemo } from 'react';
+import {
+    Children,
+    type ComponentPropsWithoutRef,
+    type ReactNode,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+} from 'react';
 import { Button } from '../button';
 import { ChevronLeft, ChevronRight, Close, Icon } from '../icon';
 import type { PaginationState } from '../pagination';
@@ -107,6 +115,11 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
      */
     pagination?: PaginationState<T>;
     /**
+     * Callback fired after the drawer's close animation completes.
+     * Use this to reset forms, clear state, and clean up without visual glitches.
+     */
+    onAfterClose?: () => void;
+    /**
      * The overlay style of the Drawer, either 'grey' or 'blur'.
      *
      * @default 'grey'
@@ -146,12 +159,23 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
  * @constructor
  */
 export const Drawer = <T extends string[] | readonly string[] = string[]>(props: DrawerProps<T>) => {
-    const { isOpen = false, onClose = () => {} } = props;
+    const { isOpen = false, onClose = () => {}, onAfterClose } = props;
 
     const handleClose = useCallback(() => onClose(false), [onClose]);
 
+    const hasBeenOpen = useRef(false);
+    useEffect(() => {
+        if (isOpen) hasBeenOpen.current = true;
+    }, [isOpen]);
+
+    const handleAfterLeave = useCallback(() => {
+        if (hasBeenOpen.current) {
+            onAfterClose?.();
+        }
+    }, [onAfterClose]);
+
     return (
-        <Transition show={isOpen}>
+        <Transition show={isOpen} afterLeave={handleAfterLeave}>
             <Dialog
                 as="div"
                 className={clsx(styles.root, props.overrides?.dialog?.className)}
