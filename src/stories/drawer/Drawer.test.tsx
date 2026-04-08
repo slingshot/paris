@@ -1,8 +1,10 @@
 import { renderHook } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { getCloseButton, render, screen, waitFor } from '../../test/render';
+import { usePagination } from '../pagination';
 import { Drawer } from './Drawer';
 import { useDrawer } from './DrawerContext';
+import { DrawerPage } from './DrawerPage';
 import { DrawerPageProvider, useIsPageActive } from './DrawerPageContext';
 import { useDrawerPagination } from './DrawerPaginationContext';
 
@@ -386,6 +388,62 @@ describe('Drawer', () => {
             const { result } = renderHook(() => useIsPageActive());
 
             expect(result.current).toBe(true);
+        });
+    });
+
+    describe('DrawerPage', () => {
+        it('renders children inside a paginated drawer', async () => {
+            const Wrapper = () => {
+                const pages = ['a', 'b'] as const;
+                const pagination = usePagination<typeof pages>('a');
+                return (
+                    <Drawer isOpen={true} title="Test" onClose={vi.fn()} pagination={pagination}>
+                        <DrawerPage id="a">Page A Content</DrawerPage>
+                        <DrawerPage id="b">Page B Content</DrawerPage>
+                    </Drawer>
+                );
+            };
+
+            render(<Wrapper />);
+
+            await waitFor(() => {
+                expect(screen.getByText('Page A Content')).toBeInTheDocument();
+            });
+        });
+
+        it('does not render lazy page until it becomes active', async () => {
+            const LazyChild = () => <span data-testid="lazy-content">Lazy Loaded</span>;
+
+            const Wrapper = () => {
+                const pages = ['a', 'b'] as const;
+                const pagination = usePagination<typeof pages>('a');
+                return (
+                    <Drawer isOpen={true} title="Test" onClose={vi.fn()} pagination={pagination}>
+                        <DrawerPage id="a">
+                            <button type="button" onClick={() => pagination.open('b')}>
+                                Go to B
+                            </button>
+                        </DrawerPage>
+                        <DrawerPage id="b" lazy>
+                            <LazyChild />
+                        </DrawerPage>
+                    </Drawer>
+                );
+            };
+
+            const { user } = render(<Wrapper />);
+
+            await waitFor(() => {
+                expect(screen.getByText('Go to B')).toBeInTheDocument();
+            });
+
+            expect(screen.queryByTestId('lazy-content')).not.toBeInTheDocument();
+
+            await user.click(screen.getByText('Go to B'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('lazy-content')).toBeInTheDocument();
+            });
         });
     });
 });
