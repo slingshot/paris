@@ -222,7 +222,6 @@ export const BottomPanelMultiSection: Story = {
                 <p>Review your order before confirming.</p>
             </div>
         ),
-        bottomPanelPadding: false,
         bottomPanel: (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <div
@@ -430,21 +429,16 @@ export const AppendModeBottomPanel: Story = {
                             </div>
                         </div>
                     }
-                    bottomPanelPadding={false}
                 >
                     <p>
                         The bottom panel has a base totals bar from the Drawer prop, and appended content from
                         DrawerBottomPanel components.
                     </p>
-                    <DrawerBottomPanel mode="append" priority={10} padding={false}>
-                        <div style={{ padding: '8px 20px' }}>
-                            <Callout>Free shipping on orders over $200</Callout>
-                        </div>
+                    <DrawerBottomPanel mode="append" priority={10}>
+                        <Callout>Free shipping on orders over $200</Callout>
                     </DrawerBottomPanel>
-                    <DrawerBottomPanel mode="append" priority={20} padding={false}>
-                        <div style={{ padding: '12px 20px' }}>
-                            <Button style={{ width: '100%' }}>Confirm Order</Button>
-                        </div>
+                    <DrawerBottomPanel mode="append" priority={20}>
+                        <Button style={{ width: '100%' }}>Confirm Order</Button>
                     </DrawerBottomPanel>
                 </Drawer>
             </>
