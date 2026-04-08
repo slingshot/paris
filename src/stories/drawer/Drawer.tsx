@@ -406,7 +406,10 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                         aria-hidden="true"
                                         className={clsx(
                                             styles.bottomPanelSpacer,
-                                            { [styles.noPadding]: !bottomPanelPadding },
+                                            {
+                                                [styles.noPadding]:
+                                                    !bottomPanelPadding || slotContext?.hasAnyBottomPanelSlot,
+                                            },
                                             overrides?.bottomPanelSpacer?.className,
                                         )}
                                     >
@@ -418,7 +421,10 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                         <div
                                             className={clsx(
                                                 styles.bottomPanelContent,
-                                                { [styles.noPadding]: !bottomPanelPadding },
+                                                {
+                                                    [styles.noPadding]:
+                                                        !bottomPanelPadding || slotContext?.hasAnyBottomPanelSlot,
+                                                },
                                                 overrides?.bottomPanelContent?.className,
                                             )}
                                         >
