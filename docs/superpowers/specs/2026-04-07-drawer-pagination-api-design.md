@@ -41,12 +41,13 @@ Slot component. Renders into the additional actions area next to the close butto
 
 Uses `createPortal` to a ref on the Drawer's actions container, preserving the React tree.
 
-#### `<DrawerBottomPanel padding?: boolean, mode?: 'replace' | 'append'>`
+#### `<DrawerBottomPanel padding?: boolean, mode?: 'replace' | 'append', priority?: number>`
 Slot component. Renders into the bottom panel area. Works at any nesting depth — a deeply nested form component can control the bottom panel without prop drilling.
 
 Props:
 - `padding` (default `true`) — controls panel padding.
-- `mode` (default `'replace'`) — `'replace'` fully replaces the Drawer's base `bottomPanel` prop. `'append'` renders the Drawer's base `bottomPanel` first, then appends the slot content below it. This is useful when multiple pages share a common bottom panel structure (e.g., totals bar, callouts) and each page only adds its own primary action.
+- `mode` (default `'replace'`) — `'replace'` fully replaces the Drawer's base `bottomPanel` prop and ignores all `append` slots. `'append'` renders the Drawer's base `bottomPanel` first, then appends this slot's content below it.
+- `priority` (default `0`) — controls render order when multiple `mode="append"` slots are active. Lower numbers render higher (closer to the base). The base `bottomPanel` prop always renders first (implicit priority `-Infinity`). Ties fall back to mount order, but explicit priorities are preferred.
 
 Uses `createPortal` to a ref on the Drawer's bottom panel container, preserving the React tree. This is critical: it keeps slot content as a DOM descendant of any wrapping `<form>`, so `react-hook-form` context, native form submission, and `type="submit"` buttons all work correctly.
 
@@ -108,10 +109,10 @@ const EditForm = () => {
 };
 ```
 
-### Append Mode Example
+### Append Mode with Priority Example
 
 ```tsx
-// Shared totals bar as base, each page appends its own action
+// Shared totals bar as base, each page appends its own sections
 <Drawer<typeof pages>
   pagination={pagination}
   bottomPanel={
@@ -124,7 +125,7 @@ const EditForm = () => {
 >
   <DrawerPage id="details">
     <PaymentDetailsStep />
-    <DrawerBottomPanel mode="append" padding={false}>
+    <DrawerBottomPanel mode="append" priority={20} padding={false}>
       <div className="px-5 py-5">
         <Button onClick={() => pagination.open('paymentMethod')}>Payment Method</Button>
       </div>
@@ -133,7 +134,18 @@ const EditForm = () => {
 
   <DrawerPage id="paymentMethod">
     <PaymentMethodStep />
-    <DrawerBottomPanel mode="append" padding={false}>
+
+    {/* Conditional checkboxes in the middle (priority 10 = above action button) */}
+    {recipient.type === 'new' && (
+      <DrawerBottomPanel mode="append" priority={10} padding={false}>
+        <div className="px-5">
+          <SaveCounterpartyCheckbox />
+        </div>
+      </DrawerBottomPanel>
+    )}
+
+    {/* Action button always at bottom (priority 20) */}
+    <DrawerBottomPanel mode="append" priority={20} padding={false}>
       <div className="px-5 py-5">
         <Button onClick={handleSubmit}>Send Payment</Button>
       </div>
@@ -141,6 +153,11 @@ const EditForm = () => {
   </DrawerPage>
 </Drawer>
 ```
+
+**Render order for "paymentMethod" page:**
+1. Base `bottomPanel` (totals bar) — implicit priority `-Infinity`
+2. `SaveCounterpartyCheckbox` — priority `10`
+3. Submit button — priority `20`
 
 ### onAfterClose Example
 
@@ -246,9 +263,9 @@ useEffect(() => {
 
 When multiple `<DrawerBottomPanel>` components exist in the same active page (e.g., one at page level and one inside a deeply nested child):
 
-- **Last one wins** — the most recently registered slot component takes precedence. This matches the common pattern where a child component overrides the page-level default.
-- **Dev warning** — in development, `console.warn` when two slot components of the same type are simultaneously active on the same page (both using `mode="replace"`). This catches accidental conflicts without breaking anything.
-- **Append mode** — `<DrawerBottomPanel mode="append">` renders the Drawer's base `bottomPanel` prop first, then appends the slot content. Multiple `mode="append"` slots on the same page stack in mount order. A `mode="replace"` slot takes full control and ignores the base.
+- **For `DrawerTitle` and `DrawerActions`:** last one wins. Dev `console.warn` when two of the same type are simultaneously active on the same page.
+- **For `DrawerBottomPanel` with `mode="replace"` (default):** last one wins. Dev `console.warn` on conflicts. A single `replace` slot takes full control — the base `bottomPanel` prop and all `append` slots are ignored.
+- **For `DrawerBottomPanel` with `mode="append"`:** multiple `append` slots are allowed on the same page. They render after the base `bottomPanel` prop, sorted by `priority` ascending (lower = higher up). The base always renders first (implicit priority `-Infinity`). Ties in priority fall back to mount order.
 
 ### Slot Priority (highest to lowest)
 
