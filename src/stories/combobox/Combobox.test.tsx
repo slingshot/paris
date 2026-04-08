@@ -161,4 +161,50 @@ describe('Combobox', () => {
             expect(screen.getByText('Add "New Artist"')).toBeInTheDocument();
         });
     });
+
+    describe('uncontrolled mode', () => {
+        it('renders with placeholder when no defaultValue', () => {
+            render(<Combobox options={options} placeholder="Search..." />);
+            expect(screen.getByPlaceholderText('Search...')).toBeInTheDocument();
+        });
+
+        it('renders with defaultValue', () => {
+            render(
+                <Combobox options={options} defaultValue={{ id: '1', node: 'Mia Dolan' }} placeholder="Search..." />,
+            );
+            expect(screen.getByDisplayValue('Mia Dolan')).toBeInTheDocument();
+        });
+
+        it('selects an option without external state', async () => {
+            const { user } = render(<Combobox options={options} defaultValue={null} placeholder="Search..." />);
+            const input = screen.getByPlaceholderText('Search...');
+            await user.click(input);
+
+            await waitFor(() => {
+                expect(screen.getByText('Amy Brandt')).toBeInTheDocument();
+            });
+
+            await user.click(screen.getByText('Amy Brandt'));
+
+            await waitFor(() => {
+                expect(screen.getByDisplayValue('Amy Brandt')).toBeInTheDocument();
+            });
+        });
+
+        it('calls onChange in uncontrolled mode', async () => {
+            const handleChange = vi.fn();
+            const { user } = render(
+                <Combobox options={options} defaultValue={null} onChange={handleChange} placeholder="Search..." />,
+            );
+            const input = screen.getByPlaceholderText('Search...');
+            await user.click(input);
+
+            await waitFor(() => {
+                expect(screen.getByText('Amy Brandt')).toBeInTheDocument();
+            });
+
+            await user.click(screen.getByText('Amy Brandt'));
+            expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: '3', node: 'Amy Brandt' }));
+        });
+    });
 });

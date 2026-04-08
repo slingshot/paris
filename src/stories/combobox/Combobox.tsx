@@ -13,6 +13,7 @@ import { clsx } from 'clsx';
 import type { ComponentPropsWithoutRef, CSSProperties, MouseEvent, ReactNode } from 'react';
 import { useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
+import { useControllableState } from '../../helpers/useControllableState';
 import type { ButtonProps } from '../button';
 import { Button } from '../button';
 import type { FieldProps } from '../field';
@@ -52,6 +53,10 @@ export type ComboboxProps<T extends Record<string, any>> = {
      * If `null`, no option will be selected.
      */
     value?: Option<T> | null;
+    /**
+     * The initial value for uncontrolled mode. If `value` is provided, this is ignored.
+     */
+    defaultValue?: Option<T> | null;
     /**
      * The interaction handler for the Combobox. This will be called when the user selects an option from the dropdown.
      *
@@ -143,6 +148,7 @@ export type ComboboxProps<T extends Record<string, any>> = {
 export function Combobox<T extends Record<string, any> = Record<string, any>>({
     options,
     value,
+    defaultValue,
     onChange,
     label,
     status,
@@ -166,7 +172,11 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
     overrides,
 }: ComboboxProps<T>) {
     const inputID = useId();
-    const [selectedID, setSelectedID] = useState<string | null>(value?.id || null);
+    const [resolvedValue, setResolvedValue] = useControllableState<Option<T> | null>({
+        value,
+        defaultValue: defaultValue,
+        onChange,
+    });
     const [query, setQuery] = useState('');
     const containerElRef = useRef<HTMLElement | null>(null);
     const inputElRef = useRef<HTMLElement | null>(null);
@@ -186,7 +196,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
             const inputLeft = inputElRef.current.getBoundingClientRect().left;
             setAnchorOffset(containerLeft - inputLeft);
         }
-    }, [startEnhancer, value]);
+    }, [startEnhancer, resolvedValue]);
 
     const optionsWithCustomValue = useMemo(
         () => [...(allowCustomValue && customValueToOption ? [customValueToOption(query)] : []), ...options],
@@ -212,19 +222,13 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
             <HCombobox
                 as="div"
                 immediate={!hideOptionsInitially}
-                value={selectedID}
+                value={resolvedValue?.id ?? null}
                 onChange={(id) => {
-                    if (onChange) {
-                        const sel = optionsWithCustomValue.find((o) => o.id === id);
-                        if (sel) {
-                            onChange(sel);
-                            setSelectedID(sel.id);
-                        } else if (id) {
-                            onChange({
-                                id: null,
-                                node: id,
-                            });
-                        }
+                    const sel = optionsWithCustomValue.find((o) => o.id === id);
+                    if (sel) {
+                        setResolvedValue(sel);
+                    } else if (id) {
+                        setResolvedValue({ id: null, node: id } as Option<T>);
                     }
                 }}
             >
@@ -255,8 +259,8 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                         </div>
                     )}
                     <div className={styles.content}>
-                        {value?.node && typeof value.node !== 'string' ? (
-                            value.node
+                        {resolvedValue?.node && typeof resolvedValue.node !== 'string' ? (
+                            resolvedValue.node
                         ) : (
                             <ComboboxInput
                                 ref={inputRef}
@@ -264,7 +268,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                 {...overrides?.input}
                                 placeholder={placeholder}
                                 // value={query}
-                                displayValue={() => value?.node as string}
+                                displayValue={() => resolvedValue?.node as string}
                                 onClick={(e: MouseEvent<HTMLInputElement>) => {
                                     e.stopPropagation();
                                     overrides?.input?.onClick?.(e);
@@ -278,11 +282,12 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                                     if (onInputChange) onInputChange(e.target.value);
                                     if (overrides?.input?.onChange) overrides.input.onChange(e);
                                     if (allowCustomValue && e.target.value) {
-                                        onChange?.(
-                                            customValueToOption?.(e.target.value) || {
-                                                id: null,
-                                                node: e.target.value,
-                                            },
+                                        setResolvedValue(
+                                            customValueToOption?.(e.target.value) ||
+                                                ({
+                                                    id: null,
+                                                    node: e.target.value,
+                                                } as Option<T>),
                                         );
                                     }
                                 }}
@@ -293,17 +298,14 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
                         )}
                     </div>
 
-                    {!!value && (!hideClearButton || typeof value.node !== 'string') && (
+                    {!!resolvedValue && (!hideClearButton || typeof resolvedValue.node !== 'string') && (
                         <Button
                             size="xs"
                             shape="circle"
                             startEnhancer={<FontAwesomeIcon icon={faClose} fontSize="10px" />}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                if (onChange) {
-                                    onChange(null);
-                                }
-                                setSelectedID(null);
+                                setResolvedValue(null);
                             }}
                             {...overrides?.clearButton}
                         >
