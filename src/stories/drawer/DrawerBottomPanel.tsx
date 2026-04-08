@@ -1,23 +1,28 @@
 'use client';
 
 import { clsx } from 'clsx';
-import { type ReactNode, useId, useLayoutEffect } from 'react';
+import { type ComponentPropsWithoutRef, type ReactNode, useId, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './Drawer.module.scss';
 import { useIsPageActive } from './DrawerPageContext';
 import { useDrawerSlotContext } from './DrawerSlotContext';
 
-export type DrawerBottomPanelProps = {
+export type DrawerBottomPanelProps = ComponentPropsWithoutRef<'div'> & {
     children: ReactNode;
-    /** Additional class name for the slot wrapper. Use to override default padding or add custom styles. */
-    className?: string;
     /** 'replace' fully replaces the base bottomPanel. 'append' renders after the base. @default 'replace' */
     mode?: 'replace' | 'append';
     /** Render order for append mode. Lower = higher up. @default 0 */
     priority?: number;
 };
 
-export const DrawerBottomPanel = ({ children, className, mode = 'replace', priority = 0 }: DrawerBottomPanelProps) => {
+export const DrawerBottomPanel = ({
+    children,
+    className,
+    mode = 'replace',
+    priority = 0,
+    style,
+    ...rest
+}: DrawerBottomPanelProps) => {
     const isActive = useIsPageActive();
     const slotContext = useDrawerSlotContext();
     const id = useId();
@@ -39,7 +44,8 @@ export const DrawerBottomPanel = ({ children, className, mode = 'replace', prior
             data-slot-mode={mode}
             data-slot-priority={priority}
             className={clsx(styles.bottomPanelContent, className)}
-            style={{ order: priority }}
+            style={{ order: priority, ...style }}
+            {...rest}
         >
             {children}
         </div>,
