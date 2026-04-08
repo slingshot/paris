@@ -1,7 +1,9 @@
+import { renderHook } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { getCloseButton, render, screen, waitFor } from '../../test/render';
 import { Drawer } from './Drawer';
 import { useDrawer } from './DrawerContext';
+import { DrawerPageProvider, useIsPageActive } from './DrawerPageContext';
 import { useDrawerPagination } from './DrawerPaginationContext';
 
 describe('Drawer', () => {
@@ -352,6 +354,38 @@ describe('Drawer', () => {
             await waitFor(() => {
                 expect(screen.getByTestId('pagination-value')).toHaveTextContent('null');
             });
+        });
+    });
+
+    describe('useIsPageActive', () => {
+        it('returns true when page is active', () => {
+            const { result } = renderHook(() => useIsPageActive(), {
+                wrapper: ({ children }) => (
+                    <DrawerPageProvider isActive={true} pageID="page1">
+                        {children}
+                    </DrawerPageProvider>
+                ),
+            });
+
+            expect(result.current).toBe(true);
+        });
+
+        it('returns false when page is not active', () => {
+            const { result } = renderHook(() => useIsPageActive(), {
+                wrapper: ({ children }) => (
+                    <DrawerPageProvider isActive={false} pageID="page1">
+                        {children}
+                    </DrawerPageProvider>
+                ),
+            });
+
+            expect(result.current).toBe(false);
+        });
+
+        it('returns true when used outside DrawerPageProvider', () => {
+            const { result } = renderHook(() => useIsPageActive());
+
+            expect(result.current).toBe(true);
         });
     });
 });
