@@ -7,7 +7,9 @@ import { clsx } from 'clsx';
 import { motion } from 'framer-motion';
 import type { ComponentPropsWithoutRef, CSSProperties, ForwardedRef, ReactNode } from 'react';
 import { forwardRef, useId } from 'react';
+import { OpenChangeEffect } from '../../helpers/OpenChangeEffect';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
+import { useControllableState } from '../../helpers/useControllableState';
 import { Field } from '../field';
 import { Check, Icon } from '../icon';
 import type { InputProps } from '../input';
@@ -48,6 +50,10 @@ export type CommonSelectProps<T = Record<string, any>> = {
      */
     segmentedHeight?: 'compact' | 'tall';
     /**
+     * Called when the listbox dropdown opens or closes. Only applicable to kind="listbox".
+     */
+    onOpenChange?: (open: boolean) => void;
+    /**
      * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
      */
     overrides?: {
@@ -69,6 +75,8 @@ export type SingleSelectProps<T = Record<string, any>> = {
      * This should exactly match the option IDs passed in the `options` prop. If `null`, no option will be selected.
      */
     value?: Option<T>['id'] | null;
+    /** The initial value for uncontrolled mode. If `value` is provided, this is ignored. */
+    defaultValue?: Option<T>['id'] | null;
     /**
      * The interaction handler for the Select.
      */
@@ -101,6 +109,8 @@ export type MultiSelectProps<T = Record<string, any>> = {
      * For multiselect, should be a string[] that matches the option IDs passed in the `options` prop. If `null`, no option will be selected.
      */
     value?: Option<T>['id'][] | null;
+    /** The initial value for uncontrolled multi-select. If `value` is provided, this is ignored. */
+    defaultValue?: Option<T>['id'][] | null;
     /**
      * The interaction handler for the Select.
      */
@@ -126,6 +136,7 @@ export const Select = forwardRef(
         {
             options,
             value,
+            defaultValue,
             onChange,
             label,
             status,
@@ -143,6 +154,7 @@ export const Select = forwardRef(
             multiple = false,
             multipleItemsName,
             segmentedHeight = 'compact',
+            onOpenChange,
             overrides,
         }: SelectProps<T>,
         ref: ForwardedRef<any>,
@@ -150,27 +162,33 @@ export const Select = forwardRef(
         const inputID = useId();
         const multiItems = multipleItemsName || 'items';
 
+        const [resolvedValue, setResolvedValue] = useControllableState<string | string[] | null>({
+            value: value as string | string[] | null | undefined,
+            defaultValue: defaultValue ?? (multiple ? ([] as string[]) : null),
+            onChange: onChange as ((value: string | string[] | null) => void) | undefined,
+        });
+
         // TypeScript can't track discriminated union correlation through destructuring and JSX conditionals.
         // For Listbox: supports both single and multi via overloads, needs explicit union types
         // For RadioGroup: only supports single-select, needs narrowed types
-        const listboxValue = value as string | string[] | null | undefined;
-        const listboxOnChange = onChange as ((value: string | string[] | null) => void) | undefined;
-        const singleValue = value as string | null | undefined;
-        const singleOnChange = onChange as ((value: string | null) => void) | undefined;
+        const listboxValue = resolvedValue as string | string[] | null | undefined;
+        const listboxOnChange = setResolvedValue as (value: string | string[] | null) => void;
+        const singleValue = resolvedValue as string | null | undefined;
+        const singleOnChange = setResolvedValue as (value: string | null) => void;
         const buttonText = () => {
-            if (!value || value.length === 0) {
+            if (!resolvedValue || (resolvedValue as string | string[]).length === 0) {
                 return placeholder || 'Select an option';
             }
             if (!multiple) {
-                return options?.find((o) => o.id === value)?.node;
+                return options?.find((o) => o.id === resolvedValue)?.node;
             }
-            if (value && value.length === 1) {
-                return options?.find((o) => o.id === value[0])?.node;
+            if (resolvedValue && (resolvedValue as string[]).length === 1) {
+                return options?.find((o) => o.id === (resolvedValue as string[])[0])?.node;
             }
-            if (value.length === options.length) {
+            if ((resolvedValue as string[]).length === options.length) {
                 return `All ${multiItems}`;
             }
-            return `${value.length} ${multiItems}`;
+            return `${(resolvedValue as string[]).length} ${multiItems}`;
         };
         return (
             <Field
@@ -189,95 +207,106 @@ export const Select = forwardRef(
             >
                 {kind === 'listbox' && (
                     <Listbox as="div" ref={ref} value={listboxValue} onChange={listboxOnChange} multiple={multiple}>
-                        <ListboxButton
-                            id={inputID}
-                            {...overrides?.selectInput}
-                            aria-disabled={disabled}
-                            data-status={disabled ? 'disabled' : status || 'default'}
-                            className={clsx(
-                                overrides?.selectInput?.className,
-                                inputStyles.inputContainer,
-                                styles.listboxButton,
-                                styles.field,
-                            )}
-                        >
-                            {!!startEnhancer && (
-                                <div
-                                    {...overrides?.startEnhancerContainer}
-                                    className={clsx(inputStyles.enhancer, overrides?.startEnhancerContainer?.className)}
+                        {({ open }) => (
+                            <>
+                                <OpenChangeEffect open={open} onOpenChange={onOpenChange} />
+                                <ListboxButton
+                                    id={inputID}
+                                    {...overrides?.selectInput}
+                                    aria-disabled={disabled}
                                     data-status={disabled ? 'disabled' : status || 'default'}
+                                    className={clsx(
+                                        overrides?.selectInput?.className,
+                                        inputStyles.inputContainer,
+                                        styles.listboxButton,
+                                        styles.field,
+                                    )}
                                 >
                                     {!!startEnhancer && (
-                                        <MemoizedEnhancer
-                                            enhancer={startEnhancer}
-                                            size={parseInt(
-                                                pget('typography.styles.paragraphSmall.fontSize') ||
-                                                    theme.typography.styles.paragraphSmall.fontSize,
-                                                10,
+                                        <div
+                                            {...overrides?.startEnhancerContainer}
+                                            className={clsx(
+                                                inputStyles.enhancer,
+                                                overrides?.startEnhancerContainer?.className,
                                             )}
-                                        />
-                                    )}
-                                </div>
-                            )}
-                            {buttonText()}
-                            {endEnhancer ? (
-                                <div
-                                    {...overrides?.endEnhancerContainer}
-                                    className={clsx(inputStyles.enhancer, overrides?.endEnhancerContainer?.className)}
-                                    data-status={disabled ? 'disabled' : status || 'default'}
-                                >
-                                    {!!endEnhancer && (
-                                        <MemoizedEnhancer
-                                            enhancer={endEnhancer}
-                                            size={parseInt(
-                                                pget('typography.styles.paragraphSmall.fontSize') ||
-                                                    theme.typography.styles.paragraphSmall.fontSize,
-                                                10,
+                                            data-status={disabled ? 'disabled' : status || 'default'}
+                                        >
+                                            {!!startEnhancer && (
+                                                <MemoizedEnhancer
+                                                    enhancer={startEnhancer}
+                                                    size={parseInt(
+                                                        pget('typography.styles.paragraphSmall.fontSize') ||
+                                                            theme.typography.styles.paragraphSmall.fontSize,
+                                                        10,
+                                                    )}
+                                                />
                                             )}
-                                        />
+                                        </div>
                                     )}
-                                </div>
-                            ) : (
-                                <FontAwesomeIcon
-                                    className={clsx(inputStyles.enhancer, styles.chevron)}
-                                    data-status={disabled ? 'disabled' : status || 'default'}
-                                    width="10px"
-                                    icon={faChevronDown}
-                                />
-                            )}
-                        </ListboxButton>
-                        <ListboxOptions
-                            anchor="bottom start"
-                            transition
-                            className={clsx(overrides?.optionsContainer, styles.options)}
-                            style={
-                                {
-                                    '--options-maxHeight': `${maxHeight}px`,
-                                } as CSSProperties
-                            }
-                        >
-                            {(options || []).map((option) => (
-                                <ListboxOption
-                                    key={option.id}
-                                    value={option.id}
-                                    className={clsx(
-                                        overrides?.option,
-                                        styles.option,
-                                        hasOptionBorder && styles.optionBorder,
-                                    )}
-                                    disabled={option.disabled || false}
-                                >
-                                    {typeof option.node === 'string' ? (
-                                        <Text as="span" kind="paragraphSmall">
-                                            {option.node}
-                                        </Text>
+                                    {buttonText()}
+                                    {endEnhancer ? (
+                                        <div
+                                            {...overrides?.endEnhancerContainer}
+                                            className={clsx(
+                                                inputStyles.enhancer,
+                                                overrides?.endEnhancerContainer?.className,
+                                            )}
+                                            data-status={disabled ? 'disabled' : status || 'default'}
+                                        >
+                                            {!!endEnhancer && (
+                                                <MemoizedEnhancer
+                                                    enhancer={endEnhancer}
+                                                    size={parseInt(
+                                                        pget('typography.styles.paragraphSmall.fontSize') ||
+                                                            theme.typography.styles.paragraphSmall.fontSize,
+                                                        10,
+                                                    )}
+                                                />
+                                            )}
+                                        </div>
                                     ) : (
-                                        option.node
+                                        <FontAwesomeIcon
+                                            className={clsx(inputStyles.enhancer, styles.chevron)}
+                                            data-status={disabled ? 'disabled' : status || 'default'}
+                                            width="10px"
+                                            icon={faChevronDown}
+                                        />
                                     )}
-                                    <Icon icon={Check} size={12} className={styles.check} />
-                                </ListboxOption>
-                            ))}
-                        </ListboxOptions>
+                                </ListboxButton>
+                                <ListboxOptions
+                                    anchor="bottom start"
+                                    transition
+                                    className={clsx(overrides?.optionsContainer, styles.options)}
+                                    style={
+                                        {
+                                            '--options-maxHeight': `${maxHeight}px`,
+                                        } as CSSProperties
+                                    }
+                                >
+                                    {(options || []).map((option) => (
+                                        <ListboxOption
+                                            key={option.id}
+                                            value={option.id}
+                                            className={clsx(
+                                                overrides?.option,
+                                                styles.option,
+                                                hasOptionBorder && styles.optionBorder,
+                                            )}
+                                            disabled={option.disabled || false}
+                                        >
+                                            {typeof option.node === 'string' ? (
+                                                <Text as="span" kind="paragraphSmall">
+                                                    {option.node}
+                                                </Text>
+                                            ) : (
+                                                option.node
+                                            )}
+                                            <Icon icon={Check} size={12} className={styles.check} />
+                                        </ListboxOption>
+                                    ))}
+                                </ListboxOptions>
+                            </>
+                        )}
                     </Listbox>
                 )}
                 {kind === 'radio' && (
@@ -334,7 +363,7 @@ export const Select = forwardRef(
                         ref={ref}
                         as="div"
                         className={styles.segmentedContainer}
-                        value={singleValue || options[0].id}
+                        value={singleValue ?? options[0].id}
                         onChange={singleOnChange}
                     >
                         {options.map((option) => (
@@ -346,7 +375,7 @@ export const Select = forwardRef(
                                 disabled={option.disabled || false}
                                 data-status={disabled ? 'disabled' : status || 'default'}
                             >
-                                {(option.id === value || (!value && option.id === options[0].id)) && (
+                                {(option.id === resolvedValue || (!resolvedValue && option.id === options[0].id)) && (
                                     <motion.div
                                         className={styles.segmentedBackground}
                                         layoutId={`${inputID}-segmented-selected`}

@@ -249,4 +249,76 @@ describe('AccordionSelect', () => {
         expect(screen.getByText('On a rooftop, watching the sunset')).toBeInTheDocument();
         expect(screen.getByText('In a garden, under the stars')).toBeInTheDocument();
     });
+
+    describe('uncontrolled selection', () => {
+        it('renders with defaultValue', () => {
+            render(<AccordionSelect options={options} defaultValue="champagne" />);
+            expect(screen.getByText('In an alleyway, drinking champagne')).toBeInTheDocument();
+        });
+
+        it('renders with placeholder when no defaultValue', () => {
+            render(<AccordionSelect options={options} placeholder="Where were we?" />);
+            expect(screen.getByText('Where were we?')).toBeInTheDocument();
+        });
+
+        it('updates selection without external state', async () => {
+            const { user, container } = render(<AccordionSelect options={options} defaultValue="champagne" />);
+
+            const header = container.querySelector('[role="button"][tabindex="0"]') as HTMLElement;
+            await user.click(header);
+
+            await waitFor(() => {
+                expect(screen.getByText('On a rooftop, watching the sunset')).toBeInTheDocument();
+            });
+
+            await user.click(screen.getByText('On a rooftop, watching the sunset'));
+
+            await waitFor(() => {
+                expect(header).toHaveTextContent('On a rooftop, watching the sunset');
+            });
+        });
+
+        it('calls onChange in uncontrolled mode', async () => {
+            const handleChange = vi.fn();
+            const { user, container } = render(
+                <AccordionSelect options={options} defaultValue="champagne" onChange={handleChange} />,
+            );
+
+            const header = container.querySelector('[role="button"][tabindex="0"]') as HTMLElement;
+            await user.click(header);
+
+            await waitFor(() => {
+                expect(screen.getByText('On a rooftop, watching the sunset')).toBeInTheDocument();
+            });
+
+            await user.click(screen.getByText('On a rooftop, watching the sunset'));
+
+            expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: 'rooftop' }));
+        });
+
+        it('renders disabled option as selected when defaultValue points to it', async () => {
+            const disabledOptions = [
+                ...options,
+                { id: 'nowhere', node: 'Nowhere, it was all a dream', disabled: true },
+            ];
+            const { user, container } = render(<AccordionSelect options={disabledOptions} defaultValue="nowhere" />);
+
+            // Header shows the disabled option's text
+            const allMatches = screen.getAllByText('Nowhere, it was all a dream');
+            expect(allMatches.length).toBeGreaterThanOrEqual(1);
+
+            // Open and verify the option button is disabled
+            const header = container.querySelector('[role="button"][tabindex="0"]') as HTMLElement;
+            await user.click(header);
+
+            await waitFor(() => {
+                // Find the option button (not the header text)
+                const optionButtons = container.querySelectorAll('button[data-selected]');
+                const disabledButton = Array.from(optionButtons).find((btn) => btn.textContent?.includes('Nowhere'));
+                expect(disabledButton).toBeTruthy();
+                expect(disabledButton).toBeDisabled();
+                expect(disabledButton).toHaveAttribute('data-selected', 'true');
+            });
+        });
+    });
 });

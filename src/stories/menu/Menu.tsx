@@ -7,6 +7,7 @@ import {
 } from '@headlessui/react';
 import { clsx } from 'clsx';
 import type { FC } from 'react';
+import { OpenChangeEffect } from '../../helpers/OpenChangeEffect';
 
 import styles from './Menu.module.scss';
 
@@ -27,9 +28,19 @@ import styles from './Menu.module.scss';
  * </Menu>
  * ```
  */
-export const Menu: FC<MenuProps<React.ElementType>> = ({ className, children, ...props }) => (
+export const Menu: FC<MenuProps<React.ElementType> & { onOpenChange?: (open: boolean) => void }> = ({
+    className,
+    children,
+    onOpenChange,
+    ...props
+}) => (
     <HeadlessMenu as="div" className={clsx(styles.menu, className)} {...props}>
-        {children}
+        {({ open, close }) => (
+            <>
+                <OpenChangeEffect open={open} onOpenChange={onOpenChange} />
+                {typeof children === 'function' ? children({ open, close }) : children}
+            </>
+        )}
     </HeadlessMenu>
 );
 

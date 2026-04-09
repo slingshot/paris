@@ -480,6 +480,59 @@ describe('Checkbox', () => {
         });
     });
 
+    // ─── Uncontrolled mode ───────────────────────────────────────────
+
+    describe('uncontrolled mode', () => {
+        it('renders unchecked when defaultChecked is false', () => {
+            render(<Checkbox defaultChecked={false}>Label</Checkbox>);
+            expect(screen.getByRole('checkbox')).not.toBeChecked();
+        });
+
+        it('renders checked when defaultChecked is true', () => {
+            render(<Checkbox defaultChecked={true}>Label</Checkbox>);
+            expect(screen.getByRole('checkbox')).toBeChecked();
+        });
+
+        it('toggles without external state', async () => {
+            const { user } = render(<Checkbox defaultChecked={false}>Toggle</Checkbox>);
+
+            const checkbox = screen.getByRole('checkbox');
+            expect(checkbox).not.toBeChecked();
+
+            await user.click(checkbox);
+            expect(checkbox).toBeChecked();
+
+            await user.click(checkbox);
+            expect(checkbox).not.toBeChecked();
+        });
+
+        it('calls onChange in uncontrolled mode', async () => {
+            const handleChange = vi.fn();
+            const { user } = render(
+                <Checkbox defaultChecked={false} onChange={handleChange}>
+                    Toggle
+                </Checkbox>,
+            );
+
+            await user.click(screen.getByRole('checkbox'));
+            expect(handleChange).toHaveBeenCalledWith(true);
+        });
+
+        it('toggles switch kind without external state', async () => {
+            const { user } = render(
+                <Checkbox kind="switch" defaultChecked={false}>
+                    Switch
+                </Checkbox>,
+            );
+
+            const switchEl = screen.getByRole('switch');
+            expect(switchEl).not.toBeChecked();
+
+            await user.click(switchEl);
+            expect(switchEl).toBeChecked();
+        });
+    });
+
     // ─── Edge cases ──────────────────────────────────────────────────
 
     describe('edge cases', () => {

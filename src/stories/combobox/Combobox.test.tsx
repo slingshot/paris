@@ -161,4 +161,115 @@ describe('Combobox', () => {
             expect(screen.getByText('Add "New Artist"')).toBeInTheDocument();
         });
     });
+
+    describe('uncontrolled mode', () => {
+        it('renders with placeholder when no defaultValue', () => {
+            render(<Combobox options={options} placeholder="Search..." />);
+            expect(screen.getByPlaceholderText('Search...')).toBeInTheDocument();
+        });
+
+        it('renders with defaultValue', () => {
+            render(
+                <Combobox options={options} defaultValue={{ id: '1', node: 'Mia Dolan' }} placeholder="Search..." />,
+            );
+            expect(screen.getByDisplayValue('Mia Dolan')).toBeInTheDocument();
+        });
+
+        it('selects an option without external state', async () => {
+            const { user } = render(<Combobox options={options} defaultValue={null} placeholder="Search..." />);
+            const input = screen.getByPlaceholderText('Search...');
+            await user.click(input);
+
+            await waitFor(() => {
+                expect(screen.getByText('Amy Brandt')).toBeInTheDocument();
+            });
+
+            await user.click(screen.getByText('Amy Brandt'));
+
+            await waitFor(() => {
+                expect(screen.getByDisplayValue('Amy Brandt')).toBeInTheDocument();
+            });
+        });
+
+        it('calls onChange in uncontrolled mode', async () => {
+            const handleChange = vi.fn();
+            const { user } = render(
+                <Combobox options={options} defaultValue={null} onChange={handleChange} placeholder="Search..." />,
+            );
+            const input = screen.getByPlaceholderText('Search...');
+            await user.click(input);
+
+            await waitFor(() => {
+                expect(screen.getByText('Amy Brandt')).toBeInTheDocument();
+            });
+
+            await user.click(screen.getByText('Amy Brandt'));
+            expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: '3', node: 'Amy Brandt' }));
+        });
+
+        it('clears selection in uncontrolled mode', async () => {
+            const { user, container } = render(
+                <Combobox options={options} defaultValue={{ id: '1', node: 'Mia Dolan' }} placeholder="Search..." />,
+            );
+
+            expect(screen.getByDisplayValue('Mia Dolan')).toBeInTheDocument();
+
+            const clearButton = container.querySelector('button[aria-details="Clear"]');
+            expect(clearButton).toBeInTheDocument();
+            await user.click(clearButton!);
+
+            await waitFor(() => {
+                expect(screen.getByPlaceholderText('Search...')).toBeInTheDocument();
+                expect(screen.queryByDisplayValue('Mia Dolan')).not.toBeInTheDocument();
+            });
+        });
+
+        it('renders with defaultValue using non-string node', () => {
+            const optionsWithNode = [
+                { id: '1', node: <span data-testid="custom-node">Custom Mia</span> },
+                { id: '2', node: 'Sebastian Wilder' },
+            ];
+            render(
+                <Combobox
+                    options={optionsWithNode}
+                    defaultValue={{ id: '1', node: <span data-testid="custom-node">Custom Mia</span> }}
+                    placeholder="Search..."
+                />,
+            );
+            expect(screen.getByTestId('custom-node')).toBeInTheDocument();
+        });
+    });
+
+    describe('onOpenChange', () => {
+        it('calls onOpenChange when the dropdown opens', async () => {
+            const handleOpenChange = vi.fn();
+            const { user } = render(
+                <Combobox options={options} onOpenChange={handleOpenChange} placeholder="Search..." />,
+            );
+
+            await user.click(screen.getByPlaceholderText('Search...'));
+
+            await waitFor(() => {
+                expect(handleOpenChange).toHaveBeenCalledWith(true);
+            });
+        });
+
+        it('calls onOpenChange when the dropdown closes after selection', async () => {
+            const handleOpenChange = vi.fn();
+            const { user } = render(<ControlledCombobox onOpenChange={handleOpenChange} />);
+
+            const input = screen.getByPlaceholderText('Search...');
+            await user.click(input);
+
+            await waitFor(() => {
+                expect(screen.getByText('Amy Brandt')).toBeInTheDocument();
+            });
+
+            await user.click(screen.getByText('Amy Brandt'));
+
+            await waitFor(() => {
+                expect(handleOpenChange).toHaveBeenCalledWith(false);
+            });
+        });
+    });
 });

@@ -1,8 +1,10 @@
+'use client';
 import { Switch } from '@headlessui/react';
 import * as RadixCheckbox from '@radix-ui/react-checkbox';
 import { clsx } from 'clsx';
 import type { FC, ReactNode } from 'react';
 import { useId } from 'react';
+import { useControllableState } from '../../helpers/useControllableState';
 import { Check, Icon } from '../icon';
 import { TextWhenString, VisuallyHidden } from '../utility';
 import styles from './Checkbox.module.scss';
@@ -19,6 +21,8 @@ export type CheckboxProps = {
      * @default false
      */
     hideLabel?: boolean;
+    /** The initial checked state for uncontrolled mode. If `checked` is provided, this is ignored. */
+    defaultChecked?: boolean;
     /** The contents of the Checkbox. */
     children?: ReactNode | ReactNode[];
 } & Omit<React.ComponentPropsWithoutRef<'label'>, 'onChange' | 'children'>;
@@ -38,6 +42,7 @@ export type CheckboxProps = {
 export const Checkbox: FC<CheckboxProps> = ({
     kind = 'default',
     checked,
+    defaultChecked,
     onChange,
     disabled,
     hideLabel = false,
@@ -46,18 +51,28 @@ export const Checkbox: FC<CheckboxProps> = ({
     ...props
 }) => {
     const inputID = useId();
+    const [resolvedChecked, setResolvedChecked] = useControllableState({
+        value: checked,
+        defaultValue: defaultChecked,
+        onChange: onChange as ((value: boolean) => void) | undefined,
+    });
     return (
         <label
             htmlFor={inputID}
-            className={clsx(styles.container, disabled && styles.disabled, className, checked && styles.checked)}
+            className={clsx(
+                styles.container,
+                disabled && styles.disabled,
+                className,
+                resolvedChecked && styles.checked,
+            )}
             {...props}
         >
             {(kind === 'default' || kind === 'surface' || kind === 'panel') && (
                 <RadixCheckbox.Root
                     id={inputID}
                     className={clsx(styles.root, styles[kind])}
-                    checked={checked}
-                    onCheckedChange={onChange}
+                    checked={resolvedChecked}
+                    onCheckedChange={(v) => setResolvedChecked(!!v)}
                     data-disabled={disabled}
                     aria-details={typeof children === 'string' ? children : undefined}
                 >
@@ -89,14 +104,14 @@ export const Checkbox: FC<CheckboxProps> = ({
             )}
             {kind === 'switch' && (
                 <Switch
-                    checked={checked}
-                    onChange={onChange}
+                    checked={resolvedChecked}
+                    onChange={setResolvedChecked}
                     className={styles.switchContainer}
                     data-disabled={disabled}
                     id={inputID}
                     aria-details={typeof children === 'string' ? children : undefined}
                 >
-                    <span aria-hidden="true" className={clsx(styles.knob, checked && styles.knobChecked)} />
+                    <span aria-hidden="true" className={clsx(styles.knob, resolvedChecked && styles.knobChecked)} />
                 </Switch>
             )}
             {(kind === 'default' || kind === 'switch') && !hideLabel && (

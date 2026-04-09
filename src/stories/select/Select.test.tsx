@@ -230,4 +230,112 @@ describe('Select', () => {
             expect(handleChange).toHaveBeenCalledWith('2');
         });
     });
+
+    describe('uncontrolled mode', () => {
+        it('renders with defaultValue', () => {
+            render(<Select options={options} defaultValue="2" />);
+            expect(screen.getByText('EP')).toBeInTheDocument();
+        });
+
+        it('renders with placeholder when no defaultValue', () => {
+            render(<Select options={options} placeholder="Pick one" />);
+            expect(screen.getByText('Pick one')).toBeInTheDocument();
+        });
+
+        it('updates selection without external state (listbox)', async () => {
+            const { user } = render(<Select options={options} defaultValue={null} />);
+
+            await user.click(screen.getByText('Select an option'));
+            await waitFor(() => {
+                expect(screen.getByText('EP')).toBeInTheDocument();
+            });
+            await user.click(screen.getByText('EP'));
+
+            await waitFor(() => {
+                const button = screen.getByRole('button', { expanded: false });
+                expect(button).toHaveTextContent('EP');
+            });
+        });
+
+        it('calls onChange in uncontrolled mode', async () => {
+            const handleChange = vi.fn();
+            const { user } = render(<Select options={options} defaultValue={null} onChange={handleChange} />);
+
+            await user.click(screen.getByText('Select an option'));
+            await waitFor(() => {
+                expect(screen.getByText('EP')).toBeInTheDocument();
+            });
+            await user.click(screen.getByText('EP'));
+
+            expect(handleChange).toHaveBeenCalledWith('2');
+        });
+
+        it('updates selection without external state (radio)', async () => {
+            const { user } = render(<Select options={options} kind="radio" defaultValue={null} />);
+
+            await user.click(screen.getByText('EP'));
+
+            await waitFor(() => {
+                const radio = screen.getByRole('radio', { name: 'EP' });
+                expect(radio).toHaveAttribute('aria-checked', 'true');
+            });
+        });
+
+        it('updates selection without external state (card)', async () => {
+            const { user } = render(<Select options={options} kind="card" defaultValue={null} />);
+
+            await user.click(screen.getByText('EP'));
+
+            await waitFor(() => {
+                const radio = screen.getByRole('radio', { name: 'EP' });
+                expect(radio).toHaveAttribute('aria-checked', 'true');
+            });
+        });
+
+        it('updates selection without external state (segmented)', async () => {
+            const { user } = render(<Select options={options} kind="segmented" defaultValue={null} />);
+
+            // Segmented defaults to first option when no value
+            const firstRadio = screen.getByRole('radio', { name: 'Single' });
+            expect(firstRadio).toHaveAttribute('aria-checked', 'true');
+
+            await user.click(screen.getByText('EP'));
+
+            await waitFor(() => {
+                const radio = screen.getByRole('radio', { name: 'EP' });
+                expect(radio).toHaveAttribute('aria-checked', 'true');
+            });
+        });
+    });
+
+    describe('onOpenChange', () => {
+        it('calls onOpenChange when the listbox opens', async () => {
+            const handleOpenChange = vi.fn();
+            const { user } = render(
+                <Select options={options} onOpenChange={handleOpenChange} placeholder="Pick one" />,
+            );
+
+            await user.click(screen.getByText('Pick one'));
+
+            await waitFor(() => {
+                expect(handleOpenChange).toHaveBeenCalledWith(true);
+            });
+        });
+
+        it('calls onOpenChange when the listbox closes', async () => {
+            const handleOpenChange = vi.fn();
+            const { user } = render(<ControlledSelect onOpenChange={handleOpenChange} />);
+
+            await user.click(screen.getByText('Select an option'));
+            await waitFor(() => {
+                expect(screen.getByText('EP')).toBeInTheDocument();
+            });
+
+            await user.click(screen.getByText('EP'));
+
+            await waitFor(() => {
+                expect(handleOpenChange).toHaveBeenCalledWith(false);
+            });
+        });
+    });
 });
