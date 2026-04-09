@@ -125,55 +125,6 @@ export const Paginated: Story = {
 export const BottomPanel: Story = {
     args: {
         title: 'Transfer Out',
-        children: (
-            <div
-                style={{
-                    width: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '12px',
-                }}
-            >
-                <h1>Transfer Policies:</h1>
-                <Button kind="secondary">Read more...</Button>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec
-                    pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus.
-                    Fusce blandit leo in lectus blandit, sed elementum enim accumsan. Vestibulum ante ipsum primis in
-                    faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque pretium erat at lacus ultricies
-                    tincidunt. Praesent non luctus magna, ac efficitur ligula. Sed a justo fermentum, feugiat mauris
-                    vel, ultrices turpis. Ut interdum malesuada lacus, ac posuere sapien feugiat et. Nulla dignissim
-                    bibendum gravida. Donec pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi
-                    libero sit amet purus.
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec
-                    pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus.
-                    Fusce blandit leo in lectus blandit, sed elementum enim accumsan. Vestibulum ante ipsum primis in
-                    faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque pretium erat at lacus ultricies
-                    tincidunt. Praesent non luctus magna, ac efficitur ligula. Sed a justo fermentum, feugiat mauris
-                    vel, ultrices turpis. Ut interdum malesuada lacus, ac posuere sapien feugiat et. Nulla dignissim
-                    bibendum gravida. Donec pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi
-                    libero sit amet purus.
-                </p>
-            </div>
-        ),
-        bottomPanel: (
-            <div
-                style={{
-                    width: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '12px',
-                }}
-            >
-                <Callout>Transfer should arrive in your account within 2-3 business days.</Callout>
-                <Button>Initiate</Button>
-                <Button kind="secondary" theme="negative">
-                    Cancel
-                </Button>
-            </div>
-        ),
     },
     render: function Render(args) {
         const [isOpen, setIsOpen] = useState(false);
@@ -201,7 +152,22 @@ export const BottomPanel: Story = {
                         </Menu>
                     }
                 >
-                    {args.children}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <h1>Transfer Policies:</h1>
+                        <Button kind="secondary">Read more...</Button>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dignissim bibendum gravida.
+                            Donec pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi libero sit
+                            amet purus. Fusce blandit leo in lectus blandit, sed elementum enim accumsan.
+                        </p>
+                    </div>
+                    <DrawerBottomPanel style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <Callout>Transfer should arrive in your account within 2-3 business days.</Callout>
+                        <Button>Initiate</Button>
+                        <Button kind="secondary" theme="negative">
+                            Cancel
+                        </Button>
+                    </DrawerBottomPanel>
                 </Drawer>
             </>
         );
@@ -462,27 +428,10 @@ export const AppendModeBottomPanel: Story = {
         return (
             <>
                 <Button onClick={() => setIsOpen(true)}>Open append mode drawer</Button>
-                <Drawer
-                    isOpen={isOpen}
-                    onClose={setIsOpen}
-                    title="Append Mode Demo"
-                    bottomPanel={
-                        <div
-                            style={{
-                                padding: '20px',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '12px',
-                            }}
-                        >
-                            <Callout>Free shipping on orders over $200</Callout>
-                            <Button style={{ width: '100%' }}>Confirm Order</Button>
-                        </div>
-                    }
-                >
+                <Drawer isOpen={isOpen} onClose={setIsOpen} title="Append Mode Demo">
                     <p>
-                        The bottom panel has a base totals bar from the Drawer prop, and appended content from
-                        DrawerBottomPanel components.
+                        The bottom panel uses multiple DrawerBottomPanel components with priority ordering and automatic
+                        separator borders.
                     </p>
                     <DrawerBottomPanel
                         mode="append"
@@ -499,6 +448,14 @@ export const AppendModeBottomPanel: Story = {
                         <Text kind="paragraphSmall" weight="medium">
                             $249.00
                         </Text>
+                    </DrawerBottomPanel>
+                    <DrawerBottomPanel
+                        mode="append"
+                        priority={20}
+                        style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
+                    >
+                        <Callout>Free shipping on orders over $200</Callout>
+                        <Button style={{ width: '100%' }}>Confirm Order</Button>
                     </DrawerBottomPanel>
                 </Drawer>
             </>

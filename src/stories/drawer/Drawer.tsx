@@ -63,8 +63,6 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
      *
      * If you're hiding the title to add a custom header, you may also want to hide the close button and render your own by using the `hideCloseButton` prop.
      *
-     * When pagination is enabled, the title is always hidden regardless of this prop.
-     *
      * @default false
      */
     hideTitle?: boolean;
@@ -74,11 +72,6 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
      * @default false
      */
     hideCloseButton?: boolean;
-    /**
-     * An optional panel that will be rendered at the bottom of the Drawer. This is useful for adding a footer to the Drawer with actions.
-     */
-    bottomPanel?: ReactNode;
-
     /**
      * An optional area that will be rendered at the top of the Drawer next to the title. This is useful for adding actions to the Drawer. Recommended to use {@link Menu} for an action menu.
      */
@@ -227,7 +220,6 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
     title,
     hideTitle = false,
     hideCloseButton = false,
-    bottomPanel,
     from = 'right',
     size = 'default',
     pagination,
@@ -245,9 +237,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
     const isPaginated = useMemo(() => Boolean(pagination), [pagination]);
     const hasAdditionalActions = useMemo(() => Boolean(additionalActions), [additionalActions]);
 
-    const showBottomPanel =
-        Boolean(bottomPanel) || (slotContext?.hasAnyBottomPanelSlot ?? false) || (slotContext?.hasProgressBar ?? false);
-    const showBaseBottomPanel = Boolean(bottomPanel) && !slotContext?.hasBottomPanelReplace;
+    const showBottomPanel = (slotContext?.hasAnyBottomPanelSlot ?? false) || (slotContext?.hasProgressBar ?? false);
 
     const pageEntries = useMemo(() => {
         if (!isPaginated || !pagination || !children) return null;
@@ -429,7 +419,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                 </RemoveFromDOM>
                                 {slotContext && <div ref={slotContext.titleRef} />}
                                 {!slotContext?.hasTitleSlot && (
-                                    <VisuallyHidden when={hideTitle || isPaginated}>
+                                    <VisuallyHidden when={hideTitle}>
                                         <DialogTitle as="h2" className={styles.titleTextContainer}>
                                             <TextWhenString kind="paragraphSmall" weight="medium">
                                                 {title}
@@ -484,12 +474,10 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                         aria-hidden="true"
                                         className={clsx(
                                             styles.bottomPanelSpacer,
-                                            { [styles.noPadding]: slotContext?.hasAnyBottomPanelSlot },
+                                            styles.noPadding,
                                             overrides?.bottomPanelSpacer?.className,
                                         )}
-                                    >
-                                        {showBaseBottomPanel && bottomPanel}
-                                    </div>
+                                    />
                                     <div className={clsx(styles.bottomPanel, overrides?.bottomPanel?.className)}>
                                         {slotContext && <div ref={slotContext.progressBarRef} />}
                                         <div className={styles.glassOpacity} />
@@ -497,7 +485,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                         <div
                                             className={clsx(
                                                 styles.bottomPanelContent,
-                                                { [styles.noPadding]: slotContext?.hasAnyBottomPanelSlot },
+                                                styles.noPadding,
                                                 overrides?.bottomPanelContent?.className,
                                             )}
                                         >
@@ -507,7 +495,6 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                                     className={styles.bottomPanelSlots}
                                                 />
                                             )}
-                                            {showBaseBottomPanel && bottomPanel}
                                         </div>
                                     </div>
                                 </>

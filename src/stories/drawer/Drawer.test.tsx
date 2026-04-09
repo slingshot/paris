@@ -162,15 +162,13 @@ describe('Drawer', () => {
         });
     });
 
-    it('renders a bottom panel', async () => {
+    it('renders a bottom panel via DrawerBottomPanel', async () => {
         render(
-            <Drawer
-                isOpen={true}
-                title="Test Drawer"
-                onClose={vi.fn()}
-                bottomPanel={<button type="button">Save</button>}
-            >
+            <Drawer isOpen={true} title="Test Drawer" onClose={vi.fn()}>
                 Content
+                <DrawerBottomPanel>
+                    <button type="button">Save</button>
+                </DrawerBottomPanel>
             </Drawer>,
         );
 
@@ -579,9 +577,9 @@ describe('Drawer', () => {
     });
 
     describe('DrawerBottomPanel', () => {
-        it('renders bottom panel content via slot component (replace mode)', async () => {
+        it('renders bottom panel content via slot component', async () => {
             render(
-                <Drawer isOpen={true} title="Test" onClose={vi.fn()} bottomPanel={<span>Fallback Panel</span>}>
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()}>
                     <DrawerBottomPanel>
                         <button type="button">Slot Panel</button>
                     </DrawerBottomPanel>
@@ -592,43 +590,30 @@ describe('Drawer', () => {
             await waitFor(() => {
                 expect(screen.getByText('Slot Panel')).toBeInTheDocument();
             });
-
-            // Fallback should not render when replace slot is active
-            expect(screen.queryByText('Fallback Panel')).not.toBeInTheDocument();
         });
 
-        it('falls back to bottomPanel prop when no slot', async () => {
+        it('renders multiple append-mode bottom panels', async () => {
             render(
-                <Drawer isOpen={true} title="Test" onClose={vi.fn()} bottomPanel={<span>Fallback Panel</span>}>
-                    Content
-                </Drawer>,
-            );
-
-            await waitFor(() => {
-                expect(screen.getAllByText('Fallback Panel').length).toBeGreaterThan(0);
-            });
-        });
-
-        it('appends content after base bottomPanel in append mode', async () => {
-            render(
-                <Drawer isOpen={true} title="Test" onClose={vi.fn()} bottomPanel={<span>Base Panel</span>}>
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()}>
                     <DrawerBottomPanel mode="append">
-                        <span>Appended Content</span>
+                        <span>First Panel</span>
+                    </DrawerBottomPanel>
+                    <DrawerBottomPanel mode="append">
+                        <span>Second Panel</span>
                     </DrawerBottomPanel>
                     Content
                 </Drawer>,
             );
 
             await waitFor(() => {
-                // Base should still render (append doesn't replace)
-                expect(screen.getAllByText('Base Panel').length).toBeGreaterThan(0);
-                expect(screen.getByText('Appended Content')).toBeInTheDocument();
+                expect(screen.getByText('First Panel')).toBeInTheDocument();
+                expect(screen.getByText('Second Panel')).toBeInTheDocument();
             });
         });
 
         it('orders multiple append slots by priority', async () => {
             render(
-                <Drawer isOpen={true} title="Test" onClose={vi.fn()} bottomPanel={<span>Base</span>}>
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()}>
                     <DrawerBottomPanel mode="append" priority={20}>
                         <span data-testid="p20">Priority 20</span>
                     </DrawerBottomPanel>
