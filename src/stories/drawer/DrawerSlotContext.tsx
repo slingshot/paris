@@ -26,8 +26,12 @@ export type DrawerSlotContextValue = {
     /** Whether the bottom panel portal target is mounted in the DOM */
     isBottomPanelMounted: boolean;
 
+    /** Portal target for the progress bar, rendered at the very top of the bottom panel */
+    progressBarRef: RefObject<HTMLDivElement | null>;
+
     hasTitleSlot: boolean;
     hasActionsSlot: boolean;
+    hasProgressBar: boolean;
 
     /** Whether a replace-mode bottom panel is registered */
     hasBottomPanelReplace: boolean;
@@ -38,6 +42,7 @@ export type DrawerSlotContextValue = {
 
     registerTitleSlot: () => () => void;
     registerActionsSlot: () => () => void;
+    registerProgressBar: () => () => void;
     registerBottomPanel: (entry: BottomPanelEntry) => () => void;
 };
 
@@ -50,6 +55,7 @@ export function useDrawerSlotContext(): DrawerSlotContextValue | null {
 export function DrawerSlotProvider({ children }: { children: ReactNode }) {
     const titleRef = useRef<HTMLDivElement | null>(null);
     const actionsRef = useRef<HTMLDivElement | null>(null);
+    const progressBarRef = useRef<HTMLDivElement | null>(null);
     const bottomPanelRef = useRef<HTMLDivElement | null>(null);
     const [isBottomPanelMounted, setIsBottomPanelMounted] = useState(false);
 
@@ -60,6 +66,7 @@ export function DrawerSlotProvider({ children }: { children: ReactNode }) {
 
     const [titleSlotCount, setTitleSlotCount] = useState(0);
     const [actionsSlotCount, setActionsSlotCount] = useState(0);
+    const [progressBarCount, setProgressBarCount] = useState(0);
     const [bottomPanelEntries, setBottomPanelEntries] = useState<BottomPanelEntry[]>([]);
 
     const registerTitleSlot = useCallback((): (() => void) => {
@@ -92,6 +99,13 @@ export function DrawerSlotProvider({ children }: { children: ReactNode }) {
         };
     }, []);
 
+    const registerProgressBar = useCallback((): (() => void) => {
+        setProgressBarCount((prev) => prev + 1);
+        return () => {
+            setProgressBarCount((prev) => Math.max(0, prev - 1));
+        };
+    }, []);
+
     const registerBottomPanel = useCallback((entry: BottomPanelEntry): (() => void) => {
         setBottomPanelEntries((prev) => {
             if (process.env.NODE_ENV === 'development' && entry.mode === 'replace') {
@@ -111,6 +125,7 @@ export function DrawerSlotProvider({ children }: { children: ReactNode }) {
 
     const hasTitleSlot = titleSlotCount > 0;
     const hasActionsSlot = actionsSlotCount > 0;
+    const hasProgressBar = progressBarCount > 0;
     const hasBottomPanelReplace = bottomPanelEntries.some((e) => e.mode === 'replace');
     const hasAnyBottomPanelSlot = bottomPanelEntries.length > 0;
     const bottomPanelAppendEntries = useMemo(
@@ -122,16 +137,19 @@ export function DrawerSlotProvider({ children }: { children: ReactNode }) {
         () => ({
             titleRef,
             actionsRef,
+            progressBarRef,
             bottomPanelRef,
             bottomPanelCallbackRef,
             isBottomPanelMounted,
             hasTitleSlot,
             hasActionsSlot,
+            hasProgressBar,
             hasBottomPanelReplace,
             hasAnyBottomPanelSlot,
             bottomPanelAppendEntries,
             registerTitleSlot,
             registerActionsSlot,
+            registerProgressBar,
             registerBottomPanel,
         }),
         [
@@ -139,11 +157,13 @@ export function DrawerSlotProvider({ children }: { children: ReactNode }) {
             isBottomPanelMounted,
             hasTitleSlot,
             hasActionsSlot,
+            hasProgressBar,
             hasBottomPanelReplace,
             hasAnyBottomPanelSlot,
             bottomPanelAppendEntries,
             registerTitleSlot,
             registerActionsSlot,
+            registerProgressBar,
             registerBottomPanel,
         ],
     );

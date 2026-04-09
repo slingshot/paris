@@ -6,4 +6,5 @@ export { useDrawer } from './DrawerContext';
 export { DrawerPage, type DrawerPageProps } from './DrawerPage';
 export { useIsPageActive } from './DrawerPageContext';
 export { useDrawerPagination } from './DrawerPaginationContext';
+export { DrawerProgressBar, type DrawerProgressBarProps, type DrawerProgressBarStyleProps } from './DrawerProgressBar';
 export { DrawerTitle, type DrawerTitleProps } from './DrawerTitle';

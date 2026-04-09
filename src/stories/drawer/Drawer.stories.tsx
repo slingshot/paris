@@ -6,6 +6,7 @@ import { ChevronRight, Ellipsis } from '../icon';
 import { Menu, MenuButton, MenuItem, MenuItems } from '../menu';
 import { usePagination } from '../pagination';
 import { Select } from '../select';
+import { Text } from '../text';
 import { Drawer } from './Drawer';
 import { DrawerActions } from './DrawerActions';
 import { DrawerBottomPanel } from './DrawerBottomPanel';
@@ -207,64 +208,6 @@ export const BottomPanel: Story = {
     },
 };
 
-export const BottomPanelMultiSection: Story = {
-    args: {
-        title: 'Order summary',
-        children: (
-            <div
-                style={{
-                    width: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '12px',
-                }}
-            >
-                <p>Review your order before confirming.</p>
-            </div>
-        ),
-        bottomPanel: (
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        padding: '12px 20px',
-                        borderBottom: '1px solid var(--pte-new-colors-borderMedium)',
-                        background: 'var(--pte-new-colors-overlaySubtle)',
-                    }}
-                >
-                    <span>Total</span>
-                    <strong>$249.00</strong>
-                </div>
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '12px',
-                        padding: '20px',
-                    }}
-                >
-                    <Button>Confirm order</Button>
-                    <Button kind="secondary" theme="negative">
-                        Cancel
-                    </Button>
-                </div>
-            </div>
-        ),
-    },
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
-        return (
-            <>
-                <Button onClick={() => setIsOpen(true)}>Review order</Button>
-                <Drawer {...args} isOpen={isOpen} onClose={setIsOpen}>
-                    {args.children}
-                </Drawer>
-            </>
-        );
-    },
-};
-
 export const WithSelectDropdown: Story = {
     args: {
         title: 'Settings',
@@ -355,7 +298,7 @@ export const CompoundAPI: Story = {
                             <p>This is the details page with its own title and actions.</p>
                             <Button onClick={() => pagination.open('edit')}>Go to Edit</Button>
                         </div>
-                        <DrawerBottomPanel>
+                        <DrawerBottomPanel style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                             <Button onClick={() => pagination.open('edit')}>Edit Transaction</Button>
                         </DrawerBottomPanel>
                     </DrawerPage>
@@ -381,27 +324,134 @@ const NestedFormExample = () => {
     return (
         <>
             <p>This form component uses useDrawer() and renders its own bottom panel.</p>
-            <DrawerBottomPanel>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <Button
-                        loading={saving}
-                        onClick={() => {
-                            setSaving(true);
-                            setTimeout(() => {
-                                setSaving(false);
-                                close();
-                            }, 1000);
-                        }}
-                    >
-                        Save Changes
-                    </Button>
-                    <Button kind="secondary" onClick={() => pagination?.back()}>
-                        Back
-                    </Button>
-                </div>
+            <DrawerBottomPanel style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <Button
+                    loading={saving}
+                    onClick={() => {
+                        setSaving(true);
+                        setTimeout(() => {
+                            setSaving(false);
+                            close();
+                        }, 1000);
+                    }}
+                >
+                    Save Changes
+                </Button>
+                <Button kind="secondary" onClick={() => pagination?.back()}>
+                    Back
+                </Button>
             </DrawerBottomPanel>
         </>
     );
+};
+
+// ─── Page Transition Stories ────────────────────────────────────────────────
+
+const TransitionDemoPage = ({
+    step,
+    color,
+    onNext,
+    onPrev,
+}: {
+    step: number;
+    color: string;
+    onNext?: () => void;
+    onPrev?: () => void;
+}) => (
+    <div
+        style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            padding: '20px',
+            background: color,
+            borderRadius: '8px',
+            minHeight: '200px',
+        }}
+    >
+        <h3 style={{ margin: 0 }}>Step {step}</h3>
+        <p style={{ margin: 0 }}>This is step {step}. Navigate between pages to see the transition effect.</p>
+        <div style={{ display: 'flex', gap: '8px' }}>
+            {onPrev && (
+                <Button kind="secondary" onClick={onPrev}>
+                    Back
+                </Button>
+            )}
+            {onNext && <Button onClick={onNext}>Next</Button>}
+        </div>
+    </div>
+);
+
+export const ProgressBar: Story = {
+    render: function Render() {
+        const [isOpen, setIsOpen] = useState(false);
+        const pages = ['account', 'details', 'confirm'] as const;
+        const pagination = usePagination<typeof pages>('account');
+
+        return (
+            <>
+                <Button onClick={() => setIsOpen(true)}>Open wizard with progress</Button>
+                <Drawer
+                    isOpen={isOpen}
+                    onClose={setIsOpen}
+                    title="Wizard"
+                    pagination={pagination}
+                    pageTransition="slide"
+                    progressBar
+                    onAfterClose={() => pagination.reset()}
+                >
+                    <DrawerPage id="account">
+                        <DrawerTitle>Create Account</DrawerTitle>
+                        <TransitionDemoPage
+                            step={1}
+                            color="var(--pte-new-colors-overlaySubtle)"
+                            onNext={() => pagination.open('details')}
+                        />
+                        <DrawerBottomPanel style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            <Button style={{ width: '100%' }} onClick={() => pagination.open('details')}>
+                                Continue
+                            </Button>
+                        </DrawerBottomPanel>
+                    </DrawerPage>
+
+                    <DrawerPage id="details">
+                        <DrawerTitle>Add Details</DrawerTitle>
+                        <TransitionDemoPage
+                            step={2}
+                            color="var(--pte-new-colors-overlaySubtle)"
+                            onPrev={() => pagination.back()}
+                            onNext={() => pagination.open('confirm')}
+                        />
+                        <DrawerBottomPanel style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            <Button style={{ width: '100%' }} onClick={() => pagination.open('confirm')}>
+                                Continue
+                            </Button>
+                            <Button style={{ width: '100%' }} kind="secondary" onClick={() => pagination.back()}>
+                                Back
+                            </Button>
+                        </DrawerBottomPanel>
+                    </DrawerPage>
+
+                    <DrawerPage id="confirm">
+                        <DrawerTitle>Confirm</DrawerTitle>
+                        <TransitionDemoPage
+                            step={3}
+                            color="var(--pte-new-colors-overlaySubtle)"
+                            onPrev={() => pagination.back()}
+                        />
+                        <DrawerBottomPanel style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            <Button style={{ width: '100%' }} theme="positive">
+                                Submit
+                            </Button>
+                            <Button style={{ width: '100%' }} kind="secondary" onClick={() => pagination.back()}>
+                                Back
+                            </Button>
+                        </DrawerBottomPanel>
+                    </DrawerPage>
+                </Drawer>
+            </>
+        );
+    },
 };
 
 export const AppendModeBottomPanel: Story = {
@@ -419,14 +469,14 @@ export const AppendModeBottomPanel: Story = {
                     bottomPanel={
                         <div
                             style={{
-                                padding: '12px 20px',
-                                borderBottom: '1px solid var(--pte-new-colors-borderMedium)',
+                                padding: '20px',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '12px',
                             }}
                         >
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <span>Total</span>
-                                <strong>$249.00</strong>
-                            </div>
+                            <Callout>Free shipping on orders over $200</Callout>
+                            <Button style={{ width: '100%' }}>Confirm Order</Button>
                         </div>
                     }
                 >
@@ -434,11 +484,21 @@ export const AppendModeBottomPanel: Story = {
                         The bottom panel has a base totals bar from the Drawer prop, and appended content from
                         DrawerBottomPanel components.
                     </p>
-                    <DrawerBottomPanel mode="append" priority={10}>
-                        <Callout>Free shipping on orders over $200</Callout>
-                    </DrawerBottomPanel>
-                    <DrawerBottomPanel mode="append" priority={20}>
-                        <Button style={{ width: '100%' }}>Confirm Order</Button>
+                    <DrawerBottomPanel
+                        mode="append"
+                        priority={10}
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            padding: '14px 20px',
+                        }}
+                    >
+                        <Text kind="paragraphXSmall" weight="medium">
+                            Total
+                        </Text>
+                        <Text kind="paragraphSmall" weight="medium">
+                            $249.00
+                        </Text>
                     </DrawerBottomPanel>
                 </Drawer>
             </>

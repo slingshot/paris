@@ -3,6 +3,7 @@
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import type { CSSLength } from '@ssh/csstypes';
 import { clsx } from 'clsx';
+import { motion } from 'framer-motion';
 import {
     Children,
     type ComponentPropsWithoutRef,
@@ -21,12 +22,22 @@ import { TextWhenString } from '../utility/TextWhenString';
 import { VisuallyHidden } from '../utility/VisuallyHidden';
 import styles from './Drawer.module.scss';
 import { DrawerProvider } from './DrawerContext';
-import { isDrawerPageElement } from './DrawerPage';
+import { type DrawerPageProps, isDrawerPageElement } from './DrawerPage';
 import { DrawerPageProvider } from './DrawerPageContext';
 import { DrawerPaginationProvider } from './DrawerPaginationContext';
+import { DrawerProgressBar, type DrawerProgressBarStyleProps } from './DrawerProgressBar';
 import { DrawerSlotProvider, useDrawerSlotContext } from './DrawerSlotContext';
 
 export const DrawerSizePresets = ['content', 'default', 'full', 'fullWithMargin', 'fullOnMobile'] as const;
+
+export type DrawerPageTransition = 'none' | 'crossfade' | 'slide';
+
+/** Extract the page ID from a child element (DrawerPage or legacy div-with-key). */
+const getChildPageID = (child: ReactNode): string | null => {
+    if (isDrawerPageElement(child)) return (child as React.ReactElement<DrawerPageProps>).props.id;
+    if (child != null && typeof child === 'object' && 'key' in child) return child.key as string;
+    return null;
+};
 
 export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
     /**
@@ -108,6 +119,27 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
      * @default false
      */
     pagination?: PaginationState<T>;
+    /**
+     * The page transition animation style for paginated drawers.
+     *
+     * - `'none'` — instant page switch (default)
+     * - `'crossfade'` — opacity crossfade between pages
+     * - `'slide'` — direction-aware horizontal slide (Framer Motion)
+     *
+     * @default 'none'
+     */
+    pageTransition?: DrawerPageTransition;
+    /**
+     * Show a progress bar at the top of the bottom panel. Requires `pagination` to be set.
+     * The bar auto-fills based on the current page position.
+     *
+     * Pass `true` for defaults, or an object with `fill`, `track`, and `height` overrides.
+     *
+     * For explicit percentage control, use `<DrawerProgressBar value={75} />` directly instead.
+     *
+     * @default false
+     */
+    progressBar?: boolean | DrawerProgressBarStyleProps;
     /**
      * Callback fired after the drawer's close animation completes.
      * Use this to reset forms, clear state, and clean up without visual glitches.
@@ -199,6 +231,8 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
     from = 'right',
     size = 'default',
     pagination,
+    pageTransition = 'none',
+    progressBar,
     overlayStyle = 'grey',
     additionalActions,
     children,
@@ -211,67 +245,100 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
     const isPaginated = useMemo(() => Boolean(pagination), [pagination]);
     const hasAdditionalActions = useMemo(() => Boolean(additionalActions), [additionalActions]);
 
-    const showBottomPanel = Boolean(bottomPanel) || (slotContext?.hasAnyBottomPanelSlot ?? false);
+    const showBottomPanel =
+        Boolean(bottomPanel) || (slotContext?.hasAnyBottomPanelSlot ?? false) || (slotContext?.hasProgressBar ?? false);
     const showBaseBottomPanel = Boolean(bottomPanel) && !slotContext?.hasBottomPanelReplace;
 
-    const paginatedChildren = useMemo(() => {
-        if (!isPaginated || !pagination || !children) {
-            return null;
-        }
-
+    const pageEntries = useMemo(() => {
+        if (!isPaginated || !pagination || !children) return null;
         const childArray = Array.isArray(children) ? children : Children.toArray(children);
+        return childArray
+            .map((child) => ({ id: getChildPageID(child), child }))
+            .filter((entry): entry is { id: string; child: ReactNode } => entry.id !== null);
+    }, [isPaginated, pagination, children]);
 
-        return childArray.map((child) => {
-            if (isDrawerPageElement(child)) {
-                const pageID = child.props.id;
-                const isActive = pagination.currentPage === pageID;
+    const activePageIndex = pageEntries?.findIndex((p) => p.id === pagination?.currentPage) ?? -1;
+
+    const paginatedContent = useMemo(() => {
+        if (!pageEntries || !pagination) return null;
+
+        switch (pageTransition) {
+            case 'none':
+                return pageEntries.map((page) => {
+                    const isActive = pagination.currentPage === page.id;
+                    return (
+                        <DrawerPageProvider key={page.id} isActive={isActive} pageID={page.id}>
+                            <div
+                                style={{ display: isActive ? undefined : 'none' }}
+                                className={overrides?.contentChildrenChildren?.className}
+                            >
+                                {page.child}
+                            </div>
+                        </DrawerPageProvider>
+                    );
+                });
+
+            case 'crossfade':
                 return (
-                    <DrawerPageProvider key={pageID} isActive={isActive} pageID={pageID}>
-                        <Transition
-                            show={isActive}
-                            unmount={false}
-                            as="div"
-                            enter={styles.paginationEnter}
-                            enterFrom={styles.enterFromOpacity}
-                            enterTo={styles.enterToOpacity}
-                            leave={styles.paginationLeave}
-                            leaveFrom={styles.leaveFromOpacity}
-                            leaveTo={styles.leaveToOpacity}
-                            className={clsx(overrides?.contentChildrenChildren?.className)}
-                        >
-                            {child}
-                        </Transition>
-                    </DrawerPageProvider>
+                    <div className={styles.pageStack}>
+                        {pageEntries.map((page) => {
+                            const isActive = pagination.currentPage === page.id;
+                            return (
+                                <DrawerPageProvider key={page.id} isActive={isActive} pageID={page.id}>
+                                    <div
+                                        className={clsx(
+                                            styles.pageStackItem,
+                                            styles.crossfadeItem,
+                                            overrides?.contentChildrenChildren?.className,
+                                        )}
+                                        data-active={isActive}
+                                    >
+                                        {page.child}
+                                    </div>
+                                </DrawerPageProvider>
+                            );
+                        })}
+                    </div>
                 );
-            }
 
-            // Legacy backward-compat: <div key="..."> children
-            if (child && typeof child === 'object' && 'key' in child) {
-                const pageID = child.key as string;
-                const isActive = pagination.currentPage === pageID;
+            case 'slide':
                 return (
-                    <DrawerPageProvider key={pageID} isActive={isActive} pageID={pageID}>
-                        <Transition
-                            show={isActive}
-                            unmount={false}
-                            as="div"
-                            enter={styles.paginationEnter}
-                            enterFrom={styles.enterFromOpacity}
-                            enterTo={styles.enterToOpacity}
-                            leave={styles.paginationLeave}
-                            leaveFrom={styles.leaveFromOpacity}
-                            leaveTo={styles.leaveToOpacity}
-                            className={clsx(overrides?.contentChildrenChildren?.className)}
-                        >
-                            {child}
-                        </Transition>
-                    </DrawerPageProvider>
+                    <div className={clsx(styles.pageStack, styles.pageStackClip)}>
+                        {pageEntries.map((page, i) => {
+                            const isActive = pagination.currentPage === page.id;
+                            const offset = (i - activePageIndex) * 100;
+                            return (
+                                <DrawerPageProvider key={page.id} isActive={isActive} pageID={page.id}>
+                                    <motion.div
+                                        initial={false}
+                                        animate={{ x: `${offset}%` }}
+                                        transition={{
+                                            type: 'tween',
+                                            duration: 0.3,
+                                            ease: [0.32, 0.72, 0, 1],
+                                        }}
+                                        className={clsx(
+                                            styles.pageStackItem,
+                                            overrides?.contentChildrenChildren?.className,
+                                        )}
+                                        data-active={isActive}
+                                    >
+                                        {page.child}
+                                    </motion.div>
+                                </DrawerPageProvider>
+                            );
+                        })}
+                    </div>
                 );
-            }
+        }
+    }, [pageEntries, pagination, pageTransition, activePageIndex, overrides?.contentChildrenChildren?.className]);
 
-            return child;
-        });
-    }, [isPaginated, pagination, children, overrides?.contentChildrenChildren?.className]);
+    /** Non-page children (e.g. Drawer-level DrawerBottomPanel) that should render alongside paginated content. */
+    const nonPageChildren = useMemo(() => {
+        if (!isPaginated || !children) return null;
+        const childArray = Array.isArray(children) ? children : Children.toArray(children);
+        return childArray.filter((child) => getChildPageID(child) === null);
+    }, [isPaginated, children]);
 
     return (
         <>
@@ -390,7 +457,20 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
 
                         <div className={clsx(styles.content, overrides?.content?.className)}>
                             <div className={clsx(styles.contentChildren, overrides?.contentChildren?.className)}>
-                                {isPaginated ? paginatedChildren : children}
+                                {isPaginated ? (
+                                    <>
+                                        {paginatedContent}
+                                        {nonPageChildren}
+                                        {progressBar && pageEntries && (
+                                            <DrawerProgressBar
+                                                steps={pageEntries.map((p) => p.id)}
+                                                {...(typeof progressBar === 'object' ? progressBar : undefined)}
+                                            />
+                                        )}
+                                    </>
+                                ) : (
+                                    children
+                                )}
                             </div>
                             {showBottomPanel && (
                                 <>
@@ -406,6 +486,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                         {showBaseBottomPanel && bottomPanel}
                                     </div>
                                     <div className={clsx(styles.bottomPanel, overrides?.bottomPanel?.className)}>
+                                        {slotContext && <div ref={slotContext.progressBarRef} />}
                                         <div className={styles.glassOpacity} />
                                         <div className={styles.glassBlend} />
                                         <div
@@ -418,7 +499,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                             {slotContext && (
                                                 <div
                                                     ref={slotContext.bottomPanelCallbackRef}
-                                                    style={{ display: 'flex', flexDirection: 'column' }}
+                                                    className={styles.bottomPanelSlots}
                                                 />
                                             )}
                                             {showBaseBottomPanel && bottomPanel}

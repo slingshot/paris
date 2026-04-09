@@ -397,12 +397,48 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     opacity: 0;
 }
 
-.paginationEnter {
-    transition: $paginationDuration var(--pte-animations-timing-easeInQuad);
+// Page transition containers
+.pageStack {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 0;
 }
 
-.paginationLeave {
-    transition: $paginationDuration var(--pte-animations-timing-easeOutQuad);
+.pageStackClip {
+    overflow: hidden;
+}
+
+.pageStackItem {
+    grid-area: 1 / 1;
+
+    &[data-active='false'] {
+        pointer-events: none;
+    }
+}
+
+.crossfadeItem {
+    transition: opacity $paginationDuration var(--pte-animations-timing-easeInQuad);
+
+    &[data-active='false'] {
+        opacity: 0;
+    }
+}
+
+// Progress bar
+.progressBar {
+    position: relative;
+    width: 100%;
+    height: 2px;
+    background: var(--pte-new-colors-borderMedium);
+}
+
+.progressBarFill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: var(--pte-new-colors-contentPrimary);
+    transition: width $paginationDuration var(--pte-animations-timing-easeInQuad);
 }
 
 .bottomPanel {
@@ -410,6 +446,21 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     position: absolute;
     bottom: 0;
     width: 100%;
+}
+
+.bottomPanelSlots {
+    display: flex;
+    flex-direction: column;
+
+    // Auto-separator between portaled slot items
+    > * + * {
+        border-top: 1px solid var(--pte-new-colors-borderMedium);
+    }
+
+    // Separator between slots and base bottomPanel content that follows
+    &:not(:empty) ~ * {
+        border-top: 1px solid var(--pte-new-colors-borderMedium);
+    }
 }
 
 .bottomPanelContent {
