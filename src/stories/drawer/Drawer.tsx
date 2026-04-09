@@ -165,7 +165,7 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
         titleBarButtons?: ComponentPropsWithoutRef<'div'>;
         content?: ComponentPropsWithoutRef<'div'>;
         contentChildren?: ComponentPropsWithoutRef<'div'>;
-        contentChildrenChildren: ComponentPropsWithoutRef<'div'>;
+        contentChildrenChildren?: ComponentPropsWithoutRef<'div'>;
         bottomPanelSpacer?: ComponentPropsWithoutRef<'div'>;
         bottomPanel?: ComponentPropsWithoutRef<'div'>;
         bottomPanelContent?: ComponentPropsWithoutRef<'div'>;
@@ -330,6 +330,11 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                         })}
                     </div>
                 );
+
+            default: {
+                const _exhaustive: never = pageTransition;
+                return _exhaustive;
+            }
         }
     }, [pageEntries, pagination, pageTransition, activePageIndex, overrides?.contentChildrenChildren?.className]);
 
@@ -424,7 +429,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                 </RemoveFromDOM>
                                 {slotContext && <div ref={slotContext.titleRef} />}
                                 {!slotContext?.hasTitleSlot && (
-                                    <VisuallyHidden when={hideTitle}>
+                                    <VisuallyHidden when={hideTitle || isPaginated}>
                                         <DialogTitle as="h2" className={styles.titleTextContainer}>
                                             <TextWhenString kind="paragraphSmall" weight="medium">
                                                 {title}

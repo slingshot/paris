@@ -11,8 +11,6 @@ $panelPaddingY: 20px;
 $duration: var(--pte-animations-duration-relaxed);
 $paginationDuration: var(--pte-animations-duration-normal);
 $panelAnimationDelay: var(--pte-animations-duration-fast);
-//$panelAnimationDelay: var(--pte-animations-duration-rapid);
-//$duration: var(--pte-animations-duration-normal);
 
 .root {
     position: fixed;
@@ -275,7 +273,6 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     position: relative;
     height: 100%;
     padding: 0;
-    //padding: $panelPaddingY $panelPaddingX;
     background-color: var(--pte-new-colors-surfacePrimary);
     overflow: auto;
 
@@ -283,7 +280,6 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    //gap: $panelPaddingY;
 
     &.enterFrom {
         box-shadow: none;
@@ -339,14 +335,9 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 
 .actionMenu {}
 
-.closeButton {
-    //position: absolute;
-    //right: $panelPaddingX;
-    //top: $panelPaddingY - 5px;
-}
+.closeButton {}
 
 .content {
-    //padding: 20px;
     overflow-y: scroll;
     height: 100%;
 }

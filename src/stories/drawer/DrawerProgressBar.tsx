@@ -50,8 +50,10 @@ export const DrawerProgressBar = ({ steps, value, fill, track, height }: DrawerP
         <div
             className={styles.progressBar}
             role="progressbar"
+            aria-valuemin={0}
             aria-valuenow={Math.round(progress)}
             aria-valuemax={100}
+            aria-label="Page progress"
             style={{
                 ...(track && { background: track }),
                 ...(height != null && { height: typeof height === 'number' ? `${height}px` : height }),
