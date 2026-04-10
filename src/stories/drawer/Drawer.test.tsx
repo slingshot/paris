@@ -1,6 +1,16 @@
+import { renderHook } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { getCloseButton, render, screen, waitFor } from '../../test/render';
+import { usePagination } from '../pagination';
 import { Drawer } from './Drawer';
+import { DrawerActions } from './DrawerActions';
+import { DrawerBottomPanel } from './DrawerBottomPanel';
+import { useDrawer } from './DrawerContext';
+import { DrawerPage } from './DrawerPage';
+import { DrawerPageProvider, useIsPageActive } from './DrawerPageContext';
+import { useDrawerPagination } from './DrawerPaginationContext';
+import { DrawerProgressBar } from './DrawerProgressBar';
+import { DrawerTitle } from './DrawerTitle';
 
 describe('Drawer', () => {
     it('renders when isOpen is true', async () => {
@@ -69,7 +79,7 @@ describe('Drawer', () => {
         );
 
         await waitFor(() => {
-            expect(getCloseButton()).toBeInTheDocument();
+            expect(getCloseButton('Close drawer')).toBeInTheDocument();
         });
     });
 
@@ -84,7 +94,7 @@ describe('Drawer', () => {
             expect(screen.getByRole('dialog')).toBeInTheDocument();
         });
 
-        expect(getCloseButton()).not.toBeInTheDocument();
+        expect(getCloseButton('Close drawer')).not.toBeInTheDocument();
     });
 
     it('calls onClose when the close button is clicked', async () => {
@@ -96,10 +106,10 @@ describe('Drawer', () => {
         );
 
         await waitFor(() => {
-            expect(getCloseButton()).toBeInTheDocument();
+            expect(getCloseButton('Close drawer')).toBeInTheDocument();
         });
 
-        const closeButton = getCloseButton()!;
+        const closeButton = getCloseButton('Close drawer')!;
         await user.click(closeButton);
 
         expect(onClose).toHaveBeenCalledWith(false);
@@ -153,15 +163,13 @@ describe('Drawer', () => {
         });
     });
 
-    it('renders a bottom panel', async () => {
+    it('renders a bottom panel via DrawerBottomPanel', async () => {
         render(
-            <Drawer
-                isOpen={true}
-                title="Test Drawer"
-                onClose={vi.fn()}
-                bottomPanel={<button type="button">Save</button>}
-            >
+            <Drawer isOpen={true} title="Test Drawer" onClose={vi.fn()}>
                 Content
+                <DrawerBottomPanel>
+                    <button type="button">Save</button>
+                </DrawerBottomPanel>
             </Drawer>,
         );
 
@@ -254,6 +262,473 @@ describe('Drawer', () => {
 
         await waitFor(() => {
             expect(screen.getByTestId('custom-title')).toBeInTheDocument();
+        });
+    });
+
+    describe('useDrawer', () => {
+        function DrawerConsumer() {
+            const { close, isOpen } = useDrawer();
+            return (
+                <div>
+                    <span data-testid="is-open">{String(isOpen)}</span>
+                    <button type="button" onClick={close}>
+                        Close via context
+                    </button>
+                </div>
+            );
+        }
+
+        it('provides isOpen and close to children', async () => {
+            render(
+                <Drawer isOpen={true} title="Context Drawer" onClose={vi.fn()}>
+                    <DrawerConsumer />
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByTestId('is-open')).toHaveTextContent('true');
+            });
+        });
+
+        it('calls onClose(false) when close is invoked from context', async () => {
+            const onClose = vi.fn();
+            const { user } = render(
+                <Drawer isOpen={true} title="Context Drawer" onClose={onClose}>
+                    <DrawerConsumer />
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByText('Close via context')).toBeInTheDocument();
+            });
+
+            await user.click(screen.getByText('Close via context'));
+
+            expect(onClose).toHaveBeenCalledWith(false);
+        });
+
+        it('throws when useDrawer is used outside of a Drawer', () => {
+            // Suppress React error boundary console output
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+            expect(() => render(<DrawerConsumer />)).toThrow('useDrawer must be used within a Drawer component');
+            consoleSpy.mockRestore();
+        });
+    });
+
+    describe('useDrawerPagination', () => {
+        function PaginationConsumer() {
+            const pagination = useDrawerPagination();
+            return (
+                <div>
+                    <span data-testid="pagination-value">{pagination ? pagination.currentPage : 'null'}</span>
+                </div>
+            );
+        }
+
+        it('provides pagination state to children in a paginated drawer', async () => {
+            const Wrapper = () => {
+                const pages = ['step1'] as const;
+                const pagination = usePagination<typeof pages>('step1');
+                return (
+                    <Drawer isOpen={true} title="Paginated Drawer" onClose={vi.fn()} pagination={pagination}>
+                        <DrawerPage id="step1">
+                            <PaginationConsumer />
+                        </DrawerPage>
+                    </Drawer>
+                );
+            };
+
+            render(<Wrapper />);
+
+            await waitFor(() => {
+                expect(screen.getByTestId('pagination-value')).toHaveTextContent('step1');
+            });
+        });
+
+        it('returns null when no pagination is provided', async () => {
+            render(
+                <Drawer isOpen={true} title="Non-paginated Drawer" onClose={vi.fn()}>
+                    <PaginationConsumer />
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByTestId('pagination-value')).toHaveTextContent('null');
+            });
+        });
+    });
+
+    describe('useIsPageActive', () => {
+        it('returns true when page is active', () => {
+            const { result } = renderHook(() => useIsPageActive(), {
+                wrapper: ({ children }) => (
+                    <DrawerPageProvider isActive={true} pageID="page1">
+                        {children}
+                    </DrawerPageProvider>
+                ),
+            });
+
+            expect(result.current).toBe(true);
+        });
+
+        it('returns false when page is not active', () => {
+            const { result } = renderHook(() => useIsPageActive(), {
+                wrapper: ({ children }) => (
+                    <DrawerPageProvider isActive={false} pageID="page1">
+                        {children}
+                    </DrawerPageProvider>
+                ),
+            });
+
+            expect(result.current).toBe(false);
+        });
+
+        it('returns true when used outside DrawerPageProvider', () => {
+            const { result } = renderHook(() => useIsPageActive());
+
+            expect(result.current).toBe(true);
+        });
+    });
+
+    describe('DrawerTitle', () => {
+        it('overrides the drawer title prop', async () => {
+            render(
+                <Drawer isOpen={true} title="Fallback Title" onClose={vi.fn()}>
+                    <DrawerTitle>Custom Title</DrawerTitle>
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByText('Custom Title')).toBeInTheDocument();
+            });
+
+            // Fallback title stays in DOM (visually hidden) for aria-labelledby
+            expect(screen.getByText('Fallback Title')).toBeInTheDocument();
+        });
+
+        it('shows fallback title when no DrawerTitle is used', async () => {
+            render(
+                <Drawer isOpen={true} title="Fallback Title" onClose={vi.fn()}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByText('Fallback Title')).toBeInTheDocument();
+            });
+        });
+
+        it('only shows active page DrawerTitle in paginated drawer', async () => {
+            const Wrapper = () => {
+                const pages = ['a', 'b'] as const;
+                const pagination = usePagination<typeof pages>('a');
+                return (
+                    <Drawer isOpen={true} title="Fallback" onClose={vi.fn()} pagination={pagination}>
+                        <DrawerPage id="a">
+                            <DrawerTitle>Title A</DrawerTitle>
+                            Page A
+                        </DrawerPage>
+                        <DrawerPage id="b">
+                            <DrawerTitle>Title B</DrawerTitle>
+                            Page B
+                        </DrawerPage>
+                    </Drawer>
+                );
+            };
+
+            render(<Wrapper />);
+
+            await waitFor(() => {
+                expect(screen.getByText('Title A')).toBeInTheDocument();
+            });
+
+            expect(screen.queryByText('Title B')).not.toBeInTheDocument();
+        });
+    });
+
+    describe('DrawerActions', () => {
+        it('renders actions via slot component', async () => {
+            render(
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()}>
+                    <DrawerActions>
+                        <button type="button">Slot Action</button>
+                    </DrawerActions>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByText('Slot Action')).toBeInTheDocument();
+            });
+        });
+
+        it('falls back to additionalActions prop when no DrawerActions slot', async () => {
+            render(
+                <Drawer
+                    isOpen={true}
+                    title="Test"
+                    onClose={vi.fn()}
+                    additionalActions={<button type="button">Prop Action</button>}
+                >
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByText('Prop Action')).toBeInTheDocument();
+            });
+        });
+    });
+
+    describe('DrawerPage', () => {
+        it('renders children inside a paginated drawer', async () => {
+            const Wrapper = () => {
+                const pages = ['a', 'b'] as const;
+                const pagination = usePagination<typeof pages>('a');
+                return (
+                    <Drawer isOpen={true} title="Test" onClose={vi.fn()} pagination={pagination}>
+                        <DrawerPage id="a">Page A Content</DrawerPage>
+                        <DrawerPage id="b">Page B Content</DrawerPage>
+                    </Drawer>
+                );
+            };
+
+            render(<Wrapper />);
+
+            await waitFor(() => {
+                expect(screen.getByText('Page A Content')).toBeInTheDocument();
+            });
+        });
+
+        it('does not render lazy page until it becomes active', async () => {
+            const LazyChild = () => <span data-testid="lazy-content">Lazy Loaded</span>;
+
+            const Wrapper = () => {
+                const pages = ['a', 'b'] as const;
+                const pagination = usePagination<typeof pages>('a');
+                return (
+                    <Drawer isOpen={true} title="Test" onClose={vi.fn()} pagination={pagination}>
+                        <DrawerPage id="a">
+                            <button type="button" onClick={() => pagination.open('b')}>
+                                Go to B
+                            </button>
+                        </DrawerPage>
+                        <DrawerPage id="b" lazy>
+                            <LazyChild />
+                        </DrawerPage>
+                    </Drawer>
+                );
+            };
+
+            const { user } = render(<Wrapper />);
+
+            await waitFor(() => {
+                expect(screen.getByText('Go to B')).toBeInTheDocument();
+            });
+
+            expect(screen.queryByTestId('lazy-content')).not.toBeInTheDocument();
+
+            await user.click(screen.getByText('Go to B'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('lazy-content')).toBeInTheDocument();
+            });
+        });
+    });
+
+    describe('onAfterClose', () => {
+        it('calls onAfterClose after the drawer close animation completes', async () => {
+            const onAfterClose = vi.fn();
+            const onClose = vi.fn();
+
+            const { rerender } = render(
+                <Drawer isOpen={true} title="Test" onClose={onClose} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument();
+            });
+
+            rerender(
+                <Drawer isOpen={false} title="Test" onClose={onClose} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(onAfterClose).toHaveBeenCalledTimes(1);
+            });
+        });
+
+        it('does not call onAfterClose on initial render when closed', () => {
+            const onAfterClose = vi.fn();
+
+            render(
+                <Drawer isOpen={false} title="Test" onClose={vi.fn()} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+
+            expect(onAfterClose).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('DrawerBottomPanel', () => {
+        it('renders bottom panel content via slot component', async () => {
+            render(
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()}>
+                    <DrawerBottomPanel>
+                        <button type="button">Slot Panel</button>
+                    </DrawerBottomPanel>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByText('Slot Panel')).toBeInTheDocument();
+            });
+        });
+
+        it('renders multiple append-mode bottom panels', async () => {
+            render(
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()}>
+                    <DrawerBottomPanel mode="append">
+                        <span>First Panel</span>
+                    </DrawerBottomPanel>
+                    <DrawerBottomPanel mode="append">
+                        <span>Second Panel</span>
+                    </DrawerBottomPanel>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByText('First Panel')).toBeInTheDocument();
+                expect(screen.getByText('Second Panel')).toBeInTheDocument();
+            });
+        });
+
+        it('orders multiple append slots by priority', async () => {
+            render(
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()}>
+                    <DrawerBottomPanel mode="append" priority={20}>
+                        <span data-testid="p20">Priority 20</span>
+                    </DrawerBottomPanel>
+                    <DrawerBottomPanel mode="append" priority={10}>
+                        <span data-testid="p10">Priority 10</span>
+                    </DrawerBottomPanel>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                const p10 = screen.getByTestId('p10');
+                const p20 = screen.getByTestId('p20');
+                // CSS order controls visual ordering — lower priority = visually higher
+                const p10Order = Number((p10.parentElement as HTMLElement).style.order);
+                const p20Order = Number((p20.parentElement as HTMLElement).style.order);
+                expect(p10Order).toBeLessThan(p20Order);
+            });
+        });
+
+        it('only shows active page bottom panel in paginated drawer', async () => {
+            const Wrapper = () => {
+                const pages = ['a', 'b'] as const;
+                const pagination = usePagination<typeof pages>('a');
+                return (
+                    <Drawer isOpen={true} title="Test" onClose={vi.fn()} pagination={pagination}>
+                        <DrawerPage id="a">
+                            <DrawerBottomPanel>
+                                <span>Panel A</span>
+                            </DrawerBottomPanel>
+                            Page A
+                        </DrawerPage>
+                        <DrawerPage id="b">
+                            <DrawerBottomPanel>
+                                <span>Panel B</span>
+                            </DrawerBottomPanel>
+                            Page B
+                        </DrawerPage>
+                    </Drawer>
+                );
+            };
+
+            render(<Wrapper />);
+
+            await waitFor(() => {
+                expect(screen.getByText('Panel A')).toBeInTheDocument();
+            });
+
+            expect(screen.queryByText('Panel B')).not.toBeInTheDocument();
+        });
+    });
+
+    describe('DrawerProgressBar', () => {
+        it('renders progress bar with auto-calculated value from pagination', async () => {
+            const Wrapper = () => {
+                const pages = ['a', 'b', 'c'] as const;
+                const pagination = usePagination<typeof pages>('b');
+                return (
+                    <Drawer isOpen={true} title="Test" onClose={vi.fn()} pagination={pagination} progressBar>
+                        <DrawerPage id="a">Page A</DrawerPage>
+                        <DrawerPage id="b">Page B</DrawerPage>
+                        <DrawerPage id="c">Page C</DrawerPage>
+                    </Drawer>
+                );
+            };
+
+            render(<Wrapper />);
+
+            await waitFor(() => {
+                const bar = screen.getByRole('progressbar');
+                expect(bar).toBeInTheDocument();
+                // Page 'b' is index 1, so (1+1)/3 * 100 ≈ 67
+                expect(bar).toHaveAttribute('aria-valuenow', '67');
+            });
+        });
+
+        it('renders progress bar with explicit value override', async () => {
+            const Wrapper = () => {
+                const pages = ['a', 'b'] as const;
+                const pagination = usePagination<typeof pages>('a');
+                return (
+                    <Drawer isOpen={true} title="Test" onClose={vi.fn()} pagination={pagination}>
+                        <DrawerPage id="a">Page A</DrawerPage>
+                        <DrawerPage id="b">Page B</DrawerPage>
+                        <DrawerProgressBar value={42} />
+                    </Drawer>
+                );
+            };
+
+            render(<Wrapper />);
+
+            await waitFor(() => {
+                const bar = screen.getByRole('progressbar');
+                expect(bar).toBeInTheDocument();
+                expect(bar).toHaveAttribute('aria-valuenow', '42');
+            });
+        });
+
+        it('clamps explicit value to 0–100 range', async () => {
+            const Wrapper = () => {
+                const pages = ['a'] as const;
+                const pagination = usePagination<typeof pages>('a');
+                return (
+                    <Drawer isOpen={true} title="Test" onClose={vi.fn()} pagination={pagination}>
+                        <DrawerPage id="a">Page A</DrawerPage>
+                        <DrawerProgressBar value={150} />
+                    </Drawer>
+                );
+            };
+
+            render(<Wrapper />);
+
+            await waitFor(() => {
+                const bar = screen.getByRole('progressbar');
+                expect(bar).toHaveAttribute('aria-valuenow', '100');
+            });
         });
     });
 });

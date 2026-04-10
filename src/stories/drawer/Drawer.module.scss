@@ -11,8 +11,6 @@ $panelPaddingY: 20px;
 $duration: var(--pte-animations-duration-relaxed);
 $paginationDuration: var(--pte-animations-duration-normal);
 $panelAnimationDelay: var(--pte-animations-duration-fast);
-//$panelAnimationDelay: var(--pte-animations-duration-rapid);
-//$duration: var(--pte-animations-duration-normal);
 
 .root {
     position: fixed;
@@ -275,7 +273,6 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     position: relative;
     height: 100%;
     padding: 0;
-    //padding: $panelPaddingY $panelPaddingX;
     background-color: var(--pte-new-colors-surfacePrimary);
     overflow: auto;
 
@@ -283,7 +280,6 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    //gap: $panelPaddingY;
 
     &.enterFrom {
         box-shadow: none;
@@ -339,14 +335,9 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 
 .actionMenu {}
 
-.closeButton {
-    //position: absolute;
-    //right: $panelPaddingX;
-    //top: $panelPaddingY - 5px;
-}
+.closeButton {}
 
 .content {
-    //padding: 20px;
     overflow-y: scroll;
     height: 100%;
 }
@@ -405,11 +396,62 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     transition: $paginationDuration var(--pte-animations-timing-easeOutQuad);
 }
 
+// Page transition containers
+.pageStack {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 0;
+}
+
+.pageStackClip {
+    overflow: hidden;
+}
+
+.pageStackItem {
+    grid-area: 1 / 1;
+
+    &[data-active='false'] {
+        pointer-events: none;
+    }
+}
+
+// Progress bar
+.progressBar {
+    position: relative;
+    width: 100%;
+    height: 2px;
+    background: var(--pte-new-colors-borderMedium);
+}
+
+.progressBarFill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: var(--pte-new-colors-contentPrimary);
+    transition: width $paginationDuration var(--pte-animations-timing-easeInQuad);
+}
+
 .bottomPanel {
     border-top: 1px solid var(--pte-new-colors-borderStrong);
     position: absolute;
     bottom: 0;
     width: 100%;
+}
+
+.bottomPanelSlots {
+    display: flex;
+    flex-direction: column;
+
+    // Auto-separator between portaled slot items
+    > * + * {
+        border-top: 1px solid var(--pte-new-colors-borderMedium);
+    }
+
+    // Separator between slots and base bottomPanel content that follows
+    &:not(:empty) ~ * {
+        border-top: 1px solid var(--pte-new-colors-borderMedium);
+    }
 }
 
 .bottomPanelContent {
@@ -421,13 +463,12 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     }
 }
 
-.bottomPanelSpacer {
+.bottomPanelSlotItem {
+    position: relative;
     padding: 20px;
+}
 
-    &.noPadding {
-        padding: 0;
-    }
-
+.bottomPanelSpacer {
     opacity: 0;
     pointer-events: none;
 }
