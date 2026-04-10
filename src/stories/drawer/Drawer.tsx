@@ -402,7 +402,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                             disabled={!pagination?.canGoBack()}
                                             startEnhancer={<Icon icon={ChevronLeft} size={16} />}
                                         >
-                                            Go to previous page in this modal
+                                            Go to previous page in this drawer
                                         </Button>
                                         <Button
                                             className={clsx(styles.navButton)}
@@ -413,7 +413,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                             disabled={!pagination?.canGoForward()}
                                             startEnhancer={<Icon icon={ChevronRight} size={16} />}
                                         >
-                                            Go to next page in this modal
+                                            Go to next page in this drawer
                                         </Button>
                                     </div>
                                 </RemoveFromDOM>
@@ -444,7 +444,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                         data-title-hidden={hideTitle}
                                         className={clsx(styles.closeButton)}
                                     >
-                                        Close dialog
+                                        Close drawer
                                     </Button>
                                 </RemoveFromDOM>
                             </div>
