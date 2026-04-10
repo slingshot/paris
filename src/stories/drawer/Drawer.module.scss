@@ -388,6 +388,14 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     opacity: 0;
 }
 
+.paginationEnter {
+    transition: $paginationDuration var(--pte-animations-timing-easeInQuad);
+}
+
+.paginationLeave {
+    transition: $paginationDuration var(--pte-animations-timing-easeOutQuad);
+}
+
 // Page transition containers
 .pageStack {
     display: grid;
@@ -404,14 +412,6 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 
     &[data-active='false'] {
         pointer-events: none;
-    }
-}
-
-.crossfadeItem {
-    transition: opacity $paginationDuration var(--pte-animations-timing-easeInQuad);
-
-    &[data-active='false'] {
-        opacity: 0;
     }
 }
 

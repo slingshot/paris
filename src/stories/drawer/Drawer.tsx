@@ -12,6 +12,7 @@ import {
     useEffect,
     useMemo,
     useRef,
+    useState,
 } from 'react';
 import { Button } from '../button';
 import { ChevronLeft, ChevronRight, Close, Icon } from '../icon';
@@ -115,11 +116,11 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
     /**
      * The page transition animation style for paginated drawers.
      *
-     * - `'none'` — instant page switch (default)
-     * - `'crossfade'` — opacity crossfade between pages
+     * - `'none'` — instant page switch
+     * - `'crossfade'` — opacity crossfade between pages (default)
      * - `'slide'` — direction-aware horizontal slide (Framer Motion)
      *
-     * @default 'none'
+     * @default 'crossfade'
      */
     pageTransition?: DrawerPageTransition;
     /**
@@ -223,7 +224,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
     from = 'right',
     size = 'default',
     pagination,
-    pageTransition = 'none',
+    pageTransition = 'crossfade',
     progressBar,
     overlayStyle = 'grey',
     additionalActions,
@@ -238,6 +239,8 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
     const hasAdditionalActions = useMemo(() => Boolean(additionalActions), [additionalActions]);
 
     const showBottomPanel = (slotContext?.hasAnyBottomPanelSlot ?? false) || (slotContext?.hasProgressBar ?? false);
+
+    const [loadedPage, setLoadedPage] = useState<string | null>(pagination?.currentPage ?? null);
 
     const pageEntries = useMemo(() => {
         if (!isPaginated || !pagination || !children) return null;
@@ -269,27 +272,27 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                 });
 
             case 'crossfade':
-                return (
-                    <div className={styles.pageStack}>
-                        {pageEntries.map((page) => {
-                            const isActive = pagination.currentPage === page.id;
-                            return (
-                                <DrawerPageProvider key={page.id} isActive={isActive} pageID={page.id}>
-                                    <div
-                                        className={clsx(
-                                            styles.pageStackItem,
-                                            styles.crossfadeItem,
-                                            overrides?.contentChildrenChildren?.className,
-                                        )}
-                                        data-active={isActive}
-                                    >
-                                        {page.child}
-                                    </div>
-                                </DrawerPageProvider>
-                            );
-                        })}
-                    </div>
-                );
+                return pageEntries.map((page) => {
+                    const isActive = pagination.currentPage === page.id && loadedPage === page.id;
+                    return (
+                        <DrawerPageProvider key={page.id} isActive={isActive} pageID={page.id}>
+                            <Transition
+                                show={isActive}
+                                as="div"
+                                enter={styles.paginationEnter}
+                                enterFrom={styles.enterFromOpacity}
+                                enterTo={styles.enterToOpacity}
+                                leave={styles.paginationLeave}
+                                leaveFrom={styles.leaveFromOpacity}
+                                leaveTo={styles.leaveToOpacity}
+                                afterLeave={() => setLoadedPage(pagination.currentPage)}
+                                className={overrides?.contentChildrenChildren?.className}
+                            >
+                                {page.child}
+                            </Transition>
+                        </DrawerPageProvider>
+                    );
+                });
 
             case 'slide':
                 return (
@@ -326,7 +329,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                 return _exhaustive;
             }
         }
-    }, [pageEntries, pagination, pageTransition, activePageIndex, overrides?.contentChildrenChildren?.className]);
+    }, [pageEntries, pagination, pageTransition, loadedPage, activePageIndex, overrides?.contentChildrenChildren?.className]);
 
     /** Non-page children (e.g. Drawer-level DrawerBottomPanel) that should render alongside paginated content. */
     const nonPageChildren = useMemo(() => {
