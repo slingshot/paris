@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, type ReactNode, useContext, useMemo } from 'react';
+import { createContext, type ReactNode, useContext } from 'react';
 import type { PaginationState } from '../pagination';
 
 type AnyPaginationState = PaginationState<string[] | readonly string[]>;
@@ -18,6 +18,5 @@ export function DrawerPaginationProvider({
     pagination: AnyPaginationState | null;
     children: ReactNode;
 }) {
-    const value = useMemo(() => pagination, [pagination]);
-    return <DrawerPaginationContext.Provider value={value}>{children}</DrawerPaginationContext.Provider>;
+    return <DrawerPaginationContext.Provider value={pagination}>{children}</DrawerPaginationContext.Provider>;
 }

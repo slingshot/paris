@@ -43,7 +43,7 @@ export const DrawerBottomPanel = ({
         <div
             data-slot-mode={mode}
             data-slot-priority={priority}
-            className={clsx(styles.bottomPanelContent, className)}
+            className={clsx(styles.bottomPanelSlotItem, className)}
             style={{ order: priority, ...style }}
             {...rest}
         >

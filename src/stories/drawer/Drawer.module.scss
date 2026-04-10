@@ -463,13 +463,12 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
     }
 }
 
-.bottomPanelSpacer {
+.bottomPanelSlotItem {
+    position: relative;
     padding: 20px;
+}
 
-    &.noPadding {
-        padding: 0;
-    }
-
+.bottomPanelSpacer {
     opacity: 0;
     pointer-events: none;
 }

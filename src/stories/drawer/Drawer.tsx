@@ -233,12 +233,27 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
 }: DrawerProps<T>) => {
     const slotContext = useDrawerSlotContext();
 
-    const xAxisDrawer = useMemo(() => ['left', 'right'].includes(from), [from]);
-    const sizeIsPreset = useMemo(() => (DrawerSizePresets as readonly string[]).includes(size), [size]);
-    const isPaginated = useMemo(() => Boolean(pagination), [pagination]);
-    const hasAdditionalActions = useMemo(() => Boolean(additionalActions), [additionalActions]);
+    const xAxisDrawer = from === 'left' || from === 'right';
+    const sizeIsPreset = (DrawerSizePresets as readonly string[]).includes(size);
+    const isPaginated = Boolean(pagination);
+    const hasAdditionalActions = Boolean(additionalActions);
 
     const showBottomPanel = (slotContext?.hasAnyBottomPanelSlot ?? false) || (slotContext?.hasProgressBar ?? false);
+
+    // Sync spacer height with absolute-positioned bottom panel so content doesn't get clipped
+    const bottomPanelElRef = useRef<HTMLDivElement | null>(null);
+    const spacerRef = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+        if (!showBottomPanel) return;
+        const panel = bottomPanelElRef.current;
+        const spacer = spacerRef.current;
+        if (!panel || !spacer) return;
+        const observer = new ResizeObserver(([entry]) => {
+            spacer.style.height = `${entry.contentRect.height}px`;
+        });
+        observer.observe(panel);
+        return () => observer.disconnect();
+    }, [showBottomPanel]);
 
     const [loadedPage, setLoadedPage] = useState<string | null>(pagination?.currentPage ?? null);
 
@@ -329,7 +344,14 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                 return _exhaustive;
             }
         }
-    }, [pageEntries, pagination, pageTransition, loadedPage, activePageIndex, overrides?.contentChildrenChildren?.className]);
+    }, [
+        pageEntries,
+        pagination,
+        pageTransition,
+        loadedPage,
+        activePageIndex,
+        overrides?.contentChildrenChildren?.className,
+    ]);
 
     /** Non-page children (e.g. Drawer-level DrawerBottomPanel) that should render alongside paginated content. */
     const nonPageChildren = useMemo(() => {
@@ -421,15 +443,13 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                     </div>
                                 </RemoveFromDOM>
                                 {slotContext && <div ref={slotContext.titleRef} />}
-                                {!slotContext?.hasTitleSlot && (
-                                    <VisuallyHidden when={hideTitle}>
-                                        <DialogTitle as="h2" className={styles.titleTextContainer}>
-                                            <TextWhenString kind="paragraphSmall" weight="medium">
-                                                {title}
-                                            </TextWhenString>
-                                        </DialogTitle>
-                                    </VisuallyHidden>
-                                )}
+                                <VisuallyHidden when={hideTitle || (slotContext?.hasTitleSlot ?? false)}>
+                                    <DialogTitle as="h2" className={styles.titleTextContainer}>
+                                        <TextWhenString kind="paragraphSmall" weight="medium">
+                                            {title}
+                                        </TextWhenString>
+                                    </DialogTitle>
+                                </VisuallyHidden>
                             </div>
                             <div className={clsx(styles.titleBarButtons, overrides?.titleBarButtons?.className)}>
                                 {slotContext && <div ref={slotContext.actionsRef} />}
@@ -473,15 +493,18 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                             {showBottomPanel && (
                                 <>
                                     <div
+                                        ref={spacerRef}
                                         tabIndex={-1}
                                         aria-hidden="true"
                                         className={clsx(
                                             styles.bottomPanelSpacer,
-                                            styles.noPadding,
                                             overrides?.bottomPanelSpacer?.className,
                                         )}
                                     />
-                                    <div className={clsx(styles.bottomPanel, overrides?.bottomPanel?.className)}>
+                                    <div
+                                        ref={bottomPanelElRef}
+                                        className={clsx(styles.bottomPanel, overrides?.bottomPanel?.className)}
+                                    >
                                         {slotContext && <div ref={slotContext.progressBarRef} />}
                                         <div className={styles.glassOpacity} />
                                         <div className={styles.glassBlend} />

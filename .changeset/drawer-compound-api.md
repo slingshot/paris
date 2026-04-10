@@ -15,4 +15,11 @@ Add compound component API for Drawer with paginated page transitions, progress 
 
 Slot components use `createPortal` to render into Drawer chrome (title bar, actions, bottom panel) from within page content, preserving React context (forms, state). Bottom panel slots support `mode="replace|append"` with priority ordering and automatic separator borders.
 
-Fully backward compatible with existing `<div key="...">` pagination pattern.
+Backward compatible with existing `<div key="...">` pagination pattern.
+
+**Breaking:** Removed `bottomPanel` and `bottomPanelPadding` props. Use `<DrawerBottomPanel>` as a child instead:
+```diff
+- <Drawer bottomPanel={<Content />}>
++ <Drawer>
++   <DrawerBottomPanel><Content /></DrawerBottomPanel>
+```

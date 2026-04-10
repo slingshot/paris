@@ -158,7 +158,37 @@ export const BottomPanel: Story = {
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dignissim bibendum gravida.
                             Donec pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi libero sit
-                            amet purus. Fusce blandit leo in lectus blandit, sed elementum enim accumsan.
+                            amet purus. Fusce blandit leo in lectus blandit, sed elementum enim accumsan.Lorem ipsum
+                            dolor sit amet, consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec
+                            pharetra, erat et semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet
+                            purus. Fusce blandit leo in lectus blandit, sed elementum enim accumsan.Lorem ipsum dolor
+                            sit amet, consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec pharetra,
+                            erat et semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus.
+                            Fusce blandit leo in lectus blandit, sed elementum enim accumsan.Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec pharetra, erat et
+                            semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus. Fusce
+                            blandit leo in lectus blandit, sed elementum enim accumsan.Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec pharetra, erat et
+                            semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus. Fusce
+                            blandit leo in lectus blandit, sed elementum enim accumsan.Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec pharetra, erat et
+                            semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus. Fusce
+                            blandit leo in lectus blandit, sed elementum enim accumsan.Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec pharetra, erat et
+                            semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus. Fusce
+                            blandit leo in lectus blandit, sed elementum enim accumsan.Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec pharetra, erat et
+                            semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus. Fusce
+                            blandit leo in lectus blandit, sed elementum enim accumsan.Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec pharetra, erat et
+                            semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus. Fusce
+                            blandit leo in lectus blandit, sed elementum enim accumsan.Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec pharetra, erat et
+                            semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus. Fusce
+                            blandit leo in lectus blandit, sed elementum enim accumsan.Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit. Nulla dignissim bibendum gravida. Donec pharetra, erat et
+                            semper luctus, dolor enim elementum est, eget cursus nisi libero sit amet purus. Fusce
+                            blandit leo in lectus blandit, sed elementum enim accumsan.
                         </p>
                     </div>
                     <DrawerBottomPanel style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>

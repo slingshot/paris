@@ -9,6 +9,7 @@ import { useDrawer } from './DrawerContext';
 import { DrawerPage } from './DrawerPage';
 import { DrawerPageProvider, useIsPageActive } from './DrawerPageContext';
 import { useDrawerPagination } from './DrawerPaginationContext';
+import { DrawerProgressBar } from './DrawerProgressBar';
 import { DrawerTitle } from './DrawerTitle';
 
 describe('Drawer', () => {
@@ -78,7 +79,7 @@ describe('Drawer', () => {
         );
 
         await waitFor(() => {
-            expect(getCloseButton()).toBeInTheDocument();
+            expect(getCloseButton('Close drawer')).toBeInTheDocument();
         });
     });
 
@@ -93,7 +94,7 @@ describe('Drawer', () => {
             expect(screen.getByRole('dialog')).toBeInTheDocument();
         });
 
-        expect(getCloseButton()).not.toBeInTheDocument();
+        expect(getCloseButton('Close drawer')).not.toBeInTheDocument();
     });
 
     it('calls onClose when the close button is clicked', async () => {
@@ -105,10 +106,10 @@ describe('Drawer', () => {
         );
 
         await waitFor(() => {
-            expect(getCloseButton()).toBeInTheDocument();
+            expect(getCloseButton('Close drawer')).toBeInTheDocument();
         });
 
-        const closeButton = getCloseButton()!;
+        const closeButton = getCloseButton('Close drawer')!;
         await user.click(closeButton);
 
         expect(onClose).toHaveBeenCalledWith(false);
@@ -325,22 +326,19 @@ describe('Drawer', () => {
         }
 
         it('provides pagination state to children in a paginated drawer', async () => {
-            const paginationState = {
-                currentPage: 'step1',
-                open: vi.fn(),
-                canGoBack: () => false,
-                back: vi.fn(),
-                canGoForward: () => true,
-                forward: vi.fn(),
-                history: ['step1'],
-                reset: vi.fn(),
+            const Wrapper = () => {
+                const pages = ['step1'] as const;
+                const pagination = usePagination<typeof pages>('step1');
+                return (
+                    <Drawer isOpen={true} title="Paginated Drawer" onClose={vi.fn()} pagination={pagination}>
+                        <DrawerPage id="step1">
+                            <PaginationConsumer />
+                        </DrawerPage>
+                    </Drawer>
+                );
             };
 
-            render(
-                <Drawer isOpen={true} title="Paginated Drawer" onClose={vi.fn()} pagination={paginationState}>
-                    <PaginationConsumer key="step1" />
-                </Drawer>,
-            );
+            render(<Wrapper />);
 
             await waitFor(() => {
                 expect(screen.getByTestId('pagination-value')).toHaveTextContent('step1');
@@ -404,7 +402,8 @@ describe('Drawer', () => {
                 expect(screen.getByText('Custom Title')).toBeInTheDocument();
             });
 
-            expect(screen.queryByText('Fallback Title')).not.toBeInTheDocument();
+            // Fallback title stays in DOM (visually hidden) for aria-labelledby
+            expect(screen.getByText('Fallback Title')).toBeInTheDocument();
         });
 
         it('shows fallback title when no DrawerTitle is used', async () => {
@@ -663,6 +662,73 @@ describe('Drawer', () => {
             });
 
             expect(screen.queryByText('Panel B')).not.toBeInTheDocument();
+        });
+    });
+
+    describe('DrawerProgressBar', () => {
+        it('renders progress bar with auto-calculated value from pagination', async () => {
+            const Wrapper = () => {
+                const pages = ['a', 'b', 'c'] as const;
+                const pagination = usePagination<typeof pages>('b');
+                return (
+                    <Drawer isOpen={true} title="Test" onClose={vi.fn()} pagination={pagination} progressBar>
+                        <DrawerPage id="a">Page A</DrawerPage>
+                        <DrawerPage id="b">Page B</DrawerPage>
+                        <DrawerPage id="c">Page C</DrawerPage>
+                    </Drawer>
+                );
+            };
+
+            render(<Wrapper />);
+
+            await waitFor(() => {
+                const bar = screen.getByRole('progressbar');
+                expect(bar).toBeInTheDocument();
+                // Page 'b' is index 1, so (1+1)/3 * 100 ≈ 67
+                expect(bar).toHaveAttribute('aria-valuenow', '67');
+            });
+        });
+
+        it('renders progress bar with explicit value override', async () => {
+            const Wrapper = () => {
+                const pages = ['a', 'b'] as const;
+                const pagination = usePagination<typeof pages>('a');
+                return (
+                    <Drawer isOpen={true} title="Test" onClose={vi.fn()} pagination={pagination}>
+                        <DrawerPage id="a">Page A</DrawerPage>
+                        <DrawerPage id="b">Page B</DrawerPage>
+                        <DrawerProgressBar value={42} />
+                    </Drawer>
+                );
+            };
+
+            render(<Wrapper />);
+
+            await waitFor(() => {
+                const bar = screen.getByRole('progressbar');
+                expect(bar).toBeInTheDocument();
+                expect(bar).toHaveAttribute('aria-valuenow', '42');
+            });
+        });
+
+        it('clamps explicit value to 0–100 range', async () => {
+            const Wrapper = () => {
+                const pages = ['a'] as const;
+                const pagination = usePagination<typeof pages>('a');
+                return (
+                    <Drawer isOpen={true} title="Test" onClose={vi.fn()} pagination={pagination}>
+                        <DrawerPage id="a">Page A</DrawerPage>
+                        <DrawerProgressBar value={150} />
+                    </Drawer>
+                );
+            };
+
+            render(<Wrapper />);
+
+            await waitFor(() => {
+                const bar = screen.getByRole('progressbar');
+                expect(bar).toHaveAttribute('aria-valuenow', '100');
+            });
         });
     });
 });
