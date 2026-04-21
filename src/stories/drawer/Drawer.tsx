@@ -243,17 +243,25 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
     // Sync spacer height with absolute-positioned bottom panel so content doesn't get clipped
     const bottomPanelElRef = useRef<HTMLDivElement | null>(null);
     const spacerRef = useRef<HTMLDivElement | null>(null);
+    const appendEntries = slotContext?.bottomPanelAppendEntries;
     useEffect(() => {
         if (!showBottomPanel) return;
         const panel = bottomPanelElRef.current;
         const spacer = spacerRef.current;
         if (!panel || !spacer) return;
-        const observer = new ResizeObserver(([entry]) => {
-            spacer.style.height = `${entry.contentRect.height}px`;
-        });
+
+        const update = () => {
+            spacer.style.height = `${panel.offsetHeight}px`;
+        };
+        update();
+
+        const observer = new ResizeObserver(update);
         observer.observe(panel);
+        for (const child of panel.querySelectorAll<HTMLElement>('[data-slot-mode]')) {
+            observer.observe(child);
+        }
         return () => observer.disconnect();
-    }, [showBottomPanel]);
+    }, [showBottomPanel, appendEntries]);
 
     const [loadedPage, setLoadedPage] = useState<string | null>(pagination?.currentPage ?? null);
 
