@@ -433,7 +433,6 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 }
 
 .bottomPanel {
-    border-top: 1px solid var(--pte-new-colors-borderStrong);
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -442,16 +441,6 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 .bottomPanelSlots {
     display: flex;
     flex-direction: column;
-
-    // Auto-separator between portaled slot items
-    > * + * {
-        border-top: 1px solid var(--pte-new-colors-borderMedium);
-    }
-
-    // Separator between slots and base bottomPanel content that follows
-    &:not(:empty) ~ * {
-        border-top: 1px solid var(--pte-new-colors-borderMedium);
-    }
 }
 
 .bottomPanelContent {
@@ -464,6 +453,7 @@ $panelAnimationDelay: var(--pte-animations-duration-fast);
 }
 
 .bottomPanelSlotItem {
+    border-top: 1px solid var(--pte-new-colors-borderStrong);
     position: relative;
     padding: 20px;
 }
