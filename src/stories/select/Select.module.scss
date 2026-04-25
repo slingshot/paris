@@ -60,6 +60,11 @@
     align-items: center;
     gap: 8px;
 
+    // Required for iOS Safari to synthesize a click after touchend on a
+    // non-natively-clickable element. Without this, tapping an option on
+    // mobile never closes the Listbox.
+    cursor: pointer;
+
     padding: 6.5px 14px;
     //margin: -1px;
 
