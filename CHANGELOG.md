@@ -1,5 +1,11 @@
 # paris
 
+## 0.22.2
+
+### Patch Changes
+
+- 26c6f0d: fix(select): add `cursor: pointer` to listbox options so iOS Safari synthesizes a click after tap. Without it, tapping a `Select` option on mobile would not close the listbox or fire `onChange`.
+
 ## 0.22.1
 
 ### Patch Changes
