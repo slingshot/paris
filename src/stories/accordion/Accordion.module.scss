@@ -39,11 +39,23 @@
     }
 
     .dropdown {
-        overflow: hidden;
+        display: grid;
+        grid-template-rows: 0fr;
+        opacity: 0;
         cursor: auto;
+        transition:
+            grid-template-rows 800ms cubic-bezier(0.87, 0, 0.13, 1),
+            opacity 800ms cubic-bezier(0.87, 0, 0.13, 1);
+
+        &.open {
+            grid-template-rows: 1fr;
+            opacity: 1;
+        }
     }
 
     .dropdownContent {
+        min-height: 0;
+        overflow: hidden;
         padding: 12px;
         display: flex;
         flex-direction: column;
@@ -100,11 +112,23 @@
     }
 
     .dropdown {
-        overflow: hidden;
+        display: grid;
+        grid-template-rows: 0fr;
+        opacity: 0;
         cursor: auto;
+        transition:
+            grid-template-rows 800ms cubic-bezier(0.87, 0, 0.13, 1),
+            opacity 800ms cubic-bezier(0.87, 0, 0.13, 1);
+
+        &.open {
+            grid-template-rows: 1fr;
+            opacity: 1;
+        }
     }
 
     .dropdownContent {
+        min-height: 0;
+        overflow: hidden;
         padding: 12px;
         display: flex;
         flex-direction: column;

@@ -1,8 +1,6 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { clsx } from 'clsx';
-import type { MotionProps } from 'framer-motion';
-import { AnimatePresence, motion } from 'framer-motion';
 import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { useState } from 'react';
 import { ChevronRight, Icon } from '../icon';
@@ -31,7 +29,7 @@ export type AccordionProps = {
     overrides?: {
         container?: ComponentPropsWithoutRef<'div'>;
         titleContainer?: ComponentPropsWithoutRef<'div'>;
-        dropdownContainer?: ComponentPropsWithoutRef<'div'> & MotionProps;
+        dropdownContainer?: ComponentPropsWithoutRef<'div'>;
         dropdownContent?: ComponentPropsWithoutRef<'div'>;
     };
 };
@@ -107,37 +105,25 @@ export const Accordion: FC<AccordionProps> = ({
                     <Icon icon={ChevronRight} size={16} className={clsx(styles.chevron, open && styles.open)} />
                 )}
             </div>
-            <AnimatePresence>
-                {open && (
-                    <motion.div
-                        key="content"
-                        initial="collapsed"
-                        animate="open"
-                        exit="collapsed"
-                        variants={{
-                            open: { opacity: 1, height: 'auto', y: 0 },
-                            collapsed: { opacity: 0, height: 0, y: -10 },
-                        }}
-                        transition={{
-                            duration: 0.8,
-                            ease: [0.87, 0, 0.13, 1],
-                        }}
-                        {...overrides?.dropdownContainer}
-                        className={clsx(styles.dropdown, overrides?.dropdownContainer?.className)}
-                    >
-                        <div
-                            {...overrides?.dropdownContent}
-                            className={clsx(
-                                styles.dropdownContent,
-                                styles[size],
-                                overrides?.dropdownContent?.className,
-                            )}
-                        >
-                            <TextWhenString kind="paragraphXSmall">{children}</TextWhenString>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {/*
+             * Collapse uses the CSS grid-rows trick (`1fr` → `0fr`) instead of
+             * animating `height: auto` via JS. JS height-auto animations flash an
+             * intermediate layout state on open/close that causes scrollable
+             * ancestors to clamp `scrollTop` to 0 in the first paint frame — a
+             * visible scroll-snap before the animation starts.
+             */}
+            <div
+                aria-hidden={!open}
+                {...overrides?.dropdownContainer}
+                className={clsx(styles.dropdown, open && styles.open, overrides?.dropdownContainer?.className)}
+            >
+                <div
+                    {...overrides?.dropdownContent}
+                    className={clsx(styles.dropdownContent, styles[size], overrides?.dropdownContent?.className)}
+                >
+                    <TextWhenString kind="paragraphXSmall">{children}</TextWhenString>
+                </div>
+            </div>
         </div>
     );
 };
