@@ -9,7 +9,9 @@ describe('Accordion', () => {
 
     it('does not show children when collapsed', () => {
         render(<Accordion title="Title">Hidden content</Accordion>);
-        expect(screen.queryByText('Hidden content')).not.toBeInTheDocument();
+        // Content is in the DOM but hidden via aria-hidden on the collapsed dropdown
+        const content = screen.getByText('Hidden content');
+        expect(content.closest('[aria-hidden]')).toHaveAttribute('aria-hidden', 'true');
     });
 
     it('expands on click to reveal children', async () => {
@@ -26,9 +28,9 @@ describe('Accordion', () => {
         expect(screen.getByText('Toggle content')).toBeInTheDocument();
 
         await user.click(button);
-        // AnimatePresence exit animation may keep element mounted briefly
         await waitFor(() => {
-            expect(screen.queryByText('Toggle content')).not.toBeInTheDocument();
+            const content = screen.getByText('Toggle content');
+            expect(content.closest('[aria-hidden]')).toHaveAttribute('aria-hidden', 'true');
         });
     });
 
@@ -69,7 +71,7 @@ describe('Accordion', () => {
             </Accordion>,
         );
 
-        expect(screen.queryByText('Controlled content')).not.toBeInTheDocument();
+        expect(screen.getByText('Controlled content').closest('[aria-hidden]')).toHaveAttribute('aria-hidden', 'true');
 
         // Open externally
         rerender(
@@ -77,7 +79,7 @@ describe('Accordion', () => {
                 Controlled content
             </Accordion>,
         );
-        expect(screen.getByText('Controlled content')).toBeInTheDocument();
+        expect(screen.getByText('Controlled content').closest('[aria-hidden]')).toHaveAttribute('aria-hidden', 'false');
 
         // Click should call onOpenChange but not change state (controlled)
         await user.click(screen.getByRole('button'));

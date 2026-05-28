@@ -34,6 +34,6 @@ $font-styles: (
 @each $style-name,
 $style-value in $font-styles {
     .fontStyle-#{$style-name} {
-        font-style: $style-value;
+        font-style: $style-value !important;
     }
 }

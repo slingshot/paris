@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { render, screen, waitFor } from '../../test/render';
+import { render, screen, waitFor, within } from '../../test/render';
 import type { AccordionSelectOption } from './AccordionSelect';
 import { AccordionSelect } from './AccordionSelect';
 
@@ -38,7 +38,8 @@ describe('AccordionSelect', () => {
 
     it('displays the selected option in the header', () => {
         render(<AccordionSelect options={options} value="champagne" />);
-        expect(screen.getByText('In an alleyway, drinking champagne')).toBeInTheDocument();
+        // Option text also appears in the collapsed-but-mounted dropdown list, so scope to the header
+        expect(within(screen.getByRole('button')).getByText('In an alleyway, drinking champagne')).toBeInTheDocument();
     });
 
     it('expands to show all options when header is clicked', async () => {
@@ -253,7 +254,9 @@ describe('AccordionSelect', () => {
     describe('uncontrolled selection', () => {
         it('renders with defaultValue', () => {
             render(<AccordionSelect options={options} defaultValue="champagne" />);
-            expect(screen.getByText('In an alleyway, drinking champagne')).toBeInTheDocument();
+            expect(
+                within(screen.getByRole('button')).getByText('In an alleyway, drinking champagne'),
+            ).toBeInTheDocument();
         });
 
         it('renders with placeholder when no defaultValue', () => {
