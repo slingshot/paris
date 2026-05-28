@@ -53,9 +53,12 @@
         }
     }
 
-    .dropdownContent {
+    .dropdownClip {
         min-height: 0;
         overflow: hidden;
+    }
+
+    .dropdownContent {
         padding: 12px;
         display: flex;
         flex-direction: column;
@@ -126,9 +129,12 @@
         }
     }
 
-    .dropdownContent {
+    .dropdownClip {
         min-height: 0;
         overflow: hidden;
+    }
+
+    .dropdownContent {
         padding: 12px;
         display: flex;
         flex-direction: column;

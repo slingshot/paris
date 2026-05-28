@@ -117,11 +117,20 @@ export const Accordion: FC<AccordionProps> = ({
                 {...overrides?.dropdownContainer}
                 className={clsx(styles.dropdown, open && styles.open, overrides?.dropdownContainer?.className)}
             >
-                <div
-                    {...overrides?.dropdownContent}
-                    className={clsx(styles.dropdownContent, styles[size], overrides?.dropdownContent?.className)}
-                >
-                    <TextWhenString kind="paragraphXSmall">{children}</TextWhenString>
+                {/*
+                 * dropdownClip is the grid item. It owns `min-height: 0` and
+                 * `overflow: hidden` so the parent's `grid-template-rows: 0fr`
+                 * can fully collapse to 0 height. Padding/background-color
+                 * stay on .dropdownContent (one level deeper) so they don't
+                 * extend the grid item's box when closed.
+                 */}
+                <div className={styles.dropdownClip}>
+                    <div
+                        {...overrides?.dropdownContent}
+                        className={clsx(styles.dropdownContent, styles[size], overrides?.dropdownContent?.className)}
+                    >
+                        <TextWhenString kind="paragraphXSmall">{children}</TextWhenString>
+                    </div>
                 </div>
             </div>
         </div>
