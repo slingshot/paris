@@ -1,5 +1,40 @@
 # paris
 
+## 0.22.2
+
+### Patch Changes
+
+- 5173ecf: Fix scroll snap when collapsing `Accordion` and `AccordionSelect` inside a scrollable parent.
+
+  When the dropdown was opened, the user scrolled past it, and then closed it,
+  the scrollable ancestor would instantly snap to the position it would occupy
+  once the dropdown was fully closed — while the visual collapse animation was
+  still running. The cause was framer-motion's `height: 'auto' → 0` exit
+  animation thrashing the layout in the first paint frame, which the browser
+  responded to by clamping `scrollTop`.
+
+  The collapse animation now uses the CSS grid-rows trick (`grid-template-rows:
+1fr` → `0fr`) instead. Layout stays stable across the entire transition, so
+  `scrollTop` clamps smoothly in step with the animation. Duration and easing
+  match the previous behavior (800ms, `cubic-bezier(0.87, 0, 0.13, 1)`).
+
+  One small behavior change: collapsed content remains in the DOM (it was
+  previously unmounted by `AnimatePresence`). The container is marked
+  `aria-hidden` when closed and option buttons receive `tabIndex={-1}`, so
+  screen readers and keyboard navigation continue to skip hidden content.
+
+- 5173ecf: Update runtime dependencies to current semver-compatible versions and patch
+  security advisories. Notable bumps: Tiptap 3.22 → 3.23, Framer Motion 12.24
+  → 12.40, Headless UI 2.2.4 → 2.2.10, Ariakit 0.4.20 → 0.4.28, react-hot-toast
+  2.4 → 2.6, lucide-react 1.7 → 1.16, ts-deepmerge 6.0 → 6.2. No API changes
+  expected, but consumers will pick up the newer transitives on install.
+- 5173ecf: `<Text fontStyle="italic">` is now reliably italic. Mirror the pattern already
+  used by weight classes and apply `!important` to `.fontStyle-*` rules.
+  Without it, the per-kind typography classes (e.g. `.paragraphSmall { font-style: normal }`,
+  emitted when consumers define per-style `font-style` theme variables) win
+  over `.fontStyle-italic` and suppress italic on `<Text>` and anything that
+  delegates to it — notably `<Markdown>` rendering `<em>`.
+
 ## 0.22.1
 
 ### Patch Changes
