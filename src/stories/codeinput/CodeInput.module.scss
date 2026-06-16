@@ -8,6 +8,7 @@
 // Validating state: lock interaction and sweep a glare that enters from the right (last field).
 .loading {
     position: relative;
+    overflow: hidden;
     pointer-events: none;
 
     // The glare — a soft highlight band that enters from the right and sweeps across, looping.

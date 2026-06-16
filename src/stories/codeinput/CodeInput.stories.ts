@@ -34,6 +34,14 @@ export const Disabled: Story = {
     },
 };
 
+export const Loading: Story = {
+    args: { loading: true },
+    render: function Render(args) {
+        const [value, setValue] = useState('123456');
+        return createElement(CodeInput, { ...args, value, onChange: setValue });
+    },
+};
+
 export const FourDigits: Story = {
     args: { length: 4 },
     render: function Render(args) {
