@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { clsx } from 'clsx';
 import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { useState } from 'react';
-import { ChevronRight, Icon } from '../icon';
+import { ArrowRight, ChevronRight, Icon } from '../icon';
 import { TextWhenString } from '../utility';
 import styles from './Accordion.module.scss';
 
@@ -20,6 +20,11 @@ export type AccordionProps = {
      * @default small
      */
     size?: 'small' | 'large';
+    /**
+     * Overrides the toggle icon. When set, this icon is used regardless of `kind`
+     * (otherwise `default` shows a plus and `card` shows a chevron).
+     */
+    iconType?: 'chevron' | 'arrow';
     /** Whether the Accordion is open. If provided, the Accordion will be a controlled component. */
     isOpen?: boolean;
     /** A handler for when the Accordion state changes. */
@@ -50,6 +55,7 @@ export const Accordion: FC<AccordionProps> = ({
     title,
     kind = 'default',
     size = 'small',
+    iconType,
     isOpen,
     onOpenChange,
     children,
@@ -96,13 +102,23 @@ export const Accordion: FC<AccordionProps> = ({
                 <TextWhenString kind="paragraphSmall" weight="medium">
                     {title}
                 </TextWhenString>
-                {kind === 'default' && (
-                    <div className={styles.plusIcon}>
-                        <FontAwesomeIcon icon={faPlus} className={clsx(open && styles.open)} />
-                    </div>
-                )}
-                {kind === 'card' && (
-                    <Icon icon={ChevronRight} size={16} className={clsx(styles.chevron, open && styles.open)} />
+                {iconType ? (
+                    <Icon
+                        icon={iconType === 'arrow' ? ArrowRight : ChevronRight}
+                        size={16}
+                        className={clsx(styles.chevron, open && styles.open)}
+                    />
+                ) : (
+                    <>
+                        {kind === 'default' && (
+                            <div className={styles.plusIcon}>
+                                <FontAwesomeIcon icon={faPlus} className={clsx(open && styles.open)} />
+                            </div>
+                        )}
+                        {kind === 'card' && (
+                            <Icon icon={ChevronRight} size={16} className={clsx(styles.chevron, open && styles.open)} />
+                        )}
+                    </>
                 )}
             </div>
             {/*
