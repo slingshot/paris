@@ -1,3 +1,17 @@
+// Shared toggle icon (used when a custom `icon` is passed): flips a
+// down-pointing icon (e.g. a chevron) up when open, the standard accordion cue.
+.toggleIcon {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px;
+    transition: transform var(--pte-animations-duration-gradual) var(--pte-animations-timing-easeInOutExpo);
+    transform: rotate(0);
+
+    &.open {
+        transform: rotate(-180deg);
+    }
+}
+
 .default {
     color: var(--pte-new-colors-contentPrimary);
     border-bottom: 1px solid var(--pte-new-colors-borderMedium);

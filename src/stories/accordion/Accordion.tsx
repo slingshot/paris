@@ -3,7 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { clsx } from 'clsx';
 import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { useState } from 'react';
-import { ArrowRight, ChevronRight, Icon } from '../icon';
+import { renderEnhancer } from '../../helpers/renderEnhancer';
+import type { Enhancer } from '../../types/Enhancer';
+import { ChevronRight, Icon } from '../icon';
 import { TextWhenString } from '../utility';
 import styles from './Accordion.module.scss';
 
@@ -21,10 +23,11 @@ export type AccordionProps = {
      */
     size?: 'small' | 'large';
     /**
-     * Overrides the toggle icon. When set, this icon is used regardless of `kind`
-     * (otherwise `default` shows a plus and `card` shows a chevron).
+     * Overrides the toggle icon. Accepts any icon (an `Icon` element or a render
+     * function `({ size }) => ReactNode`). When set, it replaces the default
+     * plus/chevron and rotates on open/close like the built-in chevron.
      */
-    iconType?: 'chevron' | 'arrow';
+    icon?: Enhancer;
     /** Whether the Accordion is open. If provided, the Accordion will be a controlled component. */
     isOpen?: boolean;
     /** A handler for when the Accordion state changes. */
@@ -55,7 +58,7 @@ export const Accordion: FC<AccordionProps> = ({
     title,
     kind = 'default',
     size = 'small',
-    iconType,
+    icon,
     isOpen,
     onOpenChange,
     children,
@@ -102,23 +105,14 @@ export const Accordion: FC<AccordionProps> = ({
                 <TextWhenString kind="paragraphSmall" weight="medium">
                     {title}
                 </TextWhenString>
-                {iconType ? (
-                    <Icon
-                        icon={iconType === 'arrow' ? ArrowRight : ChevronRight}
-                        size={16}
-                        className={clsx(styles.chevron, open && styles.open)}
-                    />
+                {icon ? (
+                    <span className={clsx(styles.toggleIcon, open && styles.open)}>{renderEnhancer(icon, 16)}</span>
+                ) : kind === 'default' ? (
+                    <div className={styles.plusIcon}>
+                        <FontAwesomeIcon icon={faPlus} className={clsx(open && styles.open)} />
+                    </div>
                 ) : (
-                    <>
-                        {kind === 'default' && (
-                            <div className={styles.plusIcon}>
-                                <FontAwesomeIcon icon={faPlus} className={clsx(open && styles.open)} />
-                            </div>
-                        )}
-                        {kind === 'card' && (
-                            <Icon icon={ChevronRight} size={16} className={clsx(styles.chevron, open && styles.open)} />
-                        )}
-                    </>
+                    <Icon icon={ChevronRight} size={16} className={clsx(styles.chevron, open && styles.open)} />
                 )}
             </div>
             {/*
