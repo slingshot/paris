@@ -60,6 +60,7 @@
         "./card": "./src/stories/card/index.ts",
         "./cardbutton": "./src/stories/cardbutton/index.ts",
         "./checkbox": "./src/stories/checkbox/index.ts",
+        "./codeinput": "./src/stories/codeinput/index.ts",
         "./combobox": "./src/stories/combobox/index.ts",
         "./dialog": "./src/stories/dialog/index.ts",
         "./drawer": "./src/stories/drawer/index.ts",

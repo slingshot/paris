@@ -1,0 +1,77 @@
+.container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 0;
+}
+
+// Validating state: lock interaction and sweep a glare that enters from the right (last field).
+.loading {
+    position: relative;
+    overflow: hidden;
+    pointer-events: none;
+
+    // The glare — a soft highlight band that enters from the right and sweeps across, looping.
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        border-radius: 4px;
+        background: linear-gradient(
+            100deg,
+            transparent 30%,
+            rgb(255 255 255 / 70%) 50%,
+            transparent 70%
+        );
+        transform: translateX(130%);
+        animation: codeGlare 1.3s ease-in-out 0.45s infinite;
+    }
+}
+
+@keyframes codeGlare {
+    to {
+        transform: translateX(-130%);
+    }
+}
+
+.segment {
+    box-sizing: border-box;
+    width: 30px;
+    height: 34px;
+    padding: 6.5px 2px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: var(--pte-new-colors-inputFill);
+    color: var(--pte-new-colors-contentPrimary);
+    text-align: center;
+    outline: none;
+    caret-color: var(--pte-new-colors-contentPrimary);
+
+    font-size: var(--pte-typography-styles-paragraphSmall-fontSize);
+    font-style: var(--pte-typography-styles-paragraphSmall-fontStyle);
+    font-weight: var(--pte-typography-styles-paragraphSmall-fontWeight);
+    letter-spacing: var(--pte-typography-styles-paragraphSmall-letterSpacing);
+    line-height: var(--pte-typography-styles-paragraphSmall-lineHeight);
+
+    transition: var(--pte-animations-interaction);
+
+    &:focus {
+        background-color: var(--pte-new-colors-inputFillFocus);
+        border-color: var(--pte-new-colors-inputBorderFocus);
+    }
+
+    &:disabled {
+        background-color: var(--pte-new-colors-inputFillDisabled);
+        color: var(--pte-new-colors-contentDisabled);
+        cursor: default;
+        pointer-events: none;
+    }
+
+    &.error {
+        background-color: var(--pte-new-colors-inputFillNegative);
+        border-color: var(--pte-new-colors-inputBorderNegative);
+        color: var(--pte-new-colors-contentNegative);
+        caret-color: var(--pte-new-colors-contentNegative);
+    }
+}
