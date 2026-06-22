@@ -195,7 +195,13 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>(props:
     }, [onAfterClose]);
 
     return (
-        <Transition show={isOpen} afterLeave={handleAfterLeave}>
+        // `appear` runs the enter transition on the very first mount. Without it,
+        // a Drawer that is conditionally rendered and mounts already-open (i.e. its
+        // first render has `show={true}`) snaps straight to the open state instead of
+        // animating in. Always-mounted Drawers mount with `show={false}`, so `appear`
+        // is a no-op for them — it only adds the (desired) enter animation for the
+        // mount-open case.
+        <Transition show={isOpen} appear afterLeave={handleAfterLeave}>
             <Dialog
                 as="div"
                 className={clsx(styles.root, props.overrides?.dialog?.className)}
