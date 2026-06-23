@@ -1,3 +1,5 @@
+'use client';
+
 import type { MenuButtonProps, MenuItemProps, MenuItemsProps, MenuProps } from '@headlessui/react';
 import {
     Menu as HeadlessMenu,

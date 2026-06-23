@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 
 export type PaginationState<T extends string[] | readonly string[] = string[]> = {

@@ -1,3 +1,5 @@
+'use client';
+
 import type { ReactNode } from 'react';
 import { isValidElement, memo } from 'react';
 import type { Enhancer } from '../types/Enhancer';

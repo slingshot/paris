@@ -1,3 +1,5 @@
+'use client';
+
 import type { CSSLength } from '@ssh/csstypes';
 import { clsx } from 'clsx';
 import type { ComponentPropsWithoutRef, CSSProperties, FC, ReactNode } from 'react';

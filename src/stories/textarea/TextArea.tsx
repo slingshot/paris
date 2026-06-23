@@ -1,3 +1,5 @@
+'use client';
+
 import { clsx } from 'clsx';
 import type { ComponentPropsWithoutRef, ForwardedRef } from 'react';
 import { forwardRef, useId } from 'react';
