@@ -14,8 +14,8 @@ This document provides instructions for AI agents working with the Paris design 
 
 ### Key Characteristics
 
-- **Unbundled components:** Ships as raw `.tsx` files with SCSS modules (not pre-compiled)
-- **Framework:** Optimized for Next.js 14+ with built-in TypeScript and SCSS module support
+- **Precompiled output:** Authored as `.tsx` + SCSS modules, compiled via Vite to ESM in `dist/` (per-component extracted CSS, preserved `'use client'`, per-file `.d.ts`)
+- **Framework:** Works in Next.js 14+ (App Router / RSC) and Vite React with no `transpilePackages` and no Sass toolchain
 - **Styling:** Uses SCSS modules (no CSS-in-JS, no Tailwind for component internals)
 - **Theming:** Powered by `pte` (Paris Theme Engine) using CSS variables
 - **Accessibility:** Built on accessible primitives from Ariakit, Headless UI, and Radix UI
@@ -351,8 +351,9 @@ The project uses Biome for linting and formatting (configured in `biome.json`). 
 ### Core Dependencies
 - `react` ^19.x (peer)
 - `react-dom` ^19.x (peer)
-- `sass` ^1.x (peer)
 - `typescript` ^5.0 (peer)
+
+(`sass` is now a build-time dev dependency only — consumers no longer need it.)
 
 ### UI Primitives
 - `@ariakit/react` - Accessible component primitives
@@ -395,12 +396,7 @@ npm install paris
 
 ### Next.js Configuration
 
-```js
-// next.config.js
-module.exports = {
-    transpilePackages: ['paris'],
-};
-```
+No special configuration is required — Paris ships precompiled ESM with extracted CSS. You do **not** need `transpilePackages: ['paris']` or a `sass` dependency. (When migrating from an older Paris, remove both.) Verified against the Next.js App Router with React Server Components.
 
 ### TypeScript Configuration
 
@@ -417,7 +413,7 @@ module.exports = {
 ```tsx
 // app/layout.tsx
 import { generateCSS, theme } from 'paris/theme';
-import 'paris/theme/global.scss';
+import 'paris/theme/global.css';
 
 export default function RootLayout({ children }) {
     return (
@@ -489,7 +485,7 @@ The project uses [Changesets](https://github.com/changesets/changesets) for vers
 
 1. Check `src/stories/theme/themes.ts` for token definitions
 2. Verify CSS variable names match (format: `--pte-<path>`)
-3. Ensure `paris/theme/global.scss` is imported
+3. Ensure `paris/theme/global.css` is imported
 4. Verify `paris-container` class is on root element
 
 ### Adding a New Icon
