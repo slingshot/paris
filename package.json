@@ -3,6 +3,11 @@
     "author": "Sanil Chawla <sanil@slingshot.fm> (https://sanil.co)",
     "description": "Paris is Slingshot's React design system. It's a collection of reusable components, design tokens, and guidelines that help us build consistent, accessible, and performant user interfaces.",
     "version": "0.23.1",
+    "type": "module",
+    "sideEffects": [
+        "**/*.css",
+        "**/*.scss"
+    ],
     "homepage": "https://paris.slingshot.fm",
     "license": "MIT",
     "repository": {
@@ -10,8 +15,7 @@
         "url": "https://github.com/slingshot/paris"
     },
     "files": [
-        "src/stories",
-        "src",
+        "dist",
         "README.md",
         "CHANGELOG.md"
     ],
@@ -27,21 +31,23 @@
         "storybook"
     ],
     "scripts": {
-        "build": "bun run generate:exports && next build",
+        "build": "bun run generate:exports && vite build && node scripts/buildThemeCss.mjs",
+        "build:site": "next build",
+        "prepack": "bun run build",
         "storybook": "storybook dev -p 6006",
         "build:storybook": "storybook build",
-        "create:component": "node ./scripts/createComponent.js",
-        "generate:exports": "node ./scripts/generateExports.js",
+        "create:component": "node ./scripts/createComponent.cjs",
+        "generate:exports": "node ./scripts/generateExports.cjs",
         "generate:theme": "pte export ./src/stories/theme/themes.ts LightTheme -o ./public/pte.css",
         "generate:text": "ts-node --esm ./scripts/text.ts",
-        "release": "bun run generate:exports && bunx changeset publish",
+        "release": "bun run build && bunx changeset publish",
         "prepare": "test -n \"$CI\" || lefthook install",
         "test": "vitest run --project unit",
         "test:watch": "vitest --project unit",
         "test:coverage": "vitest run --project unit --coverage",
         "test:storybook": "vitest run --project storybook",
         "test:all": "vitest run",
-        "test:coverage-check": "node scripts/checkTestCoverage.js",
+        "test:coverage-check": "node scripts/checkTestCoverage.cjs",
         "typecheck": "tsc --noEmit",
         "lint": "biome check .",
         "lint:fix": "biome check --write .",
@@ -51,39 +57,136 @@
         "node": "22.x"
     },
     "exports": {
-        "./*": "./src/stories/*",
-        "./accordion": "./src/stories/accordion/index.ts",
-        "./accordionselect": "./src/stories/accordionselect/index.ts",
-        "./avatar": "./src/stories/avatar/index.ts",
-        "./button": "./src/stories/button/index.ts",
-        "./callout": "./src/stories/callout/index.ts",
-        "./card": "./src/stories/card/index.ts",
-        "./cardbutton": "./src/stories/cardbutton/index.ts",
-        "./checkbox": "./src/stories/checkbox/index.ts",
-        "./codeinput": "./src/stories/codeinput/index.ts",
-        "./combobox": "./src/stories/combobox/index.ts",
-        "./dialog": "./src/stories/dialog/index.ts",
-        "./drawer": "./src/stories/drawer/index.ts",
-        "./field": "./src/stories/field/index.ts",
-        "./icon": "./src/stories/icon/index.ts",
-        "./informationaltooltip": "./src/stories/informationaltooltip/index.ts",
-        "./input": "./src/stories/input/index.ts",
-        "./markdown": "./src/stories/markdown/index.ts",
-        "./markdowneditor": "./src/stories/markdowneditor/index.ts",
-        "./menu": "./src/stories/menu/index.ts",
-        "./pagination": "./src/stories/pagination/index.ts",
-        "./popover": "./src/stories/popover/index.ts",
-        "./select": "./src/stories/select/index.ts",
-        "./styledlink": "./src/stories/styledlink/index.ts",
-        "./table": "./src/stories/table/index.ts",
-        "./tabs": "./src/stories/tabs/index.ts",
-        "./tag": "./src/stories/tag/index.ts",
-        "./text": "./src/stories/text/index.ts",
-        "./textarea": "./src/stories/textarea/index.ts",
-        "./theme": "./src/stories/theme/index.ts",
-        "./tilt": "./src/stories/tilt/index.ts",
-        "./toast": "./src/stories/toast/index.ts",
-        "./utility": "./src/stories/utility/index.ts"
+        "./styles.css": "./dist/styles.css",
+        "./theme/global.css": "./dist/stories/theme/global.css",
+        "./accordion": {
+            "types": "./dist/stories/accordion/index.d.ts",
+            "import": "./dist/stories/accordion/index.js"
+        },
+        "./accordionselect": {
+            "types": "./dist/stories/accordionselect/index.d.ts",
+            "import": "./dist/stories/accordionselect/index.js"
+        },
+        "./avatar": {
+            "types": "./dist/stories/avatar/index.d.ts",
+            "import": "./dist/stories/avatar/index.js"
+        },
+        "./button": {
+            "types": "./dist/stories/button/index.d.ts",
+            "import": "./dist/stories/button/index.js"
+        },
+        "./callout": {
+            "types": "./dist/stories/callout/index.d.ts",
+            "import": "./dist/stories/callout/index.js"
+        },
+        "./card": {
+            "types": "./dist/stories/card/index.d.ts",
+            "import": "./dist/stories/card/index.js"
+        },
+        "./cardbutton": {
+            "types": "./dist/stories/cardbutton/index.d.ts",
+            "import": "./dist/stories/cardbutton/index.js"
+        },
+        "./checkbox": {
+            "types": "./dist/stories/checkbox/index.d.ts",
+            "import": "./dist/stories/checkbox/index.js"
+        },
+        "./codeinput": {
+            "types": "./dist/stories/codeinput/index.d.ts",
+            "import": "./dist/stories/codeinput/index.js"
+        },
+        "./combobox": {
+            "types": "./dist/stories/combobox/index.d.ts",
+            "import": "./dist/stories/combobox/index.js"
+        },
+        "./dialog": {
+            "types": "./dist/stories/dialog/index.d.ts",
+            "import": "./dist/stories/dialog/index.js"
+        },
+        "./drawer": {
+            "types": "./dist/stories/drawer/index.d.ts",
+            "import": "./dist/stories/drawer/index.js"
+        },
+        "./field": {
+            "types": "./dist/stories/field/index.d.ts",
+            "import": "./dist/stories/field/index.js"
+        },
+        "./icon": {
+            "types": "./dist/stories/icon/index.d.ts",
+            "import": "./dist/stories/icon/index.js"
+        },
+        "./informationaltooltip": {
+            "types": "./dist/stories/informationaltooltip/index.d.ts",
+            "import": "./dist/stories/informationaltooltip/index.js"
+        },
+        "./input": {
+            "types": "./dist/stories/input/index.d.ts",
+            "import": "./dist/stories/input/index.js"
+        },
+        "./markdown": {
+            "types": "./dist/stories/markdown/index.d.ts",
+            "import": "./dist/stories/markdown/index.js"
+        },
+        "./markdowneditor": {
+            "types": "./dist/stories/markdowneditor/index.d.ts",
+            "import": "./dist/stories/markdowneditor/index.js"
+        },
+        "./menu": {
+            "types": "./dist/stories/menu/index.d.ts",
+            "import": "./dist/stories/menu/index.js"
+        },
+        "./pagination": {
+            "types": "./dist/stories/pagination/index.d.ts",
+            "import": "./dist/stories/pagination/index.js"
+        },
+        "./popover": {
+            "types": "./dist/stories/popover/index.d.ts",
+            "import": "./dist/stories/popover/index.js"
+        },
+        "./select": {
+            "types": "./dist/stories/select/index.d.ts",
+            "import": "./dist/stories/select/index.js"
+        },
+        "./styledlink": {
+            "types": "./dist/stories/styledlink/index.d.ts",
+            "import": "./dist/stories/styledlink/index.js"
+        },
+        "./table": {
+            "types": "./dist/stories/table/index.d.ts",
+            "import": "./dist/stories/table/index.js"
+        },
+        "./tabs": {
+            "types": "./dist/stories/tabs/index.d.ts",
+            "import": "./dist/stories/tabs/index.js"
+        },
+        "./tag": {
+            "types": "./dist/stories/tag/index.d.ts",
+            "import": "./dist/stories/tag/index.js"
+        },
+        "./text": {
+            "types": "./dist/stories/text/index.d.ts",
+            "import": "./dist/stories/text/index.js"
+        },
+        "./textarea": {
+            "types": "./dist/stories/textarea/index.d.ts",
+            "import": "./dist/stories/textarea/index.js"
+        },
+        "./theme": {
+            "types": "./dist/stories/theme/index.d.ts",
+            "import": "./dist/stories/theme/index.js"
+        },
+        "./tilt": {
+            "types": "./dist/stories/tilt/index.d.ts",
+            "import": "./dist/stories/tilt/index.js"
+        },
+        "./toast": {
+            "types": "./dist/stories/toast/index.d.ts",
+            "import": "./dist/stories/toast/index.js"
+        },
+        "./utility": {
+            "types": "./dist/stories/utility/index.d.ts",
+            "import": "./dist/stories/utility/index.js"
+        }
     },
     "dependencies": {
         "@ariakit/react": "^0.4.28",
@@ -124,7 +227,6 @@
         "@types/react-dom": "^19",
         "react": "^19.x",
         "react-dom": "^19.x",
-        "sass": "^1.x",
         "typescript": "^5.0"
     },
     "devDependencies": {
