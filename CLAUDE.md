@@ -4,13 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Paris is Slingshot's React design system. It ships as unbundled `.tsx` components with SCSS modules (not pre-compiled), designed for Next.js 14+ with React 18+ and TypeScript 5+.
+Paris is Slingshot's React design system. It is authored as `.tsx` components with SCSS modules and **compiled (via Vite) to precompiled ESM in `dist/`** — with per-component extracted CSS, preserved `'use client'` directives, and per-file `.d.ts`. It targets Next.js 14+ (App Router / RSC) and Vite React, with React 19 and TypeScript 5+. Consumers need no `transpilePackages` and no Sass toolchain.
 
 ## Commands
 
 ```bash
+bun run build               # Compile the library to dist/ (ESM + extracted CSS + .d.ts)
 bun run storybook           # Run Storybook dev server on port 6006
 bun run build:storybook     # Build Storybook for production
+bun run build:site          # Build the docs site (Next.js)
 bun run create:component Name  # Scaffold a new component
 bun run generate:exports    # Regenerate package.json exports after adding components
 bun run lint                # Run Biome (lint + format check)
@@ -18,6 +20,8 @@ bun run lint:fix            # Auto-fix lint and formatting issues
 bun run format              # Format all files
 bun run typecheck           # Run TypeScript type checking
 ```
+
+The `build` pipeline is `generate:exports` → `vite build` (see `vite.config.ts`) → `scripts/buildThemeCss.mjs` (compiles `theme/global.scss` → `dist/.../global.css` and an aggregate `dist/styles.css`). It runs automatically on publish via `prepack`. `dist/` is git-ignored.
 
 ## Tooling
 
@@ -97,8 +101,9 @@ When making changes to this repository, update the relevant documentation files:
 
 ## Consumer Integration
 
-Paris requires consumers to:
-1. Add `transpilePackages: ['paris']` to next.config.js
-2. Set `moduleResolution: "bundler"` in tsconfig
-3. Import `paris/theme/global.scss` and inject theme CSS variables
-4. Add `className="paris-container"` to root element
+Paris ships precompiled, so consumers only need to:
+1. Set `moduleResolution: "bundler"` (or `nodenext`) in tsconfig
+2. Import `paris/theme/global.css` and inject theme CSS variables (via `generateCSS` / `generateThemeInjection` from `paris/theme`)
+3. Add `className="paris-container"` to the root element
+
+No `transpilePackages` and no `sass` dependency are required — each component auto-imports its own extracted CSS. Verified against Next.js App Router (Server Components) and Vite React. Consumers upgrading from the old unbundled model should remove `transpilePackages: ['paris']`, drop the `sass` dependency, and change `paris/theme/global.scss` → `paris/theme/global.css`.

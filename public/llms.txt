@@ -19,21 +19,16 @@ pnpm add paris
 # or npm install paris / yarn add paris
 ```
 
-## Setup (Next.js)
+## Setup (Next.js App Router or Vite React)
 
-1. Add to next.config.js:
-```js
-module.exports = {
-    transpilePackages: ['paris'],
-};
-```
+Paris ships precompiled ESM with extracted CSS — no `transpilePackages` and no `sass` dependency needed.
 
-2. Set tsconfig moduleResolution to "bundler", "nodenext", or "node16"
+1. Set tsconfig moduleResolution to "bundler", "nodenext", or "node16"
 
-3. In your root layout:
+2. In your root layout (Next.js) or entry (Vite):
 ```tsx
 import { generateCSS, theme } from 'paris/theme';
-import 'paris/theme/global.scss';
+import 'paris/theme/global.css';
 
 <html>
   <head>
