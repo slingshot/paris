@@ -12,6 +12,10 @@ consumer had to transpile Paris themselves (`transpilePackages`) and provide a
 Sass toolchain. As of **v0.24, Paris ships precompiled ESM** with extracted CSS
 and TypeScript declarations.
 
+> **Use `paris@^0.24.1` or newer.** v0.24.0 had a packaging bug where per-component
+> CSS shipped as `*.module.css`, which consumer bundlers re-scoped — so components
+> rendered unstyled. This is fixed in **0.24.1**; always upgrade to at least that.
+
 For the consumer this means **less** setup, not more:
 
 - ❌ Remove `transpilePackages: ['paris']` — no longer needed.
@@ -27,19 +31,20 @@ This works in **Next.js (App Router / RSC) and Vite React** with no special bund
 
 ### Step 1 — Bump the dependency
 
-Update `paris` to `^0.24.0` (or newer) in the consumer's `package.json`, then
+Update `paris` to `^0.24.1` (or newer) in the consumer's `package.json`, then
 install with the project's package manager.
 
 ```bash
 # Detect the package manager from the lockfile, then run the matching install.
-# bun.lock(b) → bun add paris@^0.24.0
-# pnpm-lock.yaml → pnpm add paris@^0.24.0
-# yarn.lock → yarn add paris@^0.24.0
-# package-lock.json → npm install paris@^0.24.0
+# bun.lock(b) → bun add paris@^0.24.1
+# pnpm-lock.yaml → pnpm add paris@^0.24.1
+# yarn.lock → yarn add paris@^0.24.1
+# package-lock.json → npm install paris@^0.24.1
 ```
 
 Verify the installed version afterward (e.g. check `node_modules/paris/package.json`
-has `"version": "0.24.x"` and a `dist/` directory).
+has `"version": "0.24.1"` or higher and a `dist/` directory). Do **not** stay on
+0.24.0 — its per-component CSS is mis-scoped and components will render unstyled.
 
 ### Step 2 — Remove `transpilePackages: ['paris']`
 

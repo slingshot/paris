@@ -21,7 +21,7 @@ bun run format              # Format all files
 bun run typecheck           # Run TypeScript type checking
 ```
 
-The `build` pipeline is `generate:exports` → `vite build` (see `vite.config.ts`) → `scripts/buildThemeCss.mjs` (compiles `theme/global.scss` → `dist/.../global.css` and an aggregate `dist/styles.css`). It runs automatically on publish via `prepack`. `dist/` is git-ignored.
+The `build` pipeline is `generate:exports` → `vite build` (see `vite.config.ts`) → `scripts/postbuild.mjs`, which: (1) renames each extracted `*.module.css` → plain `*.css` and rewrites the JS side-effect imports to match — critical so consumer bundlers (Next.js/Vite) don't re-scope Paris's already-hashed `paris_*` class names; (2) compiles `theme/global.scss` → `dist/.../global.css`; (3) writes an aggregate `dist/styles.css`. It runs automatically on publish via `prepack`. `dist/` is git-ignored.
 
 ## Tooling
 

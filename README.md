@@ -10,11 +10,11 @@ Paris 1.x styling is heavily inspired by Uber's [Base Web](https://baseweb.desig
 
 ## Upgrading from a pre-0.24 version?
 
-As of **v0.24**, Paris ships precompiled — so you can **remove** `transpilePackages: ['paris']` and the `sass` dependency, and switch your global-styles import to `paris/theme/global.css`. Component import paths are unchanged.
+As of **v0.24**, Paris ships precompiled — so you can **remove** `transpilePackages: ['paris']` and the `sass` dependency, and switch your global-styles import to `paris/theme/global.css`. Component import paths are unchanged. (Use **`^0.24.1`** or newer — 0.24.0 had a CSS packaging bug that left components unstyled.)
 
 The easiest way to upgrade is to **hand it to your coding agent**. Copy the prompt below into Claude Code, Cursor, or any agent working in your repo:
 
-> Upgrade this project's `paris` dependency to the latest v0.24+. Follow the official migration guide at https://paris.slingshot.fm/migrate-0.24.md carefully and step by step — fetch and read the whole guide first, make only the changes it describes, and run the project's build/typecheck at the end to confirm everything passes. Report exactly what you changed.
+> Upgrade this project's `paris` dependency to `^0.24.1` (or newer). Follow the official migration guide at https://paris.slingshot.fm/migrate-0.24.md carefully and step by step — fetch and read the whole guide first, make only the changes it describes, and run the project's build/typecheck at the end to confirm everything passes. Report exactly what you changed.
 
 Prefer to do it by hand? The same guide is here: **[Migration guide → v0.24](https://paris.slingshot.fm/migrate-0.24.md)**.
 

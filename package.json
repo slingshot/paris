@@ -31,7 +31,7 @@
         "storybook"
     ],
     "scripts": {
-        "build": "bun run generate:exports && vite build && node scripts/buildThemeCss.mjs",
+        "build": "bun run generate:exports && vite build && node scripts/postbuild.mjs",
         "build:site": "next build",
         "prepack": "bun run build",
         "storybook": "storybook dev -p 6006",
