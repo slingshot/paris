@@ -1,0 +1,20 @@
+{
+    "projectId": "6af26f61-eb1f-408a-a082-09ef618a0dd5",
+    "shape": "storybook",
+    "pkg": "paris",
+    "globalName": "Paris",
+    "entry": ".design-sync/paris-entry.mjs",
+    "cssEntry": ".design-sync/preview-base.css",
+    "extraFonts": ["public/graphik/graphik.css", "public/fira/fira_code.css"],
+    "storybookStatic": ".design-sync/sb-reference",
+    "storybookConfigDir": ".storybook",
+    "buildCmd": "bun run build && bun .design-sync/gen-sync-inputs.mjs",
+    "readmeHeader": ".design-sync/conventions.md",
+    "overrides": {
+        "Text": { "cardMode": "column" },
+        "Combobox": { "cardMode": "column" },
+        "Input": { "cardMode": "column" },
+        "Select": { "cardMode": "column" },
+        "TextArea": { "cardMode": "column" }
+    }
+}
