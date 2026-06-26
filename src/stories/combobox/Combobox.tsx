@@ -10,7 +10,7 @@ import {
     Combobox as HCombobox,
 } from '@headlessui/react';
 import { clsx } from 'clsx';
-import type { ComponentPropsWithoutRef, CSSProperties, MouseEvent, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, CSSProperties, MouseEvent, ReactNode, Ref } from 'react';
 import { useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { OpenChangeEffect } from '../../helpers/OpenChangeEffect';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
@@ -132,6 +132,11 @@ export type ComboboxProps<T extends Record<string, any>> = {
         endEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
         clearButton?: ButtonProps;
     };
+    /**
+     * Ref forwarded to the underlying combobox `<input>` element. Lets form libraries (e.g.
+     * react-hook-form's `field.ref` / `setFocus`) focus the combobox when its field is invalid.
+     */
+    ref?: Ref<HTMLInputElement>;
 } & Omit<InputProps, 'type' | 'overrides'>;
 
 /**
@@ -176,6 +181,7 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
     hasOptionBorder = false,
     hideOptionsInitially = false,
     overrides,
+    ref,
 }: ComboboxProps<T>) {
     const inputID = useId();
     const [resolvedValue, setResolvedValue] = useControllableState<Option<T> | null>({
@@ -192,9 +198,17 @@ export function Combobox<T extends Record<string, any> = Record<string, any>>({
         containerElRef.current = node;
     }, []);
 
-    const inputRef = useCallback((node: HTMLInputElement | null) => {
-        inputElRef.current = node;
-    }, []);
+    const inputRef = useCallback(
+        (node: HTMLInputElement | null) => {
+            inputElRef.current = node;
+            if (typeof ref === 'function') {
+                ref(node);
+            } else if (ref) {
+                ref.current = node;
+            }
+        },
+        [ref],
+    );
 
     useLayoutEffect(() => {
         if (containerElRef.current && inputElRef.current) {

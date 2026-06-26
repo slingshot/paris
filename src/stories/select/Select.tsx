@@ -206,11 +206,12 @@ export const Select = forwardRef(
                 }}
             >
                 {kind === 'listbox' && (
-                    <Listbox as="div" ref={ref} value={listboxValue} onChange={listboxOnChange} multiple={multiple}>
+                    <Listbox as="div" value={listboxValue} onChange={listboxOnChange} multiple={multiple}>
                         {({ open }) => (
                             <>
                                 <OpenChangeEffect open={open} onOpenChange={onOpenChange} />
                                 <ListboxButton
+                                    ref={ref}
                                     id={inputID}
                                     {...overrides?.selectInput}
                                     aria-disabled={disabled}

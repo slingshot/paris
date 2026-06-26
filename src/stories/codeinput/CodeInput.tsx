@@ -1,8 +1,8 @@
 'use client';
 
 import { clsx } from 'clsx';
-import type { ChangeEvent, ClipboardEvent, FC, KeyboardEvent } from 'react';
-import { useCallback, useEffect, useRef } from 'react';
+import type { ChangeEvent, ClipboardEvent, KeyboardEvent } from 'react';
+import { forwardRef, useCallback, useEffect, useRef } from 'react';
 import styles from './CodeInput.module.scss';
 
 export type CodeInputProps = {
@@ -51,110 +51,122 @@ export type CodeInputProps = {
  * ```
  * @constructor
  */
-export const CodeInput: FC<CodeInputProps> = ({
-    value,
-    onChange,
-    onComplete,
-    length = 6,
-    status = 'default',
-    disabled = false,
-    loading = false,
-    autoFocus = false,
-    'aria-label': ariaLabel = 'Verification code',
-}) => {
-    const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
-    const digits = value.split('').slice(0, length);
-
-    const focusAt = useCallback(
-        (index: number) => {
-            const clamped = Math.max(0, Math.min(index, length - 1));
-            const input = inputsRef.current[clamped];
-            input?.focus();
-            input?.select();
+export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(
+    (
+        {
+            value,
+            onChange,
+            onComplete,
+            length = 6,
+            status = 'default',
+            disabled = false,
+            loading = false,
+            autoFocus = false,
+            'aria-label': ariaLabel = 'Verification code',
         },
-        [length],
-    );
+        ref,
+    ) => {
+        const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
+        const digits = value.split('').slice(0, length);
 
-    useEffect(() => {
-        if (autoFocus) focusAt(0);
-    }, [autoFocus, focusAt]);
+        const focusAt = useCallback(
+            (index: number) => {
+                const clamped = Math.max(0, Math.min(index, length - 1));
+                const input = inputsRef.current[clamped];
+                input?.focus();
+                input?.select();
+            },
+            [length],
+        );
 
-    const emit = useCallback(
-        (next: string) => {
-            const sliced = next.slice(0, length);
-            onChange(sliced);
-            if (sliced.length === length) onComplete?.(sliced);
-        },
-        [length, onChange, onComplete],
-    );
+        useEffect(() => {
+            if (autoFocus) focusAt(0);
+        }, [autoFocus, focusAt]);
 
-    const handleChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
-        const typed = event.target.value.replace(/\D/g, '');
-        if (!typed) return;
-        const chars = value.split('');
-        let cursor = index;
-        for (const char of typed) {
-            if (cursor >= length) break;
-            chars[cursor] = char;
-            cursor += 1;
-        }
-        emit(chars.join(''));
-        focusAt(cursor);
-    };
+        const emit = useCallback(
+            (next: string) => {
+                const sliced = next.slice(0, length);
+                onChange(sliced);
+                if (sliced.length === length) onComplete?.(sliced);
+            },
+            [length, onChange, onComplete],
+        );
 
-    const handleKeyDown = (index: number) => (event: KeyboardEvent<HTMLInputElement>) => {
-        const chars = value.split('');
-        if (event.key === 'Backspace') {
-            event.preventDefault();
-            if (chars[index]) {
-                chars[index] = '';
-                emit(chars.join(''));
-            } else if (index > 0) {
-                chars[index - 1] = '';
-                emit(chars.join(''));
-                focusAt(index - 1);
+        const handleChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+            const typed = event.target.value.replace(/\D/g, '');
+            if (!typed) return;
+            const chars = value.split('');
+            let cursor = index;
+            for (const char of typed) {
+                if (cursor >= length) break;
+                chars[cursor] = char;
+                cursor += 1;
             }
-        } else if (event.key === 'ArrowLeft') {
-            event.preventDefault();
-            focusAt(index - 1);
-        } else if (event.key === 'ArrowRight') {
-            event.preventDefault();
-            focusAt(index + 1);
-        }
-    };
+            emit(chars.join(''));
+            focusAt(cursor);
+        };
 
-    const handlePaste = (event: ClipboardEvent<HTMLInputElement>) => {
-        event.preventDefault();
-        const pasted = event.clipboardData.getData('text').replace(/\D/g, '').slice(0, length);
-        if (!pasted) return;
-        emit(pasted);
-        focusAt(pasted.length);
-    };
+        const handleKeyDown = (index: number) => (event: KeyboardEvent<HTMLInputElement>) => {
+            const chars = value.split('');
+            if (event.key === 'Backspace') {
+                event.preventDefault();
+                if (chars[index]) {
+                    chars[index] = '';
+                    emit(chars.join(''));
+                } else if (index > 0) {
+                    chars[index - 1] = '';
+                    emit(chars.join(''));
+                    focusAt(index - 1);
+                }
+            } else if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                focusAt(index - 1);
+            } else if (event.key === 'ArrowRight') {
+                event.preventDefault();
+                focusAt(index + 1);
+            }
+        };
 
-    return (
-        <div className={clsx(styles.container, loading && styles.loading)} role="group" aria-label={ariaLabel}>
-            {Array.from({ length }).map((_, index) => (
-                <input
-                    // biome-ignore lint/suspicious/noArrayIndexKey: fixed-length positional code segments are stable
-                    key={index}
-                    ref={(element) => {
-                        inputsRef.current[index] = element;
-                    }}
-                    className={clsx(styles.segment, status === 'error' && styles.error)}
-                    type="text"
-                    inputMode="numeric"
-                    autoComplete={index === 0 ? 'one-time-code' : 'off'}
-                    maxLength={1}
-                    disabled={disabled}
-                    readOnly={loading}
-                    value={digits[index] ?? ''}
-                    aria-label={`Digit ${index + 1}`}
-                    onChange={handleChange(index)}
-                    onKeyDown={handleKeyDown(index)}
-                    onPaste={handlePaste}
-                    onFocus={(event) => event.target.select()}
-                />
-            ))}
-        </div>
-    );
-};
+        const handlePaste = (event: ClipboardEvent<HTMLInputElement>) => {
+            event.preventDefault();
+            const pasted = event.clipboardData.getData('text').replace(/\D/g, '').slice(0, length);
+            if (!pasted) return;
+            emit(pasted);
+            focusAt(pasted.length);
+        };
+
+        return (
+            <div className={clsx(styles.container, loading && styles.loading)} role="group" aria-label={ariaLabel}>
+                {Array.from({ length }).map((_, index) => (
+                    <input
+                        // biome-ignore lint/suspicious/noArrayIndexKey: fixed-length positional code segments are stable
+                        key={index}
+                        ref={(element) => {
+                            inputsRef.current[index] = element;
+                            // Forward the first cell so form libraries can focus the code input by ref.
+                            if (index === 0) {
+                                if (typeof ref === 'function') ref(element);
+                                else if (ref) ref.current = element;
+                            }
+                        }}
+                        className={clsx(styles.segment, status === 'error' && styles.error)}
+                        type="text"
+                        inputMode="numeric"
+                        autoComplete={index === 0 ? 'one-time-code' : 'off'}
+                        maxLength={1}
+                        disabled={disabled}
+                        readOnly={loading}
+                        value={digits[index] ?? ''}
+                        aria-label={`Digit ${index + 1}`}
+                        onChange={handleChange(index)}
+                        onKeyDown={handleKeyDown(index)}
+                        onPaste={handlePaste}
+                        onFocus={(event) => event.target.select()}
+                    />
+                ))}
+            </div>
+        );
+    },
+);
+
+CodeInput.displayName = 'CodeInput';
