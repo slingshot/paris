@@ -27,7 +27,7 @@ import { Text } from '../text';
 import { pget, theme } from '../theme';
 import { TextWhenString } from '../utility';
 
-export type Option<T extends Record<string, any> = Record<string, any>> =
+export type Option<T extends Record<string, unknown> = Record<string, unknown>> =
     | {
           id: string;
           node: ReactNode;
@@ -39,7 +39,7 @@ export type Option<T extends Record<string, any> = Record<string, any>> =
           metadata?: T;
       };
 
-export type ComboboxProps<T extends Record<string, any>> = {
+export type ComboboxProps<T extends Record<string, unknown>> = {
     /**
      * The  {@link Option}s to render in the select box.
      *
@@ -155,7 +155,7 @@ export type ComboboxProps<T extends Record<string, any>> = {
  * ```
  * @constructor
  */
-export function Combobox<T extends Record<string, any> = Record<string, any>>({
+export function Combobox<T extends Record<string, unknown> = Record<string, unknown>>({
     options,
     value,
     defaultValue,
