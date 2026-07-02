@@ -70,7 +70,23 @@ describe('Tabs', () => {
         await user.click(tabs[2]);
 
         await waitFor(() => {
-            expect(onTabChange).toHaveBeenCalledWith(2);
+            expect(onTabChange).toHaveBeenCalledWith(2, undefined);
+        });
+    });
+
+    it('passes the selected tab id to onTabChange when tabs have ids', async () => {
+        const onTabChange = vi.fn();
+        const tabsWithIds = [
+            { title: 'Transactions', content: 'Transactions content', id: 'transactions' },
+            { title: 'Cards', content: 'Cards content', id: 'cards' },
+            { title: 'Documents', content: 'Documents content', id: 'documents' },
+        ] as const;
+        const { user } = render(<Tabs tabs={[...tabsWithIds]} onTabChange={onTabChange} />);
+
+        await user.click(screen.getAllByRole('tab')[2]);
+
+        await waitFor(() => {
+            expect(onTabChange).toHaveBeenCalledWith(2, 'documents');
         });
     });
 

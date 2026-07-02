@@ -6,13 +6,13 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import type { CSSLength } from '@ssh/csstypes';
 import { clsx } from 'clsx';
 import { motion } from 'framer-motion';
-import type { ComponentPropsWithoutRef, CSSProperties, FC, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, CSSProperties, ReactNode } from 'react';
 import { useId, useState } from 'react';
 import typography from '../text/Typography.module.css';
 import { easeInOutExpo } from '../utility';
 import styles from './Tabs.module.scss';
 
-export type TabsProps = {
+export type TabsProps<TID extends string = string> = {
     /**
      * The tabs to render.
      */
@@ -21,6 +21,11 @@ export type TabsProps = {
         title: string;
         /** The content of the tab. */
         content: ReactNode;
+        /**
+         * An optional stable identifier for the tab. When provided, it is passed to `onTabChange`
+         * as the second argument, letting consumers switch on a typed id instead of a bare index.
+         */
+        id?: TID;
     }[];
     /**
      * The width of each tab. Defaults to `150px`.
@@ -54,8 +59,9 @@ export type TabsProps = {
     /**
      * An optional handler for tab changes.
      * @param index - The index of the tab that was selected.
+     * @param id - The `id` of the selected tab, if one was provided in the `tabs` array.
      */
-    onTabChange?: (index: number) => void | Promise<void>;
+    onTabChange?: (index: number, id: TID | undefined) => void | Promise<void>;
     /**
      * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
      */
@@ -82,7 +88,7 @@ export type TabsProps = {
  * ```
  * @constructor
  */
-export const Tabs: FC<TabsProps> = ({
+export const Tabs = <TID extends string = string>({
     tabs,
     tabWidth = '150px',
     kind = 'auto',
@@ -92,7 +98,7 @@ export const Tabs: FC<TabsProps> = ({
     index,
     onTabChange,
     overrides,
-}) => {
+}: TabsProps<TID>): ReactNode => {
     const id = useId();
     const [selectedIndex, setSelectedIndex] = useState(defaultIndex);
 
@@ -102,9 +108,7 @@ export const Tabs: FC<TabsProps> = ({
             selectedIndex={index ?? selectedIndex}
             onChange={(i) => {
                 setSelectedIndex(i);
-                if (onTabChange) {
-                    onTabChange?.(i);
-                }
+                onTabChange?.(i, tabs[i]?.id);
             }}
             {...overrides?.group}
             className={clsx(styles.tabGroup, styles[backgroundStyle], overrides?.group?.className)}
