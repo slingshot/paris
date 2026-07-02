@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import { render, screen } from '../../test/render';
 import { Field } from './Field';
 
@@ -112,6 +113,29 @@ describe('Field', () => {
         const label = screen.getByText('Click me');
         await user.click(label);
         expect(screen.getByTestId('focusable')).toHaveFocus();
+    });
+
+    it('does not re-trigger the input for clicks from portaled descendants (ENG-1958)', async () => {
+        // Headless UI options/menu items render into document.body via Floating UI. React
+        // synthetic clicks bubble through the React tree to Field's container onClick even though
+        // the option is outside Field's DOM subtree. The container must ignore those so it doesn't
+        // programmatically re-click the trigger and reopen a just-dismissed dropdown (touch).
+        const onTriggerClick = vi.fn();
+        const { user } = render(
+            <Field label="Country" htmlFor="portal-trigger">
+                <button id="portal-trigger" type="button" onClick={onTriggerClick}>
+                    Trigger
+                </button>
+                {createPortal(
+                    <button data-testid="portaled-option" type="button">
+                        Option
+                    </button>,
+                    document.body,
+                )}
+            </Field>,
+        );
+        await user.click(screen.getByTestId('portaled-option'));
+        expect(onTriggerClick).not.toHaveBeenCalled();
     });
 
     it('does not focus the input when disabled', async () => {

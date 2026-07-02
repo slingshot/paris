@@ -120,12 +120,17 @@ export const Field: FC<PropsWithChildren<FieldProps>> = ({
                 // className,
             )}
             onClick={(e) => {
-                if (typeof window !== 'undefined' && htmlFor) {
-                    const input = document.getElementById(htmlFor);
-                    if (input && !disabled && !input.contains(e.target as Node)) {
-                        if (input.tagName === 'BUTTON') input.click();
-                        else input.focus();
-                    }
+                if (typeof window === 'undefined' || !htmlFor) return;
+                // Skip clicks originating from portaled descendants — e.g. Headless UI
+                // ListboxOptions / ComboboxOptions / MenuItems rendered into document.body via
+                // Floating UI. React synthetic events still bubble through the React tree across
+                // portals, but those elements are outside Field's DOM subtree, so re-focusing the
+                // input here would reopen a dropdown the user just dismissed (notably on touch).
+                if (!(e.currentTarget as Node).contains(e.target as Node)) return;
+                const input = document.getElementById(htmlFor);
+                if (input && !disabled && !input.contains(e.target as Node)) {
+                    if (input.tagName === 'BUTTON') input.click();
+                    else input.focus();
                 }
             }}
         >
