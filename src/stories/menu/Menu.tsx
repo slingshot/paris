@@ -60,24 +60,33 @@ export const MenuButton: FC<MenuButtonProps<React.ElementType>> = ({ className, 
 /**
  * Container for menu item options, rendering the list of `MenuItem` components.
  *
- * Positions the menu items relative to the `MenuButton` based on the `position` prop.
+ * Positions the menu items relative to the `MenuButton` based on the `position` and
+ * `verticalPosition` props.
  *
- * @param position - Controls the positioning of the menu items ('left' or 'right').
+ * @param position - Controls the horizontal alignment of the menu items ('left' or 'right').
+ * @param verticalPosition - Controls whether the menu opens below or above the button ('bottom' or 'top').
  */
 export const MenuItems: FC<
     MenuItemsProps<React.ElementType> & {
         position?: 'left' | 'right';
+        verticalPosition?: 'bottom' | 'top';
     }
-> = ({ className, children, position = 'left', ...props }) => (
-    <HMenuItems
-        transition
-        anchor={position === 'left' ? 'bottom start' : 'bottom end'}
-        className={clsx(styles.menuItems, className)}
-        {...props}
-    >
-        {children}
-    </HMenuItems>
-);
+> = ({ className, children, position = 'left', verticalPosition = 'bottom', ...props }) => {
+    const anchor =
+        verticalPosition === 'top'
+            ? position === 'left'
+                ? 'top start'
+                : 'top end'
+            : position === 'left'
+              ? 'bottom start'
+              : 'bottom end';
+
+    return (
+        <HMenuItems transition anchor={anchor} className={clsx(styles.menuItems, className)} {...props}>
+            {children}
+        </HMenuItems>
+    );
+};
 
 /**
  * Represents an individual item within a `MenuItems` container.
