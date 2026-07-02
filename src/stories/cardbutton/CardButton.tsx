@@ -3,7 +3,7 @@
 import type { ButtonProps as AriaButtonProps } from '@ariakit/react';
 import { Button as AriaButton } from '@ariakit/react';
 import { clsx } from 'clsx';
-import type { FC, HTMLAttributeAnchorTarget, MouseEventHandler, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, FC, HTMLAttributeAnchorTarget, MouseEventHandler, ReactNode } from 'react';
 import { TextWhenString } from '../utility';
 import styles from './CardButton.module.scss';
 
@@ -41,6 +41,14 @@ export type CardButtonProps = {
      * The contents of the Button.
      */
     children?: ReactNode | ReactNode[];
+    /**
+     * Element-specific prop overrides. `container` targets the outer wrapper, `card` targets the
+     * inner button element.
+     */
+    overrides?: {
+        container?: ComponentPropsWithoutRef<'div'>;
+        card?: AriaButtonProps;
+    };
 } & Omit<AriaButtonProps, 'children' | 'disabled' | 'onClick'>;
 
 /**
@@ -63,17 +71,20 @@ export const CardButton: FC<CardButtonProps> = ({
     children,
     disabled,
     href,
+    overrides,
     ...props
 }) => (
-    <div className={styles.container}>
+    <div {...overrides?.container} className={clsx(styles.container, overrides?.container?.className)}>
         <AriaButton
             {...props}
+            {...overrides?.card}
             className={clsx(
                 styles.card,
                 styles[kind],
                 styles[status],
                 typeof children === 'string' && styles.text,
                 props?.className,
+                overrides?.card?.className,
             )}
             aria-disabled={disabled ?? false}
             type={type}
