@@ -58,6 +58,8 @@ The theme engine (`pte`) generates CSS variables from TypeScript theme definitio
 
 **Field Wrapper**: Form inputs (Input, Select, Combobox, TextArea) use the `Field` component for consistent label/description handling.
 
+**Generic Option Components**: `Select`, `Combobox`, and `AccordionSelect` are generic over their option `metadata` type (`Option<T>`), and their `onChange` returns the full selected option(s) with typed `metadata` (not just the id). Because `forwardRef` erases generics, these components cast their `forwardRef` export back to a generic function type so `<Select<MyMeta> />` keeps working — follow that pattern when adding a generic + ref-forwarding component. `Tabs` is generic over an optional per-tab `id` passed to `onTabChange`.
+
 ### Z-Index Layering
 
 Global z-index values use semantic layer tokens defined in `Theme.new.layers`:

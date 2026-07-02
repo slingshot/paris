@@ -158,10 +158,13 @@ disabled?: boolean
 
 ## Select Props
 
+Generic over the option `metadata` type: `<Select<MyMeta> />` types `options` and `onChange`.
+
 ```tsx
 options: { id: string, node: ReactNode, disabled?: boolean, metadata?: T }[]
-value?: string | string[]
-onChange?: (value) => void
+value?: string | string[]                          // id(s); unchanged
+onChange?: (option: Option<T> | null) => void      // single: the selected Option (with metadata)
+onChange?: (options: Option<T>[] | null) => void   // multiple: the selected Options
 kind?: 'listbox' | 'radio' | 'card' | 'segmented'  // default: 'listbox'
 multiple?: boolean
 label: ReactNode
