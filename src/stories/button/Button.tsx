@@ -188,6 +188,7 @@ export const Button: FC<ButtonProps> = ({
                 styles[shape],
                 styles[size],
                 cornersIsPreset && styles[corners],
+                displayNotificationDot && styles.hasNotificationDot,
                 props?.className,
             )}
             aria-disabled={disabled ?? false}

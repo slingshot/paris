@@ -84,6 +84,30 @@
     }
 }
 
+/*
+ * NOTIFICATION DOT
+ *
+ * A fill-less button (secondary/tertiary) leaves the notification dot floating, so when a dot is
+ * present we give the button the filled treatment. Declared after the KIND block so its equal
+ * specificity wins over the kind rules via source order.
+ */
+.hasNotificationDot {
+    color: var(--pte-new-colors-contentInversePrimary);
+    background-color: var(--pte-new-colors-buttonFill);
+    border-color: var(--pte-new-colors-buttonFill);
+
+    &:hover {
+        background-color: var(--pte-new-colors-buttonFillHover);
+        border-color: var(--pte-new-colors-buttonFillHover);
+    }
+
+    &[aria-disabled=true] {
+        color: var(--pte-new-colors-contentDisabled);
+        background-color: var(--pte-new-colors-buttonFillDisabled);
+        border-color: var(--pte-new-colors-buttonFillDisabled);
+    }
+}
+
 
 /*
  * SIZE
