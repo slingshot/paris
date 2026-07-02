@@ -43,6 +43,13 @@
 
     transition: opacity var(--pte-animations-interaction), transform var(--pte-animations-interaction);
 
+    // Hide the popup entirely when there are no options to show, otherwise the empty container
+    // still paints its background, border and drop shadow — a stray floating shadow below an
+    // engaged field with no dropdown (ENG-1558).
+    &:empty {
+        display: none;
+    }
+
     &[data-closed] {
         opacity: 0;
         transform: translateY(-8px);

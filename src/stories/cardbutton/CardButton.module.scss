@@ -24,7 +24,10 @@
     border-radius: var(--pte-borders-radius-rounded);
     background-color: var(--pte-new-colors-surfacePrimary);
     box-shadow: var(--pte-new-lighting-subtlePopup);
-    border: 1px solid var(--pte-new-colors-surfacePrimary);
+    // Transparent so the border never renders as a ring: the background fills the border-box in
+    // every state, so the 1px stays invisible at rest and on hover (previously it was pinned to
+    // surfacePrimary and became visible once the hover background changed).
+    border: 1px solid transparent;
 
     &:hover {
         background-color: var(--pte-new-colors-overlayStrong);

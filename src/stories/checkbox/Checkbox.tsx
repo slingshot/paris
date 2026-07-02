@@ -2,8 +2,8 @@
 import { Switch } from '@headlessui/react';
 import * as RadixCheckbox from '@radix-ui/react-checkbox';
 import { clsx } from 'clsx';
-import type { FC, ReactNode } from 'react';
-import { useId } from 'react';
+import type { ReactNode } from 'react';
+import { forwardRef, useId } from 'react';
 import { useControllableState } from '../../helpers/useControllableState';
 import { Check, Icon } from '../icon';
 import { TextWhenString, VisuallyHidden } from '../utility';
@@ -39,85 +39,94 @@ export type CheckboxProps = {
  * ```
  * @constructor
  */
-export const Checkbox: FC<CheckboxProps> = ({
-    kind = 'default',
-    checked,
-    defaultChecked,
-    onChange,
-    disabled,
-    hideLabel = false,
-    children,
-    className,
-    ...props
-}) => {
-    const inputID = useId();
-    const [resolvedChecked, setResolvedChecked] = useControllableState({
-        value: checked,
-        defaultValue: defaultChecked,
-        onChange: onChange as ((value: boolean) => void) | undefined,
-    });
-    return (
-        <label
-            htmlFor={inputID}
-            className={clsx(
-                styles.container,
-                disabled && styles.disabled,
-                className,
-                resolvedChecked && styles.checked,
-            )}
-            {...props}
-        >
-            {(kind === 'default' || kind === 'surface' || kind === 'panel') && (
-                <RadixCheckbox.Root
-                    id={inputID}
-                    className={clsx(styles.root, styles[kind])}
-                    checked={resolvedChecked}
-                    onCheckedChange={(v) => setResolvedChecked(!!v)}
-                    data-disabled={disabled}
-                    aria-details={typeof children === 'string' ? children : undefined}
-                >
-                    {(kind === 'surface' || kind === 'panel') && (
-                        <TextWhenString kind="paragraphXSmall">{children}</TextWhenString>
-                    )}
-                    {kind === 'panel' && <div className={styles.box} />}
-                    <RadixCheckbox.Indicator className={styles.indicator}>
-                        {(kind === 'default' || kind === 'panel') && (
-                            <svg
-                                width={14}
-                                height={14}
-                                viewBox="0 0 14 14"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    className={styles.checkSvg}
-                                    data-disabled={disabled}
-                                    d="M0.333374 0.333252V13.6666H13.6667V0.333252H0.333374ZM6.00004 10.3999L2.26672 6.66658L3.66671 5.26658L5.93339 7.53325L10.2 3.26658L11.6001 4.66659L6.00004 10.3999Z"
-                                />
-                            </svg>
+export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
+    (
+        {
+            kind = 'default',
+            checked,
+            defaultChecked,
+            onChange,
+            disabled,
+            hideLabel = false,
+            children,
+            className,
+            ...props
+        },
+        ref,
+    ) => {
+        const inputID = useId();
+        const [resolvedChecked, setResolvedChecked] = useControllableState({
+            value: checked,
+            defaultValue: defaultChecked,
+            onChange: onChange as ((value: boolean) => void) | undefined,
+        });
+        return (
+            <label
+                htmlFor={inputID}
+                className={clsx(
+                    styles.container,
+                    disabled && styles.disabled,
+                    className,
+                    resolvedChecked && styles.checked,
+                )}
+                {...props}
+            >
+                {(kind === 'default' || kind === 'surface' || kind === 'panel') && (
+                    <RadixCheckbox.Root
+                        ref={ref}
+                        id={inputID}
+                        className={clsx(styles.root, styles[kind])}
+                        checked={resolvedChecked}
+                        onCheckedChange={(v) => setResolvedChecked(!!v)}
+                        data-disabled={disabled}
+                        aria-details={typeof children === 'string' ? children : undefined}
+                    >
+                        {(kind === 'surface' || kind === 'panel') && (
+                            <TextWhenString kind="paragraphXSmall">{children}</TextWhenString>
                         )}
-                        {kind === 'surface' && (
-                            <Icon icon={Check} size={12.8} data-disabled={disabled} className={styles.checkIcon} />
-                        )}
-                    </RadixCheckbox.Indicator>
-                </RadixCheckbox.Root>
-            )}
-            {kind === 'switch' && (
-                <Switch
-                    checked={resolvedChecked}
-                    onChange={setResolvedChecked}
-                    className={styles.switchContainer}
-                    data-disabled={disabled}
-                    id={inputID}
-                    aria-details={typeof children === 'string' ? children : undefined}
-                >
-                    <span aria-hidden="true" className={clsx(styles.knob, resolvedChecked && styles.knobChecked)} />
-                </Switch>
-            )}
-            {(kind === 'default' || kind === 'switch') && !hideLabel && (
-                <TextWhenString kind="paragraphXSmall">{children}</TextWhenString>
-            )}
-            {hideLabel && <VisuallyHidden>{children}</VisuallyHidden>}
-        </label>
-    );
-};
+                        {kind === 'panel' && <div className={styles.box} />}
+                        <RadixCheckbox.Indicator className={styles.indicator}>
+                            {(kind === 'default' || kind === 'panel') && (
+                                <svg
+                                    width={14}
+                                    height={14}
+                                    viewBox="0 0 14 14"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        className={styles.checkSvg}
+                                        data-disabled={disabled}
+                                        d="M0.333374 0.333252V13.6666H13.6667V0.333252H0.333374ZM6.00004 10.3999L2.26672 6.66658L3.66671 5.26658L5.93339 7.53325L10.2 3.26658L11.6001 4.66659L6.00004 10.3999Z"
+                                    />
+                                </svg>
+                            )}
+                            {kind === 'surface' && (
+                                <Icon icon={Check} size={12.8} data-disabled={disabled} className={styles.checkIcon} />
+                            )}
+                        </RadixCheckbox.Indicator>
+                    </RadixCheckbox.Root>
+                )}
+                {kind === 'switch' && (
+                    <Switch
+                        ref={ref}
+                        checked={resolvedChecked}
+                        onChange={setResolvedChecked}
+                        className={styles.switchContainer}
+                        data-disabled={disabled}
+                        id={inputID}
+                        aria-details={typeof children === 'string' ? children : undefined}
+                    >
+                        <span aria-hidden="true" className={clsx(styles.knob, resolvedChecked && styles.knobChecked)} />
+                    </Switch>
+                )}
+                {(kind === 'default' || kind === 'switch') && !hideLabel && (
+                    <TextWhenString kind="paragraphXSmall">{children}</TextWhenString>
+                )}
+                {hideLabel && <VisuallyHidden>{children}</VisuallyHidden>}
+            </label>
+        );
+    },
+);
+
+Checkbox.displayName = 'Checkbox';
