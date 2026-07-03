@@ -115,11 +115,7 @@ describe('Field', () => {
         expect(screen.getByTestId('focusable')).toHaveFocus();
     });
 
-    it('does not re-trigger the input for clicks from portaled descendants (ENG-1958)', async () => {
-        // Headless UI options/menu items render into document.body via Floating UI. React
-        // synthetic clicks bubble through the React tree to Field's container onClick even though
-        // the option is outside Field's DOM subtree. The container must ignore those so it doesn't
-        // programmatically re-click the trigger and reopen a just-dismissed dropdown (touch).
+    it('ignores clicks from portaled descendants', async () => {
         const onTriggerClick = vi.fn();
         const { user } = render(
             <Field label="Country" htmlFor="portal-trigger">

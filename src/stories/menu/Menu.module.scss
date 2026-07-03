@@ -22,8 +22,6 @@
     opacity: 1;
     transform: translateY(0);
 
-    // Hide the popup entirely when it has no items, otherwise the empty container still paints its
-    // background, border and drop shadow as a stray floating box (same issue as ENG-1558 on Select).
     &:empty {
         display: none;
     }
