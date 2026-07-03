@@ -324,6 +324,7 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                 <RadioGroup
                     ref={radioGroupRef}
                     as="div"
+                    tabIndex={-1}
                     className={styles.radioContainer}
                     value={singleValue}
                     onChange={singleOnChange}
@@ -347,6 +348,7 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                 <RadioGroup
                     ref={radioGroupRef}
                     as="div"
+                    tabIndex={-1}
                     className={styles.cardContainer}
                     value={singleValue}
                     onChange={singleOnChange}
@@ -371,6 +373,7 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                 <RadioGroup
                     ref={radioGroupRef}
                     as="div"
+                    tabIndex={-1}
                     className={styles.segmentedContainer}
                     value={singleValue ?? options[0].id}
                     onChange={singleOnChange}
