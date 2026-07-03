@@ -11,7 +11,7 @@ import {
 } from '@headlessui/react';
 import { clsx } from 'clsx';
 import type { ComponentPropsWithoutRef, CSSProperties, MouseEvent, ReactNode, Ref } from 'react';
-import { useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { OpenChangeEffect } from '../../helpers/OpenChangeEffect';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 import { useControllableState } from '../../helpers/useControllableState';
@@ -198,17 +198,24 @@ export function Combobox<T extends Record<string, unknown> = Record<string, unkn
         containerElRef.current = node;
     }, []);
 
-    const inputRef = useCallback(
-        (node: HTMLInputElement | null) => {
-            inputElRef.current = node;
-            if (typeof ref === 'function') {
-                ref(node);
-            } else if (ref) {
-                ref.current = node;
-            }
-        },
-        [ref],
-    );
+    const inputRef = useCallback((node: HTMLInputElement | null) => {
+        inputElRef.current = node;
+    }, []);
+
+    // The text input only renders when the selected node is a string/empty; a non-string node
+    // (e.g. a <Text> element) replaces it, unmounting the input and nulling its ref. Forward the
+    // external ref to whichever focusable element is currently mounted — the input, or the
+    // always-mounted container — so react-hook-form's `setFocus` works in both states.
+    const showInput = !(resolvedValue?.node && typeof resolvedValue.node !== 'string');
+    useEffect(() => {
+        if (!ref) return;
+        const target = (showInput ? inputElRef.current : containerElRef.current) as HTMLInputElement | null;
+        if (typeof ref === 'function') {
+            ref(target);
+        } else {
+            ref.current = target;
+        }
+    }, [ref, showInput]);
 
     useLayoutEffect(() => {
         if (containerElRef.current && inputElRef.current) {
