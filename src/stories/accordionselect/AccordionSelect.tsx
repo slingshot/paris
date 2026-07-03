@@ -46,6 +46,12 @@ export type AccordionSelectProps<T extends Record<string, unknown> = Record<stri
      */
     onChange?: (option: AccordionSelectOption<T>) => void;
     /**
+     * The validation status of the field. `error` renders an invalid treatment. Follows the
+     * `Input`/`Select` pattern.
+     * @default 'default'
+     */
+    status?: 'default' | 'error';
+    /**
      * Custom content to render as the header when an option is selected.
      * Receives the selected option. If not provided, the option's `node` is used.
      */
@@ -119,6 +125,7 @@ const AccordionSelectInner = <T extends Record<string, unknown> = Record<string,
         renderSelected,
         renderOption,
         placeholder = 'Select an option',
+        status = 'default',
         isOpen: controlledOpen,
         onOpenChange,
         closeOnSelect = true,
@@ -171,6 +178,7 @@ const AccordionSelectInner = <T extends Record<string, unknown> = Record<string,
         <div
             ref={rootRef}
             {...overrides?.root}
+            data-status={status}
             className={clsx(styles.root, open && styles.open, overrides?.root?.className)}
         >
             <div
