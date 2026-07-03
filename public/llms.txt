@@ -65,6 +65,7 @@ import { Input } from 'paris/input';
 - Select - Dropdown/listbox/radio/segmented selection
 - Checkbox - Checkbox with switch variant
 - Combobox - Autocomplete input
+- AccordionSelect - Card header that expands to reveal selectable options
 - Field - Form field wrapper with label
 
 ### Navigation & Actions
@@ -140,6 +141,7 @@ disabled?: boolean
 startEnhancer?: ReactNode | (({ size }) => ReactNode)
 endEnhancer?: ReactNode | (({ size }) => ReactNode)
 href?: string  // Renders as anchor
+displayNotificationDot?: boolean  // Shows a notification dot in the top-right corner
 ```
 
 ## Input Props
