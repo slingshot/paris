@@ -124,6 +124,15 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
      */
     pageTransition?: DrawerPageTransition;
     /**
+     * Callback fired once the target page's content is mounted and its enter transition has
+     * completed (for `crossfade`/`slide`), or immediately on change for `none`. Lets consumers
+     * focus a field on a newly-navigated page deterministically instead of polling animation
+     * frames. Only fires for paginated drawers.
+     *
+     * @param pageID - The id of the page that just entered.
+     */
+    onPageEntered?: (pageID: T[number]) => void;
+    /**
      * Show a progress bar at the top of the bottom panel. Requires `pagination` to be set.
      * The bar auto-fills based on the current page position.
      *
@@ -231,6 +240,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
     size = 'default',
     pagination,
     pageTransition = 'crossfade',
+    onPageEntered,
     progressBar,
     overlayStyle = 'grey',
     additionalActions,
@@ -270,6 +280,15 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
     }, [showBottomPanel, appendEntries]);
 
     const [loadedPage, setLoadedPage] = useState<string | null>(pagination?.currentPage ?? null);
+
+    // `none` switches pages instantly (content is always mounted), so there is no enter transition
+    // to hook — signal the page change directly. `crossfade`/`slide` fire onPageEntered from their
+    // own transition-complete handlers below.
+    const currentPage = pagination?.currentPage;
+    useEffect(() => {
+        if (pageTransition !== 'none' || currentPage == null) return;
+        onPageEntered?.(currentPage);
+    }, [pageTransition, currentPage, onPageEntered]);
 
     const pageEntries = useMemo(() => {
         if (!isPaginated || !pagination || !children) return null;
@@ -315,6 +334,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                 leaveFrom={styles.leaveFromOpacity}
                                 leaveTo={styles.leaveToOpacity}
                                 afterLeave={() => setLoadedPage(pagination.currentPage)}
+                                afterEnter={() => onPageEntered?.(page.id as T[number])}
                                 className={overrides?.contentChildrenChildren?.className}
                             >
                                 {page.child}
@@ -338,6 +358,9 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                             type: 'tween',
                                             duration: 0.3,
                                             ease: [0.32, 0.72, 0, 1],
+                                        }}
+                                        onAnimationComplete={() => {
+                                            if (isActive) onPageEntered?.(page.id as T[number]);
                                         }}
                                         className={clsx(
                                             styles.pageStackItem,
@@ -364,6 +387,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
         pageTransition,
         loadedPage,
         activePageIndex,
+        onPageEntered,
         overrides?.contentChildrenChildren?.className,
     ]);
 
