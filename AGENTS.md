@@ -76,6 +76,8 @@ src/stories/<componentname>/
 
 **Generic option typing:** `Select`, `Combobox`, and `AccordionSelect` are generic over their option `metadata` type (`<Select<MyMeta> />`), and their `onChange` returns the full selected `Option<T>` (or `Option<T>[]` for multi-select), including typed `metadata`. `Tabs` is generic over an optional per-tab `id`, surfaced as the second arg of `onTabChange(index, id)`.
 
+**Programmatic focus & error state:** form components forward a `ref` to a focusable element so `react-hook-form`'s `setFocus` works — including `Select`'s `radio`/`card`/`segmented` kinds and `Combobox` with a non-string selected node. `MarkdownEditor` exposes an imperative `ref` handle (`{ focus() }`) instead of a DOM ref. `Checkbox` and `AccordionSelect` support `status="error"` (like `Input`/`Select`) for invalid state. For paginated `Drawer`s, `onPageEntered(pageID)` fires once a page has mounted so consumers can focus a field on the new page deterministically.
+
 ### Navigation & Actions
 - **Button** - Primary action trigger
 - **StyledLink** - Styled anchor element

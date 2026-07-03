@@ -60,6 +60,8 @@ The theme engine (`pte`) generates CSS variables from TypeScript theme definitio
 
 **Generic Option Components**: `Select`, `Combobox`, and `AccordionSelect` are generic over their option `metadata` type (`Option<T>`), and their `onChange` returns the full selected option(s) with typed `metadata` (not just the id). Because `forwardRef` erases generics, these components cast their `forwardRef` export back to a generic function type so `<Select<MyMeta> />` keeps working — follow that pattern when adding a generic + ref-forwarding component. `Tabs` is generic over an optional per-tab `id` passed to `onTabChange`.
 
+**Form Focus & Error State**: form inputs forward a `ref` to a focusable element for `react-hook-form` `setFocus` (the ref target must stay mounted and focusable — e.g. `Select`'s radio/card/segmented groups carry `tabIndex={-1}`, and `Combobox` falls back to its container when the input unmounts). Components without a DOM input (`MarkdownEditor`) expose an imperative `{ focus() }` handle via `useImperativeHandle` instead. Field-like components take `status?: 'default' | 'error'` and render error state via a `data-status="error"` attribute styled in SCSS.
+
 ### Z-Index Layering
 
 Global z-index values use semantic layer tokens defined in `Theme.new.layers`:

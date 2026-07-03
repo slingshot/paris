@@ -282,6 +282,7 @@ placeholder?: string
 size?: MarkdownSize                              // Body text size
 editable?: boolean                               // default: true
 status?: 'default' | 'error' | 'success'
+ref?: Ref<MarkdownEditorHandle>                  // imperative { focus() } handle
 ```
 
 ## Key Dependencies
