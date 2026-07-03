@@ -62,6 +62,10 @@
             border-color: var(--pte-new-colors-contentDisabled);
         }
 
+        &[data-status="error"] {
+            border-color: var(--pte-new-colors-inputBorderNegative);
+        }
+
         & span {
             transition: var(--pte-animations-interaction);
         }
@@ -131,6 +135,15 @@
             }
         }
     }
+
+    &.surface[data-status="error"], &.panel[data-status="error"] {
+        outline: 1px solid var(--pte-new-colors-inputBorderNegative);
+        outline-offset: -1px;
+
+        .box {
+            border-color: var(--pte-new-colors-inputBorderNegative);
+        }
+    }
 }
 
 .indicator {
@@ -174,6 +187,11 @@
         &[data-checked], &[data-state="indeterminate"] {
             background-color: var(--pte-new-colors-contentInverseTertiary);
         }
+    }
+
+    &[data-status="error"] {
+        outline: 1px solid var(--pte-new-colors-inputBorderNegative);
+        outline-offset: 2px;
     }
 
     &:hover {

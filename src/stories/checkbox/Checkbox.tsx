@@ -16,6 +16,12 @@ export type CheckboxProps = {
     onChange?: (checked: boolean | 'indeterminate') => void;
     disabled?: boolean;
     /**
+     * The validation status of the Checkbox. `error` renders an invalid treatment (e.g. for a
+     * required checkbox that hasn't been checked). Follows the `Input`/`Select` pattern.
+     * @default 'default'
+     */
+    status?: 'default' | 'error';
+    /**
      * Whether to hide the label text of the Checkbox. Does not apply to `kind="surface"` because there would be nothing visible.
      *
      * @default false
@@ -47,6 +53,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
             defaultChecked,
             onChange,
             disabled,
+            status = 'default',
             hideLabel = false,
             children,
             className,
@@ -79,6 +86,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
                         checked={resolvedChecked}
                         onCheckedChange={(v) => setResolvedChecked(!!v)}
                         data-disabled={disabled}
+                        data-status={status}
                         aria-details={typeof children === 'string' ? children : undefined}
                     >
                         {(kind === 'surface' || kind === 'panel') && (
@@ -114,6 +122,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
                         onChange={setResolvedChecked}
                         className={styles.switchContainer}
                         data-disabled={disabled}
+                        data-status={status}
                         id={inputID}
                         aria-details={typeof children === 'string' ? children : undefined}
                     >
