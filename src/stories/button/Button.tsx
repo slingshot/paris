@@ -218,7 +218,7 @@ export const Button: FC<ButtonProps> = ({
             )}
             {!!(endEnhancer && !loading) && <MemoizedEnhancer enhancer={endEnhancer} size={EnhancerSizes[size]} />}
             {!!displayNotificationDot && (
-                <div className="absolute top-0 right-0">
+                <div className={styles.notificationDot}>
                     <NotificationDot size={8} />
                 </div>
             )}
