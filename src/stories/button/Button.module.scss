@@ -84,6 +84,27 @@
     }
 }
 
+/*
+ * NOTIFICATION DOT
+ */
+.notificationDot {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.hasNotificationDot[aria-disabled=false] {
+    &.primary {
+        background-color: var(--pte-new-colors-buttonFillHover);
+        border-color: var(--pte-new-colors-buttonFillHover);
+    }
+
+    &.secondary,
+    &.tertiary {
+        background-color: var(--pte-new-colors-overlayMedium);
+    }
+}
+
 
 /*
  * SIZE

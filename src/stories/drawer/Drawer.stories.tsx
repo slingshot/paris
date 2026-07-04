@@ -222,7 +222,7 @@ export const WithSelectDropdown: Story = {
                             label="Country"
                             placeholder="Select a country"
                             value={selected}
-                            onChange={setSelected}
+                            onChange={(option) => setSelected(option?.id ?? null)}
                             options={[
                                 { id: 'us', node: 'United States' },
                                 { id: 'uk', node: 'United Kingdom' },

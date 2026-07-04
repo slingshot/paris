@@ -9,6 +9,10 @@
     &.open {
         border-color: var(--pte-new-colors-borderUltrastrong);
     }
+
+    &[data-status="error"] {
+        border-color: var(--pte-new-colors-inputBorderNegative);
+    }
 }
 
 .header {

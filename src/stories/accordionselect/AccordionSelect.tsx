@@ -1,14 +1,14 @@
 'use client';
 
 import { clsx } from 'clsx';
-import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
-import { useEffect, useRef } from 'react';
+import type { ComponentPropsWithoutRef, ForwardedRef, ReactNode, RefAttributes } from 'react';
+import { forwardRef, useEffect, useRef } from 'react';
 import { useControllableState } from '../../helpers/useControllableState';
 import { Check, ChevronRight, Icon } from '../icon';
 import { TextWhenString } from '../utility';
 import styles from './AccordionSelect.module.scss';
 
-export type AccordionSelectOption<T = Record<string, unknown>> = {
+export type AccordionSelectOption<T extends Record<string, unknown> = Record<string, unknown>> = {
     /**
      * A unique identifier for the option.
      */
@@ -28,7 +28,7 @@ export type AccordionSelectOption<T = Record<string, unknown>> = {
     metadata?: T;
 };
 
-export type AccordionSelectProps<T = Record<string, unknown>> = {
+export type AccordionSelectProps<T extends Record<string, unknown> = Record<string, unknown>> = {
     /**
      * The list of selectable options.
      */
@@ -45,6 +45,12 @@ export type AccordionSelectProps<T = Record<string, unknown>> = {
      * Called when the user selects an option.
      */
     onChange?: (option: AccordionSelectOption<T>) => void;
+    /**
+     * The validation status of the field. `error` renders an invalid treatment. Follows the
+     * `Input`/`Select` pattern.
+     * @default 'default'
+     */
+    status?: 'default' | 'error';
     /**
      * Custom content to render as the header when an option is selected.
      * Receives the selected option. If not provided, the option's `node` is used.
@@ -110,22 +116,26 @@ export type AccordionSelectProps<T = Record<string, unknown>> = {
  * ```
  * @constructor
  */
-export const AccordionSelect: FC<AccordionSelectProps> = ({
-    options,
-    value,
-    defaultValue,
-    onChange,
-    renderSelected,
-    renderOption,
-    placeholder = 'Select an option',
-    isOpen: controlledOpen,
-    onOpenChange,
-    closeOnSelect = true,
-    closeOnClickOutside = true,
-    action,
-    label,
-    overrides,
-}) => {
+const AccordionSelectInner = <T extends Record<string, unknown> = Record<string, unknown>>(
+    {
+        options,
+        value,
+        defaultValue,
+        onChange,
+        renderSelected,
+        renderOption,
+        placeholder = 'Select an option',
+        status = 'default',
+        isOpen: controlledOpen,
+        onOpenChange,
+        closeOnSelect = true,
+        closeOnClickOutside = true,
+        action,
+        label,
+        overrides,
+    }: AccordionSelectProps<T>,
+    ref: ForwardedRef<HTMLDivElement>,
+): ReactNode => {
     const [open, setOpen] = useControllableState({
         value: controlledOpen,
         defaultValue: false,
@@ -168,9 +178,11 @@ export const AccordionSelect: FC<AccordionSelectProps> = ({
         <div
             ref={rootRef}
             {...overrides?.root}
+            data-status={status}
             className={clsx(styles.root, open && styles.open, overrides?.root?.className)}
         >
             <div
+                ref={ref}
                 {...overrides?.header}
                 className={clsx(styles.header, open && styles.open, overrides?.header?.className)}
                 onClick={() => setOpen(!open)}
@@ -247,3 +259,16 @@ export const AccordionSelect: FC<AccordionSelectProps> = ({
         </div>
     );
 };
+
+/**
+ * `forwardRef` erases the generic type parameter, so cast the result back to a generic function
+ * type. This keeps `<AccordionSelect<MyMeta> />` working (typing `onChange`/`renderOption` with
+ * `AccordionSelectOption<MyMeta>`) while still forwarding the ref to the header element.
+ */
+export const AccordionSelect = forwardRef(AccordionSelectInner) as unknown as (<
+    T extends Record<string, unknown> = Record<string, unknown>,
+>(
+    props: AccordionSelectProps<T> & RefAttributes<HTMLDivElement>,
+) => ReactNode) & { displayName?: string };
+
+AccordionSelect.displayName = 'AccordionSelect';

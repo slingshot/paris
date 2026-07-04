@@ -16,9 +16,9 @@ function ControlledSelect(props: Partial<React.ComponentProps<typeof Select>>) {
         <Select
             options={options}
             value={value}
-            onChange={(v) => {
-                setValue(v);
-                (props.onChange as (v: string | null) => void)?.(v);
+            onChange={(option) => {
+                setValue(option?.id ?? null);
+                (props.onChange as (option: Option | null) => void)?.(option);
             }}
             {...props}
         />
@@ -31,9 +31,9 @@ function ControlledMultiSelect(props: Partial<React.ComponentProps<typeof Select
         <Select
             options={options}
             value={value}
-            onChange={(v) => {
-                setValue(v as string[]);
-                (props.onChange as (v: string[] | null) => void)?.(v as string[] | null);
+            onChange={(selected) => {
+                setValue(selected ? selected.map((o) => o.id) : []);
+                (props.onChange as (selected: Option[] | null) => void)?.(selected);
             }}
             multiple
             {...props}
@@ -86,7 +86,7 @@ describe('Select', () => {
             });
 
             await user.click(screen.getByText('EP'));
-            expect(handleChange).toHaveBeenCalledWith('2');
+            expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: '2' }));
         });
 
         it('displays selected option text after selection', async () => {
@@ -166,7 +166,7 @@ describe('Select', () => {
             });
 
             await user.click(screen.getByText('Single'));
-            expect(handleChange).toHaveBeenCalled();
+            expect(handleChange).toHaveBeenCalledWith([expect.objectContaining({ id: '1' })]);
         });
     });
 
@@ -195,7 +195,7 @@ describe('Select', () => {
             const { user } = render(<ControlledSelect kind="radio" onChange={handleChange} />);
 
             await user.click(screen.getByText('EP'));
-            expect(handleChange).toHaveBeenCalledWith('2');
+            expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: '2' }));
         });
     });
 
@@ -211,7 +211,7 @@ describe('Select', () => {
             const { user } = render(<ControlledSelect kind="card" onChange={handleChange} />);
 
             await user.click(screen.getByText('EP'));
-            expect(handleChange).toHaveBeenCalledWith('2');
+            expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: '2' }));
         });
     });
 
@@ -227,7 +227,7 @@ describe('Select', () => {
             const { user } = render(<ControlledSelect kind="segmented" onChange={handleChange} />);
 
             await user.click(screen.getByText('EP'));
-            expect(handleChange).toHaveBeenCalledWith('2');
+            expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: '2' }));
         });
     });
 
@@ -267,7 +267,7 @@ describe('Select', () => {
             });
             await user.click(screen.getByText('EP'));
 
-            expect(handleChange).toHaveBeenCalledWith('2');
+            expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: '2' }));
         });
 
         it('updates selection without external state (radio)', async () => {

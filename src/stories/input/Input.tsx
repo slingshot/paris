@@ -1,7 +1,7 @@
 'use client';
 
 import { clsx } from 'clsx';
-import type { ComponentPropsWithoutRef, FC, ForwardedRef } from 'react';
+import type { ComponentPropsWithoutRef, ForwardedRef } from 'react';
 import { forwardRef, useId } from 'react';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 import type { Enhancer } from '../../types/Enhancer';
@@ -86,7 +86,7 @@ export type InputProps = {
  * ```
  * @constructor
  */
-export const Input: FC<InputProps & ComponentPropsWithoutRef<'input'>> = forwardRef(
+export const Input = forwardRef<HTMLInputElement, InputProps & ComponentPropsWithoutRef<'input'>>(
     (
         {
             label,

@@ -65,6 +65,7 @@ import { Input } from 'paris/input';
 - Select - Dropdown/listbox/radio/segmented selection
 - Checkbox - Checkbox with switch variant
 - Combobox - Autocomplete input
+- AccordionSelect - Card header that expands to reveal selectable options
 - Field - Form field wrapper with label
 
 ### Navigation & Actions
@@ -140,6 +141,7 @@ disabled?: boolean
 startEnhancer?: ReactNode | (({ size }) => ReactNode)
 endEnhancer?: ReactNode | (({ size }) => ReactNode)
 href?: string  // Renders as anchor
+displayNotificationDot?: boolean  // Shows a notification dot in the top-right corner
 ```
 
 ## Input Props
@@ -158,10 +160,13 @@ disabled?: boolean
 
 ## Select Props
 
+Generic over the option `metadata` type: `<Select<MyMeta> />` types `options` and `onChange`.
+
 ```tsx
 options: { id: string, node: ReactNode, disabled?: boolean, metadata?: T }[]
-value?: string | string[]
-onChange?: (value) => void
+value?: string | string[]                          // id(s); unchanged
+onChange?: (option: Option<T> | null) => void      // single: the selected Option (with metadata)
+onChange?: (options: Option<T>[] | null) => void   // multiple: the selected Options
 kind?: 'listbox' | 'radio' | 'card' | 'segmented'  // default: 'listbox'
 multiple?: boolean
 label: ReactNode
@@ -279,6 +284,7 @@ placeholder?: string
 size?: MarkdownSize                              // Body text size
 editable?: boolean                               // default: true
 status?: 'default' | 'error' | 'success'
+ref?: Ref<MarkdownEditorHandle>                  // imperative { focus() } handle
 ```
 
 ## Key Dependencies

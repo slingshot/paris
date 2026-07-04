@@ -2,8 +2,8 @@
 
 import { EditorContent } from '@tiptap/react';
 import { clsx } from 'clsx';
-import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
-import { useMemo } from 'react';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import { forwardRef, useImperativeHandle, useMemo } from 'react';
 import type { MarkdownSize } from '../markdown';
 import type { MarkdownEditorFeature } from './features';
 import { ALL_FEATURES } from './features';
@@ -52,6 +52,15 @@ export type MarkdownEditorProps = {
 };
 
 /**
+ * Imperative handle exposed via `ref`. Lets consumers focus the editor programmatically (e.g.
+ * react-hook-form's `setFocus`) without reaching into the underlying Tiptap instance.
+ */
+export type MarkdownEditorHandle = {
+    /** Move focus into the editor's content area. */
+    focus: () => void;
+};
+
+/**
  * A WYSIWYG markdown editor built on Tiptap, styled with Paris design tokens.
  * It pairs with the read-only `<Markdown>` component as its write counterpart.
  *
@@ -78,20 +87,23 @@ export type MarkdownEditorProps = {
  *
  * @constructor
  */
-export const MarkdownEditor: FC<MarkdownEditorProps> = ({
-    value,
-    onChange,
-    features = ALL_FEATURES,
-    placeholder,
-    size = 'paragraphSmall',
-    editable = true,
-    autofocus = false,
-    handleImageUpload,
-    className,
-    status = 'default',
-    overrides,
-    children,
-}) => {
+export const MarkdownEditor = forwardRef<MarkdownEditorHandle, MarkdownEditorProps>(function MarkdownEditor(
+    {
+        value,
+        onChange,
+        features = ALL_FEATURES,
+        placeholder,
+        size = 'paragraphSmall',
+        editable = true,
+        autofocus = false,
+        handleImageUpload,
+        className,
+        status = 'default',
+        overrides,
+        children,
+    },
+    ref,
+) {
     const { editor, featureSet } = useMarkdownEditor({
         value,
         onChange,
@@ -100,6 +112,8 @@ export const MarkdownEditor: FC<MarkdownEditorProps> = ({
         editable,
         autofocus,
     });
+
+    useImperativeHandle(ref, () => ({ focus: () => editor?.commands.focus() }), [editor]);
 
     const contextValue = useMemo(
         () => ({ editor, features: featureSet, handleImageUpload }),
@@ -130,4 +144,4 @@ export const MarkdownEditor: FC<MarkdownEditorProps> = ({
             </div>
         </MarkdownEditorContext.Provider>
     );
-};
+});

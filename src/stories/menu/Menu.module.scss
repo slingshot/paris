@@ -22,6 +22,10 @@
     opacity: 1;
     transform: translateY(0);
 
+    &:empty {
+        display: none;
+    }
+
     &[data-closed] {
         opacity: 0;
         transform: translateY(-8px);

@@ -24,7 +24,7 @@
     border-radius: var(--pte-borders-radius-rounded);
     background-color: var(--pte-new-colors-surfacePrimary);
     box-shadow: var(--pte-new-lighting-subtlePopup);
-    border: 1px solid var(--pte-new-colors-surfacePrimary);
+    border: 1px solid transparent;
 
     &:hover {
         background-color: var(--pte-new-colors-overlayStrong);

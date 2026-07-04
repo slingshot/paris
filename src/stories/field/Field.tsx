@@ -120,12 +120,12 @@ export const Field: FC<PropsWithChildren<FieldProps>> = ({
                 // className,
             )}
             onClick={(e) => {
-                if (typeof window !== 'undefined' && htmlFor) {
-                    const input = document.getElementById(htmlFor);
-                    if (input && !disabled && !input.contains(e.target as Node)) {
-                        if (input.tagName === 'BUTTON') input.click();
-                        else input.focus();
-                    }
+                if (typeof window === 'undefined' || !htmlFor) return;
+                if (!(e.currentTarget as Node).contains(e.target as Node)) return;
+                const input = document.getElementById(htmlFor);
+                if (input && !disabled && !input.contains(e.target as Node)) {
+                    if (input.tagName === 'BUTTON') input.click();
+                    else input.focus();
                 }
             }}
         >

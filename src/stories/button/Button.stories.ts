@@ -2,12 +2,23 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { createElement } from 'react';
-import { Button } from './Button';
+import { Button, CornerPresets } from './Button';
 
 const meta: Meta<typeof Button> = {
     title: 'Inputs/Button',
     component: Button,
     tags: ['autodocs'],
+    argTypes: {
+        // `corners` is a `CornerPreset | CSSLength` union that Storybook can't infer a control for,
+        // so define it manually as a select over the presets (it also accepts any CSSLength string).
+        corners: {
+            control: 'select',
+            options: [...CornerPresets],
+            description:
+                'Corner rounding for the `rectangle` and `square` shapes. A preset (`sharp`, `rounded`, `roundedXL`) or any valid CSSLength string.',
+            table: { defaultValue: { summary: 'rounded' } },
+        },
+    },
 };
 
 export default meta;

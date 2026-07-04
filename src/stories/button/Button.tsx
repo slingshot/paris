@@ -188,6 +188,7 @@ export const Button: FC<ButtonProps> = ({
                 styles[shape],
                 styles[size],
                 cornersIsPreset && styles[corners],
+                displayNotificationDot && styles.hasNotificationDot,
                 props?.className,
             )}
             aria-disabled={disabled ?? false}
@@ -217,7 +218,7 @@ export const Button: FC<ButtonProps> = ({
             )}
             {!!(endEnhancer && !loading) && <MemoizedEnhancer enhancer={endEnhancer} size={EnhancerSizes[size]} />}
             {!!displayNotificationDot && (
-                <div className="absolute top-0 right-0">
+                <div className={styles.notificationDot}>
                     <NotificationDot size={8} />
                 </div>
             )}

@@ -43,6 +43,10 @@
 
     transition: opacity var(--pte-animations-interaction), transform var(--pte-animations-interaction);
 
+    &:empty {
+        display: none;
+    }
+
     &[data-closed] {
         opacity: 0;
         transform: translateY(-8px);

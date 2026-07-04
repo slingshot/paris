@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import { render, screen } from '../../test/render';
 import { Field } from './Field';
 
@@ -112,6 +113,25 @@ describe('Field', () => {
         const label = screen.getByText('Click me');
         await user.click(label);
         expect(screen.getByTestId('focusable')).toHaveFocus();
+    });
+
+    it('ignores clicks from portaled descendants', async () => {
+        const onTriggerClick = vi.fn();
+        const { user } = render(
+            <Field label="Country" htmlFor="portal-trigger">
+                <button id="portal-trigger" type="button" onClick={onTriggerClick}>
+                    Trigger
+                </button>
+                {createPortal(
+                    <button data-testid="portaled-option" type="button">
+                        Option
+                    </button>,
+                    document.body,
+                )}
+            </Field>,
+        );
+        await user.click(screen.getByTestId('portaled-option'));
+        expect(onTriggerClick).not.toHaveBeenCalled();
     });
 
     it('does not focus the input when disabled', async () => {

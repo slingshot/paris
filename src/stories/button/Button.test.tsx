@@ -189,13 +189,13 @@ describe('Button', () => {
     describe('notification dot', () => {
         it('renders notification dot when displayNotificationDot is true', () => {
             const { container } = render(<Button displayNotificationDot>Label</Button>);
-            const dotWrapper = container.querySelector('.absolute');
+            const dotWrapper = container.querySelector('.notificationDot');
             expect(dotWrapper).toBeInTheDocument();
         });
 
         it('does not render notification dot by default', () => {
             const { container } = render(<Button>Label</Button>);
-            const dotWrapper = container.querySelector('.absolute');
+            const dotWrapper = container.querySelector('.notificationDot');
             expect(dotWrapper).not.toBeInTheDocument();
         });
     });
