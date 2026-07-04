@@ -1,5 +1,45 @@
 # paris
 
+## 0.25.0
+
+### Minor Changes
+
+- ad1240e: Round out programmatic focus (`setFocus`) and per-field error state across form components, building on the new `forwardRef` support:
+
+  - `Checkbox` and `AccordionSelect` gain a `status?: 'default' | 'error'` prop that renders an invalid treatment (e.g. for a required field), matching `Input`/`Select`.
+  - `Select`'s `radio`/`card`/`segmented` kinds are now focusable (the group receives `tabIndex={-1}`), so `setFocus` works for them — previously only the `listbox` kind was.
+  - `Combobox` keeps a focusable target for its forwarded `ref` even when the selected option's `node` is a non-string element (previously the ref went `null` and `setFocus` no-oped).
+  - `MarkdownEditor` exposes an imperative handle via `ref` (`MarkdownEditorHandle` with `focus()`), so consumers can focus the editor without reaching into Tiptap internals.
+  - `Drawer` adds an `onPageEntered(pageID)` callback that fires once a paginated page's content has mounted and its enter transition completed, so consumers can focus a field on a newly-navigated page deterministically instead of polling animation frames.
+
+- ad1240e: Option-based components are now genuinely generic over their `metadata` type, and their callbacks are typed accordingly.
+
+  **Breaking — `Select` `onChange`:** it now receives the full selected `Option<T>` (single) or `Option<T>[]` (multiple) — including typed `metadata` — instead of the option `id` string(s). `value`/`defaultValue` are unchanged (still id-based). Migrate by reading `option.id`:
+
+  ```tsx
+  // before
+  <Select options={opts} onChange={(id) => setValue(id)} />
+  // after
+  <Select options={opts} onChange={(option) => setValue(option?.id ?? null)} />
+  ```
+
+  Also in this release (non-breaking):
+
+  - `Select` and `AccordionSelect` now preserve their generic type parameter, so `<Select<MyMeta> />` / `<AccordionSelect<MyMeta> />` correctly type `options`, `onChange`, and the render callbacks. (Previously the parameter was silently erased by `forwardRef`, and `Select`'s `options` never received the type at all.)
+  - `Tabs` is now generic over an optional per-tab `id`; `onTabChange(index, id)` receives that typed id as a second argument.
+  - `Option`/`AccordionSelectOption` metadata now defaults to `Record<string, unknown>` (was `Record<string, any>`).
+  - `Menu` dropdowns no longer paint a stray drop shadow when rendered with no items (matches the same fix on `Select`).
+
+### Patch Changes
+
+- ad1240e: Form inputs now forward a `ref` to their focusable element, so form libraries (e.g. react-hook-form's `field.ref` / `setFocus`) can focus a field when it's invalid:
+
+  - `Combobox` → its `<input>` (also fixes `Input`'s type annotation, which was `FC` and hid the forwarded `ref`).
+  - `Checkbox` → the underlying checkbox / switch control.
+  - `CodeInput` → the first digit cell.
+  - `AccordionSelect` → its header trigger.
+  - `Select` (listbox) → its `ListboxButton` (the focusable trigger) instead of the wrapping `Listbox` div.
+
 ## 0.24.1
 
 ### Patch Changes
