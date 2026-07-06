@@ -1,6 +1,5 @@
 {
   "lockfileVersion": 1,
-  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "paris",
@@ -85,7 +84,6 @@
         "@types/react-dom": "^19",
         "react": "^19.x",
         "react-dom": "^19.x",
-        "sass": "^1.x",
         "typescript": "^5.0",
       },
     },

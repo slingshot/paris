@@ -8,11 +8,14 @@ import { Check, ChevronRight, Icon } from '../icon';
 import { TextWhenString } from '../utility';
 import styles from './AccordionSelect.module.scss';
 
-export type AccordionSelectOption<T extends Record<string, unknown> = Record<string, unknown>> = {
+export type AccordionSelectOption<
+    T extends Record<string, unknown> = Record<string, unknown>,
+    Id extends string = string,
+> = {
     /**
      * A unique identifier for the option.
      */
-    id: string;
+    id: Id;
     /**
      * The content to render for this option.
      */
@@ -28,23 +31,26 @@ export type AccordionSelectOption<T extends Record<string, unknown> = Record<str
     metadata?: T;
 };
 
-export type AccordionSelectProps<T extends Record<string, unknown> = Record<string, unknown>> = {
+export type AccordionSelectProps<
+    T extends Record<string, unknown> = Record<string, unknown>,
+    Id extends string = string,
+> = {
     /**
      * The list of selectable options.
      */
-    options: AccordionSelectOption<T>[];
+    options: AccordionSelectOption<T, Id>[];
     /**
      * The currently selected option ID.
      */
-    value?: string | null;
+    value?: Id | null;
     /**
      * The initial selected option ID for uncontrolled mode. If `value` is provided, this is ignored.
      */
-    defaultValue?: string | null;
+    defaultValue?: Id | null;
     /**
      * Called when the user selects an option.
      */
-    onChange?: (option: AccordionSelectOption<T>) => void;
+    onChange?: (option: AccordionSelectOption<T, Id>) => void;
     /**
      * The validation status of the field. `error` renders an invalid treatment. Follows the
      * `Input`/`Select` pattern.
@@ -55,12 +61,12 @@ export type AccordionSelectProps<T extends Record<string, unknown> = Record<stri
      * Custom content to render as the header when an option is selected.
      * Receives the selected option. If not provided, the option's `node` is used.
      */
-    renderSelected?: (option: AccordionSelectOption<T>) => ReactNode;
+    renderSelected?: (option: AccordionSelectOption<T, Id>) => ReactNode;
     /**
      * Custom content to render for each option in the dropdown.
      * Receives the option and whether it's selected. If not provided, the option's `node` is used.
      */
-    renderOption?: (option: AccordionSelectOption<T>, isSelected: boolean) => ReactNode;
+    renderOption?: (option: AccordionSelectOption<T, Id>, isSelected: boolean) => ReactNode;
     /**
      * Placeholder to show when no option is selected.
      * @default 'Select an option'
@@ -116,7 +122,7 @@ export type AccordionSelectProps<T extends Record<string, unknown> = Record<stri
  * ```
  * @constructor
  */
-const AccordionSelectInner = <T extends Record<string, unknown> = Record<string, unknown>>(
+const AccordionSelectInner = <T extends Record<string, unknown> = Record<string, unknown>, Id extends string = string>(
     {
         options,
         value,
@@ -133,7 +139,7 @@ const AccordionSelectInner = <T extends Record<string, unknown> = Record<string,
         action,
         label,
         overrides,
-    }: AccordionSelectProps<T>,
+    }: AccordionSelectProps<T, Id>,
     ref: ForwardedRef<HTMLDivElement>,
 ): ReactNode => {
     const [open, setOpen] = useControllableState({
@@ -267,8 +273,9 @@ const AccordionSelectInner = <T extends Record<string, unknown> = Record<string,
  */
 export const AccordionSelect = forwardRef(AccordionSelectInner) as unknown as (<
     T extends Record<string, unknown> = Record<string, unknown>,
+    Id extends string = string,
 >(
-    props: AccordionSelectProps<T> & RefAttributes<HTMLDivElement>,
+    props: AccordionSelectProps<T, Id> & RefAttributes<HTMLDivElement>,
 ) => ReactNode) & { displayName?: string };
 
 AccordionSelect.displayName = 'AccordionSelect';
