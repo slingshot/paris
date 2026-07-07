@@ -20,13 +20,16 @@ import { pget, theme } from '../theme';
 import { TextWhenString } from '../utility';
 import styles from './Select.module.scss';
 
-export type Option<T extends Record<string, unknown> = Record<string, unknown>> = {
-    id: string;
+export type Option<T extends Record<string, unknown> = Record<string, unknown>, Id extends string = string> = {
+    id: Id;
     node: ReactNode;
     disabled?: boolean;
     metadata?: T;
 };
-export type CommonSelectProps<T extends Record<string, unknown> = Record<string, unknown>> = {
+export type CommonSelectProps<
+    T extends Record<string, unknown> = Record<string, unknown>,
+    Id extends string = string,
+> = {
     /**
      * The  {@link Option}s to render in the select box.
      *
@@ -34,7 +37,7 @@ export type CommonSelectProps<T extends Record<string, unknown> = Record<string,
      *
      * For type safety, you can pass in a type parameter to `SelectProps` component. This will be used as the type for the `metadata` property of each option.
      */
-    options: Option<T>[];
+    options: Option<T, Id>[];
     /**
      * The size of the options dropdown, in pixels. Only applicable to kind="listbox".
      */
@@ -68,20 +71,23 @@ export type CommonSelectProps<T extends Record<string, unknown> = Record<string,
     };
 } & Omit<InputProps, 'type' | 'overrides'>;
 
-export type SingleSelectProps<T extends Record<string, unknown> = Record<string, unknown>> = {
+export type SingleSelectProps<
+    T extends Record<string, unknown> = Record<string, unknown>,
+    Id extends string = string,
+> = {
     /**
      * The option ID to render as selected in the select box.
      *
      * This should exactly match the option IDs passed in the `options` prop. If `null`, no option will be selected.
      */
-    value?: Option<T>['id'] | null;
+    value?: Id | null;
     /** The initial value for uncontrolled mode. If `value` is provided, this is ignored. */
-    defaultValue?: Option<T>['id'] | null;
+    defaultValue?: Id | null;
     /**
      * The interaction handler for the Select. Receives the full selected {@link Option} (including
      * its typed `metadata`), or `null` when the selection is cleared.
      */
-    onChange?: (option: Option<T> | null) => void | Promise<void>;
+    onChange?: (option: Option<T, Id> | null) => void | Promise<void>;
     /**
      * The visual variant of the Select. `listbox` will render as a dropdown menu, `radio` will render as a radio group, `card` will render as selectable cards, and `segmented` will render as a segmented control.
      * @default listbox
@@ -89,9 +95,12 @@ export type SingleSelectProps<T extends Record<string, unknown> = Record<string,
     kind?: 'listbox' | 'radio' | 'card' | 'segmented';
     multiple?: false;
     multipleItemsName?: never;
-} & CommonSelectProps<T>;
+} & CommonSelectProps<T, Id>;
 
-export type MultiSelectProps<T extends Record<string, unknown> = Record<string, unknown>> = {
+export type MultiSelectProps<
+    T extends Record<string, unknown> = Record<string, unknown>,
+    Id extends string = string,
+> = {
     /**
      * Controls the text of the Multiselect button when multiple items selected, such as "All ___" or "2 ___"
      * @default items
@@ -109,21 +118,21 @@ export type MultiSelectProps<T extends Record<string, unknown> = Record<string, 
     /**
      * For multiselect, should be a string[] that matches the option IDs passed in the `options` prop. If `null`, no option will be selected.
      */
-    value?: Option<T>['id'][] | null;
+    value?: Id[] | null;
     /** The initial value for uncontrolled multi-select. If `value` is provided, this is ignored. */
-    defaultValue?: Option<T>['id'][] | null;
+    defaultValue?: Id[] | null;
     /**
      * The interaction handler for the Select. Receives the full selected {@link Option}s (including
      * their typed `metadata`), or `null` when nothing is selected.
      */
-    onChange?: (options: Option<T>[] | null) => void | Promise<void>;
-} & CommonSelectProps<T>;
+    onChange?: (options: Option<T, Id>[] | null) => void | Promise<void>;
+} & CommonSelectProps<T, Id>;
 
-type SelectProps<T extends Record<string, unknown> = Record<string, unknown>> =
-    | SingleSelectProps<T>
-    | MultiSelectProps<T>;
+type SelectProps<T extends Record<string, unknown> = Record<string, unknown>, Id extends string = string> =
+    | SingleSelectProps<T, Id>
+    | MultiSelectProps<T, Id>;
 
-const SelectRender = <T extends Record<string, unknown> = Record<string, unknown>>(
+const SelectRender = <T extends Record<string, unknown> = Record<string, unknown>, Id extends string = string>(
     {
         options,
         value,
@@ -147,7 +156,7 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
         segmentedHeight = 'compact',
         onOpenChange,
         overrides,
-    }: SelectProps<T>,
+    }: SelectProps<T, Id>,
     ref: ForwardedRef<HTMLElement>,
 ) => {
     const inputID = useId();
@@ -168,12 +177,12 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                 const ids = (next as string[] | null) ?? [];
                 const selected = ids
                     .map((id) => options.find((o) => o.id === id))
-                    .filter((o): o is Option<T> => Boolean(o));
-                (onChange as MultiSelectProps<T>['onChange'])?.(selected.length ? selected : null);
+                    .filter((o): o is Option<T, Id> => Boolean(o));
+                (onChange as MultiSelectProps<T, Id>['onChange'])?.(selected.length ? selected : null);
             } else {
                 const id = next as string | null;
                 const selected = id != null ? (options.find((o) => o.id === id) ?? null) : null;
-                (onChange as SingleSelectProps<T>['onChange'])?.(selected);
+                (onChange as SingleSelectProps<T, Id>['onChange'])?.(selected);
             }
         },
     });
@@ -425,6 +434,7 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
  */
 export const Select = forwardRef(SelectRender) as unknown as <
     T extends Record<string, unknown> = Record<string, unknown>,
+    Id extends string = string,
 >(
-    props: SelectProps<T> & RefAttributes<HTMLElement>,
+    props: SelectProps<T, Id> & RefAttributes<HTMLElement>,
 ) => ReactNode;

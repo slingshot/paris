@@ -27,9 +27,9 @@ import { Text } from '../text';
 import { pget, theme } from '../theme';
 import { TextWhenString } from '../utility';
 
-export type Option<T extends Record<string, unknown> = Record<string, unknown>> =
+export type Option<T extends Record<string, unknown> = Record<string, unknown>, Id extends string = string> =
     | {
-          id: string;
+          id: Id;
           node: ReactNode;
           metadata?: T;
       }
@@ -39,7 +39,7 @@ export type Option<T extends Record<string, unknown> = Record<string, unknown>> 
           metadata?: T;
       };
 
-export type ComboboxProps<T extends Record<string, unknown>> = {
+export type ComboboxProps<T extends Record<string, unknown>, Id extends string = string> = {
     /**
      * The  {@link Option}s to render in the select box.
      *
@@ -47,23 +47,23 @@ export type ComboboxProps<T extends Record<string, unknown>> = {
      *
      * For type safety, you can pass in a type parameter to `ComboboxProps`. This will be used as the type for the `metadata` property of each option.
      */
-    options: Option<T>[];
+    options: Option<T, Id>[];
     /**
      * The option to render as selected in the select box.
      *
      * If `null`, no option will be selected.
      */
-    value?: Option<T> | null;
+    value?: Option<T, Id> | null;
     /**
      * The initial value for uncontrolled mode. If `value` is provided, this is ignored.
      */
-    defaultValue?: Option<T> | null;
+    defaultValue?: Option<T, Id> | null;
     /**
      * The interaction handler for the Combobox. This will be called when the user selects an option from the dropdown.
      *
      * @param option - The selected option, or `null` if the user has cleared the selection.
      */
-    onChange?: (option: Option<T> | null) => void | Promise<void>;
+    onChange?: (option: Option<T, Id> | null) => void | Promise<void>;
     /**
      * The interaction handler for when the user types in the input. The input is controlled internally, but you can use this to update the input value in your own state.
      * @param value - The current value of the input.
@@ -92,7 +92,7 @@ export type ComboboxProps<T extends Record<string, unknown>> = {
      * A function that will be called to create an {@link Option} based on the user's custom typed query value. This is useful for adding custom styling by  allowing you to pass a custom `Option.node` based on the value. This overrides the `customValueString` prop.
      * @param value
      */
-    customValueToOption?: (value: string) => Option<T>;
+    customValueToOption?: (value: string) => Option<T, Id>;
     /**
      * Called when the combobox dropdown opens or closes.
      */
@@ -155,7 +155,7 @@ export type ComboboxProps<T extends Record<string, unknown>> = {
  * ```
  * @constructor
  */
-export function Combobox<T extends Record<string, unknown> = Record<string, unknown>>({
+export function Combobox<T extends Record<string, unknown> = Record<string, unknown>, Id extends string = string>({
     options,
     value,
     defaultValue,
@@ -182,9 +182,9 @@ export function Combobox<T extends Record<string, unknown> = Record<string, unkn
     hideOptionsInitially = false,
     overrides,
     ref,
-}: ComboboxProps<T>) {
+}: ComboboxProps<T, Id>) {
     const inputID = useId();
-    const [resolvedValue, setResolvedValue] = useControllableState<Option<T> | null>({
+    const [resolvedValue, setResolvedValue] = useControllableState<Option<T, Id> | null>({
         value,
         defaultValue,
         onChange,
@@ -255,7 +255,7 @@ export function Combobox<T extends Record<string, unknown> = Record<string, unkn
                     if (sel) {
                         setResolvedValue(sel);
                     } else if (id) {
-                        setResolvedValue({ id: null, node: id } as Option<T>);
+                        setResolvedValue({ id: null, node: id } as Option<T, Id>);
                     }
                 }}
             >
@@ -317,7 +317,7 @@ export function Combobox<T extends Record<string, unknown> = Record<string, unkn
                                                         ({
                                                             id: null,
                                                             node: e.target.value,
-                                                        } as Option<T>),
+                                                        } as Option<T, Id>),
                                                 );
                                             }
                                         }}
