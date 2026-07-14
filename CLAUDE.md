@@ -56,7 +56,7 @@ The theme engine (`pte`) generates CSS variables from TypeScript theme definitio
 
 **Overrides Pattern**: Complex components accept `overrides` prop with element-specific props for customization.
 
-**Field Wrapper**: Form inputs (Input, Select, Combobox, TextArea) use the `Field` component for consistent label/description handling.
+**Field Wrapper**: Form inputs (Input, Select, Combobox, TextArea, PhoneInput) use the `Field` component for consistent label/description handling.
 
 **Generic Option Components**: `Select`, `Combobox`, and `AccordionSelect` are generic over their option `metadata` and `id` types (`Option<T, Id>`); with literal-id `options`, `value` and the selected option's `id` narrow to that union (`Id` defaults to `string`). Their `onChange` returns the full selected option(s) with typed `metadata` (not just the id). Because `forwardRef` erases generics, these components cast their `forwardRef` export back to a generic function type so `<Select<MyMeta> />` keeps working — follow that pattern when adding a generic + ref-forwarding component. `Tabs` is generic over an optional per-tab `id` passed to `onTabChange`.
 
@@ -95,6 +95,7 @@ In SCSS: `z-index: var(--pte-new-layers-overlay);`
 - `@radix-ui/react-checkbox`, `@radix-ui/react-tooltip` - Checkbox, Tooltip
 - `@tiptap/react`, `@tiptap/starter-kit`, `@tiptap/markdown` - MarkdownEditor
 - `lucide-react` - MarkdownEditor toolbar icons
+- `libphonenumber-js` (`/min` entry) - PhoneInput parsing, validation, and formatting
 
 ## Maintaining Documentation
 

@@ -139,6 +139,10 @@
             "types": "./dist/stories/pagination/index.d.ts",
             "import": "./dist/stories/pagination/index.js"
         },
+        "./phoneinput": {
+            "types": "./dist/stories/phoneinput/index.d.ts",
+            "import": "./dist/stories/phoneinput/index.js"
+        },
         "./popover": {
             "types": "./dist/stories/popover/index.d.ts",
             "import": "./dist/stories/popover/index.js"
@@ -213,6 +217,7 @@
         "clsx": "^1.2.1",
         "font-color-contrast": "^11.1.0",
         "framer-motion": "^12.40.0",
+        "libphonenumber-js": "^1.13.8",
         "lucide-react": "^1.16.0",
         "pte": "^0.5.0",
         "react-hot-toast": "^2.6.0",
