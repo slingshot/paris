@@ -60,7 +60,9 @@
     align-self: stretch;
     flex-shrink: 0;
     width: 1px;
-    margin: 5px 12px 5px 0;
+    // Fill the full field height by cancelling the inputContainer's vertical
+    // padding: top is calc(6px - verticalMetricsAdjust), bottom is 6px.
+    margin: calc(var(--pte-typography-verticalMetricsAdjust) - 6px) 12px -6px 0;
     background-color: var(--pte-new-colors-borderMedium);
 }
 
