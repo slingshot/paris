@@ -119,6 +119,29 @@ describe('PhoneInput', () => {
         expect(options[0]).toHaveTextContent('United Kingdom');
     });
 
+    it('pins the default country to the top of the dropdown when priorityCountries is not provided', async () => {
+        const { user } = render(<PhoneInput label="Phone" />);
+        await user.click(screen.getByRole('button', { name: 'Country: United States (+1)' }));
+        await screen.findByRole('combobox', { name: 'Search countries' });
+        expect(screen.getAllByRole('option')[0]).toHaveTextContent('United States');
+    });
+
+    it('pins a custom defaultCountry to the top of the dropdown', async () => {
+        const { user } = render(<PhoneInput label="Phone" defaultCountry="GB" />);
+        await user.click(screen.getByRole('button', { name: 'Country: United Kingdom (+44)' }));
+        await screen.findByRole('combobox', { name: 'Search countries' });
+        expect(screen.getAllByRole('option')[0]).toHaveTextContent('United Kingdom');
+    });
+
+    it('plumbs maxHeight to the country list cap', async () => {
+        const { user } = render(<PhoneInput label="Phone" maxHeight={240} />);
+        await user.click(screen.getByRole('button', { name: 'Country: United States (+1)' }));
+        await screen.findByRole('combobox', { name: 'Search countries' });
+        const panel = screen.getByRole('listbox', { name: 'Countries' }).closest('[style*="--options-maxHeight"]');
+        expect(panel).not.toBeNull();
+        expect((panel as HTMLElement).getAttribute('style')).toContain('--options-maxHeight: 240px');
+    });
+
     it('forwards its ref to the tel input for setFocus', () => {
         const ref = createRef<HTMLInputElement>();
         render(<PhoneInput label="Phone" ref={ref} />);

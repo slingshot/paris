@@ -25,6 +25,11 @@ export type CountrySelectProps = {
     focusOnCloseRef?: RefObject<HTMLInputElement | null>;
     disabled?: boolean;
     status?: 'default' | 'error' | 'success';
+    /**
+     * The max height of the scrollable country list, in pixels.
+     * @default 320
+     */
+    maxHeight?: number;
     overrides?: {
         countryButton?: ComponentPropsWithoutRef<'button'>;
         searchInput?: ComponentPropsWithoutRef<'input'>;
@@ -46,6 +51,7 @@ export const CountrySelect: FC<CountrySelectProps> = ({
     focusOnCloseRef,
     disabled,
     status,
+    maxHeight = 320,
     overrides,
 }) => {
     const listboxId = useId();
@@ -104,7 +110,11 @@ export const CountrySelect: FC<CountrySelectProps> = ({
                             )}
                             style={
                                 {
-                                    '--options-maxHeight': '320px',
+                                    // Consumed by .countryList (the scrollable <ul>), not the panel
+                                    // itself: Headless UI's anchor logic writes an inline max-height
+                                    // (available viewport space) on the panel that would win over any
+                                    // class-based cap.
+                                    '--options-maxHeight': `${maxHeight}px`,
                                     ...overrides?.optionsContainer?.style,
                                 } as CSSProperties
                             }

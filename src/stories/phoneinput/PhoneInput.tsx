@@ -46,10 +46,18 @@ export type PhoneInputProps = {
     defaultCountry?: CountryCode;
     /** Restricts the selectable country list. Defaults to all regions known to libphonenumber. */
     countries?: CountryCode[];
-    /** Countries pinned to the top of the dropdown, in the given order. */
+    /**
+     * Countries pinned to the top of the dropdown, in the given order.
+     * @default [defaultCountry]
+     */
     priorityCountries?: CountryCode[];
     /** Fires when the selected country changes, via the dropdown or a typed/pasted `+` prefix. */
     onCountryChange?: (country: CountryCode) => void;
+    /**
+     * The max height of the scrollable country list in the dropdown, in pixels.
+     * @default 320
+     */
+    maxHeight?: number;
     /**
      * The status of the input field.
      * @default default
@@ -101,6 +109,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
             onCountryChange,
             status,
             locale,
+            maxHeight,
             hideLabel,
             description,
             hideDescription,
@@ -117,8 +126,8 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
         const innerRef = useRef<HTMLInputElement | null>(null);
 
         const countryList = useMemo(
-            () => buildCountryList({ countries, priorityCountries, locale }),
-            [countries, priorityCountries, locale],
+            () => buildCountryList({ countries, priorityCountries: priorityCountries ?? [defaultCountry], locale }),
+            [countries, priorityCountries, defaultCountry, locale],
         );
         const allowedCodes = useMemo(() => new Set(countryList.map((entry) => entry.code)), [countryList]);
 
@@ -223,6 +232,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
                         focusOnCloseRef={innerRef}
                         disabled={disabled}
                         status={status}
+                        maxHeight={maxHeight}
                         overrides={{
                             countryButton: overrides?.countryButton,
                             searchInput: overrides?.searchInput,

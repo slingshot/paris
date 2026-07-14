@@ -64,16 +64,15 @@
     background-color: var(--pte-new-colors-borderMedium);
 }
 
+// The panel itself never scrolls: Headless UI writes inline max-height/overflow
+// (viewport-capped) that beat any class rule, so .countryList below is the real
+// scroll container — which also keeps the search field visible while scrolling.
 .countryOptions.countryOptions {
     width: 300px;
     padding: 0;
-    isolation: isolate;
 }
 
 .searchContainer {
-    position: sticky;
-    top: 0;
-    z-index: 1;
     padding: 10px 14px;
     background-color: var(--pte-new-colors-surfacePrimary);
     border-bottom: 0.5px solid var(--pte-new-colors-borderMedium);
@@ -105,6 +104,9 @@
     padding: 0;
     display: flex;
     flex-direction: column;
+
+    max-height: var(--options-maxHeight, 320px);
+    overflow-y: auto;
 }
 
 .countryOption.countryOption {
