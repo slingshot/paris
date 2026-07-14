@@ -1,5 +1,130 @@
-.content {
-    background-color: pink;
-    color: white;
-    height: 2rem;
+// Overrides on the base inputContainer: the country trigger supplies its own
+// left padding, and the divider supplies the gap. Doubled selectors beat the
+// equal-specificity base classes regardless of CSS order across module files.
+.phoneContainer.phoneContainer {
+    gap: 0;
+    padding-left: 0;
+}
+
+.countrySelect {
+    display: flex;
+    align-self: stretch;
+    flex-shrink: 0;
+}
+
+.countryButton {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+
+    padding: 0 10px 0 13px;
+    margin: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    color: var(--pte-new-colors-contentPrimary);
+    transition: var(--pte-animations-interaction);
+
+    &:hover .chevron,
+    &[data-open] .chevron {
+        color: var(--pte-new-colors-contentPrimary);
+    }
+
+    &[aria-disabled="true"],
+    &[data-status="disabled"] {
+        pointer-events: none;
+
+        &, & * {
+            color: var(--pte-new-colors-contentDisabled);
+        }
+    }
+}
+
+.flag {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.callingCode.callingCode {
+    color: var(--pte-new-colors-contentSecondary);
+}
+
+.chevron {
+    color: var(--pte-new-colors-contentTertiary);
+    transition: var(--pte-animations-interaction);
+}
+
+.divider {
+    align-self: stretch;
+    flex-shrink: 0;
+    width: 1px;
+    margin: 5px 12px 5px 0;
+    background-color: var(--pte-new-colors-borderMedium);
+}
+
+.countryOptions.countryOptions {
+    width: 300px;
+    padding: 0;
+    isolation: isolate;
+}
+
+.searchContainer {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 10px 14px;
+    background-color: var(--pte-new-colors-surfacePrimary);
+    border-bottom: 0.5px solid var(--pte-new-colors-borderMedium);
+}
+
+.searchInput {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+
+    color: var(--pte-new-colors-contentPrimary);
+    font-size: var(--pte-typography-styles-paragraphSmall-fontSize);
+    font-style: var(--pte-typography-styles-paragraphSmall-fontStyle);
+    font-weight: var(--pte-typography-styles-paragraphSmall-fontWeight);
+    letter-spacing: var(--pte-typography-styles-paragraphSmall-letterSpacing);
+    line-height: var(--pte-typography-styles-paragraphSmall-lineHeight);
+
+    &::placeholder {
+        color: var(--pte-new-colors-contentTertiary);
+    }
+}
+
+.countryList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.countryOption.countryOption {
+    justify-content: flex-start;
+    cursor: pointer;
+}
+
+.countryName {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dialCode.dialCode {
+    color: var(--pte-new-colors-contentTertiary);
+}
+
+.noResults {
+    padding: 10px 14px;
+    color: var(--pte-new-colors-contentTertiary);
 }
