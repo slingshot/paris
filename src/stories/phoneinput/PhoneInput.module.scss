@@ -60,9 +60,10 @@
     align-self: stretch;
     flex-shrink: 0;
     width: 1px;
-    // Fill the full field height by cancelling the inputContainer's vertical
-    // padding: top is calc(6px - verticalMetricsAdjust), bottom is 6px.
-    margin: calc(var(--pte-typography-verticalMetricsAdjust) - 6px) 12px -6px 0;
+    // Fill the field's full outer height by cancelling the inputContainer's
+    // vertical padding (top: calc(6px - verticalMetricsAdjust), bottom: 6px)
+    // plus its 1px borders, so the divider paints edge to edge.
+    margin: calc(var(--pte-typography-verticalMetricsAdjust) - 7px) 12px -7px 0;
     background-color: var(--pte-new-colors-borderMedium);
 }
 
