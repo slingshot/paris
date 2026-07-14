@@ -1,0 +1,25 @@
+name: Docs Sentinel
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [main]
+  push:
+    branches: [main]
+
+# A called workflow can only DOWNGRADE these — the caller must grant them.
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  docs-sentinel:
+    uses: slingshot/docs-sentinel/.github/workflows/audit.yml@v1
+    secrets:
+      MODEL_API_KEY: ${{ secrets.MODEL_API_KEY }}
+      SYNC_PR_TOKEN: ${{ secrets.SYNC_PR_TOKEN }}
+    with:
+      allowlist-regex: '^(README\.md|AGENTS\.md|CLAUDE\.md|TESTING\.md|public/llms\.txt|\.claude/skills/.*\.md)$'
+      # Beyond the CHANGELOG default: dated specs/plans, the frozen v0.24 migration
+      # guide, and changesets are point-in-time records — never auto-edit them.
+      denylist-regex: '(^|/)CHANGELOG\.md$|^docs/superpowers/.*|^public/migrate-.*\.md$|^\.changeset/.*'
