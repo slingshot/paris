@@ -80,6 +80,8 @@ it('handles click', async () => {
 
 Always place tests alongside the component: `src/stories/<component>/ComponentName.test.tsx`
 
+Script/utility tests live in `scripts/` as `*.test.mjs` — the `unit` project also matches `scripts/**/*.test.mjs`.
+
 ### Imports
 
 ```tsx

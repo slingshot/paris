@@ -40,6 +40,14 @@ Two non-obvious constraints govern `.github/dependabot.yml`:
 
 `versioning-strategy: increase-if-necessary` is set because Paris is a published library: a range is only edited when it genuinely cannot admit the new version, so consumers' resolvable range is never narrowed needlessly.
 
+### CI test reporting
+
+`.github/workflows/check.yml` posts a PR comment summarising both test jobs. The counts come from Vitest's **JSON reporter**, parsed by `scripts/ciTestSummary.mjs`, which writes the step outputs the comment job reads.
+
+**Never parse Vitest's terminal output to get these numbers.** Vitest colourises in CI — picocolors enables colour whenever `$CI` is set, with or without a TTY — so the summary lines are full of ANSI escapes. `grep`-based parsing silently reported `0 tests` for every run: `^\s+Tests` cannot match a line whose first byte is `ESC`, `\s` cannot cross an escape sequence (`Duration \e[22m 13.12s`, `505\e[2mms`), and per-file lines carry a project badge (` ✓  unit  src/foo.test.tsx`) that defeats `(✓|×)\s+src/`.
+
+Each test job therefore runs `--reporter=default --reporter=json --outputFile.json=<file>` — the default reporter keeps the log readable, the JSON reporter feeds the summary. `scripts/ciTestSummary.mjs` is covered by `scripts/ciTestSummary.test.mjs` (the `unit` project includes `scripts/**/*.test.mjs`). Two traps it encodes: `numTotalTestSuites` counts `describe` blocks, not files — use `testResults.length`; and the report has no top-level duration, so it is derived from `startTime` to the last `endTime`.
+
 ## Architecture
 
 ### Component Structure
