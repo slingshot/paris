@@ -29,7 +29,7 @@ The `build` pipeline is `generate:exports` → `vite build` (see `vite.config.ts
 - **Linting & formatting**: Biome (configured in `biome.json`)
 - **Git hooks**: Lefthook (configured in `lefthook.yml`) — runs biome check and CSS var validation on pre-commit, commitlint on commit-msg
 - **Commit conventions**: Commitlint with `@commitlint/config-conventional` — all commits must follow conventional commit format
-- **Dependency updates**: Dependabot (configured in `.github/dependabot.yml`) — weekly grouped version updates for npm and GitHub Actions
+- **Dependency updates**: Dependabot (configured in `.github/dependabot.yml`) — weekly grouped version updates for bun and GitHub Actions
 
 ### Dependabot caveats
 
