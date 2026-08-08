@@ -29,13 +29,13 @@ The `build` pipeline is `generate:exports` → `vite build` (see `vite.config.ts
 - **Linting & formatting**: Biome (configured in `biome.json`)
 - **Git hooks**: Lefthook (configured in `lefthook.yml`) — runs biome check and CSS var validation on pre-commit, commitlint on commit-msg
 - **Commit conventions**: Commitlint with `@commitlint/config-conventional` — all commits must follow conventional commit format
-- **Dependency updates**: Dependabot (configured in `.github/dependabot.yml`) — weekly grouped version updates for npm and GitHub Actions
+- **Dependency updates**: Dependabot (configured in `.github/dependabot.yml`) — weekly grouped version updates for bun and GitHub Actions
 
 ### Dependabot caveats
 
 Two non-obvious constraints govern `.github/dependabot.yml`:
 
-1. **Bun has no ecosystem of its own.** It is handled by `package-ecosystem: npm`, which reads the text-based `bun.lock` (the legacy binary `bun.lockb` is unsupported). Dependabot *version* updates support Bun; *security* updates do **not** yet. So a Dependabot security alert on a runtime dependency will never produce a fix PR on its own and must be bumped by hand — the weekly version updates are what sweep such fixes up in practice.
+1. **The ecosystem must be `bun`, not `npm`.** Bun is a first-class Dependabot ecosystem with its own YAML value. Setting `npm` silently half-works: Dependabot detects the package manager as plain npm, finds no `package-lock.json`, and edits `package.json` while leaving `bun.lock` alone — so every PR fails CI at `bun install --frozen-lockfile` with `lockfile had changes, but lockfile is frozen`. Separately, the `bun` ecosystem supports *version* updates but **not** *security* updates, so a Dependabot security alert never produces a fix PR on its own and must be bumped by hand; the weekly version updates are what sweep such fixes up in practice.
 2. **A dependency joins the first group whose patterns match it.** Version-locked families (`@tiptap/*`, `@storybook/*`, `@fortawesome/*`, `@radix-ui/*`, `@commitlint/*`, React, the test stack) are therefore listed *above* the `patterns: ['*']` catch-alls; reordering them collapses everything into one bucket. Those families intentionally omit `update-types` so they capture majors too and always move in lockstep.
 
 `versioning-strategy: increase-if-necessary` is set because Paris is a published library: a range is only edited when it genuinely cannot admit the new version, so consumers' resolvable range is never narrowed needlessly.

@@ -1,23 +1,29 @@
 # Dependabot configuration for Paris.
 #
-# Note on Bun: Dependabot has no `bun` ecosystem — Bun is handled by the `npm`
-# ecosystem, which reads the text-based `bun.lock` (the legacy binary
-# `bun.lockb` is NOT supported). CI runs `bun install --frozen-lockfile`, so
-# Dependabot must keep `bun.lock` in step with `package.json`; it does.
+# Note on the ecosystem name: this MUST be `bun`, not `npm`. Bun is a
+# first-class Dependabot ecosystem with its own YAML value; it is not handled
+# by `npm`. Using `npm` here silently half-works — Dependabot detects the
+# package manager as plain npm, finds no `package-lock.json`, and so edits
+# `package.json` while leaving `bun.lock` untouched. CI runs
+# `bun install --frozen-lockfile`, so every such PR fails with
+# "lockfile had changes, but lockfile is frozen". Only `bun` updates both
+# files. Bun reads the text-based `bun.lock`; the legacy binary `bun.lockb`
+# is not supported (requires Bun >= 1.1.39).
 #
-# Note on security updates: Dependabot *version* updates support Bun, but
-# *security* updates do not yet. Repo-level "automated security fixes" is
-# already enabled, so alerts are raised — but Dependabot cannot open a fix PR
-# for them on a Bun lockfile (this is why the ts-deepmerge alert sat unfixed).
-# The weekly version updates below are the practical workaround: they sweep up
-# security patches as part of routine bumps. The `security-updates` group is
-# declared anyway so grouping applies automatically once Bun support lands.
+# Note on security updates: the `bun` ecosystem supports *version* updates but
+# NOT *security* updates. Repo-level "automated security fixes" is enabled, so
+# alerts are still raised — but Dependabot cannot open a fix PR for them on a
+# Bun lockfile (this is why the ts-deepmerge advisory had to be bumped by
+# hand). The weekly version updates below are the practical workaround: they
+# sweep up security patches as part of routine bumps. The `security-updates`
+# group is declared anyway so grouping applies automatically if Bun support
+# lands later.
 
 version: 2
 
 updates:
-  # ─── npm / Bun ──────────────────────────────────────────────────
-  - package-ecosystem: npm
+  # ─── Bun (package.json + bun.lock) ──────────────────────────────
+  - package-ecosystem: bun
     directory: /
     schedule:
       interval: weekly
