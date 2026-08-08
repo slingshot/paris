@@ -225,7 +225,7 @@
         "react-tiny-popover": "^8.1.6",
         "rehype-raw": "^7.0.0",
         "remark-gfm": "^4.0.1",
-        "ts-deepmerge": "^6.2.1"
+        "ts-deepmerge": "^8.0.0"
     },
     "peerDependencies": {
         "@types/react": "^19",
