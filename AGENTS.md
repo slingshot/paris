@@ -72,6 +72,7 @@ src/stories/<componentname>/
 - **Select** - Dropdown/listbox/radio/segmented selection
 - **Checkbox** - Checkbox with switch variant
 - **Combobox** - Autocomplete input
+- **PhoneInput** - Country select + phone number input; `value`/`onChange` are E.164, display formats to national format on blur
 - **AccordionSelect** - Card header that expands to reveal selectable options
 
 **Generic option typing:** `Select`, `Combobox`, and `AccordionSelect` are generic over their option `metadata` type (`<Select<MyMeta> />`), and their `onChange` returns the full selected `Option<T>` (or `Option<T>[]` for multi-select), including typed `metadata`. `Tabs` is generic over an optional per-tab `id`, surfaced as the second arg of `onTabChange(index, id)`.
