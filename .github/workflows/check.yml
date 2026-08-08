@@ -16,7 +16,7 @@ jobs:
     name: Lint & Typecheck
     runs-on: namespace-profile-default
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: oven-sh/setup-bun@v2
         with:
@@ -42,7 +42,7 @@ jobs:
       duration: ${{ steps.run-tests.outputs.duration }}
       file-results: ${{ steps.run-tests.outputs.file-results }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: oven-sh/setup-bun@v2
         with:
@@ -102,7 +102,7 @@ jobs:
       total-files: ${{ steps.run-stories.outputs.total-files }}
       duration: ${{ steps.run-stories.outputs.duration }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: oven-sh/setup-bun@v2
         with:
@@ -143,7 +143,7 @@ jobs:
     permissions:
       pull-requests: write
     steps:
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v9
         env:
           QUALITY_RESULT: ${{ needs.quality.result }}
           TEST_RESULT: ${{ needs.test.result }}
