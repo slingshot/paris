@@ -38,6 +38,7 @@ jobs:
     outputs:
       total-pass: ${{ steps.run-tests.outputs.total-pass }}
       total-fail: ${{ steps.run-tests.outputs.total-fail }}
+      total-skipped: ${{ steps.run-tests.outputs.total-skipped }}
       total-files: ${{ steps.run-tests.outputs.total-files }}
       duration: ${{ steps.run-tests.outputs.duration }}
       file-results: ${{ steps.run-tests.outputs.file-results }}
@@ -51,45 +52,17 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      # Read counts from Vitest's JSON reporter, never from its terminal output —
+      # Vitest colourises in CI (picocolors enables colour whenever $CI is set,
+      # with or without a TTY), so scraping the summary with `grep` silently
+      # reported 0 tests. `--reporter=default` keeps the log human-readable.
       - name: Run tests
         id: run-tests
         run: |
           set +e
-          OUTPUT=$(bun run test 2>&1)
+          bun run test --reporter=default --reporter=json --outputFile.json=vitest-unit.json
           EXIT_CODE=$?
-          echo "$OUTPUT"
-
-          # Parse Vitest summary output
-          TOTAL_FILES=$(echo "$OUTPUT" | grep -oP 'Test Files.*\((\d+)\)' | grep -oP '\(\d+\)' | tr -d '()')
-          TOTAL_PASS=$(echo "$OUTPUT" | grep -P '^\s+Tests' | grep -oP '\d+ passed' | grep -oP '\d+' || echo "0")
-          TOTAL_FAIL=$(echo "$OUTPUT" | grep -P '^\s+Tests' | grep -oP '\d+ failed' | grep -oP '\d+' || echo "0")
-          DURATION=$(echo "$OUTPUT" | grep -oP 'Duration\s+\K[\d.]+s' || echo "0s")
-
-          # Parse per-file results
-          FILE_JSON="["
-          FIRST=true
-          while IFS= read -r line; do
-            [ -z "$line" ] && continue
-            FILE=$(echo "$line" | grep -oP '(src/\S+\.test\.tsx?)' || continue)
-            [ -z "$FILE" ] && continue
-            FPASS=$(echo "$line" | grep -oP '\d+ test' | grep -oP '\d+' || echo "0")
-            FFAIL=$(echo "$line" | grep -oP '\d+ failed' | grep -oP '\d+' || echo "0")
-            FTIME=$(echo "$line" | grep -oP '\d+ms' | head -1 || echo "0ms")
-            STATUS="pass"
-            echo "$line" | grep -qP '×' && STATUS="fail"
-
-            if [ "$FIRST" = true ]; then FIRST=false; else FILE_JSON+=","; fi
-            COMPONENT=$(echo "$FILE" | sed -E 's|src/stories/([^/]+)/.*|\1|')
-            FILE_JSON+="{\"file\":\"${FILE}\",\"component\":\"${COMPONENT}\",\"tests\":${FPASS},\"failed\":${FFAIL:-0},\"time\":\"${FTIME}\",\"status\":\"${STATUS}\"}"
-          done <<< "$(echo "$OUTPUT" | grep -P '(✓|×)\s+src/')"
-          FILE_JSON+="]"
-
-          echo "total-pass=${TOTAL_PASS}" >> "$GITHUB_OUTPUT"
-          echo "total-fail=${TOTAL_FAIL}" >> "$GITHUB_OUTPUT"
-          echo "total-files=${TOTAL_FILES}" >> "$GITHUB_OUTPUT"
-          echo "duration=${DURATION}" >> "$GITHUB_OUTPUT"
-          echo "file-results=${FILE_JSON}" >> "$GITHUB_OUTPUT"
-
+          node scripts/ciTestSummary.mjs vitest-unit.json --label unit
           exit $EXIT_CODE
 
   # ─── Story tests (Chromium via Playwright) ──────────────────────
@@ -99,6 +72,7 @@ jobs:
     outputs:
       total-pass: ${{ steps.run-stories.outputs.total-pass }}
       total-fail: ${{ steps.run-stories.outputs.total-fail }}
+      total-skipped: ${{ steps.run-stories.outputs.total-skipped }}
       total-files: ${{ steps.run-stories.outputs.total-files }}
       duration: ${{ steps.run-stories.outputs.duration }}
     steps:
@@ -118,20 +92,9 @@ jobs:
         id: run-stories
         run: |
           set +e
-          OUTPUT=$(bun run test:storybook 2>&1)
+          bun run test:storybook --reporter=default --reporter=json --outputFile.json=vitest-storybook.json
           EXIT_CODE=$?
-          echo "$OUTPUT"
-
-          TOTAL_FILES=$(echo "$OUTPUT" | grep -oP 'Test Files.*\((\d+)\)' | grep -oP '\(\d+\)' | tr -d '()')
-          TOTAL_PASS=$(echo "$OUTPUT" | grep -P '^\s+Tests' | grep -oP '\d+ passed' | grep -oP '\d+' || echo "0")
-          TOTAL_FAIL=$(echo "$OUTPUT" | grep -P '^\s+Tests' | grep -oP '\d+ failed' | grep -oP '\d+' || echo "0")
-          DURATION=$(echo "$OUTPUT" | grep -oP 'Duration\s+\K[\d.]+s' || echo "0s")
-
-          echo "total-pass=${TOTAL_PASS}" >> "$GITHUB_OUTPUT"
-          echo "total-fail=${TOTAL_FAIL}" >> "$GITHUB_OUTPUT"
-          echo "total-files=${TOTAL_FILES}" >> "$GITHUB_OUTPUT"
-          echo "duration=${DURATION}" >> "$GITHUB_OUTPUT"
-
+          node scripts/ciTestSummary.mjs vitest-storybook.json --label storybook
           exit $EXIT_CODE
 
   # ─── PR comment with rich results ───────────────────────────────
@@ -150,11 +113,13 @@ jobs:
           STORY_RESULT: ${{ needs.test-storybook.result }}
           TOTAL_PASS: ${{ needs.test.outputs.total-pass }}
           TOTAL_FAIL: ${{ needs.test.outputs.total-fail }}
+          TOTAL_SKIPPED: ${{ needs.test.outputs.total-skipped }}
           TOTAL_FILES: ${{ needs.test.outputs.total-files }}
           DURATION: ${{ needs.test.outputs.duration }}
           FILE_RESULTS: ${{ needs.test.outputs.file-results }}
           STORY_PASS: ${{ needs.test-storybook.outputs.total-pass }}
           STORY_FAIL: ${{ needs.test-storybook.outputs.total-fail }}
+          STORY_SKIPPED: ${{ needs.test-storybook.outputs.total-skipped }}
           STORY_FILES: ${{ needs.test-storybook.outputs.total-files }}
           STORY_DURATION: ${{ needs.test-storybook.outputs.duration }}
           RUN_ID: ${{ github.run_id }}
@@ -167,10 +132,12 @@ jobs:
             const story = process.env.STORY_RESULT;
             const totalPass = parseInt(process.env.TOTAL_PASS || '0');
             const totalFail = parseInt(process.env.TOTAL_FAIL || '0');
+            const totalSkipped = parseInt(process.env.TOTAL_SKIPPED || '0');
             const totalFiles = parseInt(process.env.TOTAL_FILES || '0');
             const duration = process.env.DURATION || '0s';
             const storyPass = parseInt(process.env.STORY_PASS || '0');
             const storyFail = parseInt(process.env.STORY_FAIL || '0');
+            const storySkipped = parseInt(process.env.STORY_SKIPPED || '0');
             const storyFiles = parseInt(process.env.STORY_FILES || '0');
             const storyDuration = process.env.STORY_DURATION || '0s';
             const runId = process.env.RUN_ID;
@@ -185,6 +152,7 @@ jobs:
             const statusIcon = (r) => r === 'success' ? '✅' : r === 'skipped' ? '⏭️' : '❌';
             const allPass = totalPass + storyPass;
             const allFail = totalFail + storyFail;
+            const allSkipped = totalSkipped + storySkipped;
 
             let body = '';
 
@@ -197,6 +165,7 @@ jobs:
             body += `[View workflow run](${runUrl})`;
             if (allPass > 0) body += ` · ${allPass} passed`;
             if (allFail > 0) body += ` · ${allFail} failed`;
+            if (allSkipped > 0) body += ` · ${allSkipped} skipped`;
             body += '\n\n';
 
             body += '| Check | Status | Details |\n';
@@ -207,9 +176,10 @@ jobs:
             body += ' |\n';
 
             body += `| **Unit Tests** | ${statusIcon(test)} | `;
-            if (totalPass + totalFail > 0) {
+            if (totalPass + totalFail + totalSkipped > 0) {
               body += `${totalPass} passed`;
               if (totalFail > 0) body += `, ${totalFail} failed`;
+              if (totalSkipped > 0) body += `, ${totalSkipped} skipped`;
               body += ` across ${totalFiles} files in ${duration}`;
             } else {
               body += `[View logs](${runUrl})`;
@@ -217,9 +187,10 @@ jobs:
             body += ' |\n';
 
             body += `| **Story Tests** | ${statusIcon(story)} | `;
-            if (storyPass + storyFail > 0) {
+            if (storyPass + storyFail + storySkipped > 0) {
               body += `${storyPass} passed`;
               if (storyFail > 0) body += `, ${storyFail} failed`;
+              if (storySkipped > 0) body += `, ${storySkipped} skipped`;
               body += ` across ${storyFiles} stories in ${storyDuration} · Chromium`;
             } else if (story === 'success') {
               body += 'All stories rendered';

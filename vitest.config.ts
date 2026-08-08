@@ -25,7 +25,7 @@ export default defineConfig({
                             classNameStrategy: 'non-scoped',
                         },
                     },
-                    include: ['src/**/*.test.{ts,tsx}'],
+                    include: ['src/**/*.test.{ts,tsx}', 'scripts/**/*.test.mjs'],
                 },
             },
             // Story tests (real browser via Playwright)

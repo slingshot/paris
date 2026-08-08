@@ -325,3 +325,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+
+# Vitest JSON reports written by CI (scripts/ciTestSummary.mjs)
+vitest-unit.json
+vitest-storybook.json

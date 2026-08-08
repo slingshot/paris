@@ -350,6 +350,16 @@ The project uses Biome for linting and formatting (configured in `biome.json`). 
 - Lefthook runs biome check on pre-commit (auto-fixes staged files)
 - Commitlint enforces conventional commit format on commit-msg
 
+### CI test reporting
+
+`.github/workflows/check.yml` runs unit tests (`bun run test`) and story tests (`bun run test:storybook`) as separate jobs, then posts a single PR comment summarising both.
+
+Both jobs run Vitest with two reporters — `--reporter=default --reporter=json --outputFile.json=<file>` — and pass the JSON report to `scripts/ciTestSummary.mjs`, which emits the step outputs (`total-pass`, `total-fail`, `total-skipped`, `total-files`, `duration`, `file-results`) that the comment job renders.
+
+**Do not derive these counts by grepping Vitest's terminal output.** Vitest emits ANSI colour whenever `$CI` is set — a TTY is not required — so text parsing breaks in ways that fail silently rather than loudly (it reported `0 tests` on every green run while the logs showed hundreds passing). Read the JSON report instead.
+
+When changing the summary logic, update `scripts/ciTestSummary.test.mjs` alongside it; the `unit` project includes `scripts/**/*.test.mjs`, so those tests run with `bun run test`.
+
 ---
 
 ## Dependencies
