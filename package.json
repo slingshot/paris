@@ -258,7 +258,7 @@
         "jsdom": "^29.1.1",
         "jss": "^10.10.0",
         "jss-preset-default": "^10.10.0",
-        "lefthook": "^1.13.6",
+        "lefthook": "^2.1.10",
         "next": "^16.2.6",
         "playwright": "^1.60.0",
         "react": "^19.2.6",
