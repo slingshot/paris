@@ -62,9 +62,21 @@
     width: 1px;
     // Fill the field's full outer height by cancelling the inputContainer's
     // vertical padding (top: calc(6px - verticalMetricsAdjust), bottom: 6px)
-    // plus its 1px borders, so the divider paints edge to edge.
+    // plus its 1px borders, so the divider paints edge to edge. This only works
+    // while the border is invisible (default/disabled paint it in the fill color).
     margin: calc(var(--pte-typography-verticalMetricsAdjust) - 7px) 12px -7px 0;
     background-color: var(--pte-new-colors-borderMedium);
+    transition: var(--pte-animations-interaction);
+}
+
+// When the border becomes visible (focus, error, success), a child can't paint
+// beneath its parent's border — so retract the divider 1px on each end to the
+// border's inner edge, and the opaque border reads as covering it.
+.phoneContainer:not([data-status="disabled"]):focus-within .divider,
+.phoneContainer[data-status="error"] .divider,
+.phoneContainer[data-status="success"] .divider {
+    margin-top: calc(var(--pte-typography-verticalMetricsAdjust) - 6px);
+    margin-bottom: -6px;
 }
 
 // The panel itself never scrolls: Headless UI writes inline max-height/overflow
