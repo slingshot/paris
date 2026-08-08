@@ -1,0 +1,124 @@
+# Dependabot configuration for Paris.
+#
+# Note on Bun: Dependabot has no `bun` ecosystem — Bun is handled by the `npm`
+# ecosystem, which reads the text-based `bun.lock` (the legacy binary
+# `bun.lockb` is NOT supported). CI runs `bun install --frozen-lockfile`, so
+# Dependabot must keep `bun.lock` in step with `package.json`; it does.
+#
+# Note on security updates: Dependabot *version* updates support Bun, but
+# *security* updates do not yet. Repo-level "automated security fixes" is
+# already enabled, so alerts are raised — but Dependabot cannot open a fix PR
+# for them on a Bun lockfile (this is why the ts-deepmerge alert sat unfixed).
+# The weekly version updates below are the practical workaround: they sweep up
+# security patches as part of routine bumps. The `security-updates` group is
+# declared anyway so grouping applies automatically once Bun support lands.
+
+version: 2
+
+updates:
+  # ─── npm / Bun ──────────────────────────────────────────────────
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Etc/UTC
+    open-pull-requests-limit: 10
+
+    # Paris is a published library. `increase-if-necessary` leaves a range
+    # alone when it already admits the new version (lockfile-only bump) and
+    # only edits package.json when the range genuinely has to move — so
+    # consumers' resolvable range is never narrowed for no reason. The default
+    # (`auto`) would pick `widen` for a library and produce ranges like
+    # `>=1.0.0 <3.0.0`.
+    versioning-strategy: increase-if-necessary
+
+    # Conventional Commits are enforced by commitlint. Dependabot's default
+    # subject ("Bump x from 1 to 2") has no type and would break the
+    # convention on squash-merge.
+    commit-message:
+      prefix: chore(deps)
+      prefix-development: chore(deps-dev)
+
+    # Let a release settle before bumping to it, so we don't chase versions
+    # that get unpublished or hot-fixed within a day.
+    cooldown:
+      default-days: 3
+      semver-major-days: 7
+
+    groups:
+      # IMPORTANT: a dependency joins the FIRST group it matches, so these
+      # version-locked families must stay above the `*` catch-alls below.
+      # Each family ships packages that must move in lockstep — splitting them
+      # across PRs produces peer-dependency breakage on every one.
+      tiptap:
+        patterns:
+          - '@tiptap/*'
+      storybook:
+        patterns:
+          - storybook
+          - '@storybook/*'
+          - storybook-dark-mode
+      fortawesome:
+        patterns:
+          - '@fortawesome/*'
+      radix:
+        patterns:
+          - '@radix-ui/*'
+      commitlint:
+        patterns:
+          - '@commitlint/*'
+      react:
+        patterns:
+          - react
+          - react-dom
+          - '@types/react'
+          - '@types/react-dom'
+      testing:
+        patterns:
+          - vitest
+          - '@vitest/*'
+          - '@testing-library/*'
+          - playwright
+          - jsdom
+
+      # Catch-alls: minor + patch only, split so a runtime-dependency bump
+      # (which ships to consumers) is never mixed into the same PR as tooling
+      # churn. Majors deliberately match nothing here and so get their own
+      # individual PR — they are the ones that need real review.
+      production-dependencies:
+        dependency-type: production
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+      development-dependencies:
+        dependency-type: development
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+
+      # Inert until Dependabot ships Bun security-update support.
+      security-updates:
+        applies-to: security-updates
+        patterns:
+          - '*'
+
+  # ─── GitHub Actions ─────────────────────────────────────────────
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Etc/UTC
+    commit-message:
+      prefix: ci(deps)
+    groups:
+      github-actions:
+        patterns:
+          - '*'
