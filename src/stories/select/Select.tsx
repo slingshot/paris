@@ -162,10 +162,10 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
     const inputID = useId();
     const multiItems = multipleItemsName || 'items';
 
-    // The single forwarded ref lands on the listbox trigger (button) or the radio/card/segmented
-    // group (div) depending on `kind`; narrow it per element type at each usage.
+    // The single forwarded ref lands on the listbox trigger (button) or one of the radio/card/
+    // segmented options (div) depending on `kind`; narrow it per element type at each usage.
     const listboxButtonRef = ref as ForwardedRef<HTMLButtonElement>;
-    const radioGroupRef = ref as ForwardedRef<HTMLDivElement>;
+    const radioOptionRef = ref as ForwardedRef<HTMLDivElement>;
 
     // Internally the selection is tracked by option id(s) (what Headless UI's Listbox/RadioGroup
     // use). Translate back to the full typed Option(s) before invoking the public onChange.
@@ -194,6 +194,14 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
     const listboxOnChange = setResolvedValue as (value: string | string[] | null) => void;
     const singleValue = resolvedValue as string | null | undefined;
     const singleOnChange = setResolvedValue as (value: string | null) => void;
+
+    // Headless UI gives the radio group a roving tabindex: only the checked option — or the first
+    // enabled one when nothing is checked — is a tab stop, and the group element itself is never
+    // focusable. The forwarded ref has to land on that same option for `.focus()` to do anything.
+    const checkedID = kind === 'segmented' ? (singleValue ?? options[0]?.id) : singleValue;
+    const checkedOption = checkedID != null ? options.find((o) => o.id === checkedID) : undefined;
+    const tabStopID =
+        checkedOption && !checkedOption.disabled ? checkedOption.id : options.find((o) => !o.disabled)?.id;
     const buttonText = () => {
         if (!resolvedValue || (resolvedValue as string | string[]).length === 0) {
             return placeholder || 'Select an option';
@@ -330,17 +338,11 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                 </Listbox>
             )}
             {kind === 'radio' && (
-                <RadioGroup
-                    ref={radioGroupRef}
-                    as="div"
-                    tabIndex={-1}
-                    className={styles.radioContainer}
-                    value={singleValue}
-                    onChange={singleOnChange}
-                >
+                <RadioGroup as="div" className={styles.radioContainer} value={singleValue} onChange={singleOnChange}>
                     {options.map((option) => (
                         <Radio
                             as="div"
+                            ref={option.id === tabStopID ? radioOptionRef : undefined}
                             className={clsx(styles.radioOption)}
                             key={option.id}
                             value={option.id}
@@ -354,17 +356,11 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                 </RadioGroup>
             )}
             {kind === 'card' && (
-                <RadioGroup
-                    ref={radioGroupRef}
-                    as="div"
-                    tabIndex={-1}
-                    className={styles.cardContainer}
-                    value={singleValue}
-                    onChange={singleOnChange}
-                >
+                <RadioGroup as="div" className={styles.cardContainer} value={singleValue} onChange={singleOnChange}>
                     {options.map((option) => (
                         <Radio
                             as="div"
+                            ref={option.id === tabStopID ? radioOptionRef : undefined}
                             className={clsx(styles.cardOption)}
                             key={option.id}
                             value={option.id}
@@ -380,9 +376,7 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
             )}
             {kind === 'segmented' && (
                 <RadioGroup
-                    ref={radioGroupRef}
                     as="div"
-                    tabIndex={-1}
                     className={styles.segmentedContainer}
                     value={singleValue ?? options[0].id}
                     onChange={singleOnChange}
@@ -390,6 +384,7 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                     {options.map((option) => (
                         <Radio
                             as="div"
+                            ref={option.id === tabStopID ? radioOptionRef : undefined}
                             className={clsx(styles.segmentedOption, styles[segmentedHeight])}
                             key={option.id}
                             value={option.id}
