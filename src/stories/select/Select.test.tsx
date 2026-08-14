@@ -316,6 +316,29 @@ describe('Select', () => {
             expect(ref.current).toBe(screen.getByRole('button'));
         });
 
+        // Form libraries hand over a callback ref whose identity changes every render, so React
+        // detaches and reattaches it each time — the trigger has to end up attached, not detached.
+        it('forwards a callback ref that changes identity across renders', () => {
+            let attached: HTMLElement | null = null;
+            const Harness = ({ tick }: { tick: number }) => (
+                <Select
+                    options={options}
+                    label="Display theme"
+                    hideLabel
+                    ref={(node: HTMLElement | null) => {
+                        attached = node;
+                    }}
+                    value={String(tick)}
+                />
+            );
+
+            const { rerender } = render(<Harness tick={1} />);
+            expect(attached).toBe(screen.getByRole('button'));
+
+            rerender(<Harness tick={2} />);
+            expect(attached).toBe(screen.getByRole('button'));
+        });
+
         it.each(['radio', 'card', 'segmented'] as const)('keeps %s in the tab order', (kind) => {
             render(<Select options={options} kind={kind} />);
 
