@@ -65,6 +65,9 @@ export type AccordionSelectProps<
     /**
      * Custom content to render for each option in the dropdown.
      * Receives the option and whether it's selected. If not provided, the option's `node` is used.
+     *
+     * Trailing icons rendered here should occupy a 16px-wide box (icon size plus padding) so they
+     * align with the header chevron and the selected-option check.
      */
     renderOption?: (option: AccordionSelectOption<T, Id>, isSelected: boolean) => ReactNode;
     /**
@@ -255,7 +258,7 @@ const AccordionSelectInner = <T extends Record<string, unknown> = Record<string,
                                         </TextWhenString>
                                     )}
                                 </div>
-                                {isOptionSelected && <Icon icon={Check} size={13} className={styles.check} />}
+                                {isOptionSelected && <Icon icon={Check} size={12.8} className={styles.check} />}
                             </button>
                         );
                     })}

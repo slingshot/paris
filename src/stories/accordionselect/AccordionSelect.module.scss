@@ -16,7 +16,7 @@
 }
 
 .header {
-    padding: 10px 12px;
+    padding: 10px 13px 10px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -50,6 +50,7 @@
 .chevron {
     transition: transform var(--pte-animations-duration-gradual) var(--pte-animations-timing-easeInOutExpo);
     transform: rotate(90deg);
+    padding: 2px;
 
     &.open {
         transform: rotate(-90deg);
@@ -112,7 +113,7 @@
     }
 
     .check {
-        padding: 4px;
+        padding: 1.6px;
     }
 }
 
