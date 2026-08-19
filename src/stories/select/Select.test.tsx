@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { createRef, useState } from 'react';
 import { render, screen, waitFor } from '../../test/render';
 import type { Option } from './Select';
 import { Select } from './Select';
@@ -305,6 +305,83 @@ describe('Select', () => {
                 const radio = screen.getByRole('radio', { name: 'EP' });
                 expect(radio).toHaveAttribute('aria-checked', 'true');
             });
+        });
+    });
+
+    describe('focus', () => {
+        it('forwards the ref to the listbox trigger', () => {
+            const ref = createRef<HTMLElement>();
+            render(<Select options={options} ref={ref} />);
+
+            expect(ref.current).toBe(screen.getByRole('button'));
+        });
+
+        // Form libraries hand over a callback ref whose identity changes every render, so React
+        // detaches and reattaches it each time — the trigger has to end up attached, not detached.
+        it('forwards a callback ref that changes identity across renders', () => {
+            let attached: HTMLElement | null = null;
+            const Harness = ({ tick }: { tick: number }) => (
+                <Select
+                    options={options}
+                    label="Display theme"
+                    hideLabel
+                    ref={(node: HTMLElement | null) => {
+                        attached = node;
+                    }}
+                    value={String(tick)}
+                />
+            );
+
+            const { rerender } = render(<Harness tick={1} />);
+            expect(attached).toBe(screen.getByRole('button'));
+
+            rerender(<Harness tick={2} />);
+            expect(attached).toBe(screen.getByRole('button'));
+        });
+
+        it.each(['radio', 'card', 'segmented'] as const)('keeps %s in the tab order', (kind) => {
+            render(<Select options={options} kind={kind} />);
+
+            const tabStops = screen.getAllByRole('radio').filter((radio) => radio.tabIndex === 0);
+            expect(tabStops).toHaveLength(1);
+        });
+
+        it.each(['radio', 'card'] as const)('focuses the first enabled %s option when unselected', (kind) => {
+            const ref = createRef<HTMLElement>();
+            render(<Select options={options} kind={kind} ref={ref} />);
+
+            ref.current?.focus();
+            expect(screen.getByRole('radio', { name: 'Single' })).toHaveFocus();
+        });
+
+        it.each(['radio', 'card', 'segmented'] as const)('focuses the selected %s option', (kind) => {
+            const ref = createRef<HTMLElement>();
+            render(<Select options={options} kind={kind} value="3" ref={ref} />);
+
+            ref.current?.focus();
+            expect(screen.getByRole('radio', { name: 'Album (LP)' })).toHaveFocus();
+        });
+
+        it('focuses the implicitly selected first segmented option', () => {
+            const ref = createRef<HTMLElement>();
+            render(<Select options={options} kind="segmented" ref={ref} />);
+
+            ref.current?.focus();
+            expect(screen.getByRole('radio', { name: 'Single' })).toHaveFocus();
+        });
+
+        it('skips disabled options when picking the ref target', () => {
+            const ref = createRef<HTMLElement>();
+            render(
+                <Select
+                    options={[{ ...options[0], disabled: true }, options[1], options[2], options[3]]}
+                    kind="radio"
+                    ref={ref}
+                />,
+            );
+
+            ref.current?.focus();
+            expect(screen.getByRole('radio', { name: 'EP' })).toHaveFocus();
         });
     });
 
