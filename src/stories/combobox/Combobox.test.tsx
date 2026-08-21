@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { render, screen, waitFor } from '../../test/render';
-import type { ComboboxProps, Option } from './Combobox';
+import type { ComboboxProps, ComboboxValue, Option } from './Combobox';
 import { Combobox } from './Combobox';
 
 const options: Option[] = [
@@ -10,8 +10,12 @@ const options: Option[] = [
     { id: '4', node: 'Laura Wilder' },
 ];
 
+/**
+ * Stores exactly what `onChange` emits and feeds it straight back as `value`, the way a bare
+ * `react-hook-form` `{...field}` spread does.
+ */
 function ControlledCombobox(props: Partial<ComboboxProps<Record<string, any>>>) {
-    const [selected, setSelected] = useState<Option | null>((props.value as Option | null) ?? null);
+    const [fieldValue, setFieldValue] = useState<ComboboxValue>(props.value ?? null);
     const [inputValue, setInputValue] = useState('');
 
     const currentOptions = props.options ?? options;
@@ -26,10 +30,10 @@ function ControlledCombobox(props: Partial<ComboboxProps<Record<string, any>>>) 
             label="Share"
             {...props}
             options={filteredOptions}
-            value={selected?.id === null ? { id: null, node: inputValue } : selected}
-            onChange={(opt) => {
-                setSelected(opt);
-                props.onChange?.(opt);
+            value={fieldValue}
+            onChange={(value, opt) => {
+                setFieldValue(value);
+                props.onChange?.(value, opt);
             }}
             onInputChange={(v) => {
                 setInputValue(v);
@@ -88,7 +92,7 @@ describe('Combobox', () => {
         });
 
         await user.click(screen.getByText('Amy Brandt'));
-        expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: '3', node: 'Amy Brandt' }));
+        expect(handleChange).toHaveBeenCalledWith('3', expect.objectContaining({ id: '3', node: 'Amy Brandt' }));
     });
 
     it('calls onInputChange when the user types', async () => {
@@ -103,9 +107,7 @@ describe('Combobox', () => {
     });
 
     it('shows clear button when a value is selected', () => {
-        const { container } = render(
-            <Combobox options={options} value={{ id: '1', node: 'Mia Dolan' }} placeholder="Search..." />,
-        );
+        const { container } = render(<Combobox options={options} value="1" placeholder="Search..." />);
         // The clear button uses shape="circle" which hides children text,
         // but sets aria-details="Clear"
         const clearButton = container.querySelector('button[aria-details="Clear"]');
@@ -114,26 +116,17 @@ describe('Combobox', () => {
 
     it('clears selection when clear button is clicked', async () => {
         const handleChange = vi.fn();
-        const { user, container } = render(
-            <ControlledCombobox value={{ id: '1', node: 'Mia Dolan' }} onChange={handleChange} />,
-        );
+        const { user, container } = render(<ControlledCombobox value="1" onChange={handleChange} />);
 
         const clearButton = container.querySelector('button[aria-details="Clear"]');
         expect(clearButton).toBeInTheDocument();
         await user.click(clearButton!);
 
-        expect(handleChange).toHaveBeenCalledWith(null);
+        expect(handleChange).toHaveBeenCalledWith(null, null);
     });
 
     it('hides clear button when hideClearButton is true and node is string', () => {
-        render(
-            <Combobox
-                options={options}
-                value={{ id: '1', node: 'Mia Dolan' }}
-                hideClearButton
-                placeholder="Search..."
-            />,
-        );
+        render(<Combobox options={options} value="1" hideClearButton placeholder="Search..." />);
         expect(screen.queryByRole('button', { name: /clear/i })).not.toBeInTheDocument();
     });
 
@@ -162,6 +155,104 @@ describe('Combobox', () => {
         });
     });
 
+    describe('field spread compatibility', () => {
+        it('sets a top-level name on the input', () => {
+            render(<Combobox options={options} name="artist" placeholder="Search..." />);
+            expect(screen.getByPlaceholderText('Search...')).toHaveAttribute('name', 'artist');
+        });
+
+        it('lets overrides.input.name win over the top-level name', () => {
+            render(
+                <Combobox
+                    options={options}
+                    name="artist"
+                    overrides={{ input: { name: 'override' } }}
+                    placeholder="Search..."
+                />,
+            );
+            expect(screen.getByPlaceholderText('Search...')).toHaveAttribute('name', 'override');
+        });
+
+        it('calls onBlur when the input loses focus', async () => {
+            const handleBlur = vi.fn();
+            const { user } = render(
+                <>
+                    <Combobox options={options} onBlur={handleBlur} placeholder="Search..." />
+                    <button type="button">Outside</button>
+                </>,
+            );
+
+            await user.click(screen.getByPlaceholderText('Search...'));
+            await user.click(screen.getByText('Outside'));
+
+            expect(handleBlur).toHaveBeenCalled();
+        });
+
+        it('round-trips a selected id through the stored field value', async () => {
+            const { user } = render(<ControlledCombobox />);
+            const input = screen.getByPlaceholderText('Search...');
+
+            await user.click(input);
+            await waitFor(() => {
+                expect(screen.getByText('Amy Brandt')).toBeInTheDocument();
+            });
+            await user.click(screen.getByText('Amy Brandt'));
+
+            await waitFor(() => {
+                expect(screen.getByDisplayValue('Amy Brandt')).toBeInTheDocument();
+            });
+        });
+
+        it('displays a stored id that arrives from outside', () => {
+            render(<Combobox options={options} value="2" placeholder="Search..." />);
+            expect(screen.getByDisplayValue('Sebastian Wilder')).toBeInTheDocument();
+        });
+
+        it('emits the typed text as the field value for a custom value', async () => {
+            const handleChange = vi.fn();
+            const { user } = render(
+                <ControlledCombobox allowCustomValue onChange={handleChange} customValueString='Add "%v"' />,
+            );
+
+            await user.type(screen.getByPlaceholderText('Search...'), 'New Artist');
+
+            expect(handleChange).toHaveBeenLastCalledWith('New Artist', expect.objectContaining({ id: null }));
+            expect(screen.getByDisplayValue('New Artist')).toBeInTheDocument();
+        });
+
+        it('clears the field value when the custom text is deleted', async () => {
+            const handleChange = vi.fn();
+            const { user } = render(
+                <ControlledCombobox allowCustomValue onChange={handleChange} customValueString='Add "%v"' />,
+            );
+
+            const input = screen.getByPlaceholderText('Search...');
+            await user.type(input, 'New');
+            expect(handleChange).toHaveBeenLastCalledWith('New', expect.objectContaining({ id: null }));
+
+            await user.clear(input);
+
+            expect(handleChange).toHaveBeenLastCalledWith(null, null);
+            expect(screen.getByPlaceholderText('Search...')).toHaveValue('');
+        });
+
+        it('round-trips custom text picked from the dropdown', async () => {
+            const handleChange = vi.fn();
+            const { user } = render(
+                <ControlledCombobox allowCustomValue onChange={handleChange} customValueString='Add "%v"' />,
+            );
+
+            await user.type(screen.getByPlaceholderText('Search...'), 'New Artist');
+            await waitFor(() => {
+                expect(screen.getByText('Add "New Artist"')).toBeInTheDocument();
+            });
+            await user.click(screen.getByText('Add "New Artist"'));
+
+            expect(handleChange).toHaveBeenLastCalledWith('New Artist', expect.objectContaining({ id: null }));
+            expect(screen.getByDisplayValue('New Artist')).toBeInTheDocument();
+        });
+    });
+
     describe('uncontrolled mode', () => {
         it('renders with placeholder when no defaultValue', () => {
             render(<Combobox options={options} placeholder="Search..." />);
@@ -169,9 +260,7 @@ describe('Combobox', () => {
         });
 
         it('renders with defaultValue', () => {
-            render(
-                <Combobox options={options} defaultValue={{ id: '1', node: 'Mia Dolan' }} placeholder="Search..." />,
-            );
+            render(<Combobox options={options} defaultValue="1" placeholder="Search..." />);
             expect(screen.getByDisplayValue('Mia Dolan')).toBeInTheDocument();
         });
 
@@ -204,13 +293,11 @@ describe('Combobox', () => {
             });
 
             await user.click(screen.getByText('Amy Brandt'));
-            expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: '3', node: 'Amy Brandt' }));
+            expect(handleChange).toHaveBeenCalledWith('3', expect.objectContaining({ id: '3', node: 'Amy Brandt' }));
         });
 
         it('clears selection in uncontrolled mode', async () => {
-            const { user, container } = render(
-                <Combobox options={options} defaultValue={{ id: '1', node: 'Mia Dolan' }} placeholder="Search..." />,
-            );
+            const { user, container } = render(<Combobox options={options} defaultValue="1" placeholder="Search..." />);
 
             expect(screen.getByDisplayValue('Mia Dolan')).toBeInTheDocument();
 
@@ -229,13 +316,7 @@ describe('Combobox', () => {
                 { id: '1', node: <span data-testid="custom-node">Custom Mia</span> },
                 { id: '2', node: 'Sebastian Wilder' },
             ];
-            render(
-                <Combobox
-                    options={optionsWithNode}
-                    defaultValue={{ id: '1', node: <span data-testid="custom-node">Custom Mia</span> }}
-                    placeholder="Search..."
-                />,
-            );
+            render(<Combobox options={optionsWithNode} defaultValue="1" placeholder="Search..." />);
             expect(screen.getByTestId('custom-node')).toBeInTheDocument();
         });
     });

@@ -28,7 +28,10 @@ export type PhoneInputProps = {
      */
     label: ReactNode;
     /**
-     * The value in E.164 format (e.g. `"+14155552671"`) for controlled usage. `null` or `""` renders an empty input.
+     * The value in E.164 format (e.g. `"+14155552671"`) for controlled usage. `null`, `undefined`,
+     * and `""` all render an empty input, so a `react-hook-form` field can be spread in directly.
+     *
+     * Passing the prop at all — even as `undefined` — puts the component in controlled mode.
      *
      * The displayed text is managed internally (sanitized while typing, formatted to national format on blur); only the E.164 value is controllable.
      */
@@ -36,7 +39,9 @@ export type PhoneInputProps = {
     /** The initial E.164 value for uncontrolled usage. Ignored when `value` is provided. */
     defaultValue?: string | null;
     /**
-     * Fires on every input or country change with the best-effort E.164 value — partial while typing (e.g. `"+1415"`), `null` when empty — plus metadata for validation.
+     * Fires on every input or country change. The first argument is the field value: the best-effort
+     * E.164 string — partial while typing (e.g. `"+1415"`), `null` when empty — followed by metadata
+     * for validation.
      */
     onChange?: (value: string | null, meta: PhoneInputChangeMeta) => void | Promise<void>;
     /**
@@ -97,10 +102,10 @@ export type PhoneInputProps = {
  * @constructor
  */
 export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
-    (
-        {
+    (allProps: PhoneInputProps, ref: ForwardedRef<HTMLInputElement>) => {
+        const {
             label,
-            value,
+            value: valueProp,
             defaultValue,
             onChange,
             defaultCountry = 'US',
@@ -119,9 +124,13 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
             onBlur,
             autoComplete,
             ...props
-        },
-        ref: ForwardedRef<HTMLInputElement>,
-    ) => {
+        } = allProps;
+
+        // Presence of the prop — not its value — decides controlled mode, so a `react-hook-form`
+        // field whose value is `undefined` before the first edit (or after a reset) still clears.
+        const isControlled = 'value' in allProps;
+        const value = valueProp || null;
+
         const inputID = useId();
         const innerRef = useRef<HTMLInputElement | null>(null);
 
@@ -131,31 +140,30 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
         );
         const allowedCodes = useMemo(() => new Set(countryList.map((entry) => entry.code)), [countryList]);
 
-        const [country, setCountry] = useState<CountryCode>(() => {
-            const initial = value ?? defaultValue;
-            return (initial ? parseE164(initial).country : undefined) ?? defaultCountry;
-        });
-        const [displayValue, setDisplayValue] = useState<string>(() => {
-            const initial = value ?? defaultValue;
-            return initial ? parseE164(initial).display : '';
-        });
-        const lastEmittedE164 = useRef<string | null>(value ?? defaultValue ?? null);
+        const initialValue = isControlled ? value : defaultValue || null;
+
+        const [country, setCountry] = useState<CountryCode>(
+            () => (initialValue ? parseE164(initialValue).country : undefined) ?? defaultCountry,
+        );
+        const [displayValue, setDisplayValue] = useState<string>(() =>
+            initialValue ? parseE164(initialValue).display : '',
+        );
+        const lastEmittedE164 = useRef<string | null>(initialValue);
 
         // Sync external controlled-value updates (e.g. a form reset) without clobbering the
         // display mid-edit: only re-derive when the incoming value differs from what we emitted.
         useEffect(() => {
-            if (value === undefined) return;
-            const next = value ?? null;
-            if (next === lastEmittedE164.current) return;
-            lastEmittedE164.current = next;
-            if (!next) {
+            if (!isControlled) return;
+            if (value === lastEmittedE164.current) return;
+            lastEmittedE164.current = value;
+            if (!value) {
                 setDisplayValue('');
                 return;
             }
-            const parsed = parseE164(next);
+            const parsed = parseE164(value);
             if (parsed.country) setCountry(parsed.country);
             setDisplayValue(parsed.display);
-        }, [value]);
+        }, [value, isControlled]);
 
         const selectedEntry = countryList.find((entry) => entry.code === country) ?? countryList[0];
 
