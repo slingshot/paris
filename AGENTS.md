@@ -70,14 +70,14 @@ src/stories/<componentname>/
 - **Input** - Text input field
 - **TextArea** - Multi-line text input
 - **Select** - Dropdown/listbox/radio/segmented selection
-- **Checkbox** - Checkbox with switch variant
+- **Checkbox** - Checkbox with switch variant; `value` is a boolean alias for `checked` and rest props land on the control, so a form field object can be spread directly
 - **Combobox** - Autocomplete input
 - **PhoneInput** - Country select + phone number input; `value`/`onChange` are E.164, display formats to national format on blur
 - **AccordionSelect** - Card header that expands to reveal selectable options
 
 **Generic option typing:** `Select`, `Combobox`, and `AccordionSelect` are generic over their option `metadata` type (`<Select<MyMeta> />`), and their `onChange` returns the full selected `Option<T>` (or `Option<T>[]` for multi-select), including typed `metadata`. `Tabs` is generic over an optional per-tab `id`, surfaced as the second arg of `onTabChange(index, id)`.
 
-**Programmatic focus & error state:** form components forward a `ref` to a focusable element so `react-hook-form`'s `setFocus` works — including `Select`'s `radio`/`card`/`segmented` kinds and `Combobox` with a non-string selected node. `MarkdownEditor` exposes an imperative `ref` handle (`{ focus() }`) instead of a DOM ref. `Checkbox` and `AccordionSelect` support `status="error"` (like `Input`/`Select`) for invalid state. For paginated `Drawer`s, `onPageEntered(pageID)` fires once a page has mounted so consumers can focus a field on the new page deterministically.
+**Programmatic focus & error state:** form components forward a `ref` to a focusable element so `react-hook-form`'s `setFocus` works — including `Select`'s `radio`/`card`/`segmented` kinds and `Combobox` with a non-string selected node. `MarkdownEditor` exposes an imperative `ref` handle (`{ focus() }`) instead of a DOM ref. `Checkbox` and `AccordionSelect` support `status="error"` (like `Input`/`Select`) for invalid state. `Checkbox` spreads its rest props onto the control (the Radix checkbox button, or the Headless UI switch) rather than the wrapping `<label>`, which keeps only `className` and `style` — so `name`, `id`, `onBlur`, and `data-*` reach the focusable element and `name` drives hidden-input form participation. For paginated `Drawer`s, `onPageEntered(pageID)` fires once a page has mounted so consumers can focus a field on the new page deterministically.
 
 ### Navigation & Actions
 - **Button** - Primary action trigger

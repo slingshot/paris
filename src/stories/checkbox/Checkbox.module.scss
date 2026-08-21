@@ -58,7 +58,7 @@
             }
         }
 
-        &[data-disabled=true] {
+        &[data-disabled] {
             border-color: var(--pte-new-colors-contentDisabled);
         }
 
@@ -89,7 +89,7 @@
             color: var(--pte-new-colors-contentPrimary);
         }
 
-        &[data-disabled=true] {
+        &[data-disabled] {
             color: var(--pte-new-colors-contentDisabled);
         }
 
@@ -115,7 +115,7 @@
             color: var(--pte-new-colors-contentPrimary);
         }
 
-        &[data-disabled=true] {
+        &[data-disabled] {
             color: var(--pte-new-colors-contentDisabled);
         }
 
@@ -153,7 +153,7 @@
 .checkSvg {
     fill: var(--pte-new-colors-contentPrimary);
 
-    &[data-disabled=true] {
+    &[data-disabled] {
         fill: var(--pte-new-colors-contentDisabled);
     }
 }
@@ -161,7 +161,7 @@
 .checkIcon {
     color: var(--pte-new-colors-contentPrimary);
 
-    &[data-disabled=true] {
+    &[data-disabled] {
         color: var(--pte-new-colors-contentDisabled);
     }
 }
@@ -181,7 +181,7 @@
         background-color: var(--pte-new-colors-contentPrimary);
     }
 
-    &[data-disabled=true] {
+    &[data-disabled] {
         background-color: var(--pte-new-colors-contentInverseSecondary);
 
         &[data-checked], &[data-state="indeterminate"] {
