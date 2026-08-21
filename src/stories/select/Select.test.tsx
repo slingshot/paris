@@ -16,9 +16,9 @@ function ControlledSelect(props: Partial<React.ComponentProps<typeof Select>>) {
         <Select
             options={options}
             value={value}
-            onChange={(option) => {
-                setValue(option?.id ?? null);
-                (props.onChange as (option: Option | null) => void)?.(option);
+            onChange={(id, option) => {
+                setValue(id);
+                (props.onChange as (id: string | null, option: Option | null) => void)?.(id, option);
             }}
             {...props}
         />
@@ -31,9 +31,9 @@ function ControlledMultiSelect(props: Partial<React.ComponentProps<typeof Select
         <Select
             options={options}
             value={value}
-            onChange={(selected) => {
-                setValue(selected ? selected.map((o) => o.id) : []);
-                (props.onChange as (selected: Option[] | null) => void)?.(selected);
+            onChange={(ids, selected) => {
+                setValue(ids ?? []);
+                (props.onChange as (ids: string[] | null, selected: Option[] | null) => void)?.(ids, selected);
             }}
             multiple
             {...props}
@@ -86,7 +86,7 @@ describe('Select', () => {
             });
 
             await user.click(screen.getByText('EP'));
-            expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: '2' }));
+            expect(handleChange).toHaveBeenCalledWith('2', expect.objectContaining({ id: '2' }));
         });
 
         it('displays selected option text after selection', async () => {
@@ -166,7 +166,7 @@ describe('Select', () => {
             });
 
             await user.click(screen.getByText('Single'));
-            expect(handleChange).toHaveBeenCalledWith([expect.objectContaining({ id: '1' })]);
+            expect(handleChange).toHaveBeenCalledWith(['1'], [expect.objectContaining({ id: '1' })]);
         });
     });
 
@@ -195,7 +195,7 @@ describe('Select', () => {
             const { user } = render(<ControlledSelect kind="radio" onChange={handleChange} />);
 
             await user.click(screen.getByText('EP'));
-            expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: '2' }));
+            expect(handleChange).toHaveBeenCalledWith('2', expect.objectContaining({ id: '2' }));
         });
     });
 
@@ -211,7 +211,7 @@ describe('Select', () => {
             const { user } = render(<ControlledSelect kind="card" onChange={handleChange} />);
 
             await user.click(screen.getByText('EP'));
-            expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: '2' }));
+            expect(handleChange).toHaveBeenCalledWith('2', expect.objectContaining({ id: '2' }));
         });
     });
 
@@ -227,7 +227,7 @@ describe('Select', () => {
             const { user } = render(<ControlledSelect kind="segmented" onChange={handleChange} />);
 
             await user.click(screen.getByText('EP'));
-            expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: '2' }));
+            expect(handleChange).toHaveBeenCalledWith('2', expect.objectContaining({ id: '2' }));
         });
     });
 
@@ -267,7 +267,7 @@ describe('Select', () => {
             });
             await user.click(screen.getByText('EP'));
 
-            expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: '2' }));
+            expect(handleChange).toHaveBeenCalledWith('2', expect.objectContaining({ id: '2' }));
         });
 
         it('updates selection without external state (radio)', async () => {
@@ -382,6 +382,59 @@ describe('Select', () => {
 
             ref.current?.focus();
             expect(screen.getByRole('radio', { name: 'EP' })).toHaveFocus();
+        });
+    });
+
+    describe('form control props', () => {
+        it.each(['listbox', 'radio', 'card', 'segmented'] as const)('renders name in the DOM for %s', (kind) => {
+            render(<Select options={options} kind={kind} name="releaseType" />);
+            expect(document.querySelectorAll('[name="releaseType"]')).toHaveLength(1);
+        });
+
+        it('puts name on the listbox trigger', () => {
+            render(<Select options={options} name="releaseType" />);
+            expect(screen.getByRole('button')).toHaveAttribute('name', 'releaseType');
+        });
+
+        it.each(['radio', 'card', 'segmented'] as const)('puts name on the %s tab stop', (kind) => {
+            render(<Select options={options} kind={kind} value="3" name="releaseType" />);
+            expect(screen.getByRole('radio', { name: 'Album (LP)' })).toHaveAttribute('name', 'releaseType');
+        });
+
+        it('uses a provided id for the control and the label association', () => {
+            render(<Select options={options} label="Release type" id="release-type" />);
+
+            expect(screen.getByRole('button')).toHaveAttribute('id', 'release-type');
+            expect(screen.getByText('Release type')).toHaveAttribute('for', 'release-type');
+        });
+
+        it('forwards data attributes to the control', () => {
+            render(<Select options={options} data-testid="release-type" />);
+            expect(screen.getByTestId('release-type')).toBe(screen.getByRole('button'));
+        });
+
+        it('calls onBlur when focus leaves the listbox trigger', async () => {
+            const handleBlur = vi.fn();
+            const { user } = render(<Select options={options} onBlur={handleBlur} />);
+
+            screen.getByRole('button').focus();
+            await user.tab();
+
+            expect(handleBlur).toHaveBeenCalled();
+        });
+
+        it.each([
+            'radio',
+            'card',
+            'segmented',
+        ] as const)('calls onBlur when focus leaves the %s group', async (kind) => {
+            const handleBlur = vi.fn();
+            const { user } = render(<Select options={options} kind={kind} value="3" onBlur={handleBlur} />);
+
+            screen.getByRole('radio', { name: 'Album (LP)' }).focus();
+            await user.tab();
+
+            expect(handleBlur).toHaveBeenCalled();
         });
     });
 
