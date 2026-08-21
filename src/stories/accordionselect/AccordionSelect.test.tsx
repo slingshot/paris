@@ -16,9 +16,9 @@ function ControlledAccordionSelect(props: Partial<React.ComponentProps<typeof Ac
         <AccordionSelect
             options={options}
             value={value}
-            onChange={(opt) => {
-                setValue(opt.id);
-                props.onChange?.(opt);
+            onChange={(id, opt) => {
+                setValue(id);
+                props.onChange?.(id, opt);
             }}
             {...props}
         />
@@ -66,6 +66,7 @@ describe('AccordionSelect', () => {
         await user.click(screen.getByText('On a rooftop, watching the sunset'));
 
         expect(handleChange).toHaveBeenCalledWith(
+            'rooftop',
             expect.objectContaining({ id: 'rooftop', node: 'On a rooftop, watching the sunset' }),
         );
     });
@@ -251,6 +252,91 @@ describe('AccordionSelect', () => {
         expect(screen.getByText('In a garden, under the stars')).toBeInTheDocument();
     });
 
+    describe('field spread compatibility', () => {
+        it('forwards name, id, and data-* attributes to the header', () => {
+            const { container } = render(
+                <AccordionSelect
+                    options={options}
+                    value="champagne"
+                    name="location"
+                    id="location-field"
+                    data-testid="header"
+                />,
+            );
+
+            const header = container.querySelector('[role="button"][tabindex="0"]') as HTMLElement;
+            expect(header).toHaveAttribute('name', 'location');
+            expect(header).toHaveAttribute('id', 'location-field');
+            expect(header).toHaveAttribute('data-testid', 'header');
+        });
+
+        it('calls onBlur when the header loses focus', async () => {
+            const handleBlur = vi.fn();
+            const { user, container } = render(
+                <div>
+                    <AccordionSelect options={options} value="champagne" onBlur={handleBlur} />
+                    <button type="button">Outside</button>
+                </div>,
+            );
+
+            const header = container.querySelector('[role="button"][tabindex="0"]') as HTMLElement;
+            header.focus();
+            await user.click(screen.getByText('Outside'));
+
+            expect(handleBlur).toHaveBeenCalled();
+        });
+
+        it('still toggles when a consumer passes its own onClick', async () => {
+            const handleClick = vi.fn();
+            const { user, container } = render(
+                <AccordionSelect options={options} value="champagne" onClick={handleClick} />,
+            );
+
+            const header = container.querySelector('[role="button"][tabindex="0"]') as HTMLElement;
+            await user.click(header);
+
+            expect(handleClick).toHaveBeenCalled();
+            await waitFor(() => {
+                expect(screen.getByText('On a rooftop, watching the sunset')).toBeInTheDocument();
+            });
+        });
+
+        it('lets a consumer onClick veto the toggle with preventDefault', async () => {
+            const { user, container } = render(
+                <AccordionSelect options={options} value="champagne" onClick={(e) => e.preventDefault()} />,
+            );
+
+            const header = container.querySelector('[role="button"][tabindex="0"]') as HTMLElement;
+            await user.click(header);
+
+            expect(screen.queryByRole('button', { name: /rooftop/i })).not.toBeInTheDocument();
+        });
+
+        it('lets a consumer onKeyDown veto the toggle with preventDefault (Enter)', async () => {
+            const { user, container } = render(
+                <AccordionSelect options={options} value="champagne" onKeyDown={(e) => e.preventDefault()} />,
+            );
+
+            const header = container.querySelector('[role="button"][tabindex="0"]') as HTMLElement;
+            header.focus();
+            await user.keyboard('{Enter}');
+
+            expect(screen.queryByRole('button', { name: /rooftop/i })).not.toBeInTheDocument();
+        });
+
+        it('lets a consumer onKeyDown veto the toggle with preventDefault (Space)', async () => {
+            const { user, container } = render(
+                <AccordionSelect options={options} value="champagne" onKeyDown={(e) => e.preventDefault()} />,
+            );
+
+            const header = container.querySelector('[role="button"][tabindex="0"]') as HTMLElement;
+            header.focus();
+            await user.keyboard(' ');
+
+            expect(screen.queryByRole('button', { name: /rooftop/i })).not.toBeInTheDocument();
+        });
+    });
+
     describe('uncontrolled selection', () => {
         it('renders with defaultValue', () => {
             render(<AccordionSelect options={options} defaultValue="champagne" />);
@@ -296,7 +382,7 @@ describe('AccordionSelect', () => {
 
             await user.click(screen.getByText('On a rooftop, watching the sunset'));
 
-            expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ id: 'rooftop' }));
+            expect(handleChange).toHaveBeenCalledWith('rooftop', expect.objectContaining({ id: 'rooftop' }));
         });
 
         it('renders disabled option as selected when defaultValue points to it', async () => {

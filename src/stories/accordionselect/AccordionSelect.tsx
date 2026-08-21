@@ -48,9 +48,14 @@ export type AccordionSelectProps<
      */
     defaultValue?: Id | null;
     /**
-     * Called when the user selects an option.
+     * Called when the user selects an option. The first argument is the field value (the option's
+     * `id`); the second is the full option, or `null` when no option matches the new value.
      */
-    onChange?: (option: AccordionSelectOption<T, Id>) => void;
+    onChange?: (id: Id | null, option: AccordionSelectOption<T, Id> | null) => void;
+    /**
+     * The form field name, set as a DOM attribute on the header element.
+     */
+    name?: string;
     /**
      * The validation status of the field. `error` renders an invalid treatment. Follows the
      * `Input`/`Select` pattern.
@@ -111,7 +116,14 @@ export type AccordionSelectProps<
         dropdownContent?: ComponentPropsWithoutRef<'div'>;
         option?: ComponentPropsWithoutRef<'button'>;
     };
-};
+    /**
+     * Any remaining props (`id`, `onBlur`, `data-*`, ARIA attributes, …) are forwarded to the
+     * focusable header element, which is also the target of the forwarded `ref`.
+     */
+} & Omit<
+    ComponentPropsWithoutRef<'div'>,
+    'onChange' | 'value' | 'defaultValue' | 'placeholder' | 'className' | 'children'
+>;
 
 /**
  * An AccordionSelect component. Displays the selected option in a card header that expands to reveal all options.
@@ -142,6 +154,7 @@ const AccordionSelectInner = <T extends Record<string, unknown> = Record<string,
         action,
         label,
         overrides,
+        ...headerProps
     }: AccordionSelectProps<T, Id>,
     ref: ForwardedRef<HTMLDivElement>,
 ): ReactNode => {
@@ -152,13 +165,10 @@ const AccordionSelectInner = <T extends Record<string, unknown> = Record<string,
     });
     const rootRef = useRef<HTMLDivElement>(null);
 
-    const [resolvedValue, setResolvedValue] = useControllableState<string | null>({
+    const [resolvedValue, setResolvedValue] = useControllableState<Id | null>({
         value,
         defaultValue,
-        onChange: (id) => {
-            const option = options.find((o) => o.id === id);
-            if (option) onChange?.(option);
-        },
+        onChange: (id) => onChange?.(id, options.find((o) => o.id === id) ?? null),
     });
 
     const selectedOption = options.find((o) => o.id === resolvedValue);
@@ -192,10 +202,20 @@ const AccordionSelectInner = <T extends Record<string, unknown> = Record<string,
         >
             <div
                 ref={ref}
+                {...headerProps}
                 {...overrides?.header}
                 className={clsx(styles.header, open && styles.open, overrides?.header?.className)}
-                onClick={() => setOpen(!open)}
+                onClick={(e) => {
+                    headerProps.onClick?.(e);
+                    overrides?.header?.onClick?.(e);
+                    // A consumer handler vetoes the built-in toggle by calling `preventDefault()`.
+                    if (e.defaultPrevented) return;
+                    setOpen(!open);
+                }}
                 onKeyDown={(e) => {
+                    headerProps.onKeyDown?.(e);
+                    overrides?.header?.onKeyDown?.(e);
+                    if (e.defaultPrevented) return;
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
                         setOpen(!open);

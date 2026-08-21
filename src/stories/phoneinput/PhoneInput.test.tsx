@@ -110,6 +110,40 @@ describe('PhoneInput', () => {
         expect(screen.getByRole('button', { name: 'Country: United Kingdom (+44)' })).toBeInTheDocument();
     });
 
+    it('treats an undefined controlled value as empty', async () => {
+        function Harness() {
+            const [value, setValue] = useState<string | undefined>('+14155552671');
+            return (
+                <>
+                    <button type="button" onClick={() => setValue(undefined)}>
+                        reset
+                    </button>
+                    <PhoneInput label="Phone" value={value} onChange={(next) => setValue(next ?? undefined)} />
+                </>
+            );
+        }
+        const { user } = render(<Harness />);
+        expect(screen.getByLabelText('Phone')).toHaveValue('(415) 555-2671');
+
+        await user.click(screen.getByText('reset'));
+        expect(screen.getByLabelText('Phone')).toHaveValue('');
+    });
+
+    it('treats an empty-string controlled value as empty', () => {
+        render(<PhoneInput label="Phone" value="" />);
+        expect(screen.getByLabelText('Phone')).toHaveValue('');
+    });
+
+    it('stays uncontrolled when no value prop is passed', async () => {
+        const { user } = render(<PhoneInput label="Phone" defaultValue="+14155552671" />);
+        const input = screen.getByLabelText('Phone');
+        expect(input).toHaveValue('(415) 555-2671');
+
+        await user.clear(input);
+        await user.type(input, '4155550000');
+        expect(input).toHaveValue('4155550000');
+    });
+
     it('respects the countries allowlist and priorityCountries ordering', async () => {
         const { user } = render(<PhoneInput label="Phone" countries={['US', 'CA', 'GB']} priorityCountries={['GB']} />);
         await user.click(screen.getByRole('button', { name: 'Country: United States (+1)' }));
