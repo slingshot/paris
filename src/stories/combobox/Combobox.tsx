@@ -10,7 +10,7 @@ import {
     Combobox as HCombobox,
 } from '@headlessui/react';
 import { clsx } from 'clsx';
-import type { ComponentPropsWithoutRef, CSSProperties, MouseEvent, ReactNode, Ref } from 'react';
+import type { ComponentPropsWithoutRef, CSSProperties, FocusEventHandler, MouseEvent, ReactNode, Ref } from 'react';
 import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { OpenChangeEffect } from '../../helpers/OpenChangeEffect';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
@@ -39,6 +39,22 @@ export type Option<T extends Record<string, unknown> = Record<string, unknown>, 
           metadata?: T;
       };
 
+/**
+ * The field value of a `Combobox`: an option `id`, or — when `allowCustomValue` is set — whatever
+ * text the user typed. The `string & {}` member admits that free text without collapsing a literal
+ * `Id` union, so literal ids keep their narrowing and autocomplete.
+ */
+export type ComboboxValue<Id extends string = string> = Id | (string & {}) | null;
+
+/**
+ * An {@link Option} standing in for a custom typed value. Its `id` is `null`, which is what marks
+ * the option as custom and keeps the typed text — not an id — as the field value.
+ */
+export type CustomOption<T extends Record<string, unknown> = Record<string, unknown>> = Extract<
+    Option<T>,
+    { id: null }
+>;
+
 export type ComboboxProps<T extends Record<string, unknown>, Id extends string = string> = {
     /**
      * The  {@link Option}s to render in the select box.
@@ -49,21 +65,33 @@ export type ComboboxProps<T extends Record<string, unknown>, Id extends string =
      */
     options: Option<T, Id>[];
     /**
-     * The option to render as selected in the select box.
+     * The id of the option to render as selected. With `allowCustomValue`, an id matching no option
+     * is treated as custom text and displayed as typed.
      *
      * If `null`, no option will be selected.
      */
-    value?: Option<T, Id> | null;
+    value?: ComboboxValue<Id>;
     /**
      * The initial value for uncontrolled mode. If `value` is provided, this is ignored.
      */
-    defaultValue?: Option<T, Id> | null;
+    defaultValue?: ComboboxValue<Id>;
     /**
-     * The interaction handler for the Combobox. This will be called when the user selects an option from the dropdown.
+     * The interaction handler for the Combobox. This will be called when the user selects an option
+     * from the dropdown, types a custom value, or clears the selection.
      *
-     * @param option - The selected option, or `null` if the user has cleared the selection.
+     * @param value - The field value: the selected option's `id`, the typed text for a custom value, or `null` when the selection is cleared.
+     * @param option - The selected option, or `null` when the selection is cleared.
      */
-    onChange?: (option: Option<T, Id> | null) => void | Promise<void>;
+    onChange?: (value: ComboboxValue<Id>, option: Option<T, Id> | null) => void | Promise<void>;
+    /**
+     * The form field name, set on the underlying `<input>`.
+     */
+    name?: string;
+    /**
+     * Fires when the underlying `<input>` loses focus. Not called while a non-string selected node
+     * replaces the input.
+     */
+    onBlur?: FocusEventHandler<HTMLInputElement>;
     /**
      * The interaction handler for when the user types in the input. The input is controlled internally, but you can use this to update the input value in your own state.
      * @param value - The current value of the input.
@@ -89,10 +117,12 @@ export type ComboboxProps<T extends Record<string, unknown>, Id extends string =
      */
     customValueString?: string;
     /**
-     * A function that will be called to create an {@link Option} based on the user's custom typed query value. This is useful for adding custom styling by  allowing you to pass a custom `Option.node` based on the value. This overrides the `customValueString` prop.
+     * A function that will be called to create a {@link CustomOption} based on the user's custom typed query value. This lets you set the option's label text and `metadata` from the value. This overrides the `customValueString` prop.
+     *
+     * The returned option's `id` is always `null`: a custom value's field value is the text the user typed, not an id.
      * @param value
      */
-    customValueToOption?: (value: string) => Option<T, Id>;
+    customValueToOption?: (value: string) => CustomOption<T>;
     /**
      * Called when the combobox dropdown opens or closes.
      */
@@ -160,6 +190,8 @@ export function Combobox<T extends Record<string, unknown> = Record<string, unkn
     value,
     defaultValue,
     onChange,
+    name,
+    onBlur,
     label,
     status,
     hideLabel,
@@ -184,11 +216,26 @@ export function Combobox<T extends Record<string, unknown> = Record<string, unkn
     ref,
 }: ComboboxProps<T, Id>) {
     const inputID = useId();
-    const [resolvedValue, setResolvedValue] = useControllableState<Option<T, Id> | null>({
+
+    // A value matching no option is custom text, which only `allowCustomValue` admits; every other
+    // unmatched value resolves to no selection.
+    const optionForValue = useCallback(
+        (next: ComboboxValue<Id>): Option<T, Id> | null => {
+            if (next === null || next === undefined) return null;
+            const match = options.find((o) => o.id === next);
+            if (match) return match;
+            if (!allowCustomValue) return null;
+            return customValueToOption?.(next) ?? { id: null, node: next };
+        },
+        [options, allowCustomValue, customValueToOption],
+    );
+
+    const [resolvedID, setResolvedID] = useControllableState<ComboboxValue<Id>>({
         value,
         defaultValue,
-        onChange,
+        onChange: (next) => onChange?.(next ?? null, optionForValue(next)),
     });
+    const resolvedValue = useMemo(() => optionForValue(resolvedID), [optionForValue, resolvedID]);
     const [query, setQuery] = useState('');
     const containerElRef = useRef<HTMLElement | null>(null);
     const inputElRef = useRef<HTMLElement | null>(null);
@@ -252,10 +299,11 @@ export function Combobox<T extends Record<string, unknown> = Record<string, unkn
                 value={resolvedValue?.id ?? null}
                 onChange={(id) => {
                     const sel = optionsWithCustomValue.find((o) => o.id === id);
+                    // A custom option carries `id: null`; its field value is the text the user typed.
                     if (sel) {
-                        setResolvedValue(sel);
+                        setResolvedID(sel.id ?? query);
                     } else if (id) {
-                        setResolvedValue({ id: null, node: id } as Option<T, Id>);
+                        setResolvedID(id);
                     }
                 }}
             >
@@ -295,6 +343,7 @@ export function Combobox<T extends Record<string, unknown> = Record<string, unkn
                                     <ComboboxInput
                                         ref={inputRef}
                                         id={inputID}
+                                        name={name}
                                         {...overrides?.input}
                                         placeholder={placeholder}
                                         // value={query}
@@ -307,18 +356,18 @@ export function Combobox<T extends Record<string, unknown> = Record<string, unkn
                                             e.stopPropagation();
                                             overrides?.input?.onKeyDown?.(e);
                                         }}
+                                        onBlur={(e) => {
+                                            onBlur?.(e);
+                                            overrides?.input?.onBlur?.(e);
+                                        }}
                                         onChange={(e) => {
                                             setQuery(e.target.value);
                                             if (onInputChange) onInputChange(e.target.value);
                                             if (overrides?.input?.onChange) overrides.input.onChange(e);
-                                            if (allowCustomValue && e.target.value) {
-                                                setResolvedValue(
-                                                    customValueToOption?.(e.target.value) ||
-                                                        ({
-                                                            id: null,
-                                                            node: e.target.value,
-                                                        } as Option<T, Id>),
-                                                );
+                                            // Emptying the input clears the field value rather than
+                                            // leaving the last custom text behind.
+                                            if (allowCustomValue) {
+                                                setResolvedID(e.target.value || null);
                                             }
                                         }}
                                         aria-disabled={disabled}
@@ -335,7 +384,7 @@ export function Combobox<T extends Record<string, unknown> = Record<string, unkn
                                     startEnhancer={<FontAwesomeIcon icon={faClose} fontSize="10px" />}
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        setResolvedValue(null);
+                                        setResolvedID(null);
                                     }}
                                     {...overrides?.clearButton}
                                 >

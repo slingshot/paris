@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { createElement, useState } from 'react';
 import { Text } from '../text';
-import type { ComboboxProps, Option } from './Combobox';
+import type { ComboboxProps, ComboboxValue, Option } from './Combobox';
 import { Combobox } from './Combobox';
 
 const meta: Meta<typeof Combobox> = {
@@ -97,7 +97,7 @@ const ComboboxArgs2: ComboboxProps<{ name: string }> = {
 export const Default: Story = {
     args: ComboboxArgs,
     render: function Render(args) {
-        const [selected, setSelected] = useState<Option<{ name: string }> | null>(null);
+        const [selected, setSelected] = useState<ComboboxValue>(null);
         const [inputValue, setInputValue] = useState<string>('');
         return createElement(
             'div',
@@ -106,20 +106,11 @@ export const Default: Story = {
             },
             createElement(Combobox<{ name: string }>, {
                 ...args,
-                value:
-                    selected?.id === null
-                        ? {
-                              id: null,
-                              node: inputValue,
-                              metadata: {
-                                  name: inputValue,
-                              },
-                          }
-                        : (selected as Option<{ name: string }> | null),
+                value: selected,
                 options: (args.options as Option<{ name: string }>[]).filter((o) =>
                     ((o.metadata?.name as string) || '').toLowerCase().includes(inputValue.toLowerCase()),
                 ),
-                onChange: (e) => setSelected(e),
+                onChange: (value) => setSelected(value),
                 onInputChange: (e) => setInputValue(e),
             }),
         );
@@ -133,7 +124,7 @@ export const AllowCustomValue: Story = {
         customValueString: 'Add "%v"',
     },
     render: function Render(args) {
-        const [selected, setSelected] = useState<Option | null>(null);
+        const [selected, setSelected] = useState<ComboboxValue>(null);
         const [inputValue, setInputValue] = useState<string>('');
         return createElement(
             'div',
@@ -142,20 +133,11 @@ export const AllowCustomValue: Story = {
             },
             createElement(Combobox<{ name: string }>, {
                 ...args,
-                value:
-                    selected?.id === null
-                        ? {
-                              id: null,
-                              node: inputValue,
-                              metadata: {
-                                  name: inputValue,
-                              },
-                          }
-                        : (selected as Option<{ name: string }> | null),
+                value: selected,
                 options: (args.options as Option<{ name: string }>[]).filter((o) =>
                     ((o.metadata?.name as string) || '').toLowerCase().includes(inputValue.toLowerCase()),
                 ),
-                onChange: (e) => setSelected(e),
+                onChange: (value) => setSelected(value),
                 onInputChange: (e) => setInputValue(e),
             }),
         );
@@ -169,7 +151,7 @@ export const CustomValueWithDivider: Story = {
         customValueString: 'Add "%v"',
     },
     render: function Render(args) {
-        const [selected, setSelected] = useState<Option | null>(null);
+        const [selected, setSelected] = useState<ComboboxValue>(null);
         const [inputValue, setInputValue] = useState<string>('');
         return createElement(
             'div',
@@ -178,20 +160,11 @@ export const CustomValueWithDivider: Story = {
             },
             createElement(Combobox<{ name: string }>, {
                 ...args,
-                value:
-                    selected?.id === null
-                        ? {
-                              id: null,
-                              node: inputValue,
-                              metadata: {
-                                  name: inputValue,
-                              },
-                          }
-                        : (selected as Option<{ name: string }> | null),
+                value: selected,
                 options: (args.options as Option<{ name: string }>[]).filter((o) =>
                     ((o.metadata?.name as string) || '').toLowerCase().includes(inputValue.toLowerCase()),
                 ),
-                onChange: (e) => setSelected(e),
+                onChange: (value) => setSelected(value),
                 onInputChange: (e) => setInputValue(e),
                 overrides: {
                     customValueOption: {
@@ -206,7 +179,7 @@ export const CustomValueWithDivider: Story = {
 export const HideOptionsInitially: Story = {
     args: ComboboxArgs,
     render: function Render(args) {
-        const [selected, setSelected] = useState<Option<{ name: string }> | null>(null);
+        const [selected, setSelected] = useState<ComboboxValue>(null);
         const [inputValue, setInputValue] = useState<string>('');
         return createElement(
             'div',
@@ -215,20 +188,11 @@ export const HideOptionsInitially: Story = {
             },
             createElement(Combobox<{ name: string }>, {
                 ...args,
-                value:
-                    selected?.id === null
-                        ? {
-                              id: null,
-                              node: inputValue,
-                              metadata: {
-                                  name: inputValue,
-                              },
-                          }
-                        : (selected as Option<{ name: string }> | null),
+                value: selected,
                 options: (args.options as Option<{ name: string }>[]).filter((o) =>
                     ((o.metadata?.name as string) || '').toLowerCase().includes(inputValue.toLowerCase()),
                 ),
-                onChange: (e) => setSelected(e),
+                onChange: (value) => setSelected(value),
                 onInputChange: (e) => setInputValue(e),
                 hideOptionsInitially: true,
             }),
@@ -239,7 +203,7 @@ export const HideOptionsInitially: Story = {
 export const HideClearButton: Story = {
     args: ComboboxArgs2,
     render: function Render(args) {
-        const [selected, setSelected] = useState<Option<{ name: string }> | null>(null);
+        const [selected, setSelected] = useState<ComboboxValue>(null);
         const [inputValue, setInputValue] = useState<string>('');
         return createElement(
             'div',
@@ -248,20 +212,11 @@ export const HideClearButton: Story = {
             },
             createElement(Combobox<{ name: string }>, {
                 ...args,
-                value:
-                    selected?.id === null
-                        ? {
-                              id: null,
-                              node: inputValue,
-                              metadata: {
-                                  name: inputValue,
-                              },
-                          }
-                        : (selected as Option<{ name: string }> | null),
+                value: selected,
                 options: (args.options as Option<{ name: string }>[]).filter((o) =>
                     ((o.metadata?.name as string) || '').toLowerCase().includes(inputValue.toLowerCase()),
                 ),
-                onChange: (e) => setSelected(e),
+                onChange: (value) => setSelected(value),
                 onInputChange: (e) => setInputValue(e),
                 hideClearButton: true,
             }),
