@@ -129,7 +129,7 @@ describe('Checkbox', () => {
                 </Checkbox>,
             );
             const checkbox = screen.getByRole('checkbox');
-            expect(checkbox).toHaveAttribute('data-disabled', 'true');
+            expect(checkbox).toHaveAttribute('data-disabled');
         });
 
         it('sets data-disabled on the switch when kind is switch', () => {
@@ -139,7 +139,31 @@ describe('Checkbox', () => {
                 </Checkbox>,
             );
             const switchEl = screen.getByRole('switch');
-            expect(switchEl).toHaveAttribute('data-disabled', 'true');
+            expect(switchEl).toHaveAttribute('data-disabled');
+        });
+
+        it('does not toggle when disabled', async () => {
+            const handleChange = vi.fn();
+            const { user } = render(
+                <Checkbox disabled onChange={handleChange}>
+                    Disabled
+                </Checkbox>,
+            );
+            await user.click(screen.getByRole('checkbox'));
+            expect(handleChange).not.toHaveBeenCalled();
+            expect(screen.getByRole('checkbox')).toBeDisabled();
+        });
+
+        it('does not toggle the switch when disabled', async () => {
+            const handleChange = vi.fn();
+            const { user } = render(
+                <Checkbox kind="switch" disabled onChange={handleChange}>
+                    Disabled switch
+                </Checkbox>,
+            );
+            await user.click(screen.getByRole('switch'));
+            expect(handleChange).not.toHaveBeenCalled();
+            expect(screen.getByRole('switch')).toBeDisabled();
         });
     });
 
@@ -458,15 +482,45 @@ describe('Checkbox', () => {
     // ─── Spread props ────────────────────────────────────────────────
 
     describe('spread props', () => {
-        it('forwards additional HTML attributes to the label', () => {
-            const { container } = render(
-                <Checkbox checked={false} data-testid="checkbox-label" title="My checkbox">
+        it('forwards additional HTML attributes to the control', () => {
+            render(
+                <Checkbox checked={false} data-testid="checkbox-control" title="My checkbox">
                     Label
                 </Checkbox>,
             );
-            const label = container.querySelector('label');
-            expect(label).toHaveAttribute('data-testid', 'checkbox-label');
-            expect(label).toHaveAttribute('title', 'My checkbox');
+            const checkbox = screen.getByRole('checkbox');
+            expect(checkbox).toHaveAttribute('data-testid', 'checkbox-control');
+            expect(checkbox).toHaveAttribute('title', 'My checkbox');
+        });
+
+        it('forwards additional HTML attributes to the switch control', () => {
+            render(
+                <Checkbox kind="switch" checked={false} data-testid="switch-control" title="My switch">
+                    Label
+                </Checkbox>,
+            );
+            const switchEl = screen.getByRole('switch');
+            expect(switchEl).toHaveAttribute('data-testid', 'switch-control');
+            expect(switchEl).toHaveAttribute('title', 'My switch');
+        });
+
+        it('does not leak spread attributes onto the label', () => {
+            const { container } = render(
+                <Checkbox checked={false} title="My checkbox">
+                    Label
+                </Checkbox>,
+            );
+            expect(container.querySelector('label')).not.toHaveAttribute('title');
+        });
+
+        it('uses an explicit id on the control and keeps the label associated', () => {
+            const { container } = render(
+                <Checkbox checked={false} id="terms">
+                    Label
+                </Checkbox>,
+            );
+            expect(screen.getByRole('checkbox')).toHaveAttribute('id', 'terms');
+            expect(container.querySelector('label')).toHaveAttribute('for', 'terms');
         });
 
         it('forwards style prop to the label', () => {
@@ -477,6 +531,121 @@ describe('Checkbox', () => {
             );
             const label = container.querySelector('label');
             expect(label).toHaveStyle({ marginTop: '10px' });
+        });
+    });
+
+    describe('form field compatibility', () => {
+        it('uses value as the checked state when checked is absent', () => {
+            render(<Checkbox value={true}>Label</Checkbox>);
+            expect(screen.getByRole('checkbox')).toBeChecked();
+        });
+
+        it('uses value as the checked state for switch kind', () => {
+            render(
+                <Checkbox kind="switch" value={true}>
+                    Label
+                </Checkbox>,
+            );
+            expect(screen.getByRole('switch')).toBeChecked();
+        });
+
+        it('prefers checked over value when both are provided', () => {
+            render(
+                <Checkbox checked={false} value={true}>
+                    Label
+                </Checkbox>,
+            );
+            expect(screen.getByRole('checkbox')).not.toBeChecked();
+        });
+
+        it('calls onChange with a boolean when value drives the state', async () => {
+            const handleChange = vi.fn();
+            const { user } = render(
+                <Checkbox value={false} onChange={handleChange}>
+                    Label
+                </Checkbox>,
+            );
+
+            const checkbox = screen.getByRole('checkbox');
+            await user.click(checkbox);
+            expect(handleChange).toHaveBeenCalledWith(true);
+            expect(checkbox).not.toBeChecked();
+        });
+
+        it('stays controlled by value over defaultChecked', () => {
+            render(
+                <Checkbox value={false} defaultChecked>
+                    Label
+                </Checkbox>,
+            );
+            expect(screen.getByRole('checkbox')).not.toBeChecked();
+        });
+
+        it('drives state from a spread field object', async () => {
+            function FieldCheckbox() {
+                const [value, setValue] = useState(false);
+                const field = { name: 'accept', value, onChange: setValue, onBlur: () => {} };
+                return <Checkbox {...field}>Accept terms</Checkbox>;
+            }
+
+            const { user } = render(<FieldCheckbox />);
+            const checkbox = screen.getByRole('checkbox');
+            expect(checkbox).not.toBeChecked();
+
+            await user.click(checkbox);
+            expect(checkbox).toBeChecked();
+        });
+
+        it('fires onBlur from the control', async () => {
+            const handleBlur = vi.fn();
+            const { user } = render(
+                <Checkbox checked={false} onBlur={handleBlur}>
+                    Label
+                </Checkbox>,
+            );
+
+            await user.click(screen.getByRole('checkbox'));
+            await user.tab();
+            expect(handleBlur).toHaveBeenCalled();
+        });
+
+        it('fires onBlur from the switch control', async () => {
+            const handleBlur = vi.fn();
+            const { user } = render(
+                <Checkbox kind="switch" checked={false} onBlur={handleBlur}>
+                    Label
+                </Checkbox>,
+            );
+
+            await user.click(screen.getByRole('switch'));
+            await user.tab();
+            expect(handleBlur).toHaveBeenCalled();
+        });
+
+        it('participates in form submission via name', () => {
+            const { container } = render(
+                <form>
+                    <Checkbox name="accept" checked={true}>
+                        Accept terms
+                    </Checkbox>
+                </form>,
+            );
+            const hiddenInput = container.querySelector('input[name="accept"]');
+            expect(hiddenInput).toBeInTheDocument();
+            expect(hiddenInput).toBeChecked();
+        });
+
+        it('participates in form submission via name for switch kind', () => {
+            const { container } = render(
+                <form>
+                    <Checkbox kind="switch" name="notifications" checked={true}>
+                        Notifications
+                    </Checkbox>
+                </form>,
+            );
+            const hiddenInput = container.querySelector('input[name="notifications"]');
+            expect(hiddenInput).toBeInTheDocument();
+            expect(hiddenInput).toBeChecked();
         });
     });
 
