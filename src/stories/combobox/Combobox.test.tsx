@@ -44,7 +44,13 @@ function ControlledCombobox(props: Partial<ComboboxProps<Record<string, any>>>) 
 }
 
 /** Stores the emitted value like a form field, and can drop its `options` the way an async list does. */
-function AsyncOptionsCombobox({ allowCustomValue }: { allowCustomValue?: boolean }) {
+function AsyncOptionsCombobox({
+    allowCustomValue,
+    selectedOption,
+}: {
+    allowCustomValue?: boolean;
+    selectedOption?: Option;
+}) {
     const [fieldValue, setFieldValue] = useState<ComboboxValue>(null);
     const [visibleOptions, setVisibleOptions] = useState<Option[]>(options);
 
@@ -57,12 +63,16 @@ function AsyncOptionsCombobox({ allowCustomValue }: { allowCustomValue?: boolean
                 value={fieldValue}
                 onChange={(value) => setFieldValue(value)}
                 allowCustomValue={allowCustomValue}
+                selectedOption={selectedOption}
             />
             <button type="button" onClick={() => setVisibleOptions([])}>
                 drop-options
             </button>
             <button type="button" onClick={() => setFieldValue(null)}>
                 reset
+            </button>
+            <button type="button" onClick={() => setFieldValue('other-id')}>
+                switch-value
             </button>
         </div>
     );
@@ -306,6 +316,48 @@ describe('Combobox', () => {
 
             expect(screen.getByDisplayValue('Amy Brandt')).toBeInTheDocument();
             expect(screen.queryByDisplayValue('3')).not.toBeInTheDocument();
+        });
+
+        it('prefers the cached option over selectedOption for the same id', async () => {
+            const { user } = render(<AsyncOptionsCombobox selectedOption={{ id: '3', node: 'Stale Amy' }} />);
+
+            await user.click(screen.getByPlaceholderText('Search...'));
+            await waitFor(() => {
+                expect(screen.getByText('Amy Brandt')).toBeInTheDocument();
+            });
+            await user.click(screen.getByText('Amy Brandt'));
+            await user.click(screen.getByText('drop-options'));
+
+            expect(screen.getByDisplayValue('Amy Brandt')).toBeInTheDocument();
+            expect(screen.queryByDisplayValue('Stale Amy')).not.toBeInTheDocument();
+        });
+
+        it('renders selectedOption rather than custom text under allowCustomValue', () => {
+            render(
+                <Combobox
+                    options={[]}
+                    value="2"
+                    allowCustomValue
+                    selectedOption={{ id: '2', node: 'Sebastian Wilder' }}
+                    placeholder="Search..."
+                />,
+            );
+            expect(screen.getByDisplayValue('Sebastian Wilder')).toBeInTheDocument();
+            expect(screen.queryByDisplayValue('2')).not.toBeInTheDocument();
+        });
+
+        it('does not apply the cache when the value changes to a different id', async () => {
+            const { user } = render(<AsyncOptionsCombobox />);
+
+            await user.click(screen.getByPlaceholderText('Search...'));
+            await waitFor(() => {
+                expect(screen.getByText('Amy Brandt')).toBeInTheDocument();
+            });
+            await user.click(screen.getByText('Amy Brandt'));
+            await user.click(screen.getByText('drop-options'));
+            await user.click(screen.getByText('switch-value'));
+
+            expect(screen.queryByDisplayValue('Amy Brandt')).not.toBeInTheDocument();
         });
 
         it('drops the cached option once the value is reset', async () => {
