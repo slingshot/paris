@@ -63,7 +63,7 @@ import { Input } from 'paris/input';
 - Input - Text input (text, email, password, etc.)
 - TextArea - Multi-line text
 - Select - Dropdown/listbox/radio/segmented selection
-- Checkbox - Checkbox with switch variant
+- Checkbox - Checkbox with switch variant; `value` is a boolean alias for `checked` and rest props land on the control, so a form field object can be spread directly
 - Combobox - Autocomplete input
 - PhoneInput - Country select + phone input; E.164 value, localized display formatting on blur
 - AccordionSelect - Card header that expands to reveal selectable options
