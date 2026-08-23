@@ -20,7 +20,7 @@ export const Default: Story = {
         return createElement(Checkbox, {
             ...args,
             checked,
-            onChange: (e) => setChecked(!!e),
+            onChange: setChecked,
         });
     },
 };
@@ -35,7 +35,7 @@ export const Surface: Story = {
         return createElement(Checkbox, {
             ...args,
             checked,
-            onChange: (e) => setChecked(!!e),
+            onChange: setChecked,
         });
     },
 };
@@ -50,7 +50,7 @@ export const Panel: Story = {
         return createElement(Checkbox, {
             ...args,
             checked,
-            onChange: (e) => setChecked(!!e),
+            onChange: setChecked,
         });
     },
 };
@@ -65,7 +65,7 @@ export const Switch: Story = {
         return createElement(Checkbox, {
             ...args,
             checked,
-            onChange: (e) => setChecked(!!e),
+            onChange: setChecked,
         });
     },
 };
@@ -81,7 +81,19 @@ export const HideLabel: Story = {
         return createElement(Checkbox, {
             ...args,
             checked,
-            onChange: (e) => setChecked(!!e),
+            onChange: setChecked,
         });
+    },
+};
+
+/** A `react-hook-form` field object spread straight onto the Checkbox, with no `checked` adapter. */
+export const FormField: Story = {
+    args: {
+        children: 'I agree to the terms of service',
+    },
+    render: function Render(args) {
+        const [value, setValue] = useState(false);
+        const field = { name: 'terms', value, onChange: setValue, onBlur: () => {} };
+        return createElement(Checkbox, { ...args, ...field });
     },
 };

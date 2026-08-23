@@ -9,11 +9,18 @@ import { Check, Icon } from '../icon';
 import { TextWhenString, VisuallyHidden } from '../utility';
 import styles from './Checkbox.module.scss';
 
-export type CheckboxProps = {
+type CheckboxOwnProps = {
     /** The visual style of the Checkbox. `default` is a standard checkbox with a label next to it, `surface` is a clickable card that displays a check when selected, `panel` is a clickable card with the checkbox aligned right, `switch` is a switch toggle.  */
     kind?: 'default' | 'surface' | 'panel' | 'switch';
+    /** The checked state for controlled mode. Takes precedence over `value`. */
     checked?: boolean;
-    onChange?: (checked: boolean | 'indeterminate') => void;
+    /**
+     * An alias for `checked`, so a form library's field object can be spread directly
+     * (e.g. `<Checkbox {...field} />` with `react-hook-form`). Ignored when `checked` is set.
+     */
+    value?: boolean;
+    /** Called with the new checked state whenever the Checkbox is toggled. */
+    onChange?: (checked: boolean) => void;
     disabled?: boolean;
     /**
      * The validation status of the Checkbox. `error` renders an invalid treatment (e.g. for a
@@ -31,7 +38,10 @@ export type CheckboxProps = {
     defaultChecked?: boolean;
     /** The contents of the Checkbox. */
     children?: ReactNode | ReactNode[];
-} & Omit<React.ComponentPropsWithoutRef<'label'>, 'onChange' | 'children'>;
+};
+
+export type CheckboxProps = CheckboxOwnProps &
+    Omit<React.ComponentPropsWithoutRef<'button'>, keyof CheckboxOwnProps | 'defaultValue' | 'type'>;
 
 /**
  * A Checkbox component.
@@ -50,6 +60,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
         {
             kind = 'default',
             checked,
+            value,
             defaultChecked,
             onChange,
             disabled,
@@ -57,35 +68,40 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
             hideLabel = false,
             children,
             className,
+            style,
+            id,
             ...props
         },
         ref,
     ) => {
-        const inputID = useId();
-        const [resolvedChecked, setResolvedChecked] = useControllableState({
-            value: checked,
+        const generatedID = useId();
+        const inputID = id ?? generatedID;
+        const [resolvedChecked, setResolvedChecked] = useControllableState<boolean>({
+            value: checked ?? value,
             defaultValue: defaultChecked,
-            onChange: onChange as ((value: boolean) => void) | undefined,
+            onChange,
         });
         return (
             <label
                 htmlFor={inputID}
+                style={style}
                 className={clsx(
                     styles.container,
                     disabled && styles.disabled,
                     className,
                     resolvedChecked && styles.checked,
                 )}
-                {...props}
             >
                 {(kind === 'default' || kind === 'surface' || kind === 'panel') && (
                     <RadixCheckbox.Root
+                        {...props}
                         ref={ref}
                         id={inputID}
                         className={clsx(styles.root, styles[kind])}
                         checked={resolvedChecked}
-                        onCheckedChange={(v) => setResolvedChecked(!!v)}
-                        data-disabled={disabled}
+                        onCheckedChange={(v) => setResolvedChecked(v === 'indeterminate' ? true : v)}
+                        disabled={disabled}
+                        data-disabled={disabled || undefined}
                         data-status={status}
                         aria-details={typeof children === 'string' ? children : undefined}
                     >
@@ -104,24 +120,31 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
                                 >
                                     <path
                                         className={styles.checkSvg}
-                                        data-disabled={disabled}
+                                        data-disabled={disabled || undefined}
                                         d="M0.333374 0.333252V13.6666H13.6667V0.333252H0.333374ZM6.00004 10.3999L2.26672 6.66658L3.66671 5.26658L5.93339 7.53325L10.2 3.26658L11.6001 4.66659L6.00004 10.3999Z"
                                     />
                                 </svg>
                             )}
                             {kind === 'surface' && (
-                                <Icon icon={Check} size={12.8} data-disabled={disabled} className={styles.checkIcon} />
+                                <Icon
+                                    icon={Check}
+                                    size={12.8}
+                                    data-disabled={disabled || undefined}
+                                    className={styles.checkIcon}
+                                />
                             )}
                         </RadixCheckbox.Indicator>
                     </RadixCheckbox.Root>
                 )}
                 {kind === 'switch' && (
                     <Switch
+                        {...props}
                         ref={ref}
                         checked={resolvedChecked}
                         onChange={setResolvedChecked}
                         className={styles.switchContainer}
-                        data-disabled={disabled}
+                        disabled={disabled}
+                        data-disabled={disabled || undefined}
                         data-status={status}
                         id={inputID}
                         aria-details={typeof children === 'string' ? children : undefined}
