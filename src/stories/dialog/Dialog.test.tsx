@@ -102,7 +102,7 @@ describe('Dialog', () => {
         const closeButton = getCloseButton()!;
         await user.click(closeButton);
 
-        expect(onClose).toHaveBeenCalledWith(false);
+        expect(onClose).toHaveBeenCalledWith(false, { reason: 'close-press' });
     });
 
     it('applies simple appearance by default', async () => {
@@ -239,6 +239,69 @@ describe('Dialog', () => {
 
         await waitFor(() => {
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        });
+    });
+
+    describe('close reasons', () => {
+        it('stamps onAfterClose with the reason the dialog closed', async () => {
+            const onAfterClose = vi.fn();
+
+            const { rerender } = render(
+                <Dialog isOpen={true} title="Test" onClose={vi.fn()} onAfterClose={onAfterClose}>
+                    Content
+                </Dialog>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument();
+            });
+
+            rerender(
+                <Dialog isOpen={false} title="Test" onClose={vi.fn()} onAfterClose={onAfterClose}>
+                    Content
+                </Dialog>,
+            );
+
+            await waitFor(() => {
+                expect(onAfterClose).toHaveBeenCalledWith({ reason: 'imperative' });
+            });
+        });
+
+        it('reports an escape-key reason when Escape dismisses the dialog', async () => {
+            const onClose = vi.fn();
+            const { user } = render(
+                <Dialog isOpen={true} title="Test" onClose={onClose}>
+                    Content
+                </Dialog>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument();
+            });
+
+            await user.keyboard('{Escape}');
+
+            await waitFor(() => {
+                expect(onClose).toHaveBeenCalledWith(false, { reason: 'escape-key' });
+            });
+        });
+
+        it('stays open when the consumer ignores a close request', async () => {
+            const onClose = vi.fn();
+            const { user } = render(
+                <Dialog isOpen={true} title="Test" onClose={onClose}>
+                    Content
+                </Dialog>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument();
+            });
+
+            await user.keyboard('{Escape}');
+
+            expect(onClose).toHaveBeenCalled();
+            expect(screen.getByRole('dialog')).toBeInTheDocument();
         });
     });
 });
