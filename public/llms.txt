@@ -177,7 +177,8 @@ label: ReactNode
 
 ```tsx
 isOpen?: boolean
-onClose?: (value: boolean) => void
+onClose?: (value: boolean, details: DialogCloseDetails) => void
+onAfterClose?: (details: DialogCloseDetails) => void
 title: ReactNode  // Required for accessibility
 hideTitle?: boolean
 hideCloseButton?: boolean
@@ -185,6 +186,29 @@ width?: 'compact' | 'default' | 'large' | 'full'
 height?: 'content' | 'full'
 appearance?: 'simple' | 'glass'
 overlayStyle?: 'grey' | 'blur'
+```
+
+## Overlay close reasons (Dialog and Drawer)
+
+`Dialog` and `Drawer` report why they closed. Both are fully controlled, so a close request is blocked
+by simply not setting `isOpen` to `false`.
+
+```tsx
+type OverlayCloseReason = 'close-press' | 'escape-key' | 'backdrop-press' | 'imperative'
+```
+
+`onAfterClose(details)` runs exactly once per completed close, after the exit animation where possible.
+Branch on the reason to keep state across incidental dismissals:
+
+```tsx
+<Drawer
+    isOpen={isOpen}
+    onClose={() => setIsOpen(false)}
+    onAfterClose={({ reason }) => {
+        if (reason === 'escape-key' || reason === 'backdrop-press') return;
+        form.reset(defaultValues);
+    }}
+>
 ```
 
 ## Text Props

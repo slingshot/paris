@@ -14,6 +14,11 @@ import {
     useRef,
     useState,
 } from 'react';
+import {
+    type OverlayCloseDetails,
+    type OverlayCloseReason,
+    useOverlayCloseLifecycle,
+} from '../../helpers/useOverlayCloseLifecycle';
 import { Button } from '../button';
 import { ChevronLeft, ChevronRight, Close, Icon } from '../icon';
 import type { PaginationState } from '../pagination';
@@ -33,6 +38,16 @@ export const DrawerSizePresets = ['content', 'default', 'full', 'fullWithMargin'
 
 export type DrawerPageTransition = 'none' | 'crossfade' | 'slide';
 
+export { OverlayCloseReasons as DrawerCloseReasons } from '../../helpers/useOverlayCloseLifecycle';
+
+/** Why a drawer close was requested. @see OverlayCloseReason */
+export type DrawerCloseReason = OverlayCloseReason;
+
+export type DrawerCloseDetails = OverlayCloseDetails;
+
+/** Exit animation: `relaxed` (300ms) plus the panel's `fast` (100ms) delay, per Drawer.module.scss. */
+const EXIT_ANIMATION_MS = 400;
+
 /** Extract the page ID from a child element (DrawerPage or legacy div-with-key). */
 const getChildPageID = (child: ReactNode): string | null => {
     if (isDrawerPageElement(child)) return (child as React.ReactElement<DrawerPageProps>).props.id;
@@ -46,11 +61,16 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
      */
     isOpen?: boolean;
     /**
-     * A callback that will be called when the user closes the drawer by clicking the close button or the backdrop overlay.
+     * A callback that will be called when the drawer requests to close, with the reason for the request.
+     *
+     * The Drawer is fully controlled — it stays open until `isOpen` becomes `false` — so a consumer blocks
+     * a close simply by not acting on the request. Prefer answering a blocked request with visible UI (a
+     * "discard changes?" confirmation) rather than letting Escape silently do nothing.
      *
      * @param value {boolean} - The new open state of the dialog.
+     * @param details {DrawerCloseDetails} - Why the close was requested.
      */
-    onClose?: (value: boolean) => void | Promise<void>;
+    onClose?: (value: boolean, details: DrawerCloseDetails) => void | Promise<void>;
     /**
      * The title of the drawer. Required for accessibility, but can be hidden with the `hideTitle` prop.
      *
@@ -144,10 +164,14 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
      */
     progressBar?: boolean | DrawerProgressBarStyleProps;
     /**
-     * Callback fired after the drawer's close animation completes.
-     * Use this to reset forms, clear state, and clean up without visual glitches.
+     * Teardown callback, stamped with the reason the drawer closed. Use it to reset forms and clear state
+     * without visual glitches, and branch on `details.reason` to keep state across incidental dismissals.
+     *
+     * Runs exactly once per completed close. It fires after the exit animation where possible, and is
+     * otherwise flushed when the drawer reopens, when it unmounts, or by a duration-based fallback — an
+     * interrupted or skipped exit animation delays teardown, it never silently drops it.
      */
-    onAfterClose?: () => void;
+    onAfterClose?: (details: DrawerCloseDetails) => void;
     /**
      * The overlay style of the Drawer, either 'grey' or 'blur'.
      *
@@ -190,18 +214,17 @@ export type DrawerProps<T extends string[] | readonly string[] = string[]> = {
 export const Drawer = <T extends string[] | readonly string[] = string[]>(props: DrawerProps<T>) => {
     const { isOpen = false, onClose = () => {}, onAfterClose } = props;
 
-    const handleClose = useCallback(() => onClose(false), [onClose]);
+    const { handleDismiss, requestClose, handleAfterLeave } = useOverlayCloseLifecycle({
+        isOpen,
+        panelClassName: styles.panel,
+        exitAnimationMS: EXIT_ANIMATION_MS,
+        onClose,
+        onAfterClose,
+    });
 
-    const hasBeenOpen = useRef(false);
-    useEffect(() => {
-        if (isOpen) hasBeenOpen.current = true;
-    }, [isOpen]);
+    const handleCloseButtonPress = useCallback(() => requestClose('close-press'), [requestClose]);
 
-    const handleAfterLeave = useCallback(() => {
-        if (hasBeenOpen.current) {
-            onAfterClose?.();
-        }
-    }, [onAfterClose]);
+    const contextClose = useCallback(() => requestClose('imperative'), [requestClose]);
 
     return (
         // `appear` runs the enter transition on the very first mount. Without it,
@@ -214,14 +237,14 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>(props:
             <Dialog
                 as="div"
                 className={clsx(styles.root, props.overrides?.dialog?.className)}
-                onClose={onClose}
+                onClose={handleDismiss}
                 {...props.overrides?.dialog}
                 role="dialog"
             >
-                <DrawerProvider close={handleClose} isOpen={isOpen}>
+                <DrawerProvider close={contextClose} isOpen={isOpen}>
                     <DrawerPaginationProvider pagination={props.pagination ?? null}>
                         <DrawerSlotProvider>
-                            <DrawerInner {...props} />
+                            <DrawerInner {...props} onCloseButtonPress={handleCloseButtonPress} />
                         </DrawerSlotProvider>
                     </DrawerPaginationProvider>
                 </DrawerProvider>
@@ -232,7 +255,7 @@ export const Drawer = <T extends string[] | readonly string[] = string[]>(props:
 
 /** Internal component that renders inside all providers so it can consume slot context. */
 const DrawerInner = <T extends string[] | readonly string[] = string[]>({
-    onClose = () => {},
+    onCloseButtonPress,
     title,
     hideTitle = false,
     hideCloseButton = false,
@@ -246,7 +269,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
     additionalActions,
     children,
     overrides,
-}: DrawerProps<T>) => {
+}: DrawerProps<T> & { onCloseButtonPress: () => void }) => {
     const slotContext = useDrawerSlotContext();
 
     const xAxisDrawer = from === 'left' || from === 'right';
@@ -500,7 +523,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                                     <Button
                                         kind="tertiary"
                                         shape="circle"
-                                        onClick={() => onClose(false)}
+                                        onClick={onCloseButtonPress}
                                         startEnhancer={<Icon icon={Close} size={20} />}
                                         data-title-hidden={hideTitle}
                                         className={clsx(styles.closeButton)}

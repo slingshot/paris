@@ -5,6 +5,11 @@ import type { CSSLength } from '@ssh/csstypes';
 import { clsx } from 'clsx';
 import type { ComponentPropsWithoutRef, FC, MouseEventHandler, PropsWithChildren, ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
+import {
+    type OverlayCloseDetails,
+    type OverlayCloseReason,
+    useOverlayCloseLifecycle,
+} from '../../helpers/useOverlayCloseLifecycle';
 import { Button } from '../button';
 import { Close, Icon } from '../icon';
 import { Text } from '../text';
@@ -15,16 +20,41 @@ import styles from './Dialog.module.scss';
 
 export const DialogWidthPresets = ['compact', 'default', 'large', 'full'] as const;
 
+export { OverlayCloseReasons as DialogCloseReasons } from '../../helpers/useOverlayCloseLifecycle';
+
+/** Why a dialog close was requested. @see OverlayCloseReason */
+export type DialogCloseReason = OverlayCloseReason;
+
+export type DialogCloseDetails = OverlayCloseDetails;
+
+/** Exit animation: `normal` (200ms) plus the panel's `fast` (100ms) delay, per Dialog.module.scss. */
+const EXIT_ANIMATION_MS = 300;
+
 export type DialogProps = {
     /**
      * The dialog's open state.
      */
     isOpen?: boolean;
     /**
-     * A callback that will be called when the user closes the dialog by clicking the close button or the backdrop overlay.
+     * A callback that will be called when the dialog requests to close, with the reason for the request.
+     *
+     * The Dialog is fully controlled — it stays open until `isOpen` becomes `false` — so a consumer blocks
+     * a close simply by not acting on the request. Prefer answering a blocked request with visible UI (a
+     * "discard changes?" confirmation) rather than letting Escape silently do nothing.
+     *
      * @param value {boolean} - The new open state of the dialog.
+     * @param details {DialogCloseDetails} - Why the close was requested.
      */
-    onClose?: (value: boolean) => void | Promise<void>;
+    onClose?: (value: boolean, details: DialogCloseDetails) => void | Promise<void>;
+    /**
+     * Teardown callback, stamped with the reason the dialog closed. Use it to reset forms and clear state
+     * without visual glitches, and branch on `details.reason` to keep state across incidental dismissals.
+     *
+     * Runs exactly once per completed close. It fires after the exit animation where possible, and is
+     * otherwise flushed when the dialog reopens, when it unmounts, or by a duration-based fallback — an
+     * interrupted or skipped exit animation delays teardown, it never silently drops it.
+     */
+    onAfterClose?: (details: DialogCloseDetails) => void;
     /**
      * The title of the dialog. Required for accessibility, but can be hidden with the `hideTitle` prop.
      *
@@ -118,6 +148,7 @@ export type DialogProps = {
 export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
     isOpen = false,
     onClose = () => {},
+    onAfterClose,
     title,
     hideTitle = false,
     hideCloseButton = false,
@@ -129,6 +160,14 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
     overlayStyle = 'blur',
     children,
 }) => {
+    const { handleDismiss, requestClose, handleAfterLeave } = useOverlayCloseLifecycle({
+        isOpen,
+        panelClassName: styles.panel,
+        exitAnimationMS: EXIT_ANIMATION_MS,
+        onClose,
+        onAfterClose,
+    });
+
     const widthIsPreset = useMemo(() => (DialogWidthPresets as readonly string[]).includes(width), [width]);
 
     const [dragging, setDragging] = useState(false);
@@ -168,10 +207,10 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
     }, [isOpen]);
 
     return (
-        <Transition appear show={isOpen}>
+        <Transition appear show={isOpen} afterLeave={handleAfterLeave}>
             <HDialog
                 as="div"
-                onClose={onClose}
+                onClose={handleDismiss}
                 {...overrides.root}
                 className={clsx(styles.root, overrides.root?.className)}
                 role="dialog"
@@ -261,7 +300,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                                             <Button
                                                 kind="tertiary"
                                                 shape="circle"
-                                                onClick={() => onClose(false)}
+                                                onClick={() => requestClose('close-press')}
                                                 startEnhancer={<Icon size={20} icon={Close} />}
                                                 {...overrides.panelCloseButton}
                                                 data-title-hidden={hideTitle}

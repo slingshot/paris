@@ -112,7 +112,7 @@ describe('Drawer', () => {
         const closeButton = getCloseButton('Close drawer')!;
         await user.click(closeButton);
 
-        expect(onClose).toHaveBeenCalledWith(false);
+        expect(onClose).toHaveBeenCalledWith(false, { reason: 'close-press' });
     });
 
     it('renders with from="left"', async () => {
@@ -304,7 +304,7 @@ describe('Drawer', () => {
 
             await user.click(screen.getByText('Close via context'));
 
-            expect(onClose).toHaveBeenCalledWith(false);
+            expect(onClose).toHaveBeenCalledWith(false, { reason: 'imperative' });
         });
 
         it('throws when useDrawer is used outside of a Drawer', () => {
@@ -572,6 +572,222 @@ describe('Drawer', () => {
             );
 
             expect(onAfterClose).not.toHaveBeenCalled();
+        });
+
+        it('stamps onAfterClose with the reason the drawer closed', async () => {
+            const onAfterClose = vi.fn();
+            const onClose = vi.fn();
+
+            const { user, rerender } = render(
+                <Drawer isOpen={true} title="Test" onClose={onClose} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(getCloseButton('Close drawer')).toBeInTheDocument();
+            });
+
+            await user.click(getCloseButton('Close drawer')!);
+            rerender(
+                <Drawer isOpen={false} title="Test" onClose={onClose} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(onAfterClose).toHaveBeenCalledWith({ reason: 'close-press' });
+            });
+        });
+
+        it('reports an imperative reason when isOpen is flipped without a dismissal gesture', async () => {
+            const onAfterClose = vi.fn();
+
+            const { rerender } = render(
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument();
+            });
+
+            rerender(
+                <Drawer isOpen={false} title="Test" onClose={vi.fn()} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(onAfterClose).toHaveBeenCalledWith({ reason: 'imperative' });
+            });
+        });
+
+        it('flushes a pending teardown when the drawer reopens before the exit completes', async () => {
+            const onAfterClose = vi.fn();
+
+            const { rerender } = render(
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument();
+            });
+
+            rerender(
+                <Drawer isOpen={false} title="Test" onClose={vi.fn()} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+            rerender(
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+
+            expect(onAfterClose).toHaveBeenCalledTimes(1);
+        });
+
+        it('flushes a pending teardown when the drawer unmounts mid-exit', async () => {
+            const onAfterClose = vi.fn();
+
+            const { rerender, unmount } = render(
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument();
+            });
+
+            rerender(
+                <Drawer isOpen={false} title="Test" onClose={vi.fn()} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+            unmount();
+
+            expect(onAfterClose).toHaveBeenCalledTimes(1);
+        });
+
+        it('calls onAfterClose exactly once across every flush path', async () => {
+            const onAfterClose = vi.fn();
+
+            const { rerender, unmount } = render(
+                <Drawer isOpen={true} title="Test" onClose={vi.fn()} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument();
+            });
+
+            rerender(
+                <Drawer isOpen={false} title="Test" onClose={vi.fn()} onAfterClose={onAfterClose}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(onAfterClose).toHaveBeenCalledTimes(1);
+            });
+
+            unmount();
+            expect(onAfterClose).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe('close reasons', () => {
+        it('reports an escape-key reason when Escape dismisses the drawer', async () => {
+            const onClose = vi.fn();
+            const { user } = render(
+                <Drawer isOpen={true} title="Test" onClose={onClose}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument();
+            });
+
+            await user.keyboard('{Escape}');
+
+            await waitFor(() => {
+                expect(onClose).toHaveBeenCalledWith(false, { reason: 'escape-key' });
+            });
+        });
+
+        it('reports a backdrop-press reason when a press outside the panel dismisses the drawer', async () => {
+            const onClose = vi.fn();
+            const { user } = render(
+                <Drawer isOpen={true} title="Test" onClose={onClose}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument();
+            });
+
+            await user.click(document.body);
+
+            await waitFor(() => {
+                expect(onClose).toHaveBeenCalledWith(false, { reason: 'backdrop-press' });
+            });
+        });
+
+        it('stays open when the consumer ignores a close request', async () => {
+            const onClose = vi.fn();
+            const { user } = render(
+                <Drawer isOpen={true} title="Test" onClose={onClose}>
+                    Content
+                </Drawer>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument();
+            });
+
+            await user.keyboard('{Escape}');
+
+            expect(onClose).toHaveBeenCalled();
+            expect(screen.getByRole('dialog')).toBeInTheDocument();
+        });
+
+        it('does not attribute an ignored dismissal gesture to a later imperative close', async () => {
+            vi.useFakeTimers({ shouldAdvanceTime: true });
+            try {
+                const onAfterClose = vi.fn();
+                const { user, rerender } = render(
+                    <Drawer isOpen={true} title="Test" onClose={vi.fn()} onAfterClose={onAfterClose}>
+                        Content
+                    </Drawer>,
+                );
+
+                await waitFor(() => {
+                    expect(screen.getByRole('dialog')).toBeInTheDocument();
+                });
+
+                await user.keyboard('{Escape}');
+                await vi.advanceTimersByTimeAsync(1000);
+
+                rerender(
+                    <Drawer isOpen={false} title="Test" onClose={vi.fn()} onAfterClose={onAfterClose}>
+                        Content
+                    </Drawer>,
+                );
+
+                await waitFor(() => {
+                    expect(onAfterClose).toHaveBeenCalledWith({ reason: 'imperative' });
+                });
+            } finally {
+                vi.useRealTimers();
+            }
         });
     });
 
