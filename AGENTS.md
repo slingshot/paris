@@ -70,7 +70,7 @@ src/stories/<componentname>/
 - **Input** - Text input field
 - **TextArea** - Multi-line text input
 - **Select** - Dropdown/listbox/radio/segmented selection
-- **Checkbox** - Checkbox with switch variant
+- **Checkbox** - Checkbox with switch variant; `value` is a boolean alias for `checked` and rest props land on the control, so a form field object can be spread directly
 - **Combobox** - Autocomplete input
 - **PhoneInput** - Country select + phone number input; `value`/`onChange` are E.164, display formats to national format on blur
 - **AccordionSelect** - Card header that expands to reveal selectable options
@@ -79,7 +79,7 @@ src/stories/<componentname>/
 
 **Overlay close reasons:** `Dialog` and `Drawer` report why they closed. `onClose(value, { reason })` and `onAfterClose({ reason })` carry a reason of `'close-press' | 'escape-key' | 'backdrop-press' | 'imperative'`, so consumers can persist form state through an incidental dismissal and reset it on a deliberate one. Both are fully controlled, so a close is blocked by not setting `isOpen` to `false` — answer a blocked Escape with a visible confirmation rather than a silent no-op. `onAfterClose` is guaranteed to run exactly once per completed close; the shared machinery lives in `src/helpers/useOverlayCloseLifecycle.ts`, which prefers the exit animation's completion but also flushes on reopen, on unmount, and on a duration fallback, because Headless UI's `afterLeave` is unreliable for nested transitions.
 
-**Programmatic focus & error state:** form components forward a `ref` to a focusable element so `react-hook-form`'s `setFocus` works — including `Select`'s `radio`/`card`/`segmented` kinds and `Combobox` with a non-string selected node. `MarkdownEditor` exposes an imperative `ref` handle (`{ focus() }`) instead of a DOM ref. `Checkbox` and `AccordionSelect` support `status="error"` (like `Input`/`Select`) for invalid state. For paginated `Drawer`s, `onPageEntered(pageID)` fires once a page has mounted so consumers can focus a field on the new page deterministically.
+**Programmatic focus & error state:** form components forward a `ref` to a focusable element so `react-hook-form`'s `setFocus` works — including `Select`'s `radio`/`card`/`segmented` kinds and `Combobox` with a non-string selected node. `MarkdownEditor` exposes an imperative `ref` handle (`{ focus() }`) instead of a DOM ref. `Checkbox` and `AccordionSelect` support `status="error"` (like `Input`/`Select`) for invalid state. `Checkbox` spreads its rest props onto the control (the Radix checkbox button, or the Headless UI switch) rather than the wrapping `<label>`, which keeps only `className` and `style` — so `name`, `id`, `onBlur`, and `data-*` reach the focusable element and `name` drives hidden-input form participation. For paginated `Drawer`s, `onPageEntered(pageID)` fires once a page has mounted so consumers can focus a field on the new page deterministically.
 
 ### Navigation & Actions
 - **Button** - Primary action trigger
