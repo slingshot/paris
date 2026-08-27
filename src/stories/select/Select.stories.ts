@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { createElement, useState } from 'react';
 import { Text } from '../text';
-import type { Option } from './Select';
 import { Select } from './Select';
 
 const meta: Meta<typeof Select> = {
@@ -28,13 +27,12 @@ const render: Story['render'] = function Render(args) {
                 ? {
                       ...args,
                       value: selectedMultiple,
-                      onChange: (options: Option[] | null) =>
-                          setSelectedMultiple(options ? options.map((o) => o.id) : null),
+                      onChange: (ids: string[] | null) => setSelectedMultiple(ids),
                   }
                 : {
                       ...args,
                       value: selected,
-                      onChange: (option: Option | null) => setSelected(option?.id ?? null),
+                      onChange: (id: string | null) => setSelected(id),
                   },
         ),
     );

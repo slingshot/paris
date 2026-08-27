@@ -165,13 +165,21 @@ Generic over the option `metadata` type: `<Select<MyMeta> />` types `options` an
 
 ```tsx
 options: { id: string, node: ReactNode, disabled?: boolean, metadata?: T }[]
-value?: string | string[]                          // id(s); unchanged
-onChange?: (option: Option<T> | null) => void      // single: the selected Option (with metadata)
-onChange?: (options: Option<T>[] | null) => void   // multiple: the selected Options
+value?: string | string[]                          // id(s)
+onChange?: (id: string | null, option: Option<T> | null) => void        // single: id first, then the Option (with metadata)
+onChange?: (ids: string[] | null, options: Option<T>[] | null) => void  // multiple: ids first, then the Options
 kind?: 'listbox' | 'radio' | 'card' | 'segmented'  // default: 'listbox'
 multiple?: boolean
 label: ReactNode
+name?: string                                      // rendered on the focusable element
+onBlur?: FocusEventHandler                         // fires when focus leaves the control
+id?: string                                        // also the label's htmlFor target
 ```
+
+`name`, `id`, `onBlur`, and `data-*` land on the focusable element (the trigger button for
+`listbox`, the option holding the roving tab stop for `radio`/`card`/`segmented`), and `onChange`
+emits the id first, so a `react-hook-form` field spreads on directly:
+`<Select {...field} options={options} />`.
 
 ## Dialog Props
 

@@ -5,7 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions, Radio, RadioGroup } from '@headlessui/react';
 import { clsx } from 'clsx';
 import { motion } from 'framer-motion';
-import type { ComponentPropsWithoutRef, CSSProperties, ForwardedRef, ReactNode, RefAttributes } from 'react';
+import type {
+    ComponentPropsWithoutRef,
+    CSSProperties,
+    FocusEventHandler,
+    ForwardedRef,
+    ReactNode,
+    RefAttributes,
+} from 'react';
 import { forwardRef, useId } from 'react';
 import { OpenChangeEffect } from '../../helpers/OpenChangeEffect';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
@@ -57,6 +64,18 @@ export type CommonSelectProps<
      */
     onOpenChange?: (open: boolean) => void;
     /**
+     * The name of the form control, rendered as a DOM attribute on the focusable element.
+     */
+    name?: string;
+    /**
+     * Called when focus leaves the focusable element.
+     */
+    onBlur?: FocusEventHandler<HTMLElement>;
+    /**
+     * The id of the focusable element, and the target of the field label's `htmlFor`. Defaults to a generated id.
+     */
+    id?: string;
+    /**
      * Prop overrides for other rendered elements. Overrides for the input itself should be passed directly to the component.
      */
     overrides?: {
@@ -69,6 +88,8 @@ export type CommonSelectProps<
         startEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
         endEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
     };
+} & {
+    [key: `data-${string}`]: string | number | boolean | undefined;
 } & Omit<InputProps, 'type' | 'overrides'>;
 
 export type SingleSelectProps<
@@ -84,10 +105,11 @@ export type SingleSelectProps<
     /** The initial value for uncontrolled mode. If `value` is provided, this is ignored. */
     defaultValue?: Id | null;
     /**
-     * The interaction handler for the Select. Receives the full selected {@link Option} (including
-     * its typed `metadata`), or `null` when the selection is cleared.
+     * The interaction handler for the Select. Receives the selected option's `id` first, then the
+     * full selected {@link Option} (including its typed `metadata`). Both are `null` when the
+     * selection is cleared.
      */
-    onChange?: (option: Option<T, Id> | null) => void | Promise<void>;
+    onChange?: (id: Id | null, option: Option<T, Id> | null) => void | Promise<void>;
     /**
      * The visual variant of the Select. `listbox` will render as a dropdown menu, `radio` will render as a radio group, `card` will render as selectable cards, and `segmented` will render as a segmented control.
      * @default listbox
@@ -122,10 +144,11 @@ export type MultiSelectProps<
     /** The initial value for uncontrolled multi-select. If `value` is provided, this is ignored. */
     defaultValue?: Id[] | null;
     /**
-     * The interaction handler for the Select. Receives the full selected {@link Option}s (including
-     * their typed `metadata`), or `null` when nothing is selected.
+     * The interaction handler for the Select. Receives the selected option `id`s first, then the
+     * full selected {@link Option}s (including their typed `metadata`). Both are `null` when
+     * nothing is selected.
      */
-    onChange?: (options: Option<T, Id>[] | null) => void | Promise<void>;
+    onChange?: (ids: Id[] | null, options: Option<T, Id>[] | null) => void | Promise<void>;
 } & CommonSelectProps<T, Id>;
 
 type SelectProps<T extends Record<string, unknown> = Record<string, unknown>, Id extends string = string> =
@@ -156,11 +179,20 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
         segmentedHeight = 'compact',
         onOpenChange,
         overrides,
+        name,
+        onBlur,
+        id,
+        ...rest
     }: SelectProps<T, Id>,
     ref: ForwardedRef<HTMLElement>,
 ) => {
-    const inputID = useId();
+    const generatedID = useId();
+    const inputID = id ?? generatedID;
     const multiItems = multipleItemsName || 'items';
+
+    // Passthrough props for the element that holds focus for the current `kind`, so a bare
+    // react-hook-form `{...field}` spread reaches the DOM.
+    const focusableProps = { name, id: inputID, onBlur, ...rest };
 
     // The single forwarded ref lands on the listbox trigger (button) or one of the radio/card/
     // segmented options (div) depending on `kind`; narrow it per element type at each usage.
@@ -176,13 +208,16 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
             if (multiple) {
                 const ids = (next as string[] | null) ?? [];
                 const selected = ids
-                    .map((id) => options.find((o) => o.id === id))
+                    .map((selectedID) => options.find((o) => o.id === selectedID))
                     .filter((o): o is Option<T, Id> => Boolean(o));
-                (onChange as MultiSelectProps<T, Id>['onChange'])?.(selected.length ? selected : null);
+                (onChange as MultiSelectProps<T, Id>['onChange'])?.(
+                    selected.length ? selected.map((o) => o.id) : null,
+                    selected.length ? selected : null,
+                );
             } else {
-                const id = next as string | null;
-                const selected = id != null ? (options.find((o) => o.id === id) ?? null) : null;
-                (onChange as SingleSelectProps<T, Id>['onChange'])?.(selected);
+                const selectedID = next as string | null;
+                const selected = selectedID != null ? (options.find((o) => o.id === selectedID) ?? null) : null;
+                (onChange as SingleSelectProps<T, Id>['onChange'])?.(selected?.id ?? null, selected);
             }
         },
     });
@@ -239,7 +274,7 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                             <OpenChangeEffect open={open} onOpenChange={onOpenChange} />
                             <ListboxButton
                                 ref={listboxButtonRef}
-                                id={inputID}
+                                {...focusableProps}
                                 {...overrides?.selectInput}
                                 aria-disabled={disabled}
                                 data-status={disabled ? 'disabled' : status || 'default'}
@@ -343,6 +378,7 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                         <Radio
                             as="div"
                             ref={option.id === tabStopID ? radioOptionRef : undefined}
+                            {...(option.id === tabStopID ? focusableProps : {})}
                             className={clsx(styles.radioOption)}
                             key={option.id}
                             value={option.id}
@@ -361,6 +397,7 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                         <Radio
                             as="div"
                             ref={option.id === tabStopID ? radioOptionRef : undefined}
+                            {...(option.id === tabStopID ? focusableProps : {})}
                             className={clsx(styles.cardOption)}
                             key={option.id}
                             value={option.id}
@@ -385,6 +422,7 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                         <Radio
                             as="div"
                             ref={option.id === tabStopID ? radioOptionRef : undefined}
+                            {...(option.id === tabStopID ? focusableProps : {})}
                             className={clsx(styles.segmentedOption, styles[segmentedHeight])}
                             key={option.id}
                             value={option.id}
@@ -394,7 +432,7 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                             {(option.id === resolvedValue || (!resolvedValue && option.id === options[0].id)) && (
                                 <motion.div
                                     className={styles.segmentedBackground}
-                                    layoutId={`${inputID}-segmented-selected`}
+                                    layoutId={`${generatedID}-segmented-selected`}
                                     transition={{
                                         ease: [0.42, 0.0, 0.58, 1.0],
                                         duration: 0.25,
@@ -417,7 +455,11 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
  *
  * The component is generic over the option `metadata` type: pass a type parameter
  * (`<Select<MyMeta> />`) and `options` / `onChange` become typed accordingly. `onChange` receives
- * the full selected {@link Option} (single) or `Option[]` (multiple), including typed `metadata`.
+ * the selected option's `id` (or `id[]` when `multiple`) first, then the full selected
+ * {@link Option}(s) including typed `metadata`.
+ *
+ * `name`, `id`, `onBlur`, and `data-*` props land on the focusable element, so a `react-hook-form`
+ * field can be spread onto the component directly (`<Select {...field} options={options} />`).
  *
  * <hr />
  *
