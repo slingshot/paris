@@ -279,18 +279,26 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
 
     const showBottomPanel = (slotContext?.hasAnyBottomPanelSlot ?? false) || (slotContext?.hasProgressBar ?? false);
 
-    // Sync spacer height with absolute-positioned bottom panel so content doesn't get clipped
+    // Sync spacer height and scroll padding with the absolute-positioned bottom panel, so content is
+    // neither clipped by it nor scrolled to rest underneath it
     const bottomPanelElRef = useRef<HTMLDivElement | null>(null);
     const spacerRef = useRef<HTMLDivElement | null>(null);
+    const contentElRef = useRef<HTMLDivElement | null>(null);
     const appendEntries = slotContext?.bottomPanelAppendEntries;
     useEffect(() => {
-        if (!showBottomPanel) return;
+        const content = contentElRef.current;
+        if (!showBottomPanel) {
+            if (content) content.style.scrollPaddingBottom = '';
+            return;
+        }
         const panel = bottomPanelElRef.current;
         const spacer = spacerRef.current;
         if (!panel || !spacer) return;
 
         const update = () => {
-            spacer.style.height = `${panel.offsetHeight}px`;
+            const { offsetHeight } = panel;
+            spacer.style.height = `${offsetHeight}px`;
+            if (content) content.style.scrollPaddingBottom = `${offsetHeight}px`;
         };
         update();
 
@@ -534,7 +542,7 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                             </div>
                         </div>
 
-                        <div className={clsx(styles.content, overrides?.content?.className)}>
+                        <div ref={contentElRef} className={clsx(styles.content, overrides?.content?.className)}>
                             <div className={clsx(styles.contentChildren, overrides?.contentChildren?.className)}>
                                 {isPaginated ? (
                                     <>

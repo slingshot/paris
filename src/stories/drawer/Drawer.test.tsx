@@ -178,6 +178,41 @@ describe('Drawer', () => {
         });
     });
 
+    it('reserves scroll padding for the bottom panel so scrolls stop clear of it', async () => {
+        const offsetHeight = vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(120);
+
+        render(
+            <Drawer isOpen={true} title="Test Drawer" onClose={vi.fn()}>
+                Content
+                <DrawerBottomPanel>
+                    <button type="button">Save</button>
+                </DrawerBottomPanel>
+            </Drawer>,
+        );
+
+        await waitFor(() => {
+            const content = document.querySelector<HTMLElement>('.content');
+            expect(content?.style.scrollPaddingBottom).toBe('120px');
+        });
+
+        offsetHeight.mockRestore();
+    });
+
+    it('leaves scroll padding unset when there is no bottom panel', async () => {
+        render(
+            <Drawer isOpen={true} title="Test Drawer" onClose={vi.fn()}>
+                Content
+            </Drawer>,
+        );
+
+        await waitFor(() => {
+            expect(screen.getByRole('dialog')).toBeInTheDocument();
+        });
+
+        const content = document.querySelector<HTMLElement>('.content');
+        expect(content?.style.scrollPaddingBottom).toBe('');
+    });
+
     it('renders additional actions', async () => {
         render(
             <Drawer
