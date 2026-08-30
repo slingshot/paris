@@ -105,6 +105,24 @@ describe('Select', () => {
             });
         });
 
+        // Headless UI writes an inline `max-height` on the anchored panel that only defers to
+        // `--anchor-max-height`, so `maxHeight` has to travel as that variable.
+        it('caps the dropdown height via --anchor-max-height', async () => {
+            const { user } = render(<Select options={options} maxHeight={240} placeholder="Pick one" />);
+            await user.click(screen.getByText('Pick one'));
+
+            const panel = await screen.findByRole('listbox');
+            expect(panel.style.getPropertyValue('--anchor-max-height')).toBe('240px');
+        });
+
+        it('defaults the dropdown height cap to 320px', async () => {
+            const { user } = render(<Select options={options} placeholder="Pick one" />);
+            await user.click(screen.getByText('Pick one'));
+
+            const panel = await screen.findByRole('listbox');
+            expect(panel.style.getPropertyValue('--anchor-max-height')).toBe('320px');
+        });
+
         it('sets aria-disabled and status data attribute when disabled', () => {
             render(<Select options={options} disabled placeholder="Pick one" />);
             const button = screen.getByText('Pick one').closest('button');

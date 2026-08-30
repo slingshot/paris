@@ -26,7 +26,6 @@
 
 .options {
     width: max(var(--button-width, 0px), var(--input-width, 0px));
-    max-height: var(--options-maxHeight, auto);
     overflow-y: auto;
     overflow-x: hidden;
 
