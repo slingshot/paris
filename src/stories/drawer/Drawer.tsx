@@ -279,18 +279,25 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
 
     const showBottomPanel = (slotContext?.hasAnyBottomPanelSlot ?? false) || (slotContext?.hasProgressBar ?? false);
 
-    // Sync spacer height with absolute-positioned bottom panel so content doesn't get clipped
+    // Sync spacer height and scroll padding with the bottom panel so content is neither clipped nor hidden by it
     const bottomPanelElRef = useRef<HTMLDivElement | null>(null);
     const spacerRef = useRef<HTMLDivElement | null>(null);
+    const contentElRef = useRef<HTMLDivElement | null>(null);
     const appendEntries = slotContext?.bottomPanelAppendEntries;
     useEffect(() => {
-        if (!showBottomPanel) return;
+        const content = contentElRef.current;
+        if (!showBottomPanel) {
+            if (content) content.style.scrollPaddingBottom = '';
+            return;
+        }
         const panel = bottomPanelElRef.current;
         const spacer = spacerRef.current;
         if (!panel || !spacer) return;
 
         const update = () => {
-            spacer.style.height = `${panel.offsetHeight}px`;
+            const { offsetHeight } = panel;
+            spacer.style.height = `${offsetHeight}px`;
+            if (content) content.style.scrollPaddingBottom = `${offsetHeight}px`;
         };
         update();
 
@@ -301,6 +308,35 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
         }
         return () => observer.disconnect();
     }, [showBottomPanel, appendEntries]);
+
+    // Browsers scroll on focus, not on resize, so re-scroll a field the panel or growing content covered
+    const contentChildrenElRef = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+        const content = contentElRef.current;
+        const contentChildren = contentChildrenElRef.current;
+        if (!content || !contentChildren) return;
+        const panel = showBottomPanel ? bottomPanelElRef.current : null;
+
+        const keepFocusedFieldVisible = () => {
+            const focused = document.activeElement;
+            if (!(focused instanceof HTMLElement) || focused === content || !content.contains(focused)) return;
+
+            const contentRect = content.getBoundingClientRect();
+            const panelTop = panel?.getBoundingClientRect().top ?? contentRect.bottom;
+            const visibleBottom = Math.min(contentRect.bottom, panelTop);
+            const focusedRect = focused.getBoundingClientRect();
+
+            const hiddenBelow = focusedRect.bottom - visibleBottom;
+            const hiddenAbove = contentRect.top - focusedRect.top;
+            if (hiddenBelow > 1) content.scrollTop += hiddenBelow;
+            else if (hiddenAbove > 1) content.scrollTop -= hiddenAbove;
+        };
+
+        const observer = new ResizeObserver(keepFocusedFieldVisible);
+        observer.observe(contentChildren);
+        if (panel) observer.observe(panel);
+        return () => observer.disconnect();
+    }, [showBottomPanel]);
 
     const [loadedPage, setLoadedPage] = useState<string | null>(pagination?.currentPage ?? null);
 
@@ -534,8 +570,11 @@ const DrawerInner = <T extends string[] | readonly string[] = string[]>({
                             </div>
                         </div>
 
-                        <div className={clsx(styles.content, overrides?.content?.className)}>
-                            <div className={clsx(styles.contentChildren, overrides?.contentChildren?.className)}>
+                        <div ref={contentElRef} className={clsx(styles.content, overrides?.content?.className)}>
+                            <div
+                                ref={contentChildrenElRef}
+                                className={clsx(styles.contentChildren, overrides?.contentChildren?.className)}
+                            >
                                 {isPaginated ? (
                                     <>
                                         {paginatedContent}
