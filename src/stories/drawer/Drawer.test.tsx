@@ -198,6 +198,140 @@ describe('Drawer', () => {
         offsetHeight.mockRestore();
     });
 
+    describe('keeping a focused field visible when geometry changes', () => {
+        /** Swaps in a ResizeObserver whose callbacks can be fired on demand, since jsdom never resizes. */
+        function captureResizeObservers() {
+            // A disconnected observer must drop its callback, or an effect re-run leaves a stale
+            // one behind and every fire is counted twice.
+            const callbacks = new Set<ResizeObserverCallback>();
+            const original = globalThis.ResizeObserver;
+            class CapturingResizeObserver {
+                private readonly callback: ResizeObserverCallback;
+                constructor(callback: ResizeObserverCallback) {
+                    this.callback = callback;
+                    callbacks.add(callback);
+                }
+                observe() {}
+                unobserve() {}
+                disconnect() {
+                    callbacks.delete(this.callback);
+                }
+            }
+            globalThis.ResizeObserver = CapturingResizeObserver as unknown as typeof ResizeObserver;
+            return {
+                fireAll: () => {
+                    for (const callback of [...callbacks]) {
+                        callback([], {} as ResizeObserver);
+                    }
+                },
+                restore: () => {
+                    globalThis.ResizeObserver = original;
+                },
+            };
+        }
+
+        /** jsdom reports every rect as zero, so place the pieces by hand. */
+        function stubRects({ focusedBottom }: { focusedBottom: number }) {
+            const rect = (top: number, bottom: number) =>
+                ({ top, bottom, left: 0, right: 0, width: 0, height: bottom - top }) as DOMRect;
+            const content = document.querySelector<HTMLElement>('.content');
+            const bottomPanel = document.querySelector<HTMLElement>('.bottomPanel');
+            const focused = document.activeElement as HTMLElement;
+            if (!content || !bottomPanel) throw new Error('drawer did not render its scroll container');
+            content.getBoundingClientRect = () => rect(0, 400);
+            bottomPanel.getBoundingClientRect = () => rect(300, 400);
+            focused.getBoundingClientRect = () => rect(focusedBottom - 28, focusedBottom);
+            return content;
+        }
+
+        it('scrolls a focused field back into view when the panel grows over it', async () => {
+            const observers = captureResizeObservers();
+            try {
+                const { user } = render(
+                    <Drawer isOpen={true} title="Test Drawer" onClose={vi.fn()}>
+                        <input aria-label="Amount" />
+                        <DrawerBottomPanel>
+                            <button type="button">Save</button>
+                        </DrawerBottomPanel>
+                    </Drawer>,
+                );
+
+                await waitFor(() => {
+                    expect(screen.getByLabelText('Amount')).toBeInTheDocument();
+                });
+                await user.click(screen.getByLabelText('Amount'));
+
+                // Panel top is 300; the field now ends at 360, so 60px of it sits underneath.
+                const content = stubRects({ focusedBottom: 360 });
+                content.scrollTop = 0;
+                observers.fireAll();
+
+                expect(content.scrollTop).toBe(60);
+            } finally {
+                observers.restore();
+            }
+        });
+
+        it('leaves a focused field alone when it is already clear of the panel', async () => {
+            const observers = captureResizeObservers();
+            try {
+                const { user } = render(
+                    <Drawer isOpen={true} title="Test Drawer" onClose={vi.fn()}>
+                        <input aria-label="Amount" />
+                        <DrawerBottomPanel>
+                            <button type="button">Save</button>
+                        </DrawerBottomPanel>
+                    </Drawer>,
+                );
+
+                await waitFor(() => {
+                    expect(screen.getByLabelText('Amount')).toBeInTheDocument();
+                });
+                await user.click(screen.getByLabelText('Amount'));
+
+                const content = stubRects({ focusedBottom: 200 });
+                content.scrollTop = 25;
+                observers.fireAll();
+
+                expect(content.scrollTop).toBe(25);
+            } finally {
+                observers.restore();
+            }
+        });
+
+        it('does not scroll when focus is outside the drawer content', async () => {
+            const observers = captureResizeObservers();
+            try {
+                render(
+                    <Drawer isOpen={true} title="Test Drawer" onClose={vi.fn()}>
+                        <input aria-label="Amount" />
+                        <DrawerBottomPanel>
+                            <button type="button">Save</button>
+                        </DrawerBottomPanel>
+                    </Drawer>,
+                );
+
+                await waitFor(() => {
+                    expect(screen.getByLabelText('Amount')).toBeInTheDocument();
+                });
+
+                const outside = document.createElement('input');
+                document.body.appendChild(outside);
+                outside.focus();
+
+                const content = document.querySelector<HTMLElement>('.content');
+                if (!content) throw new Error('drawer did not render its scroll container');
+                content.scrollTop = 0;
+                observers.fireAll();
+
+                expect(content.scrollTop).toBe(0);
+                outside.remove();
+            } finally {
+                observers.restore();
+            }
+        });
+    });
+
     it('leaves scroll padding unset when there is no bottom panel', async () => {
         render(
             <Drawer isOpen={true} title="Test Drawer" onClose={vi.fn()}>
