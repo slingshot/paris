@@ -101,6 +101,16 @@ describe('Combobox', () => {
         });
     });
 
+    // Headless UI writes an inline `max-height` on the anchored panel that only defers to
+    // `--anchor-max-height`, so `maxHeight` has to travel as that variable.
+    it('caps the dropdown height via --anchor-max-height', async () => {
+        const { user } = render(<ControlledCombobox maxHeight={240} />);
+        await user.click(screen.getByPlaceholderText('Search...'));
+
+        const panel = await screen.findByRole('listbox');
+        expect(panel.style.getPropertyValue('--anchor-max-height')).toBe('240px');
+    });
+
     it('filters options as user types', async () => {
         const { user } = render(<ControlledCombobox />);
         const input = screen.getByPlaceholderText('Search...');

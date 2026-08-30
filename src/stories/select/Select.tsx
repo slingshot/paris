@@ -342,7 +342,10 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                                 className={clsx(overrides?.optionsContainer, styles.options)}
                                 style={
                                     {
-                                        '--options-maxHeight': `${maxHeight}px`,
+                                        // Headless UI's anchor logic writes an inline
+                                        // `max-height: min(var(--anchor-max-height, 100vh), <available space>)`
+                                        // on the panel, which wins over any class-based cap.
+                                        '--anchor-max-height': `${maxHeight}px`,
                                     } as CSSProperties
                                 }
                             >
