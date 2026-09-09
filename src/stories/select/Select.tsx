@@ -1,9 +1,11 @@
 'use client';
 
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import type { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions, Radio, RadioGroup } from '@headlessui/react';
 import { clsx } from 'clsx';
+import type { HTMLMotionProps } from 'framer-motion';
 import { motion } from 'framer-motion';
 import type {
     ComponentPropsWithoutRef,
@@ -18,6 +20,7 @@ import { OpenChangeEffect } from '../../helpers/OpenChangeEffect';
 import { MemoizedEnhancer } from '../../helpers/renderEnhancer';
 import { useControllableState } from '../../helpers/useControllableState';
 import { Field } from '../field';
+import type { IconProps } from '../icon';
 import { Check, Icon } from '../icon';
 import type { InputProps } from '../input';
 import inputStyles from '../input/Input.module.scss';
@@ -33,6 +36,9 @@ export type Option<T extends Record<string, unknown> = Record<string, unknown>, 
     disabled?: boolean;
     metadata?: T;
 };
+/** Props accepted by the radio/card/segmented group element; the group's value is owned by the component. */
+type OptionGroupProps = Omit<ComponentPropsWithoutRef<'div'>, 'value' | 'defaultValue' | 'onChange'>;
+
 export type CommonSelectProps<
     T extends Record<string, unknown> = Record<string, unknown>,
     Id extends string = string,
@@ -80,13 +86,32 @@ export type CommonSelectProps<
      */
     overrides?: {
         container?: ComponentPropsWithoutRef<'div'>;
-        selectInput?: ComponentPropsWithoutRef<'button'>;
-        optionsContainer?: ComponentPropsWithoutRef<'div'>;
-        option?: ComponentPropsWithoutRef<'div'>;
+        labelContainer?: ComponentPropsWithoutRef<'div'>;
         label?: TextProps<'label'>;
         description?: TextProps<'p'>;
+        /** The listbox trigger button (`kind="listbox"`). */
+        selectInput?: ComponentPropsWithoutRef<'button'>;
         startEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
         endEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
+        /** The default chevron rendered when no `endEnhancer` is given (`kind="listbox"`). */
+        chevron?: Omit<FontAwesomeIconProps, 'icon'>;
+        /** The dropdown panel (`kind="listbox"`). */
+        optionsContainer?: ComponentPropsWithoutRef<'div'>;
+        /** Each dropdown option (`kind="listbox"`). */
+        option?: ComponentPropsWithoutRef<'div'>;
+        /** The check mark shown on selected dropdown options (`kind="listbox"`). */
+        optionCheck?: Omit<IconProps, 'icon'>;
+        radioContainer?: OptionGroupProps;
+        radioOption?: ComponentPropsWithoutRef<'div'>;
+        radioCircle?: ComponentPropsWithoutRef<'div'>;
+        cardContainer?: OptionGroupProps;
+        cardOption?: ComponentPropsWithoutRef<'div'>;
+        cardSurface?: ComponentPropsWithoutRef<'div'>;
+        segmentedContainer?: OptionGroupProps;
+        segmentedOption?: ComponentPropsWithoutRef<'div'>;
+        /** The sliding highlight behind the selected segment (`kind="segmented"`). */
+        segmentedBackground?: HTMLMotionProps<'div'>;
+        segmentedText?: TextProps<'span'>;
     };
 } & {
     [key: `data-${string}`]: string | number | boolean | undefined;
@@ -263,6 +288,7 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
             disabled={disabled}
             overrides={{
                 container: overrides?.container,
+                labelContainer: overrides?.labelContainer,
                 label: overrides?.label,
                 description: overrides?.description,
             }}
@@ -329,9 +355,14 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                                     </div>
                                 ) : (
                                     <FontAwesomeIcon
-                                        className={clsx(inputStyles.enhancer, styles.chevron)}
-                                        data-status={disabled ? 'disabled' : status || 'default'}
                                         width="10px"
+                                        {...overrides?.chevron}
+                                        className={clsx(
+                                            inputStyles.enhancer,
+                                            styles.chevron,
+                                            overrides?.chevron?.className,
+                                        )}
+                                        data-status={disabled ? 'disabled' : status || 'default'}
                                         icon={faChevronDown}
                                     />
                                 )}
@@ -339,9 +370,11 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                             <ListboxOptions
                                 anchor="bottom start"
                                 transition
-                                className={clsx(overrides?.optionsContainer, styles.options)}
+                                {...overrides?.optionsContainer}
+                                className={clsx(styles.options, overrides?.optionsContainer?.className)}
                                 style={
                                     {
+                                        ...overrides?.optionsContainer?.style,
                                         // Headless UI's anchor logic writes an inline
                                         // `max-height: min(var(--anchor-max-height, 100vh), <available space>)`
                                         // on the panel, which wins over any class-based cap.
@@ -352,11 +385,12 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                                 {(options || []).map((option) => (
                                     <ListboxOption
                                         key={option.id}
+                                        {...overrides?.option}
                                         value={option.id}
                                         className={clsx(
-                                            overrides?.option,
                                             styles.option,
                                             hasOptionBorder && styles.optionBorder,
+                                            overrides?.option?.className,
                                         )}
                                         disabled={option.disabled || false}
                                     >
@@ -367,7 +401,12 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                                         ) : (
                                             option.node
                                         )}
-                                        <Icon icon={Check} size={12} className={styles.check} />
+                                        <Icon
+                                            size={12}
+                                            {...overrides?.optionCheck}
+                                            icon={Check}
+                                            className={clsx(styles.check, overrides?.optionCheck?.className)}
+                                        />
                                     </ListboxOption>
                                 ))}
                             </ListboxOptions>
@@ -376,38 +415,62 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                 </Listbox>
             )}
             {kind === 'radio' && (
-                <RadioGroup as="div" className={styles.radioContainer} value={singleValue} onChange={singleOnChange}>
+                <RadioGroup
+                    as="div"
+                    {...overrides?.radioContainer}
+                    className={clsx(styles.radioContainer, overrides?.radioContainer?.className)}
+                    value={singleValue}
+                    onChange={singleOnChange}
+                >
                     {options.map((option) => (
                         <Radio
                             as="div"
                             ref={option.id === tabStopID ? radioOptionRef : undefined}
                             {...(option.id === tabStopID ? focusableProps : {})}
-                            className={clsx(styles.radioOption)}
+                            {...overrides?.radioOption}
+                            className={clsx(styles.radioOption, overrides?.radioOption?.className)}
                             key={option.id}
                             value={option.id}
                             disabled={option.disabled || false}
                             data-status={disabled ? 'disabled' : status || 'default'}
                         >
-                            <div className={styles.radioCircle} />
+                            <div
+                                {...overrides?.radioCircle}
+                                className={clsx(styles.radioCircle, overrides?.radioCircle?.className)}
+                            />
                             <TextWhenString kind="paragraphXSmall">{option.node}</TextWhenString>
                         </Radio>
                     ))}
                 </RadioGroup>
             )}
             {kind === 'card' && (
-                <RadioGroup as="div" className={styles.cardContainer} value={singleValue} onChange={singleOnChange}>
+                <RadioGroup
+                    as="div"
+                    {...overrides?.cardContainer}
+                    className={clsx(styles.cardContainer, overrides?.cardContainer?.className)}
+                    value={singleValue}
+                    onChange={singleOnChange}
+                >
                     {options.map((option) => (
                         <Radio
                             as="div"
                             ref={option.id === tabStopID ? radioOptionRef : undefined}
                             {...(option.id === tabStopID ? focusableProps : {})}
-                            className={clsx(styles.cardOption)}
+                            {...overrides?.cardOption}
+                            className={clsx(styles.cardOption, overrides?.cardOption?.className)}
                             key={option.id}
                             value={option.id}
                             disabled={option.disabled || false}
                             data-status={disabled ? 'disabled' : status || 'default'}
                         >
-                            <div className={clsx(styles.cardSurface, typeof option.node === 'string' && styles.text)}>
+                            <div
+                                {...overrides?.cardSurface}
+                                className={clsx(
+                                    styles.cardSurface,
+                                    typeof option.node === 'string' && styles.text,
+                                    overrides?.cardSurface?.className,
+                                )}
+                            >
                                 <TextWhenString kind="paragraphSmall">{option.node}</TextWhenString>
                             </div>
                         </Radio>
@@ -417,7 +480,8 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
             {kind === 'segmented' && (
                 <RadioGroup
                     as="div"
-                    className={styles.segmentedContainer}
+                    {...overrides?.segmentedContainer}
+                    className={clsx(styles.segmentedContainer, overrides?.segmentedContainer?.className)}
                     value={singleValue ?? options[0].id}
                     onChange={singleOnChange}
                 >
@@ -426,7 +490,12 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                             as="div"
                             ref={option.id === tabStopID ? radioOptionRef : undefined}
                             {...(option.id === tabStopID ? focusableProps : {})}
-                            className={clsx(styles.segmentedOption, styles[segmentedHeight])}
+                            {...overrides?.segmentedOption}
+                            className={clsx(
+                                styles.segmentedOption,
+                                styles[segmentedHeight],
+                                overrides?.segmentedOption?.className,
+                            )}
                             key={option.id}
                             value={option.id}
                             disabled={option.disabled || false}
@@ -434,15 +503,24 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
                         >
                             {(option.id === resolvedValue || (!resolvedValue && option.id === options[0].id)) && (
                                 <motion.div
-                                    className={styles.segmentedBackground}
-                                    layoutId={`${generatedID}-segmented-selected`}
                                     transition={{
                                         ease: [0.42, 0.0, 0.58, 1.0],
                                         duration: 0.25,
                                     }}
+                                    {...overrides?.segmentedBackground}
+                                    className={clsx(
+                                        styles.segmentedBackground,
+                                        overrides?.segmentedBackground?.className,
+                                    )}
+                                    layoutId={`${generatedID}-segmented-selected`}
                                 />
                             )}
-                            <TextWhenString kind="paragraphXSmall" weight="medium" className={styles.segmentedText}>
+                            <TextWhenString
+                                kind="paragraphXSmall"
+                                weight="medium"
+                                {...overrides?.segmentedText}
+                                className={clsx(styles.segmentedText, overrides?.segmentedText?.className)}
+                            >
                                 {option.node}
                             </TextWhenString>
                         </Radio>
@@ -463,6 +541,11 @@ const SelectRender = <T extends Record<string, unknown> = Record<string, unknown
  *
  * `name`, `id`, `onBlur`, and `data-*` props land on the focusable element, so a `react-hook-form`
  * field can be spread onto the component directly (`<Select {...field} options={options} />`).
+ *
+ * > `overrides` available: `container`, `labelContainer`, `label`, `description`, `selectInput`,
+ * > `startEnhancerContainer`, `endEnhancerContainer`, `chevron`, `optionsContainer`, `option`, `optionCheck`,
+ * > `radioContainer`, `radioOption`, `radioCircle`, `cardContainer`, `cardOption`, `cardSurface`,
+ * > `segmentedContainer`, `segmentedOption`, `segmentedBackground`, `segmentedText`
  *
  * <hr />
  *

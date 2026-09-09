@@ -153,6 +153,43 @@ describe('Field', () => {
         expect(screen.getByTestId('custom-container')).toBeInTheDocument();
     });
 
+    it('keeps the label styles when overrides.label sets a className', () => {
+        render(
+            <Field label="Styled" overrides={{ label: { className: 'custom-label' } }}>
+                <input />
+            </Field>,
+        );
+        const label = screen.getByText('Styled');
+        expect(label).toHaveClass('custom-label');
+        expect(label.className.split(' ').length).toBeGreaterThan(1);
+    });
+
+    it('applies overrides.labelContainer props when the description is on top', () => {
+        render(
+            <Field
+                label="Top"
+                description="Desc"
+                descriptionPosition="top"
+                overrides={{ labelContainer: { 'data-testid': 'label-container' } }}
+            >
+                <input />
+            </Field>,
+        );
+        expect(screen.getByTestId('label-container')).toContainElement(screen.getByText('Desc'));
+    });
+
+    it('runs the consumer onClick before focusing the input and honours preventDefault', async () => {
+        const handleClick = vi.fn((e: React.MouseEvent) => e.preventDefault());
+        const { user } = render(
+            <Field label="Click" htmlFor="click-input" overrides={{ container: { onClick: handleClick } }}>
+                <input id="click-input" />
+            </Field>,
+        );
+        await user.click(screen.getByText('Click'));
+        expect(handleClick).toHaveBeenCalled();
+        expect(screen.getByRole('textbox')).not.toHaveFocus();
+    });
+
     it('renders ReactNode description in a div', () => {
         render(
             <Field label="Name" description={<em data-testid="em-desc">Emphasized</em>} htmlFor="name">

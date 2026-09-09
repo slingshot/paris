@@ -157,6 +157,7 @@ endEnhancer?: Enhancer
 description?: ReactNode
 hideLabel?: boolean
 disabled?: boolean
+overrides?: { container, labelContainer, label, description, inputContainer, inputScaleWrapper, startEnhancerContainer, endEnhancerContainer }
 ```
 
 ## Select Props
@@ -174,6 +175,13 @@ label: ReactNode
 name?: string                                      // rendered on the focusable element
 onBlur?: FocusEventHandler                         // fires when focus leaves the control
 id?: string                                        // also the label's htmlFor target
+overrides?: {
+  container, labelContainer, label, description,   // Field wrapper
+  selectInput, startEnhancerContainer, endEnhancerContainer, chevron, optionsContainer, option, optionCheck,  // listbox
+  radioContainer, radioOption, radioCircle,        // radio
+  cardContainer, cardOption, cardSurface,          // card
+  segmentedContainer, segmentedOption, segmentedBackground, segmentedText,  // segmented
+}
 ```
 
 `name`, `id`, `onBlur`, and `data-*` land on the focusable element (the trigger button for

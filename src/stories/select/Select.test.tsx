@@ -249,6 +249,112 @@ describe('Select', () => {
         });
     });
 
+    describe('overrides', () => {
+        it('spreads optionsContainer, option and optionCheck overrides onto the dropdown', async () => {
+            const { user } = render(
+                <ControlledSelect
+                    value="2"
+                    overrides={{
+                        optionsContainer: { 'data-testid': 'panel', className: 'custom-panel' },
+                        option: { 'data-testid': 'opt', className: 'custom-option' },
+                        optionCheck: { 'data-testid': 'check' },
+                    }}
+                />,
+            );
+            await user.click(screen.getByRole('button'));
+
+            await waitFor(() => {
+                const panel = screen.getByTestId('panel');
+                expect(panel).toHaveClass('custom-panel');
+                expect(panel).not.toHaveClass('className');
+                expect(panel.style.getPropertyValue('--anchor-max-height')).toBe('320px');
+                expect(screen.getAllByTestId('opt')).toHaveLength(options.length);
+                expect(screen.getAllByTestId('opt')[0]).toHaveClass('custom-option');
+                expect(screen.getAllByTestId('check').length).toBeGreaterThan(0);
+            });
+        });
+
+        it('applies selectInput and chevron overrides to the trigger', () => {
+            render(
+                <Select
+                    options={options}
+                    overrides={{
+                        selectInput: { className: 'custom-trigger' },
+                        chevron: { 'data-testid': 'chevron', className: 'custom-chevron' },
+                    }}
+                />,
+            );
+            expect(screen.getByRole('button')).toHaveClass('custom-trigger');
+            expect(screen.getByTestId('chevron')).toHaveClass('custom-chevron');
+        });
+
+        it('applies radio kind overrides', () => {
+            render(
+                <Select
+                    options={options}
+                    kind="radio"
+                    overrides={{
+                        radioContainer: { 'data-testid': 'group', className: 'custom-group' },
+                        radioOption: { className: 'custom-radio' },
+                        radioCircle: { 'data-testid': 'circle' },
+                    }}
+                />,
+            );
+            expect(screen.getByTestId('group')).toHaveClass('custom-group');
+            expect(screen.getByRole('radiogroup')).toBe(screen.getByTestId('group'));
+            for (const radio of screen.getAllByRole('radio')) expect(radio).toHaveClass('custom-radio');
+            expect(screen.getAllByTestId('circle')).toHaveLength(options.length);
+        });
+
+        it('applies card kind overrides', () => {
+            render(
+                <Select
+                    options={options}
+                    kind="card"
+                    overrides={{
+                        cardContainer: { 'data-testid': 'group' },
+                        cardOption: { className: 'custom-card' },
+                        cardSurface: { 'data-testid': 'surface', className: 'custom-surface' },
+                    }}
+                />,
+            );
+            expect(screen.getByRole('radiogroup')).toBe(screen.getByTestId('group'));
+            for (const radio of screen.getAllByRole('radio')) expect(radio).toHaveClass('custom-card');
+            expect(screen.getAllByTestId('surface')[0]).toHaveClass('custom-surface');
+        });
+
+        it('applies segmented kind overrides', () => {
+            render(
+                <Select
+                    options={options}
+                    kind="segmented"
+                    overrides={{
+                        segmentedContainer: { 'data-testid': 'group' },
+                        segmentedOption: { className: 'custom-segment' },
+                        segmentedBackground: { 'data-testid': 'highlight' },
+                        segmentedText: { 'data-testid': 'segment-text', className: 'custom-text' },
+                    }}
+                />,
+            );
+            expect(screen.getByRole('radiogroup')).toBe(screen.getByTestId('group'));
+            for (const radio of screen.getAllByRole('radio')) expect(radio).toHaveClass('custom-segment');
+            expect(screen.getByTestId('highlight')).toBeInTheDocument();
+            expect(screen.getAllByTestId('segment-text')[0]).toHaveClass('custom-text');
+        });
+
+        it('keeps the field-spread props on the option when radioOption is overridden', () => {
+            render(
+                <Select
+                    options={options}
+                    kind="radio"
+                    name="format"
+                    overrides={{ radioOption: { className: 'custom-radio' } }}
+                />,
+            );
+            expect(screen.getAllByRole('radio')[0]).toHaveAttribute('name', 'format');
+        });
+    });
+
     describe('uncontrolled mode', () => {
         it('renders with defaultValue', () => {
             render(<Select options={options} defaultValue="2" />);

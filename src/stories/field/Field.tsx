@@ -74,7 +74,7 @@ export const Field: FC<PropsWithChildren<FieldProps>> = ({
                 as="label"
                 kind="paragraphSmall"
                 htmlFor={htmlFor}
-                className={clsx(styles.label, { [styles.hidden]: props.hideLabel })}
+                className={clsx(styles.label, { [styles.hidden]: props.hideLabel }, props.overrides?.label?.className)}
             >
                 {props.label}
             </Text>
@@ -120,7 +120,8 @@ export const Field: FC<PropsWithChildren<FieldProps>> = ({
                 // className,
             )}
             onClick={(e) => {
-                if (typeof window === 'undefined' || !htmlFor) return;
+                props.overrides?.container?.onClick?.(e);
+                if (e.defaultPrevented || typeof window === 'undefined' || !htmlFor) return;
                 if (!(e.currentTarget as Node).contains(e.target as Node)) return;
                 const input = document.getElementById(htmlFor);
                 if (input && !disabled && !input.contains(e.target as Node)) {
