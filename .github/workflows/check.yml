@@ -85,6 +85,14 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      # The runner image preconfigures Google's Chrome apt repo, whose mirror intermittently serves a
+      # stale index ("Hash Sum mismatch"). `--with-deps` runs `apt-get update`, which aborts on any
+      # broken source, so drop the repo: Playwright installs its own Chromium and never needs it.
+      - name: Remove the Google Chrome apt source
+        run: |
+          sudo grep -rls 'dl.google.com' /etc/apt/sources.list.d | xargs -r sudo rm -fv
+          if [ -f /etc/apt/sources.list ]; then sudo sed -i '/dl\.google\.com/d' /etc/apt/sources.list; fi
+
       - name: Install Playwright browsers
         run: bunx playwright install chromium --with-deps
 
