@@ -65,8 +65,11 @@ export type InputProps = {
      */
     overrides?: {
         container?: ComponentPropsWithoutRef<'div'>;
+        labelContainer?: ComponentPropsWithoutRef<'div'>;
         label?: TextProps<'label'>;
         description?: TextProps<'p'>;
+        inputContainer?: ComponentPropsWithoutRef<'div'>;
+        inputScaleWrapper?: ComponentPropsWithoutRef<'div'>;
         startEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
         endEnhancerContainer?: ComponentPropsWithoutRef<'div'>;
     };
@@ -75,7 +78,7 @@ export type InputProps = {
 /**
  * An `Input` is used to collect user input, such as text, numbers, or dates.
  *
- * > `overrides` available: `container`, `label`, `description`, `startEnhancerContainer`, `endEnhancerContainer`
+ * > `overrides` available: `container`, `labelContainer`, `label`, `description`, `inputContainer`, `inputScaleWrapper`, `startEnhancerContainer`, `endEnhancerContainer`
  *
  * <hr />
  *
@@ -115,21 +118,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps & ComponentPropsWit
                 disabled={disabled}
                 descriptionPosition={descriptionPosition}
                 overrides={{
-                    container: {
-                        ...overrides?.container,
-                        className: clsx(
-                            // styles.fieldContainer,
-                            overrides?.container?.className,
-                        ),
-                    },
+                    container: overrides?.container,
+                    labelContainer: overrides?.labelContainer,
                     label: overrides?.label,
                     description: overrides?.description,
                 }}
             >
                 <div
-                    className={styles.inputContainer}
-                    // data-status={status}
-                    // data-disabled={disabled}
+                    {...overrides?.inputContainer}
+                    className={clsx(styles.inputContainer, overrides?.inputContainer?.className)}
                     data-status={disabled ? 'disabled' : status || 'default'}
                 >
                     {!!startEnhancer && (
@@ -146,7 +143,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps & ComponentPropsWit
                             )}
                         </div>
                     )}
-                    <div className={styles.inputScaleWrapper}>
+                    <div
+                        {...overrides?.inputScaleWrapper}
+                        className={clsx(styles.inputScaleWrapper, overrides?.inputScaleWrapper?.className)}
+                    >
                         <input
                             {...props}
                             id={inputID}

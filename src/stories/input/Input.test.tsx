@@ -165,6 +165,35 @@ describe('Input', () => {
         expect(screen.getByTestId('wrapper')).toBeInTheDocument();
     });
 
+    it('applies inputContainer and inputScaleWrapper overrides around the input', () => {
+        render(
+            <Input
+                label="Boxed"
+                overrides={{
+                    inputContainer: { 'data-testid': 'box', className: 'custom-box' },
+                    inputScaleWrapper: { 'data-testid': 'scale' },
+                }}
+            />,
+        );
+        const box = screen.getByTestId('box');
+        expect(box).toHaveClass('custom-box');
+        expect(box).toHaveAttribute('data-status', 'default');
+        expect(box).toContainElement(screen.getByTestId('scale'));
+        expect(screen.getByTestId('scale')).toContainElement(screen.getByLabelText('Boxed'));
+    });
+
+    it('forwards the labelContainer override to the Field', () => {
+        render(
+            <Input
+                label="Top"
+                description="Hint"
+                descriptionPosition="top"
+                overrides={{ labelContainer: { 'data-testid': 'label-container' } }}
+            />,
+        );
+        expect(screen.getByTestId('label-container')).toContainElement(screen.getByText('Hint'));
+    });
+
     it('spreads additional HTML input props', () => {
         render(<Input label="Extra" maxLength={10} autoComplete="off" />);
         const input = screen.getByLabelText('Extra');
