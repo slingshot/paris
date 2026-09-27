@@ -42,8 +42,6 @@
 
 .tabGroup {
     width: 100%;
-    overflow: auto;
-    height: 100%;
 
     &.glass {
         position: relative;
@@ -174,12 +172,5 @@
 
 .panel {
     padding-top: 16px;
-    overflow-y: scroll;
-    height: 100%;
     width: 100%;
-
-    &.glass {
-        overflow-y: visible;
-        height: auto;
-    }
 }
