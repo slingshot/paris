@@ -415,6 +415,71 @@ describe('Checkbox', () => {
         });
     });
 
+    describe('indeterminate', () => {
+        it.each(['default', 'surface', 'panel'] as const)('renders a mixed state for kind="%s"', (kind) => {
+            render(
+                <Checkbox kind={kind} checked="indeterminate">
+                    Select all
+                </Checkbox>,
+            );
+            const checkbox = screen.getByRole('checkbox');
+            expect(checkbox).toHaveAttribute('aria-checked', 'mixed');
+            expect(checkbox).toHaveAttribute('data-state', 'indeterminate');
+        });
+
+        it('emits true when an indeterminate checkbox is clicked', async () => {
+            const handleChange = vi.fn();
+            const { user } = render(
+                <Checkbox checked="indeterminate" onChange={handleChange}>
+                    Select all
+                </Checkbox>,
+            );
+
+            await user.click(screen.getByRole('checkbox'));
+            expect(handleChange).toHaveBeenCalledTimes(1);
+            expect(handleChange).toHaveBeenCalledWith(true);
+        });
+
+        it('accepts indeterminate through the value alias', () => {
+            render(<Checkbox value="indeterminate">Select all</Checkbox>);
+            expect(screen.getByRole('checkbox')).toHaveAttribute('aria-checked', 'mixed');
+        });
+
+        it('becomes checked after clicking an uncontrolled indeterminate checkbox', async () => {
+            const handleChange = vi.fn();
+            const { user } = render(
+                <Checkbox defaultChecked="indeterminate" onChange={handleChange}>
+                    Select all
+                </Checkbox>,
+            );
+
+            const checkbox = screen.getByRole('checkbox');
+            expect(checkbox).toHaveAttribute('aria-checked', 'mixed');
+            await user.click(checkbox);
+            expect(checkbox).toBeChecked();
+            expect(handleChange).toHaveBeenCalledWith(true);
+        });
+
+        it('does not apply the checked class to the container', () => {
+            const { container } = render(<Checkbox checked="indeterminate">Select all</Checkbox>);
+            expect(container.querySelector('label')).not.toHaveClass('checked');
+        });
+
+        it('renders a switch as unchecked', async () => {
+            const handleChange = vi.fn();
+            const { user } = render(
+                <Checkbox kind="switch" checked="indeterminate" onChange={handleChange}>
+                    Toggle
+                </Checkbox>,
+            );
+
+            const switchEl = screen.getByRole('switch');
+            expect(switchEl).not.toBeChecked();
+            await user.click(switchEl);
+            expect(handleChange).toHaveBeenCalledWith(true);
+        });
+    });
+
     // ─── Accessibility ───────────────────────────────────────────────
 
     describe('accessibility', () => {

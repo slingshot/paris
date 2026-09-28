@@ -31,3 +31,4 @@ export const NotificationDot: Story = getArgs(Icons.NotificationDot);
 export const Spinner: Story = getArgs(Icons.Spinner);
 export const Check: Story = getArgs(Icons.Check);
 export const ArrowRight: Story = getArgs(Icons.ArrowRight);
+export const Minus: Story = getArgs(Icons.Minus);
