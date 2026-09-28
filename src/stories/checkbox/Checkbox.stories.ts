@@ -86,6 +86,40 @@ export const HideLabel: Story = {
     },
 };
 
+/** A "select all" Checkbox that shows the mixed state while only some of its children are checked. */
+export const Indeterminate: Story = {
+    args: {
+        children: 'Select all',
+    },
+    render: function Render(args) {
+        const [selected, setSelected] = useState([true, false, false]);
+        const allChecked = selected.every(Boolean);
+        const noneChecked = !selected.some(Boolean);
+        return createElement(
+            'div',
+            { style: { display: 'flex', flexDirection: 'column', gap: 8 } },
+            createElement(Checkbox, {
+                ...args,
+                checked: allChecked ? true : noneChecked ? false : 'indeterminate',
+                onChange: (checked: boolean) => setSelected(selected.map(() => checked)),
+            }),
+            ...selected.map((isChecked, index) =>
+                createElement(
+                    Checkbox,
+                    {
+                        key: index,
+                        kind: args.kind,
+                        checked: isChecked,
+                        onChange: (checked: boolean) =>
+                            setSelected(selected.map((prev, i) => (i === index ? checked : prev))),
+                    },
+                    `Option ${index + 1}`,
+                ),
+            ),
+        );
+    },
+};
+
 /** A `react-hook-form` field object spread straight onto the Checkbox, with no `checked` adapter. */
 export const FormField: Story = {
     args: {

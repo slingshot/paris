@@ -6,5 +6,6 @@ export { Close } from './Close';
 export { Ellipsis } from './Ellipsis';
 export * from './Icon';
 export { Info } from './Info';
+export { Minus } from './Minus';
 export { NotificationDot } from './NotificationDot';
 export { Spinner } from './Spinner';

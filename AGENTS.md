@@ -70,7 +70,7 @@ src/stories/<componentname>/
 - **Input** - Text input field
 - **TextArea** - Multi-line text input
 - **Select** - Dropdown/listbox/radio/segmented selection
-- **Checkbox** - Checkbox with switch variant; `value` is a boolean alias for `checked` and rest props land on the control, so a form field object can be spread directly
+- **Checkbox** - Checkbox with switch variant; `checked` (and its alias `value`) accepts `boolean | 'indeterminate'` while `onChange` always emits a boolean (`true` from indeterminate; switches render indeterminate as unchecked); rest props land on the control, so a form field object can be spread directly
 - **Combobox** - Autocomplete input
 - **PhoneInput** - Country select + phone number input; `value`/`onChange` are E.164, display formats to national format on blur
 - **AccordionSelect** - Card header that expands to reveal selectable options
