@@ -65,3 +65,11 @@ export const DisabledOptionWithIcon: Story = {
         ),
     },
 };
+
+export const Disabled: Story = {
+    args: {
+        options,
+        value: 'champagne',
+        disabled: true,
+    },
+};

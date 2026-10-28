@@ -337,6 +337,193 @@ describe('AccordionSelect', () => {
         });
     });
 
+    describe('disabled', () => {
+        it('marks the header aria-disabled, sets the root status, and keeps the header focusable', () => {
+            render(<AccordionSelect options={options} value="champagne" disabled />);
+
+            const header = screen.getByRole('button');
+            expect(header).toHaveAttribute('aria-disabled', 'true');
+            expect(header).toHaveAttribute('tabindex', '0');
+            expect(header.parentElement).toHaveAttribute('data-status', 'disabled');
+
+            header.focus();
+            expect(header).toHaveFocus();
+        });
+
+        it('overrides status="error" with disabled', () => {
+            render(<AccordionSelect options={options} value="champagne" status="error" disabled />);
+
+            expect(screen.getByRole('button').parentElement).toHaveAttribute('data-status', 'disabled');
+        });
+
+        it('still shows the selected option in the header', () => {
+            render(<AccordionSelect options={options} value="champagne" disabled />);
+
+            expect(
+                within(screen.getByRole('button')).getByText('In an alleyway, drinking champagne'),
+            ).toBeInTheDocument();
+        });
+
+        it('does not open on click', async () => {
+            const handleOpenChange = vi.fn();
+            const { user } = render(
+                <AccordionSelect options={options} value="champagne" disabled onOpenChange={handleOpenChange} />,
+            );
+
+            await user.click(screen.getByRole('button'));
+
+            expect(screen.queryByRole('button', { name: /rooftop/i })).not.toBeInTheDocument();
+            expect(handleOpenChange).not.toHaveBeenCalled();
+        });
+
+        it('does not open on Enter', async () => {
+            const handleOpenChange = vi.fn();
+            const { user } = render(
+                <AccordionSelect options={options} value="champagne" disabled onOpenChange={handleOpenChange} />,
+            );
+
+            screen.getByRole('button').focus();
+            await user.keyboard('{Enter}');
+
+            expect(screen.queryByRole('button', { name: /rooftop/i })).not.toBeInTheDocument();
+            expect(handleOpenChange).not.toHaveBeenCalled();
+        });
+
+        it('does not open on Space', async () => {
+            const handleOpenChange = vi.fn();
+            const { user } = render(
+                <AccordionSelect options={options} value="champagne" disabled onOpenChange={handleOpenChange} />,
+            );
+
+            screen.getByRole('button').focus();
+            await user.keyboard(' ');
+
+            expect(screen.queryByRole('button', { name: /rooftop/i })).not.toBeInTheDocument();
+            expect(handleOpenChange).not.toHaveBeenCalled();
+        });
+
+        it('renders closed when controlled isOpen is true, and ignores outside clicks', async () => {
+            const handleOpenChange = vi.fn();
+            const { user } = render(
+                <div>
+                    <AccordionSelect
+                        options={options}
+                        value="champagne"
+                        isOpen
+                        disabled
+                        onOpenChange={handleOpenChange}
+                    />
+                    <button type="button">Outside</button>
+                </div>,
+            );
+
+            const rooftop = screen.getByText('On a rooftop, watching the sunset');
+            expect(rooftop.closest('[aria-hidden]')).toHaveAttribute('aria-hidden', 'true');
+            expect(rooftop.closest('button')).toBeDisabled();
+
+            await user.click(screen.getByText('Outside'));
+
+            expect(handleOpenChange).not.toHaveBeenCalled();
+        });
+
+        it('restores the uncontrolled open state when re-enabled', async () => {
+            const { user, rerender } = render(<AccordionSelect options={options} value="champagne" />);
+
+            await user.click(screen.getByRole('button'));
+            expect(screen.getByRole('button', { name: /rooftop/i })).toBeInTheDocument();
+
+            rerender(<AccordionSelect options={options} value="champagne" disabled />);
+            expect(screen.queryByRole('button', { name: /rooftop/i })).not.toBeInTheDocument();
+
+            rerender(<AccordionSelect options={options} value="champagne" />);
+            expect(screen.getByRole('button', { name: /rooftop/i })).toBeInTheDocument();
+        });
+
+        it('still calls a consumer onClick', async () => {
+            const handleClick = vi.fn();
+            const { user } = render(
+                <AccordionSelect options={options} value="champagne" disabled onClick={handleClick} />,
+            );
+
+            await user.click(screen.getByRole('button'));
+
+            expect(handleClick).toHaveBeenCalled();
+            expect(screen.queryByRole('button', { name: /rooftop/i })).not.toBeInTheDocument();
+        });
+
+        it('renders no chevron or header end when there is no label', () => {
+            render(<AccordionSelect options={options} value="champagne" disabled />);
+
+            const header = screen.getByRole('button');
+            expect(header.querySelector('svg')).not.toBeInTheDocument();
+            expect(header.children).toHaveLength(1);
+        });
+
+        it('renders the chevron when enabled', () => {
+            render(<AccordionSelect options={options} value="champagne" />);
+
+            const header = screen.getByRole('button');
+            expect(header.querySelector('svg')).toBeInTheDocument();
+            expect(header.children).toHaveLength(2);
+        });
+
+        it('still renders a label without a chevron', () => {
+            render(
+                <AccordionSelect
+                    options={options}
+                    value="champagne"
+                    disabled
+                    label={<span data-testid="header-label">Active</span>}
+                />,
+            );
+
+            const header = screen.getByRole('button');
+            expect(within(header).getByTestId('header-label')).toHaveTextContent('Active');
+            expect(header.querySelector('svg')).not.toBeInTheDocument();
+        });
+
+        it('still renders a label of 0', () => {
+            render(<AccordionSelect options={options} value="champagne" disabled label={0} />);
+
+            const header = screen.getByRole('button');
+            expect(within(header).getByText('0')).toBeInTheDocument();
+            expect(header.querySelector('svg')).not.toBeInTheDocument();
+        });
+
+        it('keeps options disabled when overrides.option sets disabled to false', async () => {
+            const handleChange = vi.fn();
+            const { user } = render(
+                <AccordionSelect
+                    options={options}
+                    value="champagne"
+                    disabled
+                    onChange={handleChange}
+                    overrides={{ option: { disabled: false } }}
+                />,
+            );
+
+            const rooftop = screen.getByText('On a rooftop, watching the sunset').closest('button');
+            expect(rooftop).toBeDisabled();
+            expect(rooftop).toHaveAttribute('tabindex', '-1');
+
+            await user.click(rooftop as HTMLElement);
+
+            expect(handleChange).not.toHaveBeenCalled();
+        });
+
+        it('keeps aria-disabled true when a consumer passes aria-disabled={false}', () => {
+            render(<AccordionSelect options={options} value="champagne" disabled aria-disabled={false} />);
+
+            expect(screen.getByRole('button')).toHaveAttribute('aria-disabled', 'true');
+        });
+
+        it('passes a consumer aria-disabled through when enabled', () => {
+            render(<AccordionSelect options={options} value="champagne" aria-disabled />);
+
+            expect(screen.getByRole('button')).toHaveAttribute('aria-disabled', 'true');
+        });
+    });
+
     describe('uncontrolled selection', () => {
         it('renders with defaultValue', () => {
             render(<AccordionSelect options={options} defaultValue="champagne" />);

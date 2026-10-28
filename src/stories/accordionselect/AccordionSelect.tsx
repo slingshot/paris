@@ -63,6 +63,13 @@ export type AccordionSelectProps<
      */
     status?: 'default' | 'error';
     /**
+     * Locks the picker: the selected option still shows, the dropdown renders closed even when
+     * `isOpen` is true, and the header stays focusable with `aria-disabled`. Uncontrolled open state
+     * is kept and restored on re-enable; remount with a `key` to reset it.
+     * @default false
+     */
+    disabled?: boolean;
+    /**
      * Custom content to render as the header when an option is selected.
      * Receives the selected option. If not provided, the option's `node` is used.
      */
@@ -147,6 +154,7 @@ const AccordionSelectInner = <T extends Record<string, unknown> = Record<string,
         renderOption,
         placeholder = 'Select an option',
         status = 'default',
+        disabled = false,
         isOpen: controlledOpen,
         onOpenChange,
         closeOnSelect = true,
@@ -171,10 +179,12 @@ const AccordionSelectInner = <T extends Record<string, unknown> = Record<string,
         onChange: (id) => onChange?.(id, options.find((o) => o.id === id) ?? null),
     });
 
+    const isOpen = open && !disabled;
+
     const selectedOption = options.find((o) => o.id === resolvedValue);
 
     useEffect(() => {
-        if (!closeOnClickOutside || !open) {
+        if (!closeOnClickOutside || !isOpen) {
             return () => {};
         }
 
@@ -186,30 +196,33 @@ const AccordionSelectInner = <T extends Record<string, unknown> = Record<string,
 
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [closeOnClickOutside, open, setOpen]);
+    }, [closeOnClickOutside, isOpen, setOpen]);
 
     let headerContent: ReactNode = placeholder;
     if (selectedOption) {
         headerContent = renderSelected ? renderSelected(selectedOption) : selectedOption.node;
     }
 
+    const hasLabel = label !== undefined && label !== null && label !== false && label !== '';
+
     return (
         <div
             ref={rootRef}
             {...overrides?.root}
-            data-status={status}
-            className={clsx(styles.root, open && styles.open, overrides?.root?.className)}
+            data-status={disabled ? 'disabled' : status}
+            className={clsx(styles.root, isOpen && styles.open, overrides?.root?.className)}
         >
             <div
                 ref={ref}
                 {...headerProps}
                 {...overrides?.header}
-                className={clsx(styles.header, open && styles.open, overrides?.header?.className)}
+                aria-disabled={disabled || (overrides?.header?.['aria-disabled'] ?? headerProps['aria-disabled'])}
+                className={clsx(styles.header, isOpen && styles.open, overrides?.header?.className)}
                 onClick={(e) => {
                     headerProps.onClick?.(e);
                     overrides?.header?.onClick?.(e);
                     // A consumer handler vetoes the built-in toggle by calling `preventDefault()`.
-                    if (e.defaultPrevented) return;
+                    if (disabled || e.defaultPrevented) return;
                     setOpen(!open);
                 }}
                 onKeyDown={(e) => {
@@ -218,7 +231,7 @@ const AccordionSelectInner = <T extends Record<string, unknown> = Record<string,
                     if (e.defaultPrevented) return;
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        setOpen(!open);
+                        if (!disabled) setOpen(!open);
                     }
                 }}
                 role="button"
@@ -229,10 +242,18 @@ const AccordionSelectInner = <T extends Record<string, unknown> = Record<string,
                         {headerContent}
                     </TextWhenString>
                 </div>
-                <div className={styles.headerEnd}>
-                    {label}
-                    <Icon icon={ChevronRight} size={16} className={clsx(styles.chevron, open && styles.open)} />
-                </div>
+                {(hasLabel || !disabled) && (
+                    <div className={styles.headerEnd}>
+                        {label}
+                        {!disabled && (
+                            <Icon
+                                icon={ChevronRight}
+                                size={16}
+                                className={clsx(styles.chevron, isOpen && styles.open)}
+                            />
+                        )}
+                    </div>
+                )}
             </div>
 
             {/*
@@ -246,8 +267,8 @@ const AccordionSelectInner = <T extends Record<string, unknown> = Record<string,
              */}
             <div
                 {...overrides?.dropdown}
-                aria-hidden={!open}
-                className={clsx(styles.dropdown, open && styles.open, overrides?.dropdown?.className)}
+                aria-hidden={!isOpen}
+                className={clsx(styles.dropdown, isOpen && styles.open, overrides?.dropdown?.className)}
             >
                 <div
                     {...overrides?.dropdownContent}
@@ -259,10 +280,10 @@ const AccordionSelectInner = <T extends Record<string, unknown> = Record<string,
                             <button
                                 key={option.id}
                                 type="button"
-                                disabled={option.disabled || !open}
-                                tabIndex={open ? undefined : -1}
                                 data-selected={isOptionSelected}
                                 {...overrides?.option}
+                                disabled={option.disabled || !isOpen || overrides?.option?.disabled}
+                                tabIndex={isOpen ? overrides?.option?.tabIndex : -1}
                                 className={clsx(styles.option, overrides?.option?.className)}
                                 onClick={() => {
                                     setResolvedValue(option.id);
