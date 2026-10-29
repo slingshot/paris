@@ -13,10 +13,20 @@
     &[data-status="error"] {
         border-color: var(--pte-new-colors-inputBorderNegative);
     }
+
+    &[data-status="disabled"] {
+        .header {
+            cursor: default;
+
+            &:hover {
+                background-color: var(--pte-new-colors-overlayWhiteSubtle);
+            }
+        }
+    }
 }
 
 .header {
-    padding: 10px 13px 10px 12px;
+    padding: 10px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -78,16 +88,17 @@
     flex-direction: column;
     padding: 0;
     gap: 0;
+    background: var(--pte-new-colors-overlaySubtle);
 }
 
 .option {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 14px;
     padding: 8px 14px;
     border-bottom: 0.5px solid var(--pte-new-colors-borderMedium);
     background: transparent;
-    color: inherit;
+    color: var(--pte-new-colors-contentSecondary);
     cursor: pointer;
     transition: background var(--pte-animations-duration-instant) var(--pte-animations-timing-easeInOutExpo);
 
@@ -97,6 +108,7 @@
 
     &[data-selected='true'] {
         background: var(--pte-new-colors-overlaySubtle);
+        color: var(--pte-new-colors-contentPrimary);
     }
 
     &:hover {
@@ -104,7 +116,7 @@
     }
 
     &:disabled {
-        opacity: 0.4;
+        color: var(--pte-new-colors-contentDisabled);
         cursor: not-allowed;
 
         &:hover {

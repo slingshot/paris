@@ -66,7 +66,7 @@ import { Input } from 'paris/input';
 - Checkbox - Checkbox with switch variant; `checked`/`value` accept `boolean | 'indeterminate'`, `onChange` emits a boolean; rest props land on the control, so a form field object can be spread directly
 - Combobox - Autocomplete input
 - PhoneInput - Country select + phone input; E.164 value, localized display formatting on blur
-- AccordionSelect - Card header that expands to reveal selectable options
+- AccordionSelect - Card header that expands to reveal selectable options; `disabled` locks it closed while the header stays focusable with `aria-disabled`
 - Field - Form field wrapper with label
 
 ### Navigation & Actions
