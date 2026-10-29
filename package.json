@@ -214,7 +214,7 @@
         "@tiptap/markdown": "^3.23.6",
         "@tiptap/react": "^3.23.6",
         "@tiptap/starter-kit": "^3.23.6",
-        "clsx": "^1.2.1",
+        "clsx": "^2.1.1",
         "font-color-contrast": "^11.1.0",
         "framer-motion": "^12.40.0",
         "libphonenumber-js": "^1.13.8",
